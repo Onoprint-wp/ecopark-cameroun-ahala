@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECOPARK Yaoundé - Console de Direction et Administration</title>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "surface-container-high": "#e0ecd8",
+            "on-primary-fixed": "#052100",
+            "tertiary-fixed-dim": "#c2c9bc",
+            "secondary": "#106e00",
+            "on-tertiary": "#ffffff",
+            "outline-variant": "#c2c9ba",
+            "on-tertiary-container": "#a7aea2",
+            "on-surface": "#141e12",
+            "primary-fixed": "#bcf1a2",
+            "primary-fixed-dim": "#a1d589",
+            "inverse-on-surface": "#e8f5e0",
+            "surface-container-low": "#ebf7e3",
+            "on-secondary-fixed": "#022100",
+            "surface-dim": "#d2deca",
+            "tertiary-fixed": "#dee5d8",
+            "on-secondary-container": "#127500",
+            "surface-bright": "#f1fde8",
+            "on-secondary": "#ffffff",
+            "inverse-primary": "#a1d589",
+            "surface": "#f1fde8",
+            "primary-container": "#1d490d",
+            "inverse-surface": "#293326",
+            "on-surface-variant": "#42493d",
+            "secondary-fixed": "#92fb76",
+            "background": "#f1fde8",
+            "on-tertiary-fixed": "#171d16",
+            "secondary-fixed-dim": "#77de5d",
+            "on-secondary-fixed-variant": "#0a5300",
+            "on-primary": "#ffffff",
+            "outline": "#72796c",
+            "on-tertiary-fixed-variant": "#42493f",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#3b4239",
+            "on-primary-fixed-variant": "#245014",
+            "primary": "#0a3100",
+            "on-error": "#ffffff",
+            "tertiary": "#252c24",
+            "surface-tint": "#3c692a",
+            "secondary-container": "#92fb76",
+            "error": "#ba1a1a",
+            "surface-variant": "#dae6d2",
+            "on-background": "#141e12",
+            "surface-container": "#e6f2dd",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#86b970",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-highest": "#dae6d2"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "gutter-mobile": "1rem",
+            "space-sm": "0.5rem",
+            "margin": "3rem",
+            "gutter": "1.5rem"
+          },
+          fontFamily: {
+            "label-sm": ["Source Sans 3"],
+            "label-md": ["Source Sans 3"],
+            "body-lg": ["Source Sans 3"],
+            "headline-lg": ["Barlow Condensed"],
+            "body-md": ["Source Sans 3"],
+            "title-md": ["Source Sans 3"],
+            "headline-sm": ["Barlow Condensed"],
+            "display-lg-mobile": ["Barlow Condensed"],
+            "body-sm": ["Source Sans 3"],
+            "display-lg": ["Barlow Condensed"],
+            "headline-lg-mobile": ["Barlow Condensed"],
+            "headline-md": ["Barlow Condensed"]
+          },
+          fontSize: {
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "headline-lg": ["40px", { "lineHeight": "48px", "fontWeight": "600" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "display-lg-mobile": ["38px", { "lineHeight": "44px", "letterSpacing": "0em", "fontWeight": "700" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["30px", { "lineHeight": "36px", "fontWeight": "600" }],
+            "headline-md": ["28px", { "lineHeight": "34px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .card-shadow {
+      box-shadow: 0 2px 8px -2px rgba(29, 73, 13, 0.05), 0 0 0 1px #D5E5CD;
+    }
+    .card-shadow-hover:hover {
+      box-shadow: 0 16px 32px -8px rgba(29, 73, 13, 0.12), 0 4px 8px -2px rgba(29, 73, 13, 0.04);
+    }
+  </style>
+</head>
+<body class="bg-surface text-on-surface font-body-md h-full flex flex-col">
+<!-- TOPNAV BAR (WEB HEADER) -->
+<header class="bg-surface-container-lowest text-primary w-full px-space-lg flex justify-between items-center h-16 shadow-sm z-40 fixed top-0">
+<div class="flex items-center gap-space-md">
+<span class="text-headline-sm font-headline-sm font-bold uppercase tracking-wide text-primary">ECOPARK Yaoundé</span>
+<div class="relative hidden lg:block ml-4">
+<span class="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none text-outline">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="bg-surface border border-outline-variant rounded-lg pl-9 pr-4 py-1.5 text-body-sm text-on-surface w-72 focus:outline-none focus:border-primary focus:ring-2 focus:ring-primary/20" placeholder="Recherche globale (DIR / ADM)..." type="text"/>
+</div>
+</div>
+<nav class="hidden md:flex items-center gap-space-lg">
+<a class="text-primary font-title-md border-b-2 border-primary pb-1" href="#direction">Console</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md transition-colors duration-150" href="#ticketing">Ticketing</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md transition-colors duration-150" href="#catalog">Specimens &amp; Parcels</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md transition-colors duration-150" href="#audit">Transactions</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md transition-colors duration-150" href="#admin">System Matrix</a>
+</nav>
+<div class="flex items-center gap-space-md">
+<button class="bg-primary-container text-on-primary px-3 py-1.5 rounded-lg text-label-md flex items-center gap-1.5 hover:bg-primary transition-all">
+<span class="material-symbols-outlined text-sm">qr_code_scanner</span>
+        Scan Ticket
+      </button>
+<button aria-label="Agent Help" class="p-2 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">help</span>
+</button>
+<button aria-label="notifications" class="p-2 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<button aria-label="translate" class="p-2 text-on-surface-variant hover:text-primary rounded-lg hover:bg-surface-container transition-colors">
+<span class="material-symbols-outlined">translate</span>
+</button>
+<div class="flex items-center gap-2 pl-2 border-l border-outline-variant">
+<img class="w-8 h-8 rounded-full object-cover" data-alt="Professional portrait of an internal park ranger agent at ECOPARK Yaoundé wearing a forest green uniform and smiling warmly inside a lush botanical sanctuary with equatorial trees in the soft morning light." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDY0ctwNqFL7CN3CBFg2NUHFjPI8w29CmbzSGOKWlHTvdxtMj4habM-CfghlARvUpgkVB0S3qaBIggDrtnLFKfn8iCiDgdkLzO8fQngF7XDneyQ7QaGmRk9z2bVr2bbu9kgeu7atTmUvEsNCn0AJm1fNUn5noslS0jnTxeN0NFBrMxEkeyqd5WWQQmblrv4D0S98ek9YLMXSP7vVT2plmvGnhZl57OXw9isXz8VaaI2H4vcuRr6ry7iDbTuutsxs8vjjEyB2-yJ1Q"/>
+<div class="hidden xl:block text-left">
+<p class="text-label-md font-bold text-on-surface leading-tight">Dr. Mvondo K.</p>
+<p class="text-label-sm text-outline">Dir. Général</p>
+</div>
+</div>
+</div>
+</header>
+<div class="flex pt-16 flex-1 min-h-0">
+<!-- SIDENAV BAR -->
+<aside class="hidden md:flex h-screen w-64 fixed left-0 top-16 flex-col justify-between bg-surface border-r border-outline-variant p-space-md z-30 shadow-sm">
+<div class="flex flex-col gap-space-sm">
+<div class="flex items-center gap-3 px-2 py-3 bg-surface-container-low rounded-lg mb-2">
+<div class="w-10 h-10 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-bold text-headline-sm">
+            EY
+          </div>
+<div>
+<h2 class="text-title-md font-bold text-primary">Console d'Agent</h2>
+<p class="text-body-sm text-outline">Poste Central • Yaoundé (+237)</p>
+</div>
+</div>
+<a class="bg-primary-container text-on-primary rounded-lg font-title-md text-title-md px-space-sm py-2 flex items-center gap-3 transition-all" href="#overview">
+<span class="material-symbols-outlined">dashboard</span>
+          Overview
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg font-body-md text-body-md px-space-sm py-2 flex items-center gap-3 transition-colors" href="#direction">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+          Access Validation
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg font-body-md text-body-md px-space-sm py-2 flex items-center gap-3 transition-colors" href="#finances">
+<span class="material-symbols-outlined">confirmation_number</span>
+          Ticket Sales (FCFA)
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg font-body-md text-body-md px-space-sm py-2 flex items-center gap-3 transition-colors" href="#catalog">
+<span class="material-symbols-outlined">potted_plant</span>
+          Flora &amp; Fauna Catalog
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg font-body-md text-body-md px-space-sm py-2 flex items-center gap-3 transition-colors" href="#audit">
+<span class="material-symbols-outlined">receipt_long</span>
+          Agent Logs
+        </a>
+<a class="text-on-surface-variant hover:bg-surface-container-high hover:text-primary rounded-lg font-body-md text-body-md px-space-sm py-2 flex items-center gap-3 transition-colors" href="#matrix">
+<span class="material-symbols-outlined">grid_view</span>
+          Coverage Matrix
+        </a>
+</div>
+<div class="flex flex-col gap-space-xs pt-4 border-t border-outline-variant">
+<button class="w-full bg-primary text-on-primary py-2.5 rounded-lg text-label-md font-bold flex items-center justify-center gap-2 hover:bg-primary-container transition-all">
+<span class="material-symbols-outlined text-sm">add_circle</span>
+          New Entry Pass
+        </button>
+<a class="text-on-surface-variant hover:text-primary font-body-sm px-2 py-1.5 flex items-center gap-2" href="#guidelines">
+<span class="material-symbols-outlined text-sm">menu_book</span>
+          Park Guidelines
+        </a>
+<a class="text-on-surface-variant hover:text-primary font-body-sm px-2 py-1.5 flex items-center gap-2" href="#sync">
+<span class="material-symbols-outlined text-sm">sync</span>
+          Device Sync
+        </a>
+</div>
+</aside>
+<!-- MAIN CONTENT CANVAS -->
+<main class="flex-1 md:ml-64 p-space-lg md:p-space-xl overflow-y-auto">
+<!-- BREADCRUMB & HEADER -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-space-lg">
+<div>
+<div class="flex items-center gap-2 text-label-md text-outline mb-1">
+<span>ECOPARK YAOUNDÉ</span>
+<span>/</span>
+<span class="text-primary font-bold">Direction &amp; Administration</span>
+</div>
+<h1 class="text-headline-lg font-headline-lg text-primary">Direction Générale &amp; Système (DIR-01 à ADM-08)</h1>
+<p class="text-body-md text-on-surface-variant">Pilotage stratégique de l'écosystème, contrôle financier en FCFA et administration des accès.</p>
+</div>
+<div class="flex items-center gap-3">
+<button class="bg-surface-container-lowest border border-outline text-primary px-4 py-2 rounded-lg text-label-md flex items-center gap-2 hover:bg-surface-container transition-all" onclick="window.print()">
+<span class="material-symbols-outlined text-sm">download</span>
+            Exporter PDF / CSV
+          </button>
+<div class="bg-surface-container-highest px-3 py-1.5 rounded-lg text-label-md font-bold text-primary flex items-center gap-1.5">
+<span class="w-2 h-2 rounded-full bg-[#1F880B] animate-pulse"></span>
+            Mode Directoire Actif
+          </div>
+</div>
+</div>
+<!-- SECTION 1 : ESPACE DIRECTION (DIR-01 à DIR-05) -->
+<section class="mb-space-xl" id="direction">
+<div class="flex items-center justify-between mb-space-md">
+<h2 class="text-headline-md font-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">analytics</span>
+            Espace Direction (DIR-01 à DIR-05) — Indicateurs Financiers &amp; Hôteliers
+          </h2>
+<span class="text-label-sm bg-surface-container-high px-2.5 py-1 rounded text-on-surface font-bold">Devise: FCFA (XAF)</span>
+</div>
+<!-- KPI Bento Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-space-md mb-space-lg">
+<!-- KPI 1 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl card-shadow card-shadow-hover transition-all">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-outline uppercase">Recettes Totales (DIR-01)</span>
+<span class="bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded text-label-sm">+14.2%</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-primary mb-1">48.250.000 <span class="text-body-md text-outline">FCFA</span></div>
+<p class="text-body-sm text-on-surface-variant">Objectif mensuel: 45M FCFA (Atteint)</p>
+<div class="mt-4 pt-3 border-t border-outline-variant flex justify-between text-label-sm text-outline">
+<span>Hôtel: 28M FCFA</span>
+<span>Activités: 20.25M FCFA</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl card-shadow card-shadow-hover transition-all">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-outline uppercase">Taux d'Occupation (DIR-02)</span>
+<span class="bg-secondary-fixed text-on-secondary-fixed px-2 py-0.5 rounded text-label-sm">82.4%</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-primary mb-1">Ewondo &amp; Chanthel</div>
+<p class="text-body-sm text-on-surface-variant">Bungalows &amp; Lodges Éco-Serein</p>
+<div class="mt-4 pt-3 border-t border-outline-variant flex justify-between text-label-sm text-outline">
+<span>Ewondo: 90%</span>
+<span>Bene: 74%</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl card-shadow card-shadow-hover transition-all">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-outline uppercase">Analyse Visites (DIR-03)</span>
+<span class="text-[#1F880B] font-bold">12.480 Visiteurs</span>
+</div>
+<div class="text-headline-lg font-headline-lg text-primary mb-1">+2.890 ce mois</div>
+<p class="text-body-sm text-on-surface-variant">Pic d'affluence: Week-end &amp; Jours fériés</p>
+<div class="mt-4 pt-3 border-t border-outline-variant flex justify-between text-label-sm text-outline">
+<span>Scolaires: 35%</span>
+<span>Touristes: 65%</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="bg-surface-container-lowest p-space-md rounded-xl card-shadow card-shadow-hover transition-all">
+<div class="flex justify-between items-start mb-2">
+<span class="text-label-sm text-outline uppercase">Rapports &amp; Exports (DIR-04/05)</span>
+<span class="material-symbols-outlined text-primary">verified</span>
+</div>
+<div class="text-title-md font-bold text-primary mb-1">Génération PDF/CSV</div>
+<p class="text-body-sm text-on-surface-variant">Dernier rapport validé par le Conseil</p>
+<div class="mt-4 pt-3 border-t border-outline-variant flex gap-2">
+<button class="flex-1 bg-surface-container text-primary py-1.5 rounded text-label-sm font-bold hover:bg-surface-container-high transition-all">PDF</button>
+<button class="flex-1 bg-surface-container text-primary py-1.5 rounded text-label-sm font-bold hover:bg-surface-container-high transition-all">CSV</button>
+</div>
+</div>
+</div>
+<!-- Financial Chart / Breakdown Panel -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl card-shadow">
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-6">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-primary">Synthèse des Revenus par Pôle (Ewondo, Chanthel, Bene)</h3>
+<p class="text-body-sm text-on-surface-variant">Évolution hebdomadaire des entrées de trésorerie en FCFA.</p>
+</div>
+<div class="flex gap-2">
+<button class="px-3 py-1 bg-primary text-on-primary rounded text-label-sm">Semaine</button>
+<button class="px-3 py-1 bg-surface-container text-on-surface rounded text-label-sm">Mois</button>
+<button class="px-3 py-1 bg-surface-container text-on-surface rounded text-label-sm">Année</button>
+</div>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 bg-surface p-4 rounded-lg border border-outline-variant flex flex-col justify-between">
+<div class="flex justify-between items-center mb-4">
+<span class="text-label-md font-bold text-primary">Courbe des Flux Financiers</span>
+<span class="text-label-sm text-outline">Mis à jour en temps réel</span>
+</div>
+<div class="h-48 flex items-end gap-3 px-2 pt-6 pb-2 border-b border-outline-variant">
+<div class="flex-1 bg-primary-container/20 hover:bg-primary-container rounded-t transition-all relative group h-[40%]"></div>
+<div class="flex-1 bg-primary-container/30 hover:bg-primary-container rounded-t transition-all relative group h-[65%]"></div>
+<div class="flex-1 bg-primary-container/40 hover:bg-primary-container rounded-t transition-all relative group h-[50%]"></div>
+<div class="flex-1 bg-primary-container/60 hover:bg-primary-container rounded-t transition-all relative group h-[80%]"></div>
+<div class="flex-1 bg-primary-container/80 hover:bg-primary-container rounded-t transition-all relative group h-[95%]"></div>
+<div class="flex-1 bg-primary-container rounded-t transition-all relative group h-[70%]"></div>
+<div class="flex-1 bg-primary-container hover:bg-primary-container rounded-t transition-all relative group h-[90%]"></div>
+</div>
+<div class="flex justify-between text-label-sm text-outline mt-2">
+<span>Lundi</span>
+<span>Mardi</span>
+<span>Mercredi</span>
+<span>Jeudi</span>
+<span>Vendredi</span>
+<span>Samedi</span>
+<span>Dimanche</span>
+</div>
+</div>
+<div class="bg-surface p-4 rounded-lg border border-outline-variant flex flex-col justify-between">
+<div>
+<h4 class="text-title-md font-bold text-primary mb-2">Répartition des Hébergements</h4>
+<div class="space-y-3 mt-4">
+<div>
+<div class="flex justify-between text-label-md mb-1">
+<span>Hôtel Ewondo</span>
+<span class="font-bold text-primary">12.4M FCFA</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[90%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-md mb-1">
+<span>Lodge Chanthel</span>
+<span class="font-bold text-primary">9.8M FCFA</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[74%]"></div>
+</div>
+</div>
+<div>
+<div class="flex justify-between text-label-md mb-1">
+<span>Domaine Bene</span>
+<span class="font-bold text-primary">5.8M FCFA</span>
+</div>
+<div class="w-full bg-surface-container-high h-2 rounded-full overflow-hidden">
+<div class="bg-primary h-full w-[55%]"></div>
+</div>
+</div>
+</div>
+</div>
+<div class="mt-4 pt-3 border-t border-outline-variant flex items-center justify-between">
+<span class="text-label-sm text-outline">Taux de conversion global</span>
+<span class="text-label-md font-bold text-[#1F880B]">98.2% Validé</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- SECTION 2 : ESPACE ADMINISTRATION (ADM-01 à ADM-08) -->
+<section class="mb-space-xl" id="admin">
+<div class="flex items-center justify-between mb-space-md">
+<h2 class="text-headline-md font-headline-md text-primary flex items-center gap-2">
+<span class="material-symbols-outlined">settings_accessibility</span>
+            Espace Administration (ADM-01 à ADM-08) — Catalogue, Tarifs &amp; Sécurité
+          </h2>
+<button class="bg-primary text-on-primary px-3 py-1.5 rounded-lg text-label-md font-bold flex items-center gap-2 hover:bg-primary-container">
+<span class="material-symbols-outlined text-sm">add</span>
+            Nouvelle Entité / Activité
+          </button>
+</div>
+<!-- Tabs / Subnav inside Admin -->
+<div class="flex gap-2 mb-6 border-b border-outline-variant pb-2 overflow-x-auto">
+<button class="px-4 py-2 bg-primary text-on-primary rounded-lg text-label-md font-bold">Catalogue Activités</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg text-label-md">Tarifs &amp; Tranches (FCFA)</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg text-label-md">CMS Éditorial</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg text-label-md">Rôles &amp; Permissions (7)</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg text-label-md">Intégrations &amp; Paiement</button>
+<button class="px-4 py-2 bg-surface-container text-on-surface hover:bg-surface-container-high rounded-lg text-label-md">Journal d'Audit</button>
+</div>
+<!-- ADM-01 & 02: Catalogue d'Activités & Tarifs FCFA -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md mb-space-lg">
+<div class="lg:col-span-2 bg-surface-container-lowest p-space-lg rounded-xl card-shadow">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-headline-sm font-headline-sm text-primary">Gestion du Catalogue &amp; Tarifs (FCFA)</h3>
+<span class="text-label-sm bg-surface-container-low text-primary px-2 py-1 rounded font-bold">5 Activités Actives</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant text-label-sm text-primary uppercase font-bold">
+<th class="p-3">Activité / Éco-Parcours</th>
+<th class="p-3">Tranche d'Âge</th>
+<th class="p-3">Tarif (FCFA)</th>
+<th class="p-3">Statut</th>
+<th class="p-3 text-right">Actions</th>
+</tr>
+</thead>
+<tbody class="text-body-sm text-on-surface">
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-bold">Visite Guidée Canopée &amp; Flore</td>
+<td class="p-3">Tous âges (Dès 6 ans)</td>
+<td class="p-3 font-bold text-primary">5.000 FCFA</td>
+<td class="p-3"><span class="bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded text-label-sm font-bold">Publié</span></td>
+<td class="p-3 text-right">
+<button aria-label="Edit" class="p-1 hover:bg-surface-container rounded text-outline hover:text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button aria-label="Delete" class="p-1 hover:bg-surface-container rounded text-outline hover:text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-bold">Randonnée Nocturne Faune &amp; Sentiers</td>
+<td class="p-3">Adulte (+18 ans)</td>
+<td class="p-3 font-bold text-primary">10.000 FCFA</td>
+<td class="p-3"><span class="bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded text-label-sm font-bold">Publié</span></td>
+<td class="p-3 text-right">
+<button aria-label="Edit" class="p-1 hover:bg-surface-container rounded text-outline hover:text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button aria-label="Delete" class="p-1 hover:bg-surface-container rounded text-outline hover:text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+</td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-bold">Atelier Pédagogique Écologie Verte</td>
+<td class="p-3">Scolaires (8-16 ans)</td>
+<td class="p-3 font-bold text-primary">2.500 FCFA</td>
+<td class="p-3"><span class="bg-surface-container-high text-on-surface-variant px-2 py-0.5 rounded text-label-sm font-bold">Brouillon</span></td>
+<td class="p-3 text-right">
+<button aria-label="Edit" class="p-1 hover:bg-surface-container rounded text-outline hover:text-primary"><span class="material-symbols-outlined text-sm">edit</span></button>
+<button aria-label="Delete" class="p-1 hover:bg-surface-container rounded text-outline hover:text-error"><span class="material-symbols-outlined text-sm">delete</span></button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- ADM-06: État des Intégrations Sécurisées -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl card-shadow flex flex-col justify-between">
+<div>
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-headline-sm font-headline-sm text-primary">Passerelle de Paiement</h3>
+<span class="w-3 h-3 rounded-full bg-[#1F880B]" title="Sécurisé sans clé en clair"></span>
+</div>
+<p class="text-body-sm text-on-surface-variant mb-4">Connexion chiffrée SSL aux terminaux Mobile Money &amp; Cartes Bancaires (Cameroun).</p>
+<div class="space-y-3">
+<div class="p-3 bg-surface rounded-lg border border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">phone_android</span>
+<div>
+<p class="text-label-md font-bold">MTN / Orange Money</p>
+<p class="text-label-sm text-outline">API Webhook Active</p>
+</div>
+</div>
+<span class="text-label-sm bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded">En ligne</span>
+</div>
+<div class="p-3 bg-surface rounded-lg border border-outline-variant flex justify-between items-center">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">credit_card</span>
+<div>
+<p class="text-label-md font-bold">Passerelle Bancaire CEMAC</p>
+<p class="text-label-sm text-outline">Chiffrement AES-256</p>
+</div>
+</div>
+<span class="text-label-sm bg-primary-fixed text-on-primary-fixed px-2 py-0.5 rounded">En ligne</span>
+</div>
+</div>
+</div>
+<div class="mt-6 pt-4 border-t border-outline-variant">
+<div class="flex items-center justify-between text-label-sm text-outline mb-2">
+<span>Sécurité Token</span>
+<span>Masqué (Aucune clé en clair)</span>
+</div>
+<button class="w-full bg-surface-container text-primary py-2 rounded-lg text-label-md font-bold hover:bg-surface-container-high transition-all">
+                Auditer les Clés API
+              </button>
+</div>
+</div>
+</div>
+<!-- ADM-04 & ADM-07: Gestion des 7 Rôles & Journal d'Audit Complet -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-space-md">
+<!-- ADM-04: Les 7 Rôles & Permissions -->
+<div class="bg-surface-container-lowest p-space-lg rounded-xl card-shadow">
+<h3 class="text-headline-sm font-headline-sm text-primary mb-2">Matrice des 7 Rôles</h3>
+<p class="text-body-sm text-on-surface-variant mb-4">Hiérarchie des accès au sein de l'administration.</p>
+<div class="space-y-2">
+<div class="p-2.5 bg-surface rounded border border-outline-variant flex justify-between items-center">
+<span class="text-label-md font-bold text-primary">1. Directeur Général</span>
+<span class="text-label-sm bg-primary text-on-primary px-2 py-0.5 rounded">Total</span>
+</div>
+<div class="p-2.5 bg-surface rounded border border-outline-variant flex justify-between items-center">
+<span class="text-label-md font-bold text-on-surface">2. Administrateur Système</span>
+<span class="text-label-sm bg-surface-container-high text-primary px-2 py-0.5 rounded">Tech</span>
+</div>
+<div class="p-2.5 bg-surface rounded border border-outline-variant flex justify-between items-center">
+<span class="text-label-md font-bold text-on-surface">3. Responsable Financier</span>
+<span class="text-label-sm bg-surface-container-high text-primary px-2 py-0.5 rounded">Finance</span>
+</div>
+<div class="p-2.5 bg-surface rounded border border-outline-variant flex justify-between items-center">
+<span class="text-label-md font-bold text-on-surface">4. Agent d'Accueil &amp; Billetterie</span>
+<span class="text-label-sm bg-surface-container-high text-primary px-2 py-0.5 rounded">Guichet</span>
+</div>
+<div class="p-2.5 bg-surface rounded border border-outline-variant flex justify-between items-center">
+<span class="text-label-md font-bold text-on-surface">5. Conservateur Flore &amp; Faune</span>
+<span class="text-label-sm bg-surface-container-high text-primary px-2 py-0.5 rounded">Parc</span>
+</div>
+<div class="p-2.5 bg-surface rounded border border-outline-variant flex justify-between items-center">
+<span class="text-label-md font-bold text-on-surface">6. Superviseur Hôtellerie</span>
+<span class="text-label-sm bg-surface-container-high text-primary px-2 py-0.5 rounded">Lodges</span>
+</div>
+<div class="p-2.5 bg-surface rounded border border-outline-variant flex justify-between items-center">
+<span class="text-label-md font-bold text-on-surface">7. Auditeur Externe / Sécurité</span>
+<span class="text-label-sm bg-surface-container-high text-primary px-2 py-0.5 rounded">Lecture</span>
+</div>
+</div>
+</div>
+<!-- ADM-07: Journal d'Audit Complet (Acteur, Action, Horodatage, Statut) -->
+<div class="lg:col-span-2 bg-surface-container-lowest p-space-lg rounded-xl card-shadow">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-headline-sm font-headline-sm text-primary">Journal d'Audit &amp; Traçabilité (ADM-07)</h3>
+<span class="text-label-sm text-outline">Chiffrement SHA-256 actif</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface border-b border-outline-variant text-label-sm text-primary uppercase font-bold">
+<th class="p-3">Acteur</th>
+<th class="p-3">Action Effectuée</th>
+<th class="p-3">Horodatage</th>
+<th class="p-3">Statut</th>
+</tr>
+</thead>
+<tbody class="text-body-sm text-on-surface">
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-bold">Dr. Mvondo K. (Dir. Général)</td>
+<td class="p-3">Validation budget mensuel Q2 (48.25M FCFA)</td>
+<td class="p-3 text-outline">Aujourd'hui, 11:42</td>
+<td class="p-3"><span class="text-[#1F880B] font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Succès</span></td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-bold">Nintcheu P. (Admin Sys)</td>
+<td class="p-3">Mise à jour des tokens API passerelle de paiement</td>
+<td class="p-3 text-outline">Aujourd'hui, 09:15</td>
+<td class="p-3"><span class="text-[#1F880B] font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Succès</span></td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-bold">Ewoule M. (Agent Billetterie)</td>
+<td class="p-3">Émission de 120 billets secteur Canopée</td>
+<td class="p-3 text-outline">Hier, 17:30</td>
+<td class="p-3"><span class="text-[#1F880B] font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Succès</span></td>
+</tr>
+<tr class="border-b border-outline-variant hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-bold">Biloa T. (Hôtellerie)</td>
+<td class="p-3">Modification tarif Bungalow Ewondo (Haute saison)</td>
+<td class="p-3 text-outline">Hier, 14:10</td>
+<td class="p-3"><span class="text-[#1F880B] font-bold flex items-center gap-1"><span class="material-symbols-outlined text-sm">check_circle</span> Succès</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+</section>
+</main>
+</div>
+</body></html>

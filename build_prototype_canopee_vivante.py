@@ -1,0 +1,2379 @@
+# -*- coding: utf-8 -*-
+"""
+Générateur du Prototype Interactif Complet ECOPARK Yaoundé-Ahala
+Direction artistique validée : « Canopée vivante — Le cercle du vivant »
+Couverture : 77 écrans contractuels (DS-01..08, PUB-01..22, RES-01..12, ACC-01..06, AGT-01..09, EXP-01..07, DIR-01..05, ADM-01..08)
+Contexte visuel : 100 % Cameroun (Photos réelles ECOPARK Ahala + Illustrations locales Cameroun badgées)
+"""
+
+import pathlib
+
+OUTPUT_HTML = pathlib.Path(r"c:\Users\PcGamerCm\Downloads\ECO-PARK\Prototype_Interactif_ECOPARK_NEW_LOOK.html")
+
+HTML_CONTENT = r"""<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ECOPARK CAMEROUN — Parc de Loisirs, Nature, Restauration, Hébergement & Formation à Yaoundé-Ahala</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      /* Palette officielle proposée — « Canopée vivante — Le cercle du vivant » */
+      --color-white: #FFFFFF;
+      --color-brand-deep: #1D490D;
+      --color-brand-leaf: #1F880B;
+      --color-surface-soft: #EDF4E7;
+      --color-text: #1E281B;
+
+      /* Nuances fonctionnelles et états */
+      --color-text-muted: #445640;
+      --color-border: #CFE0C5;
+      --color-border-strong: #9BB88C;
+      --color-brand-hover: #143508;
+      --color-focus: #1F880B;
+
+      --color-success-bg: #E6F5E3;
+      --color-success-text: #145A08;
+      --color-success-border: #7BC66D;
+
+      --color-warning-bg: #FEF5E6;
+      --color-warning-text: #7C4A03;
+      --color-warning-border: #E8B266;
+
+      --color-error-bg: #FCECEB;
+      --color-error-text: #8F1D18;
+      --color-error-border: #E08A86;
+
+      --color-info-bg: #EBF3FA;
+      --color-info-text: #124873;
+      --color-info-border: #8BBCE0;
+
+      /* Typographies */
+      --font-heading: 'Barlow Semi Condensed', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      --font-sans: 'Source Sans 3', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+      /* Grille et rayons */
+      --max-width: 1280px;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --radius-leaf: 32px 8px 32px 8px;
+      --shadow-card: 0 4px 16px rgba(29, 73, 13, 0.06);
+      --shadow-elevated: 0 12px 32px rgba(29, 73, 13, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background-color: var(--color-white);
+      font-size: 17px;
+      line-height: 1.55;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1, h2, h3, h4, .heading-font {
+      font-family: var(--font-heading);
+      color: var(--color-brand-deep);
+      line-height: 1.15;
+      font-weight: 700;
+    }
+
+    h1 { font-size: clamp(2.25rem, 4vw, 3.5rem); }
+    h2 { font-size: clamp(1.75rem, 3vw, 2.35rem); }
+    h3 { font-size: clamp(1.25rem, 2vw, 1.55rem); font-weight: 600; }
+
+    a {
+      color: var(--color-brand-deep);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    button, input, select, textarea {
+      font-family: var(--font-sans);
+      font-size: 1rem;
+    }
+
+    button:focus-visible, a:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 3px solid var(--color-focus);
+      outline-offset: 2px;
+    }
+
+    /* ==========================================================================
+       OUTIL DE REVUE & INSPECTION (STRICTEMENT SÉPARÉ DE LA NAVIGATION VISITEUR)
+       ========================================================================== */
+    .review-inspector-shell {
+      background: #142211;
+      color: #F3F8F0;
+      border-bottom: 2px solid #2E5722;
+      font-size: 14px;
+      position: sticky;
+      top: 0;
+      z-index: 2000;
+    }
+    .review-inspector-top {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 8px 16px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .review-badge {
+      background: #1F880B;
+      color: #FFFFFF;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 12px;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .review-controls {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 8px;
+    }
+    .review-select, .review-btn {
+      background: #1E3319;
+      color: #FFFFFF;
+      border: 1px solid #446E38;
+      border-radius: 6px;
+      padding: 5px 10px;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .review-btn:hover, .review-select:hover {
+      background: #294722;
+    }
+    .review-btn.active {
+      background: #1F880B;
+      border-color: #82D672;
+      font-weight: 600;
+    }
+    .review-drawer {
+      background: #1A2C16;
+      border-top: 1px solid #2E4B26;
+      padding: 12px 16px;
+      display: none;
+    }
+    .review-drawer.open {
+      display: block;
+    }
+    .review-drawer-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+    }
+    .screen-pill-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+      max-height: 190px;
+      overflow-y: auto;
+      padding-right: 4px;
+    }
+    .screen-pill {
+      background: #233B1E;
+      color: #DCEAD7;
+      border: 1px solid #3C6133;
+      border-radius: 6px;
+      padding: 4px 9px;
+      font-size: 12px;
+      cursor: pointer;
+      text-align: left;
+      transition: all 0.15s;
+    }
+    .screen-pill:hover {
+      background: #2F5228;
+      color: #FFFFFF;
+    }
+    .screen-pill.active {
+      background: #1F880B;
+      color: #FFFFFF;
+      border-color: #9AE68B;
+      font-weight: 600;
+    }
+
+    /* Simulation Viewport Mobile */
+    body.viewport-mobile .app-viewport-wrapper {
+      max-width: 412px;
+      margin: 20px auto;
+      border: 8px solid #1E281B;
+      border-radius: 32px;
+      box-shadow: 0 24px 60px rgba(0,0,0,0.28);
+      overflow-x: hidden;
+      background: var(--color-white);
+    }
+
+    /* Bandeau d'état transverse simulé */
+    .state-banner {
+      display: none;
+      padding: 14px 20px;
+      font-weight: 600;
+      border-bottom: 1px solid transparent;
+      text-align: center;
+    }
+    .state-banner.active {
+      display: block;
+    }
+    .state-banner.state-loading {
+      background: var(--color-info-bg);
+      color: var(--color-info-text);
+      border-color: var(--color-info-border);
+    }
+    .state-banner.state-empty {
+      background: var(--color-surface-soft);
+      color: var(--color-brand-deep);
+      border-color: var(--color-border-strong);
+    }
+    .state-banner.state-error {
+      background: var(--color-error-bg);
+      color: var(--color-error-text);
+      border-color: var(--color-error-border);
+    }
+    .state-banner.state-offline {
+      background: var(--color-warning-bg);
+      color: var(--color-warning-text);
+      border-color: var(--color-warning-border);
+    }
+
+    /* Bandeau d'identification de l'écran contractuel en cours d'inspection */
+    .active-screen-indicator {
+      background: var(--color-surface-soft);
+      border-bottom: 1px solid var(--color-border);
+      padding: 8px 20px;
+      font-size: 13.5px;
+      color: var(--color-brand-deep);
+    }
+    .active-screen-indicator-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .screen-id-code {
+      background: var(--color-brand-deep);
+      color: var(--color-white);
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: var(--font-heading);
+      letter-spacing: 0.04em;
+      margin-right: 6px;
+    }
+
+    /* ==========================================================================
+       EN-TÊTE ET NAVIGATION PUBLIQUE ECOPARK (SANS AUCUNE MARQUE D'AGENCE)
+       ========================================================================== */
+    .site-header {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      position: sticky;
+      top: 45px;
+      z-index: 1000;
+    }
+    .site-topbar {
+      background: var(--color-brand-deep);
+      color: var(--color-white);
+      font-size: 14px;
+      padding: 6px 20px;
+    }
+    .site-topbar-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .site-header-inner {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    /* Logo original circulaire sur disque blanc */
+    .brand-logo-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      padding: 4px;
+    }
+    .brand-logo-disc {
+      width: 66px;
+      height: 66px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      border: 2px solid var(--color-surface-soft);
+      box-shadow: 0 2px 10px rgba(29, 73, 13, 0.12);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+    .brand-logo-disc img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+    .brand-title-block {
+      display: flex;
+      flex-direction: column;
+    }
+    .brand-name {
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      font-weight: 700;
+      color: var(--color-brand-deep);
+      letter-spacing: 0.02em;
+      line-height: 1.1;
+    }
+    .brand-location {
+      font-size: 13.5px;
+      color: var(--color-text-muted);
+      font-weight: 600;
+    }
+
+    .main-nav {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .nav-item {
+      background: transparent;
+      border: none;
+      color: var(--color-text);
+      font-weight: 600;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      text-decoration: none;
+      font-size: 15.5px;
+      transition: background 0.15s, color 0.15s;
+    }
+    .nav-item:hover {
+      background: var(--color-surface-soft);
+      color: var(--color-brand-deep);
+    }
+    .nav-item.active {
+      background: var(--color-surface-soft);
+      color: var(--color-brand-deep);
+      box-shadow: inset 0 -3px 0 var(--color-brand-leaf);
+    }
+
+    /* Boutons conformes au Prompt Maître :
+       Primaire = Vert profond (#1D490D) + Texte blanc (#FFFFFF)
+       Secondaire = Blanc (#FFFFFF) + Texte et bordure Vert profond (#1D490D)
+       ZÉRO bouton jaune en action principale */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 46px;
+      padding: 10px 20px;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 16px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.18s ease;
+    }
+    .btn-primary {
+      background-color: var(--color-brand-deep);
+      color: var(--color-white);
+      border: 2px solid var(--color-brand-deep);
+    }
+    .btn-primary:hover {
+      background-color: var(--color-brand-hover);
+      border-color: var(--color-brand-hover);
+    }
+    .btn-secondary {
+      background-color: var(--color-white);
+      color: var(--color-brand-deep);
+      border: 2px solid var(--color-brand-deep);
+    }
+    .btn-secondary:hover {
+      background-color: var(--color-surface-soft);
+    }
+    .btn-sm {
+      min-height: 36px;
+      padding: 6px 14px;
+      font-size: 14px;
+    }
+
+    /* ==========================================================================
+       MISE EN PAGE, GRILLE 12 COLONNES & MOTIF RADIAL VÉGÉTAL
+       ========================================================================== */
+    .container {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+    .section {
+      padding: 56px 0;
+      position: relative;
+    }
+    .section-soft {
+      background-color: var(--color-surface-soft);
+    }
+    .section-header {
+      margin-bottom: 32px;
+      max-width: 780px;
+    }
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--color-brand-leaf);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 8px;
+    }
+    .grid-12 {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 24px;
+    }
+    .col-12 { grid-column: span 12; }
+    .col-8 { grid-column: span 8; }
+    .col-7 { grid-column: span 7; }
+    .col-6 { grid-column: span 6; }
+    .col-5 { grid-column: span 5; }
+    .col-4 { grid-column: span 4; }
+    .col-3 { grid-column: span 3; }
+
+    @media (max-width: 960px) {
+      .col-8, .col-7, .col-6, .col-5, .col-4, .col-3 {
+        grid-column: span 12;
+      }
+      .site-header {
+        top: 0;
+      }
+    }
+
+    /* Cartes & Cadrage asymétrique feuille sur les grandes photos */
+    .card {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 16px;
+    }
+    .card-media-wrapper {
+      position: relative;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      aspect-ratio: 16 / 10;
+      background: var(--color-surface-soft);
+    }
+    .leaf-photo-frame {
+      position: relative;
+      border-radius: var(--radius-leaf);
+      overflow: hidden;
+      box-shadow: var(--shadow-elevated);
+      border: 3px solid var(--color-white);
+      background: var(--color-surface-soft);
+    }
+    .card-media-wrapper img, .leaf-photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 25%;
+      display: block;
+    }
+
+    /* Badges d'origine photo (Transparence exigée par le Prompt Maître) */
+    .media-origin-badge {
+      position: absolute;
+      bottom: 10px;
+      left: 10px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 12px;
+      font-weight: 600;
+      backdrop-filter: blur(4px);
+      line-height: 1.3;
+    }
+    .media-real {
+      background: rgba(29, 73, 13, 0.92);
+      color: #FFFFFF;
+      border: 1px solid #82D672;
+    }
+    .media-local-temp {
+      background: rgba(255, 255, 255, 0.94);
+      color: #1E281B;
+      border: 1px solid var(--color-brand-deep);
+    }
+
+    /* Badges de prix et statuts */
+    .price-pill {
+      display: inline-block;
+      background: var(--color-surface-soft);
+      color: var(--color-brand-deep);
+      border: 1px solid var(--color-border-strong);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.15rem;
+      padding: 4px 12px;
+      border-radius: var(--radius-sm);
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      font-weight: 600;
+    }
+    .status-success { background: var(--color-success-bg); color: var(--color-success-text); border: 1px solid var(--color-success-border); }
+    .status-warning { background: var(--color-warning-bg); color: var(--color-warning-text); border: 1px solid var(--color-warning-border); }
+    .status-error { background: var(--color-error-bg); color: var(--color-error-text); border: 1px solid var(--color-error-border); }
+    .status-info { background: var(--color-info-bg); color: var(--color-info-text); border: 1px solid var(--color-info-border); }
+
+    /* Tableaux accessibles */
+    .table-responsive {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--color-border);
+      border-radius: var(--radius-md);
+      background: var(--color-white);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+    }
+    th {
+      background: var(--color-surface-soft);
+      color: var(--color-brand-deep);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      padding: 14px 16px;
+      border-bottom: 2px solid var(--color-border);
+    }
+    td {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--color-border);
+      font-size: 15.5px;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    /* Formulaires accessibles */
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 16px;
+    }
+    .form-label {
+      font-weight: 600;
+      font-size: 15px;
+      color: var(--color-text);
+    }
+    .form-control {
+      min-height: 46px;
+      padding: 10px 14px;
+      border: 1.5px solid var(--color-border-strong);
+      border-radius: var(--radius-sm);
+      background: var(--color-white);
+      color: var(--color-text);
+    }
+    .form-help {
+      font-size: 13.5px;
+      color: var(--color-text-muted);
+    }
+
+    /* Compteurs +/- */
+    .counter-box {
+      display: inline-flex;
+      align-items: center;
+      border: 1.5px solid var(--color-brand-deep);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: var(--color-white);
+    }
+    .counter-btn {
+      width: 42px;
+      height: 42px;
+      border: none;
+      background: var(--color-surface-soft);
+      color: var(--color-brand-deep);
+      font-weight: 700;
+      font-size: 1.2rem;
+      cursor: pointer;
+    }
+    .counter-btn:hover {
+      background: var(--color-border);
+    }
+    .counter-val {
+      min-width: 48px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1.1rem;
+    }
+
+    /* Vues par famille */
+    .family-view {
+      display: none;
+    }
+    .family-view.active {
+      display: block;
+    }
+
+    /* Sous-navigation par famille d'écrans */
+    .subnav-bar {
+      background: var(--color-white);
+      border-bottom: 1px solid var(--color-border);
+      padding: 12px 0;
+    }
+    .subnav-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .subnav-pill {
+      background: var(--color-surface-soft);
+      color: var(--color-brand-deep);
+      border: 1px solid var(--color-border);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .subnav-pill.active, .subnav-pill:hover {
+      background: var(--color-brand-deep);
+      color: var(--color-white);
+      border-color: var(--color-brand-deep);
+    }
+
+    /* Pied de page officiel ECOPARK */
+    .site-footer {
+      background: var(--color-surface-soft);
+      border-top: 2px solid var(--color-border);
+      padding: 48px 0 32px;
+      margin-top: 64px;
+      font-size: 15px;
+    }
+
+    /* Motif décoratif radial inspiré des feuilles du logo */
+    .botanical-watermark {
+      pointer-events: none;
+      opacity: 0.12;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================
+       BARRE D'OUTIL DE REVUE & INSPECTION (HORS NAVIGATION PUBLIQUE VISITEUR)
+       Permet d'inspecter les 77 écrans contractuels, les 7 rôles, les 5 états
+       et les planches Google Stitch MCP sans polluer l'expérience publique.
+       ======================================================================== -->
+  <aside class="review-inspector-shell" aria-label="Outil de revue du prototype et des 77 écrans">
+    <div class="review-inspector-top">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+        <span class="review-badge">Outil de Revue — 77/77 Écrans</span>
+        <span>Direction : <strong>Canopée vivante — Le cercle du vivant</strong></span>
+      </div>
+      <div class="review-controls">
+        <label for="roleSelector" style="font-size:12.5px;">Rôle (7) :</label>
+        <select id="roleSelector" class="review-select" onchange="switchRole(this.value)">
+          <option value="visiteur">1. Visiteur anonyme (Site Public & Devis)</option>
+          <option value="client">2. Client connecté (Espace Visiteur ACC)</option>
+          <option value="guichet">3. Agent d'accueil / guichet (AGT Caisse)</option>
+          <option value="controle">4. Agent de contrôle d'entrée (AGT Scan QR)</option>
+          <option value="exploitation">5. Responsable d'exploitation (EXP)</option>
+          <option value="direction">6. Direction (DIR Pilotage)</option>
+          <option value="admin">7. Administrateur plateforme (ADM & DS)</option>
+        </select>
+
+        <label for="stateSelector" style="font-size:12.5px;">État (5) :</label>
+        <select id="stateSelector" class="review-select" onchange="switchUIState(this.value)">
+          <option value="normal">État : Normal</option>
+          <option value="loading">État : Chargement en cours</option>
+          <option value="empty">État : Liste vide / Aucun résultat</option>
+          <option value="error">État : Erreur fonctionnelle</option>
+          <option value="offline">État : Réseau interrompu (Hors-ligne)</option>
+        </select>
+
+        <button type="button" class="review-btn" id="btnToggleMobile" onclick="toggleMobileViewport()">📱 Vue Mobile / Desktop</button>
+        <button type="button" class="review-btn active" id="btnToggleDrawer" onclick="toggleInspectorDrawer()">🧭 Inspecteur des 77 Écrans (DS / PUB / RES / ACC / AGT / EXP / DIR / ADM)</button>
+      </div>
+    </div>
+
+    <div class="review-drawer" id="inspectorDrawer">
+      <div class="review-drawer-inner">
+        <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div>
+            <strong>Sélecteur direct des 77 écrans contractuels :</strong> cliquez sur un ID pour afficher et inspecter son écran, ses composants et ses règles métier.
+          </div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('ALL')">Tous (77)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('DS')">DS (8)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('PUB')">PUB (22)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('RES')">RES (12)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('ACC')">ACC (6)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('AGT')">AGT (9)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('EXP')">EXP (7)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('DIR')">DIR (5)</button>
+            <button type="button" class="review-btn" onclick="filterInspectorFamily('ADM')">ADM (8)</button>
+          </div>
+        </div>
+        <div class="screen-pill-grid" id="screenPillGrid"></div>
+      </div>
+    </div>
+  </aside>
+
+  <div class="app-viewport-wrapper">
+    <!-- Bandeaux d'états transverses (Chargement, Vide, Erreur, Hors-ligne) -->
+    <div id="stateBannerLoading" class="state-banner state-loading" role="status">
+      ⏳ <strong>État Chargement simulé :</strong> Synchronisation des disponibilités et des grilles tarifaires ECOPARK Ahala en cours...
+    </div>
+    <div id="stateBannerEmpty" class="state-banner state-empty" role="status">
+      🍃 <strong>État Liste vide simulé :</strong> Aucun élément ne correspond aux filtres sélectionnés. <button class="btn btn-secondary btn-sm" style="margin-left:10px;" onclick="switchUIState('normal')">Réinitialiser les filtres</button>
+    </div>
+    <div id="stateBannerError" class="state-banner state-error" role="alert">
+      ⚠️ <strong>État Erreur fonctionnelle simulé :</strong> La requête n'a pas pu aboutir (délai dépassé). Vos données saisies sont conservées. <button class="btn btn-secondary btn-sm" style="margin-left:10px;" onclick="switchUIState('normal')">Réessayer</button>
+    </div>
+    <div id="stateBannerOffline" class="state-banner state-offline" role="alert">
+      📡 <strong>Mode Hors-ligne / Réseau interrompu (Ahala) :</strong> Les billets QR déjà chargés et le journal de caisse local restent consultables. La synchronisation reprendra dès le retour du réseau.
+    </div>
+
+    <!-- Indicateur de l'écran contractuel inspecté -->
+    <div class="active-screen-indicator">
+      <div class="active-screen-indicator-inner">
+        <div>
+          <span class="screen-id-code" id="currentScreenCode">PUB-01</span>
+          <strong id="currentScreenTitle">Accueil — Site Public ECOPARK CAMEROUN</strong>
+          <span id="currentScreenFamilyLabel" style="color:var(--color-text-muted);margin-left:8px;">(Famille 2 : Site Public)</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <span style="font-size:12.5px;color:var(--color-text-muted);">Projet Stitch MCP : <code>522000543872634848</code></span>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="navigateFamily('DS', 'DS-01')">Voir Planches Stitch & Design System</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         EN-TÊTE OFFICIEL DU SITE ECOPARK CAMEROUN
+         ====================================================================== -->
+    <header class="site-header">
+      <div class="site-topbar">
+        <div class="site-topbar-inner">
+          <div>📍 <strong>Yaoundé – Ahala Barrière</strong> (Nationale N°3, après station Tradex) • Ouvert du Mardi au Dimanche de <strong>09h00 à 18h00</strong></div>
+          <div>📞 Service Visiteurs & Groupes : <strong>+237 697 13 62 03 / +237 675 56 26 55</strong> • ✉️ contact@ecopark-yaounde.com</div>
+        </div>
+      </div>
+      <div class="site-header-inner">
+        <a href="#accueil" class="brand-logo-link" onclick="navigateFamily('PUB', 'PUB-01'); return false;">
+          <div class="brand-logo-disc">
+            <img src="audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png" alt="Logo officiel EcoPark CAMEROUN" />
+          </div>
+          <div class="brand-title-block">
+            <span class="brand-name">ECOPARK</span>
+            <span class="brand-location">CAMEROUN • Yaoundé – Ahala</span>
+          </div>
+        </a>
+
+        <nav class="main-nav" aria-label="Navigation principale ECOPARK">
+          <button type="button" class="nav-item active" id="nav-PUB" onclick="navigateFamily('PUB', 'PUB-01')">Découvrir & Activités</button>
+          <button type="button" class="nav-item" id="nav-TARIFS" onclick="navigateFamily('PUB', 'PUB-10')">Tarifs (FCFA)</button>
+          <button type="button" class="nav-item" id="nav-HOTELS" onclick="navigateFamily('PUB', 'PUB-08')">Hébergement</button>
+          <button type="button" class="nav-item" id="nav-SAVEURS" onclick="navigateFamily('PUB', 'PUB-07')">Restauration</button>
+          <button type="button" class="nav-item" id="nav-CFP" onclick="navigateFamily('PUB', 'PUB-12')">Formation CFP</button>
+          <button type="button" class="nav-item" id="nav-ACC" onclick="navigateFamily('ACC', 'ACC-02')">Mon Espace</button>
+        </nav>
+
+        <div style="display:flex;align-items:center;gap:10px;">
+          <button type="button" class="btn btn-secondary btn-sm" onclick="navigateFamily('RES', 'RES-06')">Devis École / Groupe</button>
+          <button type="button" class="btn btn-primary btn-sm" onclick="navigateFamily('RES', 'RES-01')">Préparer ma visite & Billets</button>
+        </div>
+      </div>
+    </header>
+
+    <main id="mainContent">
+
+      <!-- ====================================================================
+           FAMILLE 2 : SITE PUBLIC (PUB-01 à PUB-22)
+           ==================================================================== -->
+      <section class="family-view active" id="view-PUB">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('PUB-01')">PUB-01 Accueil</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-02')">PUB-02 Plan & Découverte</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-03')">PUB-03/04 Catalogue & Détail</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-05')">PUB-05/06 Faune, Lac & Piscine</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-07')">PUB-07 Le Château des Saveurs</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-08')">PUB-08/09 Loges Ewondo/Chanthel/Bene</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-10')">PUB-10 Grille Tarifaire FCFA</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-11')">PUB-11 Écoles & Entreprises</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-12')">PUB-12 Formation CFP</button>
+              <button class="subnav-pill" onclick="inspectScreen('PUB-13')">PUB-13 à PUB-22 Infos, Galerie, FAQ, Légal & 404</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- HERO ACCUEIL (PUB-01) -->
+        <div class="section" id="sec-PUB-01">
+          <div class="container">
+            <div class="grid-12" style="align-items:center;">
+              <div class="col-7">
+                <span class="eyebrow">🌿 Complexe Agro-Écotouristique • Yaoundé-Ahala</span>
+                <h1>Respirez, explorez et partagez une journée grandeur nature à ECOPARK</h1>
+                <p style="font-size:1.15rem;color:var(--color-text-muted);margin:18px 0 26px;max-width:640px;">
+                  À 15 minutes du centre de Yaoundé sur la Nationale N°3 (Ahala Barrière), découvrez notre jardin zoologique et botanique, le lac de pirogues, la piscine semi-olympique, la gastronomie camerounaise du <em>Château des Saveurs</em>, nos cités hôtelières et notre Centre de Formation Professionnelle.
+                </p>
+                <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:28px;">
+                  <button type="button" class="btn btn-primary" onclick="navigateFamily('RES', 'RES-03')">Simuler mon budget en FCFA & Réserver</button>
+                  <button type="button" class="btn btn-secondary" onclick="inspectScreen('PUB-10')">Consulter tous les tarifs officiels</button>
+                </div>
+                <div class="grid-12" style="gap:12px;">
+                  <div class="col-4 card" style="padding:14px;background:var(--color-surface-soft);">
+                    <strong style="color:var(--color-brand-deep);font-family:var(--font-heading);font-size:1.25rem;">500 / 1 000 FCFA</strong>
+                    <span style="font-size:14px;">Entrée Parc & Zoo (Enfant / Adulte)</span>
+                  </div>
+                  <div class="col-4 card" style="padding:14px;background:var(--color-surface-soft);">
+                    <strong style="color:var(--color-brand-deep);font-family:var(--font-heading);font-size:1.25rem;">1 500 / 2 500 FCFA</strong>
+                    <span style="font-size:14px;">Piscine semi-olympique (Enfant / Adulte)</span>
+                  </div>
+                  <div class="col-4 card" style="padding:14px;background:var(--color-surface-soft);">
+                    <strong style="color:var(--color-brand-deep);font-family:var(--font-heading);font-size:1.25rem;">10 000 – 30 000 FCFA</strong>
+                    <span style="font-size:14px;">Séjour Loges Bene, Chanthel & Ewondo</span>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5">
+                <div class="leaf-photo-frame" style="aspect-ratio:4/3;">
+                  <img src="audit-assets/ecopark-real-media/balade_pirogue3.jpg" alt="Balade en pirogue sur le lac verdoyant d'ECOPARK à Yaoundé-Ahala" />
+                  <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Lac d'Ahala</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- CATALOGUE DES 6 PÔLES D'EXPÉRIENCES (PUB-02 à PUB-09, PUB-11, PUB-12) -->
+        <div class="section section-soft" id="sec-PUB-03">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">PUB-02 à PUB-09 • L'ensemble des expériences du site</span>
+              <h2>Six univers complémentaires au cœur de la verdure d'Ahala</h2>
+              <p style="color:var(--color-text-muted);margin-top:8px;">
+                Chaque activité affiche clairement ses conditions d'accès et ses tarifs en Francs CFA pour les enfants (3 à 12 ans), les adultes (13 ans et +) et les groupes.
+              </p>
+            </div>
+
+            <div class="grid-12">
+              <!-- Pôle 1 : Faune & Botanique (PUB-05) -->
+              <article class="col-4 card">
+                <div>
+                  <div class="card-media-wrapper">
+                    <img src="audit-assets/ecopark-real-media/chimpanze.jpeg" alt="Chimpanzé du jardin zoologique d'ECOPARK Cameroun" />
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Zoo</span>
+                  </div>
+                  <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+                    <span class="eyebrow" style="margin:0;">PUB-05 • Nature & Faune</span>
+                    <span class="price-pill">500 / 1 000 FCFA</span>
+                  </div>
+                  <h3 style="margin-top:8px;">Jardin Zoologique & Botanique</h3>
+                  <p style="font-size:15px;color:var(--color-text-muted);margin-top:6px;">
+                    Observation guidée des primates (chimpanzés, singes), tortues géantes, autruches, paons et antilopes au milieu d'essences forestières équatoriales.
+                  </p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="addActivityAndGo('zoo')">Ajouter à ma visite</button>
+                  <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-04')">Fiche détail (PUB-04)</button>
+                </div>
+              </article>
+
+              <!-- Pôle 2 : Lac & Activités Nautiques / Équestres (PUB-04, PUB-06) -->
+              <article class="col-4 card">
+                <div>
+                  <div class="card-media-wrapper">
+                    <img src="audit-assets/stitch-canopee-vivante/local_cameroon_pool_pirogue.png" alt="Piscine semi-olympique et lac de pirogues à ECOPARK" />
+                    <span class="media-origin-badge media-local-temp">🎨 Illustration temporaire — Contexte local Cameroun</span>
+                  </div>
+                  <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+                    <span class="eyebrow" style="margin:0;">PUB-06 • Eau & Plein Air</span>
+                    <span class="price-pill">500 à 2 500 FCFA</span>
+                  </div>
+                  <h3 style="margin-top:8px;">Piscine Semi-Olympique, Pirogue & Équitation</h3>
+                  <p style="font-size:15px;color:var(--color-text-muted);margin-top:6px;">
+                    Baignade surveillée (Enfant 1 500 FCFA / Adulte 2 500 FCFA), traversée du lac en pirogue ou pédalo (500 / 1 000 FCFA) et balade à cheval.
+                  </p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="addActivityAndGo('piscine')">Réserver un créneau</button>
+                  <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-06')">Détails sécurité</button>
+                </div>
+              </article>
+
+              <!-- Pôle 3 : Restauration Le Château des Saveurs (PUB-07) -->
+              <article class="col-4 card" id="sec-PUB-07">
+                <div>
+                  <div class="card-media-wrapper">
+                    <img src="audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png" alt="Gastronomie camerounaise au Château des Saveurs ECOPARK" />
+                    <span class="media-origin-badge media-local-temp">🎨 Illustration temporaire — Gastronomie Cameroun</span>
+                  </div>
+                  <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+                    <span class="eyebrow" style="margin:0;">PUB-07 • Restauration</span>
+                    <span class="price-pill">Plats 3 500 – 8 500 FCFA</span>
+                  </div>
+                  <h3 style="margin-top:8px;">Le Château des Saveurs</h3>
+                  <p style="font-size:15px;color:var(--color-text-muted);margin-top:6px;">
+                    Spécialités camerounaises préparées sur place : poisson d'eau douce braisé d'Ahala, poulet DG, Ndolè, miondo, plantains mûrs et jus naturels (Bissap, Baobab, Gingembre).
+                  </p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="navigateFamily('RES', 'RES-03')">Estimer un repas</button>
+                  <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-07')">Carte en FCFA</button>
+                </div>
+              </article>
+
+              <!-- Pôle 4 : Hébergement Loges Ewondo, Chanthel & Bene (PUB-08, PUB-09) -->
+              <article class="col-4 card" id="sec-PUB-08">
+                <div>
+                  <div class="card-media-wrapper">
+                    <img src="audit-assets/ecopark-real-media/chambre.jpeg" alt="Chambre des Loges d'hébergement ECOPARK Yaoundé" />
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Loges</span>
+                  </div>
+                  <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+                    <span class="eyebrow" style="margin:0;">PUB-08/09 • Hébergement</span>
+                    <span class="price-pill">10 000 – 30 000 FCFA</span>
+                  </div>
+                  <h3 style="margin-top:8px;">Cités Hôtelières : Ewondo, Chanthel & Bene</h3>
+                  <p style="font-size:15px;color:var(--color-text-muted);margin-top:6px;">
+                    3 gammes de pavillons calmes en pleine nature : <strong>Cité Bene</strong> (10 000–15 000 FCFA), <strong>Cité Chanthel</strong> (15 000–25 000 FCFA) et <strong>Cité Ewondo VIP</strong> (25 000–30 000 FCFA).
+                  </p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="navigateFamily('RES', 'RES-01')">Réserver une nuitée</button>
+                  <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-09')">Fiche Loge (PUB-09)</button>
+                </div>
+              </article>
+
+              <!-- Pôle 5 : Excursions Scolaires, Groupes & Entreprises (PUB-11) -->
+              <article class="col-4 card" id="sec-PUB-11">
+                <div>
+                  <div class="card-media-wrapper">
+                    <img src="audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg" alt="Groupe et événement culturel à ECOPARK Yaoundé" />
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Groupes</span>
+                  </div>
+                  <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+                    <span class="eyebrow" style="margin:0;">PUB-11 • Écoles & B2B</span>
+                    <span class="price-pill">Sur Devis Validé</span>
+                  </div>
+                  <h3 style="margin-top:8px;">Excursions Scolaires, Séminaires & Mariages</h3>
+                  <p style="font-size:15px;color:var(--color-text-muted);margin-top:6px;">
+                    Accueil sécurisé des écoles maternelles, primaires et secondaires, teambuildings d'entreprises, arbres de Noël et réceptions sous chapiteau ou pergola.
+                  </p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="navigateFamily('RES', 'RES-06')">Demander un devis groupe (RES-06)</button>
+                </div>
+              </article>
+
+              <!-- Pôle 6 : Centre de Formation Professionnelle CFP (PUB-12) -->
+              <article class="col-4 card" id="sec-PUB-12">
+                <div>
+                  <div class="card-media-wrapper">
+                    <img src="audit-assets/ecopark-real-media/1786968889976.jpg" alt="Centre de Formation Professionnelle CFP ECOPARK" />
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — CFP</span>
+                  </div>
+                  <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
+                    <span class="eyebrow" style="margin:0;">PUB-12 • Formation MINEFOP</span>
+                    <span class="price-pill">50 000 + 250 000 FCFA</span>
+                  </div>
+                  <h3 style="margin-top:8px;">CFP ECOPARK (Métiers Agropastoraux & Hôtellerie)</h3>
+                  <p style="font-size:15px;color:var(--color-text-muted);margin-top:6px;">
+                    Formation pratique sur nos installations réelles : Aquaculture, Hôtellerie-Restauration, Agriculture et Élevage. Inscription : 50 000 FCFA • Scolarité : 250 000 FCFA.
+                  </p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary btn-sm" onclick="inspectScreen('PUB-12')">Déposer une candidature CFP</button>
+                </div>
+              </article>
+            </div>
+          </div>
+        </div>
+
+        <!-- GRILLE TARIFAIRE OFFICIELLE COMPLÈTE EN FCFA (PUB-10) -->
+        <div class="section" id="sec-PUB-10">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">PUB-10 • Transparence Tarifaire en Francs CFA</span>
+              <h2>Grille Tarifaire Officielle ECOPARK Yaoundé-Ahala</h2>
+              <p style="color:var(--color-text-muted);margin-top:8px;">
+                Tous nos tarifs sont exprimés en <strong>FCFA (XAF)</strong>. Gratuité d'accès au site pour les tout-petits de moins de 3 ans accompagnés d'un parent.
+              </p>
+            </div>
+
+            <div class="table-responsive">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Prestation / Pôle</th>
+                    <th>Tarif Enfant (3 à 12 ans)</th>
+                    <th>Tarif Adulte (13 ans et +)</th>
+                    <th>Conditions & Formules Groupes</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><strong>Entrée Parc & Jardin Zoologique</strong></td>
+                    <td><span class="price-pill">500 FCFA</span></td>
+                    <td><span class="price-pill">1 000 FCFA</span></td>
+                    <td>Tarif groupe adulte (dès 20 adultes) : 700 FCFA/adulte. <strong>Le billet enfant reste protégé à 500 FCFA</strong> (ou devis scolaire dédié).</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="addActivityAndGo('zoo')">Sélectionner</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Piscine Semi-Olympique</strong></td>
+                    <td><span class="price-pill">1 500 FCFA</span></td>
+                    <td><span class="price-pill">2 500 FCFA</span></td>
+                    <td>Maillot de bain obligatoire. Maître-nageur sauveteur présent.</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="addActivityAndGo('piscine')">Sélectionner</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Balade en Pirogue / Pédalo sur le Lac</strong></td>
+                    <td><span class="price-pill">500 FCFA</span></td>
+                    <td><span class="price-pill">1 000 FCFA</span></td>
+                    <td>Gilet de sauvetage fourni et obligatoire avant embarquement.</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="addActivityAndGo('pirogue')">Sélectionner</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Équitation (Tour à Cheval) & Manèges</strong></td>
+                    <td><span class="price-pill">500 FCFA</span></td>
+                    <td><span class="price-pill">1 000 FCFA</span></td>
+                    <td>Encadrement par un moniteur équestre dans l'enceinte dédiée.</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="addActivityAndGo('cheval')">Sélectionner</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Restauration — Le Château des Saveurs</strong></td>
+                    <td>Menu Enfant : <strong>2 500 FCFA</strong></td>
+                    <td>Plats : <strong>3 500 à 8 500 FCFA</strong></td>
+                    <td>Buffets groupes, mariages et séminaires sur devis personnalisé.</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="navigateFamily('RES', 'RES-03')">Estimer</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Hébergement — Cités Bene, Chanthel & Ewondo</strong></td>
+                    <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo)</td>
+                    <td>Repos en journée (Day-use) ou nuitée complète avec accès parc.</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="navigateFamily('RES', 'RES-01')">Réserver</button></td>
+                  </tr>
+                  <tr>
+                    <td><strong>Centre de Formation Professionnelle (CFP)</strong></td>
+                    <td colspan="2">Inscription : <strong>50 000 FCFA</strong> • Scolarité annuelle : <strong>250 000 FCFA</strong></td>
+                    <td>Agrément MINEFOP • Stages pratiques garantis au sein d'ECOPARK.</td>
+                    <td><button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-12')">Candidater</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+
+        <!-- PLAN D'ORIENTATION, INFOS PRATIQUES, GALERIE, ACTUALITÉS, FAQ, RECHERCHE & PAGES SYSTÈME (PUB-02, PUB-13 à PUB-22) -->
+        <div class="section section-soft" id="sec-PUB-13">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">PUB-02 & PUB-13 à PUB-22 • Orientation, Galerie Locale, FAQ & Pages Système</span>
+              <h2>Préparez sereinement votre venue à Yaoundé-Ahala</h2>
+            </div>
+
+            <div class="grid-12">
+              <div class="col-6 card">
+                <h3>🗺️ PUB-02 & PUB-13 — Plan d'Orientation & Accès Ahala</h3>
+                <p style="font-size:15px;color:var(--color-text-muted);">
+                  Situé sur l'axe lourd Yaoundé–Douala (Nationale N°3), quartier <strong>Ahala Barrière</strong>, juste après la station-service Tradex. Parking intérieur sécurisé et gratuit (capacité 150 véhicules et bus scolaires).
+                </p>
+                <ul style="padding-left:20px;font-size:15px;display:grid;gap:6px;">
+                  <li><strong>Zone A (Entrée & Accueil)</strong> : Guichets billetterie, contrôle QR et boutique.</li>
+                  <li><strong>Zone B (Cœur Vert)</strong> : Jardin zoologique, volières et allées botaniques ombragées.</li>
+                  <li><strong>Zone C (Lac & Plein Air)</strong> : Embarcadère pirogues/pédalos, carrière équestre et aire de jeux.</li>
+                  <li><strong>Zone D (Détente & Saveurs)</strong> : Piscine semi-olympique et restaurant <em>Le Château des Saveurs</em>.</li>
+                  <li><strong>Zone E (Séjour & Formation)</strong> : Loges Ewondo, Chanthel, Bene et campus du CFP ECOPARK.</li>
+                </ul>
+              </div>
+
+              <div class="col-6 card">
+                <h3>❓ PUB-17 & PUB-19 — Recherche Globale & Questions Fréquentes</h3>
+                <div class="form-group" style="margin-bottom:10px;">
+                  <label class="form-label" for="globalSearchInput">Rechercher une activité, un tarif ou une information (PUB-19) :</label>
+                  <input id="globalSearchInput" type="search" class="form-control" placeholder="Ex : piscine, pirogue, tarif enfant, loge Ewondo, CFP..." oninput="filterFAQSearch(this.value)" />
+                </div>
+                <div id="faqListContainer" style="display:grid;gap:10px;font-size:14.5px;">
+                  <div style="padding:10px;background:var(--color-surface-soft);border-radius:8px;">
+                    <strong>Quels sont les moyens de paiement acceptés ?</strong><br/>
+                    En ligne et sur place par <strong>Orange Money</strong> et <strong>MTN Mobile Money</strong>, ou en espèces (FCFA) directement aux guichets d'Ahala.
+                  </div>
+                  <div style="padding:10px;background:var(--color-surface-soft);border-radius:8px;">
+                    <strong>Peut-on organiser une sortie scolaire ou un arbre de Noël ?</strong><br/>
+                    Oui, dès 20 participants, notre équipe établit un devis adapté incluant l'encadrement, les activités et les menus enfants.
+                  </div>
+                  <div style="padding:10px;background:var(--color-surface-soft);border-radius:8px;">
+                    <strong>Les photos présentées sur ce prototype sont-elles réelles ?</strong><br/>
+                    Chaque visuel porte un badge explicite : <em>Photo réelle ECOPARK</em> (prise à Ahala) ou <em>Illustration temporaire — Contexte local Cameroun</em> dans l'attente de nouvelles prises de vue.
+                  </div>
+                </div>
+              </div>
+
+              <!-- Aperçu des écrans PUB-14, PUB-15/16, PUB-18, PUB-20, PUB-21, PUB-22 -->
+              <div class="col-12 card">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                  <h3>📸 PUB-14 à PUB-22 — Galerie Contexte Local, Actualités, Contact, Mentions Légales, 404 & Maintenance</h3>
+                  <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                    <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-14')">PUB-14 Galerie</button>
+                    <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-15')">PUB-15/16 Actualités</button>
+                    <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-18')">PUB-18 Contact</button>
+                    <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-20')">PUB-20 Mentions légales</button>
+                    <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-21')">PUB-21 Page 404</button>
+                    <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-22')">PUB-22 Maintenance</button>
+                  </div>
+                </div>
+                <div class="grid-12" style="margin-top:8px;">
+                  <div class="col-3">
+                    <div class="card-media-wrapper">
+                      <img src="audit-assets/ecopark-real-media/IMG_20260829_172016-1-scaled.jpg" alt="Allées naturelles d'ECOPARK Ahala" />
+                      <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK</span>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="card-media-wrapper">
+                      <img src="audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg" alt="Espace couvert et restauration ECOPARK" />
+                      <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK</span>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="card-media-wrapper">
+                      <img src="audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png" alt="Famille camerounaise en visite" />
+                      <span class="media-origin-badge media-local-temp">🎨 Illustration locale Cameroun</span>
+                    </div>
+                  </div>
+                  <div class="col-3">
+                    <div class="card-media-wrapper">
+                      <img src="audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png" alt="Apprenants du CFP ECOPARK" />
+                      <span class="media-origin-badge media-local-temp">🎨 Illustration locale Cameroun</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FAMILLE 3 : PRÉPARATION DE VISITE, DEVIS & RÉSERVATION (RES-01 à RES-12)
+           ==================================================================== -->
+      <section class="family-view" id="view-RES">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('RES-01')">RES-01/02/03 Simulateur Budget FCFA</button>
+              <button class="subnav-pill" onclick="inspectScreen('RES-04')">RES-04/05 Panier & Coordonnées</button>
+              <button class="subnav-pill" onclick="inspectScreen('RES-06')">RES-06/10 Demande de Devis Groupe</button>
+              <button class="subnav-pill" onclick="inspectScreen('RES-08')">RES-07/08/11 Paiement Mobile Money (Sans PIN)</button>
+              <button class="subnav-pill" onclick="inspectScreen('RES-09')">RES-09/12 Billet QR Démo & Recherche</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">RES-01 à RES-12 • Parcours Transactionnel & Devis en Francs CFA</span>
+              <h2>Préparer ma visite, estimer mon budget et réserver</h2>
+              <p style="color:var(--color-text-muted);margin-top:6px;">
+                Calculez instantanément le coût de votre sortie en famille ou entre amis. Pour les écoles, entreprises et groupes de 20 personnes ou plus, basculez en 1 clic vers une demande de devis personnalisé.
+              </p>
+            </div>
+
+            <div class="grid-12">
+              <!-- Colonne gauche : Configurateur & Simulateur (RES-01, RES-02, RES-03, RES-05) -->
+              <div class="col-7 card">
+                <h3>1. Composition du groupe & Date de visite (`RES-01` / `RES-02`)</h3>
+                <div class="grid-12" style="gap:16px;">
+                  <div class="col-6 form-group">
+                    <label class="form-label" for="visitDate">Date de visite souhaitée</label>
+                    <input type="date" id="visitDate" class="form-control" value="2026-11-15" />
+                  </div>
+                  <div class="col-6 form-group">
+                    <label class="form-label" for="visitProfile">Profil de sortie</label>
+                    <select id="visitProfile" class="form-control" onchange="recalcSimulator()">
+                      <option value="famille">Famille / Particuliers</option>
+                      <option value="amis">Groupe d'amis</option>
+                      <option value="ecole">Excursion scolaire (Devis conseillé)</option>
+                      <option value="entreprise">Séminaire / Entreprise (Devis conseillé)</option>
+                    </select>
+                  </div>
+                </div>
+
+                <div class="grid-12" style="gap:12px;align-items:center;background:var(--color-surface-soft);padding:16px;border-radius:var(--radius-sm);">
+                  <div class="col-4">
+                    <strong>Adultes (13 ans et +)</strong>
+                    <div class="form-help">Tarif standard ou groupe adulte</div>
+                    <div class="counter-box" style="margin-top:6px;">
+                      <button type="button" class="counter-btn" onclick="changeCount('adults', -1)" aria-label="Retirer un adulte">−</button>
+                      <span class="counter-val" id="countAdults">2</span>
+                      <button type="button" class="counter-btn" onclick="changeCount('adults', 1)" aria-label="Ajouter un adulte">+</button>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <strong>Enfants (3 à 12 ans)</strong>
+                    <div class="form-help">Tarif enfant protégé (500 FCFA entrée)</div>
+                    <div class="counter-box" style="margin-top:6px;">
+                      <button type="button" class="counter-btn" onclick="changeCount('children', -1)" aria-label="Retirer un enfant">−</button>
+                      <span class="counter-val" id="countChildren">2</span>
+                      <button type="button" class="counter-btn" onclick="changeCount('children', 1)" aria-label="Ajouter un enfant">+</button>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <strong>Moins de 3 ans</strong>
+                    <div class="form-help">Accès parc gratuit (0 FCFA)</div>
+                    <div class="counter-box" style="margin-top:6px;">
+                      <button type="button" class="counter-btn" onclick="changeCount('toddlers', -1)" aria-label="Retirer un tout-petit">−</button>
+                      <span class="counter-val" id="countToddlers">1</span>
+                      <button type="button" class="counter-btn" onclick="changeCount('toddlers', 1)" aria-label="Ajouter un tout-petit">+</button>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Garde-fou métier explicite sur les tarifs enfants en groupe -->
+                <div id="childPriceProtectionAlert" class="status-badge status-info" style="border-radius:8px;padding:10px 14px;">
+                  🛡️ <strong>Règle de protection tarifaire active :</strong> Même au-delà de 20 participants, le billet d'entrée enfant reste à <strong>500 FCFA</strong> (il n'est jamais majoré à 700 FCFA). Seul le billet adulte bénéficie de la remise groupe à 700 FCFA (au lieu de 1 000 FCFA), ou fait l'objet d'un devis scolaire dédié.
+                </div>
+
+                <h3 style="margin-top:8px;">2. Choix des expériences et prestations (`RES-03`)</h3>
+                <div style="display:grid;gap:10px;">
+                  <label style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
+                    <span>
+                      <input type="checkbox" id="chkZoo" checked onchange="recalcSimulator()" />
+                      <strong style="margin-left:8px;">Entrée Parc & Jardin Zoologique</strong> (Enfant : 500 FCFA • Adulte : 1 000 FCFA)
+                    </span>
+                    <span class="price-pill" id="subZoo">3 000 FCFA</span>
+                  </label>
+                  <label style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
+                    <span>
+                      <input type="checkbox" id="chkPiscine" checked onchange="recalcSimulator()" />
+                      <strong style="margin-left:8px;">Accès Piscine Semi-Olympique</strong> (Enfant : 1 500 FCFA • Adulte : 2 500 FCFA)
+                    </span>
+                    <span class="price-pill" id="subPiscine">8 000 FCFA</span>
+                  </label>
+                  <label style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
+                    <span>
+                      <input type="checkbox" id="chkPirogue" checked onchange="recalcSimulator()" />
+                      <strong style="margin-left:8px;">Balade en Pirogue sur le Lac</strong> (Enfant : 500 FCFA • Adulte : 1 000 FCFA)
+                    </span>
+                    <span class="price-pill" id="subPirogue">3 000 FCFA</span>
+                  </label>
+                  <label style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
+                    <span>
+                      <input type="checkbox" id="chkCheval" onchange="recalcSimulator()" />
+                      <strong style="margin-left:8px;">Tour à Cheval / Manèges</strong> (Enfant : 500 FCFA • Adulte : 1 000 FCFA)
+                    </span>
+                    <span class="price-pill" id="subCheval">0 FCFA</span>
+                  </label>
+                  <label style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
+                    <span>
+                      <input type="checkbox" id="chkRepas" onchange="recalcSimulator()" />
+                      <strong style="margin-left:8px;">Repas au Château des Saveurs</strong> (Enfant : 2 500 FCFA • Adulte : 5 000 FCFA)
+                    </span>
+                    <span class="price-pill" id="subRepas">0 FCFA</span>
+                  </label>
+                </div>
+
+                <h3 style="margin-top:8px;">3. Coordonnées du visiteur ou responsable de groupe (`RES-05` / `RES-06`)</h3>
+                <div class="grid-12" style="gap:12px;">
+                  <div class="col-6 form-group">
+                    <label class="form-label" for="visitorName">Nom et Prénom (ou Établissement)</label>
+                    <input type="text" id="visitorName" class="form-control" value="M. Jean-Paul MBARGA" />
+                  </div>
+                  <div class="col-6 form-group">
+                    <label class="form-label" for="visitorPhone">Téléphone Cameroun (WhatsApp / Mobile Money)</label>
+                    <input type="tel" id="visitorPhone" class="form-control" value="+237 694 12 34 56" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Colonne droite : Panier, Paiement Mobile Money sans PIN & Billet QR Démo (RES-04, RES-07 à RES-12) -->
+              <div class="col-5" style="display:flex;flex-direction:column;gap:20px;">
+                <div class="card" style="background:var(--color-surface-soft);border-color:var(--color-brand-deep);">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <h3>Récapitulatif & Panier (`RES-04`)</h3>
+                    <span class="status-badge status-success" id="groupStatusBadge">Tarif Individuel / Famille</span>
+                  </div>
+                  <div id="cartBreakdown" style="font-size:15px;display:grid;gap:6px;border-top:1px solid var(--color-border);border-bottom:1px solid var(--color-border);padding:12px 0;">
+                    <!-- Injecté dynamiquement par recalcSimulator() -->
+                  </div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;">
+                    <span style="font-weight:700;font-size:1.1rem;">Total estimé TTC :</span>
+                    <span style="font-family:var(--font-heading);font-size:2rem;font-weight:700;color:var(--color-brand-deep);" id="grandTotalFCFA">14 000 FCFA</span>
+                  </div>
+
+                  <!-- Paiement Mobile Money en mode démonstration sans saisie de code PIN (RES-07, RES-08, RES-11) -->
+                  <div style="background:var(--color-white);padding:14px;border-radius:var(--radius-sm);border:1px solid var(--color-border);">
+                    <strong style="display:block;margin-bottom:8px;">Mode de règlement (`RES-07` / `RES-08` — Mode Démonstration) :</strong>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
+                      <label style="display:inline-flex;align-items:center;gap:6px;font-size:14.5px;">
+                        <input type="radio" name="payMethod" value="OM" checked /> <strong>Orange Money Cameroun</strong>
+                      </label>
+                      <label style="display:inline-flex;align-items:center;gap:6px;font-size:14.5px;">
+                        <input type="radio" name="payMethod" value="MOMO" /> <strong>MTN Mobile Money</strong>
+                      </label>
+                      <label style="display:inline-flex;align-items:center;gap:6px;font-size:14.5px;">
+                        <input type="radio" name="payMethod" value="GUICHET" /> <strong>Payer au guichet Ahala</strong>
+                      </label>
+                    </div>
+                    <div style="font-size:13.5px;color:var(--color-brand-deep);background:var(--color-surface-soft);padding:8px 10px;border-radius:6px;margin-bottom:10px;">
+                      🔒 <strong>Sécurité :</strong> Aucun code secret (PIN) n'est jamais demandé sur ce site. En production, vous validez la transaction directement sur votre téléphone via l'invite USSD officielle (<code>#150#</code> ou <code>*126#</code>).
+                    </div>
+                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                      <label for="momoStateSelect" style="font-size:13.5px;font-weight:600;">Tester les 5 états du paiement (`RES-08`/`RES-11`) :</label>
+                      <select id="momoStateSelect" class="form-control" style="min-height:36px;padding:4px 8px;width:auto;" onchange="updatePaymentDemoState(this.value)">
+                        <option value="CONFIRMED" selected>✅ Confirmé (Billet émis)</option>
+                        <option value="PENDING">⏳ En attente de validation téléphone</option>
+                        <option value="FAILED">❌ Échoué (Solde insuffisant)</option>
+                        <option value="EXPIRED">⌛ Expiré (Délai USSD dépassé)</option>
+                        <option value="CANCELLED">🚫 Annulé par l'utilisateur</option>
+                      </select>
+                    </div>
+                    <div id="momoStateFeedback" class="status-badge status-success" style="margin-top:10px;width:100%;justify-content:center;">
+                      ✅ Paiement de démonstration confirmé — Référence : OM-CM-2026-99412
+                    </div>
+                  </div>
+
+                  <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                    <button type="button" class="btn btn-primary" style="flex:1;" onclick="inspectScreen('RES-09')">Générer le Billet QR Démo (RES-09)</button>
+                    <button type="button" class="btn btn-secondary" onclick="inspectScreen('RES-10')">Générer Devis Groupe (RES-10)</button>
+                  </div>
+                </div>
+
+                <!-- Billet QR de démonstration (RES-09) -->
+                <div class="card" id="demoTicketCard">
+                  <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px dashed var(--color-border-strong);padding-bottom:10px;">
+                    <div>
+                      <span class="status-badge status-warning" style="font-weight:700;">BILLET DÉMONSTRATION — PROTOTYPE</span>
+                      <h3 style="margin-top:6px;">Pass Journée ECOPARK Ahala (`RES-09`)</h3>
+                    </div>
+                    <div style="text-align:right;">
+                      <span style="font-size:12px;color:var(--color-text-muted);">Code Référence</span>
+                      <div style="font-family:var(--font-heading);font-size:1.3rem;font-weight:700;color:var(--color-brand-deep);">ECP-2026-84920</div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
+                    <!-- QR Code SVG de démonstration -->
+                    <svg width="108" height="108" viewBox="0 0 100 100" style="border:2px solid var(--color-brand-deep);border-radius:8px;padding:6px;background:#FFF;flex-shrink:0;" aria-label="QR Code de démonstration ECP-2026-84920">
+                      <rect x="6" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
+                      <rect x="13" y="13" width="12" height="12" fill="#1D490D"/>
+                      <rect x="68" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
+                      <rect x="75" y="13" width="12" height="12" fill="#1D490D"/>
+                      <rect x="6" y="68" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
+                      <rect x="13" y="75" width="12" height="12" fill="#1D490D"/>
+                      <rect x="42" y="12" width="8" height="8" fill="#1D490D"/>
+                      <rect x="42" y="28" width="16" height="8" fill="#1F880B"/>
+                      <rect x="42" y="44" width="12" height="12" fill="#1D490D"/>
+                      <rect x="62" y="44" width="8" height="18" fill="#1D490D"/>
+                      <rect x="42" y="68" width="18" height="8" fill="#1D490D"/>
+                      <rect x="68" y="68" width="22" height="22" fill="#1F880B"/>
+                    </svg>
+                    <div style="font-size:14.5px;display:grid;gap:4px;">
+                      <div><strong>Titulaire :</strong> <span id="ticketHolder">M. Jean-Paul MBARGA</span></div>
+                      <div><strong>Date & Créneau :</strong> <span id="ticketDate">15/11/2026 (09h00 – 18h00)</span></div>
+                      <div><strong>Participants :</strong> <span id="ticketPax">2 Adultes, 2 Enfants, 1 Tout-petit</span></div>
+                      <div><strong>Prestations :</strong> <span id="ticketItems">Entrée Parc & Zoo, Piscine, Pirogue</span></div>
+                    </div>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button type="button" class="btn btn-secondary btn-sm" onclick="navigateFamily('AGT', 'AGT-05')">Tester ce billet au Scanner d'Entrée (AGT-05)</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FAMILLE 4 : ESPACE VISITEUR / CLIENT (ACC-01 à ACC-06)
+           ==================================================================== -->
+      <section class="family-view" id="view-ACC">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('ACC-01')">ACC-01 Connexion OTP (+237)</button>
+              <button class="subnav-pill" onclick="inspectScreen('ACC-02')">ACC-02 Tableau de bord visiteur</button>
+              <button class="subnav-pill" onclick="inspectScreen('ACC-03')">ACC-03 Mes réservations & billets QR</button>
+              <button class="subnav-pill" onclick="inspectScreen('ACC-04')">ACC-04 Mes demandes de devis</button>
+              <button class="subnav-pill" onclick="inspectScreen('ACC-05')">ACC-05 Report / Annulation</button>
+              <button class="subnav-pill" onclick="inspectScreen('ACC-06')">ACC-06 Profil & Préférences</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">ACC-01 à ACC-06 • Espace Personnel Visiteur & Responsable de Groupe</span>
+              <h2>Bonjour M. Jean-Paul MBARGA — Vos visites et dossiers ECOPARK</h2>
+            </div>
+
+            <div class="grid-12">
+              <div class="col-4 card">
+                <h3>🔐 ACC-01 & ACC-06 — Accès Rapide & Profil</h3>
+                <p style="font-size:14.5px;color:var(--color-text-muted);">
+                  Compte vérifié par code SMS / WhatsApp sur le <strong>+237 694 12 34 56</strong>.
+                </p>
+                <div style="background:var(--color-surface-soft);padding:12px;border-radius:8px;font-size:14.5px;display:grid;gap:6px;">
+                  <div><strong>Nom :</strong> Jean-Paul MBARGA</div>
+                  <div><strong>Quartier / Ville :</strong> Bastos, Yaoundé</div>
+                  <div><strong>Notifications :</strong> WhatsApp + SMS actifs</div>
+                </div>
+                <button class="btn btn-secondary btn-sm" onclick="inspectScreen('ACC-06')">Mettre à jour mes préférences (ACC-06)</button>
+              </div>
+
+              <div class="col-8 card">
+                <h3>🎟️ ACC-02, ACC-03 & ACC-05 — Mes Réservations et Billets Actifs</h3>
+                <div class="table-responsive">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Référence</th>
+                        <th>Date de visite</th>
+                        <th>Formule & Participants</th>
+                        <th>Montant</th>
+                        <th>Statut</th>
+                        <th>Actions (`ACC-03` / `ACC-05`)</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>ECP-2026-84920</strong></td>
+                        <td>15/11/2026</td>
+                        <td>2 Adultes, 2 Enfants • Zoo + Piscine + Pirogue</td>
+                        <td><strong>14 000 FCFA</strong></td>
+                        <td><span class="status-badge status-success">Confirmé (QR Actif)</span></td>
+                        <td>
+                          <button class="btn btn-primary btn-sm" onclick="navigateFamily('RES', 'RES-09')">Voir QR</button>
+                          <button class="btn btn-secondary btn-sm" onclick="inspectScreen('ACC-05')">Reporter</button>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><strong>DEV-2026-3104</strong></td>
+                        <td>05/12/2026</td>
+                        <td>Devis École Bilingue Les Palmiers (45 élèves + 5 encadrants)</td>
+                        <td><strong>67 500 FCFA</strong></td>
+                        <td><span class="status-badge status-info">Proposition reçue (`ACC-04`)</span></td>
+                        <td>
+                          <button class="btn btn-secondary btn-sm" onclick="inspectScreen('ACC-04')">Consulter le devis</button>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FAMILLE 5 : GUICHET & CONTRÔLE DES ENTRÉES (AGT-01 à AGT-09)
+           ==================================================================== -->
+      <section class="family-view" id="view-AGT">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('AGT-01')">AGT-01/02 Poste & Tableau Guichet</button>
+              <button class="subnav-pill" onclick="inspectScreen('AGT-03')">AGT-03/04 Vente Rapide & Encaissement</button>
+              <button class="subnav-pill" onclick="inspectScreen('AGT-05')">AGT-05/06/07 Scanner QR (7 États)</button>
+              <button class="subnav-pill" onclick="inspectScreen('AGT-08')">AGT-08/09 Journal & Clôture de Caisse</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">AGT-01 à AGT-09 • Poste Opérationnel Guichet & Tourniquet d'Entrée Ahala</span>
+              <h2>Caisse Rapide Guichet & Contrôle des Billets QR</h2>
+              <p style="color:var(--color-text-muted);">
+                Session active : <strong>Guichet Principal Ahala #1</strong> • Agent : <strong>Mme Clarisse ATANGANA</strong> • Fond de caisse initial : <strong>50 000 FCFA</strong>.
+              </p>
+            </div>
+
+            <div class="grid-12">
+              <!-- Vente rapide au guichet (AGT-03, AGT-04) -->
+              <div class="col-6 card">
+                <h3>⚡ AGT-03 & AGT-04 — Vente Rapide au Guichet (Walk-in)</h3>
+                <p style="font-size:14.5px;color:var(--color-text-muted);">
+                  Touches directes sans saisie complexe pour fluidifier la file d'attente du week-end à l'entrée d'Ahala :
+                </p>
+                <div class="grid-12" style="gap:10px;">
+                  <button class="col-6 btn btn-secondary" onclick="addPosItem('Entrée Zoo Enfant', 500)">+ Zoo Enfant (500 FCFA)</button>
+                  <button class="col-6 btn btn-secondary" onclick="addPosItem('Entrée Zoo Adulte', 1000)">+ Zoo Adulte (1 000 FCFA)</button>
+                  <button class="col-6 btn btn-secondary" onclick="addPosItem('Piscine Enfant', 1500)">+ Piscine Enfant (1 500 FCFA)</button>
+                  <button class="col-6 btn btn-secondary" onclick="addPosItem('Piscine Adulte', 2500)">+ Piscine Adulte (2 500 FCFA)</button>
+                  <button class="col-6 btn btn-secondary" onclick="addPosItem('Pirogue Enfant', 500)">+ Pirogue Enfant (500 FCFA)</button>
+                  <button class="col-6 btn btn-secondary" onclick="addPosItem('Pirogue Adulte', 1000)">+ Pirogue Adulte (1 000 FCFA)</button>
+                </div>
+                <div style="background:var(--color-surface-soft);padding:14px;border-radius:8px;">
+                  <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <strong>Ticket Guichet en cours :</strong>
+                    <button class="btn btn-secondary btn-sm" onclick="clearPos()">Vider</button>
+                  </div>
+                  <div id="posItemsList" style="font-size:14.5px;margin:8px 0;">2× Zoo Adulte (2 000 FCFA) + 1× Zoo Enfant (500 FCFA)</div>
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;border-top:1px solid var(--color-border);padding-top:8px;">
+                    <strong>Net à encaisser :</strong>
+                    <strong style="font-family:var(--font-heading);font-size:1.6rem;color:var(--color-brand-deep);" id="posTotalFCFA">2 500 FCFA</strong>
+                  </div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button class="btn btn-primary" style="flex:1;" onclick="emitPosTicket('Espèces FCFA')">Encaisser Espèces & Imprimer QR</button>
+                  <button class="btn btn-secondary" onclick="emitPosTicket('Mobile Money Guichet')">Encaisser MoMo/OM</button>
+                </div>
+              </div>
+
+              <!-- Contrôle des entrées & 7 verdicts de scan QR (AGT-05, AGT-06, AGT-07) -->
+              <div class="col-6 card">
+                <h3>🔍 AGT-05, AGT-06 & AGT-07 — Contrôle QR & Simulation des 7 États</h3>
+                <div class="form-group" style="margin-bottom:8px;">
+                  <label class="form-label" for="qrScanInput">Scanner un QR ou saisir la référence / téléphone (`AGT-05` / `AGT-07`) :</label>
+                  <div style="display:flex;gap:8px;">
+                    <input type="text" id="qrScanInput" class="form-control" value="ECP-2026-84920" style="flex:1;" />
+                    <button class="btn btn-primary" onclick="triggerScanVerdict('VALID')">Vérifier</button>
+                  </div>
+                </div>
+
+                <div style="font-size:13.5px;font-weight:600;margin-bottom:4px;">Simuler chacun des 7 états réglementaires du contrôle d'entrée (`AGT-06`) :</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px;">
+                  <button class="btn btn-secondary btn-sm" onclick="triggerScanVerdict('VALID')">1. Valide</button>
+                  <button class="btn btn-secondary btn-sm" onclick="triggerScanVerdict('USED')">2. Déjà utilisé</button>
+                  <button class="btn btn-secondary btn-sm" onclick="triggerScanVerdict('WRONG_DATE')">3. Mauvaise date</button>
+                  <button class="btn btn-secondary btn-sm" onclick="triggerScanVerdict('EXPIRED')">4. Expiré</button>
+                  <button class="btn btn-secondary btn-sm" onclick="triggerScanVerdict('CANCELLED')">5. Annulé</button>
+                  <button class="btn btn-secondary btn-sm" onclick="triggerScanVerdict('WRONG_ZONE')">6. Prestation différente</button>
+                  <button class="btn btn-secondary btn-sm" onclick="triggerScanVerdict('UNKNOWN')">7. Code inconnu</button>
+                </div>
+
+                <div id="scanResultBox" style="padding:18px;border-radius:10px;background:var(--color-success-bg);color:var(--color-success-text);border:2px solid var(--color-success-border);margin-top:8px;">
+                  <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:700;" id="scanResultTitle">✅ BILLET VALIDE — AUTORISER L'ENTRÉE</div>
+                  <p style="font-size:15px;margin-top:4px;" id="scanResultDesc">
+                    Référence <strong>ECP-2026-84920</strong> • Titulaire : M. Jean-Paul MBARGA (2 Adultes, 2 Enfants, 1 Tout-petit). Prestations autorisées : Entrée Parc & Zoo, Piscine, Pirogue.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Journal de session et clôture de caisse (AGT-08, AGT-09) -->
+              <div class="col-12 card">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+                  <h3>🧾 AGT-08 & AGT-09 — Journal de Session & Clôture de Caisse Contradictoire</h3>
+                  <span class="status-badge status-info">Écart constaté : 0 FCFA (Caisse conforme)</span>
+                </div>
+                <div class="grid-12" style="gap:12px;">
+                  <div class="col-4" style="background:var(--color-surface-soft);padding:12px;border-radius:8px;">
+                    <div style="font-size:13.5px;color:var(--color-text-muted);">Encaissements Espèces Session</div>
+                    <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--color-brand-deep);">184 500 FCFA</strong>
+                  </div>
+                  <div class="col-4" style="background:var(--color-surface-soft);padding:12px;border-radius:8px;">
+                    <div style="font-size:13.5px;color:var(--color-text-muted);">Encaissements Mobile Money Guichet</div>
+                    <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--color-brand-deep);">96 000 FCFA</strong>
+                  </div>
+                  <div class="col-4" style="background:var(--color-surface-soft);padding:12px;border-radius:8px;">
+                    <div style="font-size:13.5px;color:var(--color-text-muted);">Visiteurs contrôlés (Tourniquet)</div>
+                    <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--color-brand-deep);">214 entrées validées</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FAMILLE 6 : EXPLOITATION & GESTION OPÉRATIONNELLE (EXP-01 à EXP-07)
+           ==================================================================== -->
+      <section class="family-view" id="view-EXP">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('EXP-01')">EXP-01 Vue Quotidienne</button>
+              <button class="subnav-pill" onclick="inspectScreen('EXP-02')">EXP-02 Calendrier Capacités</button>
+              <button class="subnav-pill" onclick="inspectScreen('EXP-03')">EXP-03 Devis Groupes & Écoles</button>
+              <button class="subnav-pill" onclick="inspectScreen('EXP-04')">EXP-04 Planning Loges (Ewondo/Chanthel/Bene)</button>
+              <button class="subnav-pill" onclick="inspectScreen('EXP-05')">EXP-05 Restauration & Espaces</button>
+              <button class="subnav-pill" onclick="inspectScreen('EXP-06')">EXP-06 Candidatures CFP</button>
+              <button class="subnav-pill" onclick="inspectScreen('EXP-07')">EXP-07 Centre de Messages</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">EXP-01 à EXP-07 • Gestion Opérationnelle du Site d'Ahala</span>
+              <h2>Pilotage Quotidien : Capacités, Devis, Loges Hôtelières & CFP</h2>
+            </div>
+
+            <div class="grid-12">
+              <div class="col-6 card">
+                <h3>🏨 EXP-04 — Disponibilités des 3 Cités Hôtelières</h3>
+                <div class="table-responsive">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Cité / Loge</th>
+                        <th>Tarif Nuitée / Séjour</th>
+                        <th>Occupées / Total</th>
+                        <th>Statut Exploitation</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><strong>Cité Ewondo (VIP)</strong></td>
+                        <td>25 000 – 30 000 FCFA</td>
+                        <td>6 / 8 loges</td>
+                        <td><span class="status-badge status-success">2 disponibles</span></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Cité Chanthel (Confort)</strong></td>
+                        <td>15 000 – 25 000 FCFA</td>
+                        <td>9 / 12 loges</td>
+                        <td><span class="status-badge status-success">3 disponibles</span></td>
+                      </tr>
+                      <tr>
+                        <td><strong>Cité Bene (Standard)</strong></td>
+                        <td>10 000 – 15 000 FCFA</td>
+                        <td>10 / 10 loges</td>
+                        <td><span class="status-badge status-warning">Complet ce soir</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+
+              <div class="col-6 card">
+                <h3>🎓 EXP-03, EXP-06 & EXP-07 — Devis Écoles, Candidatures CFP & Support</h3>
+                <div class="table-responsive">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Module</th>
+                        <th>Dossier / Demandeur</th>
+                        <th>Détail</th>
+                        <th>Statut</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>EXP-03</code> Devis</td>
+                        <td>Groupe Scolaire Bilingue Bastos</td>
+                        <td>80 élèves (Maternelle/Primaire) • Zoo + Pirogue</td>
+                        <td><span class="status-badge status-info">Proforma 55 000 FCFA envoyée</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>EXP-06</code> CFP</td>
+                        <td>Ngaoundéré Paulin (Aquaculture)</td>
+                        <td>Inscription 50 000 FCFA réglée • Dossier MINEFOP complet</td>
+                        <td><span class="status-badge status-success">Admis Rentrée</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>EXP-07</code> Support</td>
+                        <td>Mme Charlotte Manuella</td>
+                        <td>Demande de grille tarifaire famille pour dimanche</td>
+                        <td><span class="status-badge status-success">Répondu en 12 min</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FAMILLE 7 : PILOTAGE & DIRECTION (DIR-01 à DIR-05)
+           ==================================================================== -->
+      <section class="family-view" id="view-DIR">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('DIR-01')">DIR-01 Tableau de Bord Exécutif</button>
+              <button class="subnav-pill" onclick="inspectScreen('DIR-02')">DIR-02 Recettes par Canal (MoMo/OM/Guichet)</button>
+              <button class="subnav-pill" onclick="inspectScreen('DIR-03')">DIR-03 Fréquentation par Pôle</button>
+              <button class="subnav-pill" onclick="inspectScreen('DIR-04')">DIR-04 Occupation Loges & Conversion B2B</button>
+              <button class="subnav-pill" onclick="inspectScreen('DIR-05')">DIR-05 Rapports & Exports Comptables</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">DIR-01 à DIR-05 • Vue Direction Générale ECOPARK</span>
+              <h2>Indicateurs Consolidés de Performance (en Francs CFA)</h2>
+            </div>
+
+            <div class="grid-12" style="margin-bottom:24px;">
+              <div class="col-3 card" style="background:var(--color-surface-soft);">
+                <span style="font-size:14px;color:var(--color-text-muted);">Recettes Mensuelles Consolidées (`DIR-01`)</span>
+                <strong style="font-family:var(--font-heading);font-size:2rem;color:var(--color-brand-deep);">18 450 000 FCFA</strong>
+                <span class="status-badge status-success">+34 % vs mois précédent</span>
+              </div>
+              <div class="col-3 card" style="background:var(--color-surface-soft);">
+                <span style="font-size:14px;color:var(--color-text-muted);">Part Billetterie Mobile Money (`DIR-02`)</span>
+                <strong style="font-family:var(--font-heading);font-size:2rem;color:var(--color-brand-deep);">42 % (7,74 M FCFA)</strong>
+                <span style="font-size:13.5px;">Orange Money (58 %) • MTN MoMo (42 %)</span>
+              </div>
+              <div class="col-3 card" style="background:var(--color-surface-soft);">
+                <span style="font-size:14px;color:var(--color-text-muted);">Visiteurs Accueillis (`DIR-03`)</span>
+                <strong style="font-family:var(--font-heading);font-size:2rem;color:var(--color-brand-deep);">4 820 visiteurs</strong>
+                <span style="font-size:13.5px;">Dont 1 450 élèves en sorties scolaires</span>
+              </div>
+              <div class="col-3 card" style="background:var(--color-surface-soft);">
+                <span style="font-size:14px;color:var(--color-text-muted);">Taux Occupation Loges (`DIR-04`)</span>
+                <strong style="font-family:var(--font-heading);font-size:2rem;color:var(--color-brand-deep);">78 %</strong>
+                <span style="font-size:13.5px;">Ewondo (84 %) • Chanthel (76 %) • Bene (74 %)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FAMILLE 8 : ADMINISTRATION DE LA PLATEFORME (ADM-01 à ADM-08)
+           ==================================================================== -->
+      <section class="family-view" id="view-ADM">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('ADM-01')">ADM-01 Catalogue Activités</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-02')">ADM-02 Règles Tarifaires & Âges</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-03')">ADM-03 Quotas & Horaires</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-04')">ADM-04 CMS Médias & Badges Photos</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-05')">ADM-05 Rôles & Permissions (7 Rôles)</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-06')">ADM-06/07 Paramètres & Intégrations (Sans secrets)</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-08')">ADM-08 Journal d'Audit Immuable</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">ADM-01 à ADM-08 • Gouvernance, Sécurité, Tarifs & Audit</span>
+              <h2>Administration de la Plateforme ECOPARK</h2>
+            </div>
+
+            <div class="grid-12">
+              <div class="col-6 card">
+                <h3>🔒 ADM-02 & ADM-07 — Verrouillage Tarifaire & Passerelles (Sans Secrets Exposés)</h3>
+                <ul style="padding-left:20px;font-size:15px;display:grid;gap:8px;">
+                  <li><strong>Règle `ADM-02` (Protection Tarif Enfant) :</strong> Verrouillage actif empêchant toute règle promotionnelle de remplacer le tarif enfant (`500 FCFA`) par un tarif groupe adulte (`700 FCFA`).</li>
+                  <li><strong>Passerelle Orange Money WebPay (`ADM-07`) :</strong> Clé API Marchand <code>••••••••••••••9F2A</code> (Masquée côté client, stockée en variable d'environnement serveur).</li>
+                  <li><strong>Passerelle MTN MoMo Collection (`ADM-07`) :</strong> Clé API Marchand <code>••••••••••••••4C81</code> (Masquée).</li>
+                </ul>
+              </div>
+
+              <div class="col-6 card">
+                <h3>🛡️ ADM-08 — Journal d'Audit des Actions Sensibles</h3>
+                <div class="table-responsive">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Horodatage</th>
+                        <th>Acteur & Rôle</th>
+                        <th>Action Auditée</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td>26/10/2026 08:45</td>
+                        <td>Admin Plateforme (ADM)</td>
+                        <td>Vérification de la grille tarifaire officielle en FCFA (0 tarif en devise étrangère).</td>
+                      </tr>
+                      <tr>
+                        <td>26/10/2026 09:12</td>
+                        <td>Mme Clarisse ATANGANA (AGT)</td>
+                        <td>Ouverture session caisse Guichet #1 (Fond : 50 000 FCFA).</td>
+                      </tr>
+                      <tr>
+                        <td>26/10/2026 11:30</td>
+                        <td>Chef d'Exploitation (EXP)</td>
+                        <td>Validation du devis scolaire <code>DEV-2026-3104</code>.</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ====================================================================
+           FAMILLE 1 : DESIGN SYSTEM & PLANCHES STITCH MCP (DS-01 à DS-08)
+           ==================================================================== -->
+      <section class="family-view" id="view-DS">
+        <div class="subnav-bar">
+          <div class="container">
+            <div class="subnav-list">
+              <button class="subnav-pill active" onclick="inspectScreen('DS-01')">DS-01 Logo & Principes</button>
+              <button class="subnav-pill" onclick="inspectScreen('DS-02')">DS-02 Palette & Typographies</button>
+              <button class="subnav-pill" onclick="inspectScreen('DS-03')">DS-03 Grille & Motif Radial</button>
+              <button class="subnav-pill" onclick="inspectScreen('DS-04')">DS-04/05/06/07/08 Bibliothèque Composants & Planches Stitch</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="section">
+          <div class="container">
+            <div class="section-header">
+              <span class="eyebrow">DS-01 à DS-08 • Fondations « Canopée vivante — Le cercle du vivant »</span>
+              <h2>Design System Complet ECOPARK & Planches Google Stitch MCP</h2>
+              <p style="color:var(--color-text-muted);margin-top:6px;">
+                Synchronisé avec le projet Google Stitch <code>522000543872634848</code> et documenté dans <code>DESIGN.md</code> et <code>MATRICE_COUVERTURE_77_ECRANS_ECOPARK.md</code>.
+              </p>
+            </div>
+
+            <div class="grid-12" style="margin-bottom:32px;">
+              <div class="col-4 card">
+                <h3>DS-01 — Logo Original sur Disque Blanc</h3>
+                <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--color-surface-soft);border-radius:12px;">
+                  <div class="brand-logo-disc" style="width:84px;height:84px;">
+                    <img src="audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png" alt="Logo original EcoPark CAMEROUN" />
+                  </div>
+                  <div style="font-size:14px;">
+                    <strong>Règles d'intégrité :</strong><br/>
+                    • Forme circulaire et disque blanc préservés.<br/>
+                    • Mention rouge <code>CAMEROUN</code> intacte.<br/>
+                    • Zéro refonte typographique.<br/>
+                    • Zone de protection $\ge 16\text{ px}$.
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-8 card">
+                <h3>DS-02 — Palette Validée & Contrastes WCAG AA/AAA</h3>
+                <div class="grid-12" style="gap:10px;">
+                  <div class="col-3" style="padding:12px;border:1px solid var(--color-border);border-radius:8px;background:#FFFFFF;">
+                    <strong>#FFFFFF</strong><br/><span style="font-size:13px;">--color-white (Surface dominante)</span>
+                  </div>
+                  <div class="col-3" style="padding:12px;border-radius:8px;background:#1D490D;color:#FFFFFF;">
+                    <strong>#1D490D</strong><br/><span style="font-size:13px;">--color-brand-deep (Titres & CTA)</span>
+                  </div>
+                  <div class="col-3" style="padding:12px;border-radius:8px;background:#1F880B;color:#FFFFFF;">
+                    <strong>#1F880B</strong><br/><span style="font-size:13px;">--color-brand-leaf (Repères actifs)</span>
+                  </div>
+                  <div class="col-3" style="padding:12px;border:1px solid var(--color-border);border-radius:8px;background:#EDF4E7;color:#1E281B;">
+                    <strong>#EDF4E7</strong><br/><span style="font-size:13px;">--color-surface-soft (Brume végétale)</span>
+                  </div>
+                </div>
+                <p style="font-size:14px;color:var(--color-text-muted);">
+                  <strong>Typographies :</strong> Titres en <code>Barlow Semi Condensed</code> (600, 700) • Textes et interfaces en <code>Source Sans 3</code> (400, 600). Aucun bouton jaune en action principale.
+                </p>
+              </div>
+            </div>
+
+            <!-- Galerie des 7 Planches Maîtresses exportées depuis Google Stitch MCP -->
+            <h3 style="margin-bottom:16px;">Planches Maîtresses Générées dans Google Stitch MCP (`projects/522000543872634848`)</h3>
+            <div class="grid-12">
+              <div class="col-6 card">
+                <strong>1. Planche Design System (`DS-01` à `DS-08`)</strong>
+                <div class="card-media-wrapper" style="aspect-ratio:16/10;">
+                  <img src="audit-assets/stitch-canopee-vivante/DS_01_08_Design_System.png" alt="Planche Stitch DS-01 à DS-08" />
+                </div>
+              </div>
+              <div class="col-6 card">
+                <strong>2. Accueil Maître Contexte Cameroun (`PUB-01` & `PUB-02`)</strong>
+                <div class="card-media-wrapper" style="aspect-ratio:16/10;">
+                  <img src="audit-assets/stitch-canopee-vivante/PUB_01_Accueil_Maitre_Cameroun.png" alt="Planche Stitch PUB-01 Accueil Cameroun" />
+                </div>
+              </div>
+              <div class="col-6 card">
+                <strong>3. Catalogue, Tarifs FCFA, Hôtels, Saveurs & CFP (`PUB-03` à `PUB-22`)</strong>
+                <div class="card-media-wrapper" style="aspect-ratio:16/10;">
+                  <img src="audit-assets/stitch-canopee-vivante/PUB_03_20_Catalogue_Tarifs_Hotels_CFP.png" alt="Planche Stitch PUB-03 à PUB-20" />
+                </div>
+              </div>
+              <div class="col-6 card">
+                <strong>4. Simulateur, Réservation, Billet QR & Espace Visiteur (`RES-01..12` & `ACC-01..06`)</strong>
+                <div class="card-media-wrapper" style="aspect-ratio:16/10;">
+                  <img src="audit-assets/stitch-canopee-vivante/RES_01_12_ACC_01_06_Reservation_Visiteur.png" alt="Planche Stitch RES & ACC" />
+                </div>
+              </div>
+              <div class="col-6 card">
+                <strong>5. Guichet, Scanner QR 7 États & Exploitation (`AGT-01..09` & `EXP-01..07`)</strong>
+                <div class="card-media-wrapper" style="aspect-ratio:16/10;">
+                  <img src="audit-assets/stitch-canopee-vivante/AGT_01_09_EXP_01_07_Guichet_Exploitation.png" alt="Planche Stitch AGT & EXP" />
+                </div>
+              </div>
+              <div class="col-6 card">
+                <strong>6. Direction Générale & Administration (`DIR-01..05` & `ADM-01..08`)</strong>
+                <div class="card-media-wrapper" style="aspect-ratio:16/10;">
+                  <img src="audit-assets/stitch-canopee-vivante/DIR_01_05_ADM_01_08_Direction_Admin.png" alt="Planche Stitch DIR & ADM" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- ======================================================================
+         PIED DE PAGE OFFICIEL ECOPARK CAMEROUN (SANS MARQUE TIERCE)
+         ====================================================================== -->
+    <footer class="site-footer">
+      <div class="container">
+        <div class="grid-12">
+          <div class="col-5">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+              <div class="brand-logo-disc" style="width:54px;height:54px;">
+                <img src="audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png" alt="Logo EcoPark CAMEROUN" />
+              </div>
+              <div>
+                <strong style="font-family:var(--font-heading);font-size:1.3rem;color:var(--color-brand-deep);">ECOPARK CAMEROUN</strong>
+                <div style="font-size:13.5px;color:var(--color-text-muted);">Complexe Agro-Écotouristique, Loisirs, Hébergement & Formation</div>
+              </div>
+            </div>
+            <p style="font-size:14.5px;color:var(--color-text-muted);max-width:440px;">
+              Quartier Ahala Barrière, Route Nationale N°3 (Axe Yaoundé – Douala, après la station Tradex), Yaoundé, Cameroun.
+            </p>
+          </div>
+          <div class="col-4">
+            <h4 style="margin-bottom:10px;">Accès Rapides</h4>
+            <ul style="list-style:none;display:grid;gap:6px;font-size:14.5px;">
+              <li><a href="#tarifs" onclick="navigateFamily('PUB', 'PUB-10'); return false;">Grille Tarifaire Officielle (FCFA)</a></li>
+              <li><a href="#simulateur" onclick="navigateFamily('RES', 'RES-03'); return false;">Simulateur de Budget & Billetterie</a></li>
+              <li><a href="#loges" onclick="navigateFamily('PUB', 'PUB-08'); return false;">Cités Hôtelières Ewondo, Chanthel & Bene</a></li>
+              <li><a href="#cfp" onclick="navigateFamily('PUB', 'PUB-12'); return false;">Centre de Formation Professionnelle (CFP)</a></li>
+            </ul>
+          </div>
+          <div class="col-3">
+            <h4 style="margin-bottom:10px;">Horaires & Contact</h4>
+            <p style="font-size:14.5px;color:var(--color-text-muted);display:grid;gap:4px;">
+              <span><strong>Mardi – Dimanche :</strong> 09h00 – 18h00</span>
+              <span><strong>Hébergement Loges :</strong> Réception 24h/24</span>
+              <span><strong>Tél :</strong> +237 697 13 62 03 / 675 56 26 55</span>
+              <span><strong>Email :</strong> contact@ecopark-yaounde.com</span>
+            </p>
+          </div>
+        </div>
+        <div style="border-top:1px solid var(--color-border);margin-top:28px;padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13.5px;color:var(--color-text-muted);">
+          <span>© 2026 ECOPARK CAMEROUN (Yaoundé-Ahala). Tous droits réservés.</span>
+          <span>Mentions légales (`PUB-20`) • Politique de confidentialité • Conditions générales de réservation</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- ========================================================================
+       LOGIQUE INTERACTIVE : 77 ÉCRANS, SIMULATEUR FCFA, SCANNER QR 7 ÉTATS
+       ======================================================================== -->
+  <script>
+    // Inventaire contractuel complet des 77 écrans
+    const SCREENS_77 = [
+      // Famille 1 : DS (8)
+      { id: 'DS-01', family: 'DS', title: "Couverture, principes graphiques et règles d'usage du logo" },
+      { id: 'DS-02', family: 'DS', title: "Couleurs, contrastes, typographies et échelle de texte" },
+      { id: 'DS-03', family: 'DS', title: "Grille, espacements, rayons, ombres et motifs végétaux" },
+      { id: 'DS-04', family: 'DS', title: "Boutons, liens, badges, étiquettes et icônes" },
+      { id: 'DS-05', family: 'DS', title: "Champs de formulaire, sélecteurs, calendrier, compteurs et validations" },
+      { id: 'DS-06', family: 'DS', title: "Cartes d'offre, cartes d'hébergement, tableaux de tarifs, accordéons et modales" },
+      { id: 'DS-07', family: 'DS', title: "En-tête, navigation principale, navigation mobile, fil d'Ariane et pied de page" },
+      { id: 'DS-08', family: 'DS', title: "Composants métier : simulateur, panier, billet QR démo, scan entrée et KPIs" },
+      // Famille 2 : PUB (22)
+      { id: 'PUB-01', family: 'PUB', title: "Accueil ECOPARK CAMEROUN" },
+      { id: 'PUB-02', family: 'PUB', title: "Découvrir ECOPARK : présentation, plan d'orientation illustré et engagements" },
+      { id: 'PUB-03', family: 'PUB', title: "Catalogue des expériences et activités avec filtres" },
+      { id: 'PUB-04', family: 'PUB', title: "Fiche détail d'une activité ou expérience (Balade en pirogue)" },
+      { id: 'PUB-05', family: 'PUB', title: "Nature, faune et espaces de découverte (Jardin zoologique & botanique)" },
+      { id: 'PUB-06', family: 'PUB', title: "Loisirs aquatiques et activités de plein air (Piscine, Lac, Équitation)" },
+      { id: 'PUB-07', family: 'PUB', title: "Restauration et espaces de détente (Le Château des Saveurs en FCFA)" },
+      { id: 'PUB-08', family: 'PUB', title: "Hébergement : vue d'ensemble (Cités Ewondo, Chanthel & Bene)" },
+      { id: 'PUB-09', family: 'PUB', title: "Fiche détail d'une formule d'hébergement (Loge Ewondo)" },
+      { id: 'PUB-10', family: 'PUB', title: "Tarifs, formules et conditions (Grille officielle en FCFA)" },
+      { id: 'PUB-11', family: 'PUB', title: "Groupes, écoles, entreprises et événements" },
+      { id: 'PUB-12', family: 'PUB', title: "Formation professionnelle : présentation, filières, conditions et candidature (CFP)" },
+      { id: 'PUB-13', family: 'PUB', title: "Informations pratiques : horaires, accès Ahala Barrière, conseils et météo" },
+      { id: 'PUB-14', family: 'PUB', title: "Galerie média (Photos réelles ECOPARK & Illustrations locales badgées)" },
+      { id: 'PUB-15', family: 'PUB', title: "Actualités et événements au parc" },
+      { id: 'PUB-16', family: 'PUB', title: "Fiche détail d'une actualité ou d'un événement" },
+      { id: 'PUB-17', family: 'PUB', title: "Foire aux questions (FAQ)" },
+      { id: 'PUB-18', family: 'PUB', title: "Contact et localisation à Yaoundé-Ahala" },
+      { id: 'PUB-19', family: 'PUB', title: "Recherche globale et résultats" },
+      { id: 'PUB-20', family: 'PUB', title: "Pages légales : mentions légales, confidentialité, CGV et cookies" },
+      { id: 'PUB-21', family: 'PUB', title: "Page 404 — Page introuvable" },
+      { id: 'PUB-22', family: 'PUB', title: "Page maintenance ou service momentanément indisponible" },
+      // Famille 3 : RES (12)
+      { id: 'RES-01', family: 'RES', title: "Assistant « Préparer ma visite »" },
+      { id: 'RES-02', family: 'RES', title: "Sélection de la date, du créneau et de la composition du groupe" },
+      { id: 'RES-03', family: 'RES', title: "Simulateur de budget en FCFA et sélection des prestations" },
+      { id: 'RES-04', family: 'RES', title: "Panier et récapitulatif détaillé des prestations" },
+      { id: 'RES-05', family: 'RES', title: "Coordonnées du visiteur ou du responsable de groupe" },
+      { id: 'RES-06', family: 'RES', title: "Demande de devis groupe, école, entreprise ou événement" },
+      { id: 'RES-07', family: 'RES', title: "Choix du mode de règlement ou de réservation" },
+      { id: 'RES-08', family: 'RES', title: "Écran de paiement Mobile Money en mode démonstration (Sans PIN)" },
+      { id: 'RES-09', family: 'RES', title: "Confirmation de réservation avec billet QR de démonstration" },
+      { id: 'RES-10', family: 'RES', title: "Confirmation de demande de devis avec numéro de suivi" },
+      { id: 'RES-11', family: 'RES', title: "Échec, expiration ou annulation de paiement avec reprise" },
+      { id: 'RES-12', family: 'RES', title: "Recherche et consultation d'une réservation par référence" },
+      // Famille 4 : ACC (6)
+      { id: 'ACC-01', family: 'ACC', title: "Connexion, création d'accès ou vérification par code (+237)" },
+      { id: 'ACC-02', family: 'ACC', title: "Tableau de bord visiteur" },
+      { id: 'ACC-03', family: 'ACC', title: "Mes réservations et billets QR" },
+      { id: 'ACC-04', family: 'ACC', title: "Mes demandes de devis et échanges" },
+      { id: 'ACC-05', family: 'ACC', title: "Demande de modification, report ou annulation" },
+      { id: 'ACC-06', family: 'ACC', title: "Profil, coordonnées et préférences" },
+      // Famille 5 : AGT (9)
+      { id: 'AGT-01', family: 'AGT', title: "Connexion agent et choix du poste (Guichet / Tourniquet)" },
+      { id: 'AGT-02', family: 'AGT', title: "Tableau de bord guichet du jour" },
+      { id: 'AGT-03', family: 'AGT', title: "Vente rapide au guichet" },
+      { id: 'AGT-04', family: 'AGT', title: "Encaissement et émission de billet" },
+      { id: 'AGT-05', family: 'AGT', title: "Scan et vérification de billet QR" },
+      { id: 'AGT-06', family: 'AGT', title: "Résultats de contrôle : 7 verdicts (Valide, Déjà utilisé, Mauvaise date...)" },
+      { id: 'AGT-07', family: 'AGT', title: "Recherche manuelle par nom, téléphone ou référence" },
+      { id: 'AGT-08', family: 'AGT', title: "Journal des ventes et entrées de la session" },
+      { id: 'AGT-09', family: 'AGT', title: "Clôture de caisse et écarts" },
+      // Famille 6 : EXP (7)
+      { id: 'EXP-01', family: 'EXP', title: "Vue d'exploitation quotidienne" },
+      { id: 'EXP-02', family: 'EXP', title: "Gestion des réservations et calendrier de capacité" },
+      { id: 'EXP-03', family: 'EXP', title: "Gestion des demandes de devis groupes et événements" },
+      { id: 'EXP-04', family: 'EXP', title: "Gestion des hébergements et disponibilités (Loges Ewondo/Chanthel/Bene)" },
+      { id: 'EXP-05', family: 'EXP', title: "Gestion des réservations restauration et espaces" },
+      { id: 'EXP-06', family: 'EXP', title: "Gestion des candidatures de formation (CFP ECOPARK)" },
+      { id: 'EXP-07', family: 'EXP', title: "Centre de messages, réclamations et demandes de contact" },
+      // Famille 7 : DIR (5)
+      { id: 'DIR-01', family: 'DIR', title: "Tableau de bord direction" },
+      { id: 'DIR-02', family: 'DIR', title: "Suivi des recettes, réservations et ventes par canal" },
+      { id: 'DIR-03', family: 'DIR', title: "Fréquentation par activité, période et segment" },
+      { id: 'DIR-04', family: 'DIR', title: "Taux d'occupation hébergement et performance des offres groupes" },
+      { id: 'DIR-05', family: 'DIR', title: "Rapports et exports" },
+      // Famille 8 : ADM (8)
+      { id: 'ADM-01', family: 'ADM', title: "Catalogue des activités, offres et formules" },
+      { id: 'ADM-02', family: 'ADM', title: "Grille tarifaire, règles par âge, périodes et promotions" },
+      { id: 'ADM-03', family: 'ADM', title: "Quotas, capacités, horaires et fermetures exceptionnelles" },
+      { id: 'ADM-04', family: 'ADM', title: "Contenus éditoriaux, médias, actualités et FAQ" },
+      { id: 'ADM-05', family: 'ADM', title: "Utilisateurs internes, rôles et permissions (7 rôles)" },
+      { id: 'ADM-06', family: 'ADM', title: "Paramètres du site, coordonnées, horaires et textes légaux" },
+      { id: 'ADM-07', family: 'ADM', title: "Paramètres d'intégration : paiement, messagerie, analytique (Sans secrets)" },
+      { id: 'ADM-08', family: 'ADM', title: "Journal d'audit et historique des actions sensibles" }
+    ];
+
+    let currentFilterFamily = 'ALL';
+    let currentScreenId = 'PUB-01';
+    let counts = { adults: 2, children: 2, toddlers: 1 };
+    let posItems = [
+      { name: 'Entrée Zoo Adulte', price: 1000, qty: 2 },
+      { name: 'Entrée Zoo Enfant', price: 500, qty: 1 }
+    ];
+
+    function renderInspectorPills() {
+      const grid = document.getElementById('screenPillGrid');
+      grid.innerHTML = '';
+      SCREENS_77.filter(s => currentFilterFamily === 'ALL' || s.family === currentFilterFamily)
+        .forEach(s => {
+          const btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'screen-pill' + (s.id === currentScreenId ? ' active' : '');
+          btn.textContent = `${s.id} — ${s.title}`;
+          btn.onclick = () => navigateFamily(s.family, s.id);
+          grid.appendChild(btn);
+        });
+    }
+
+    function filterInspectorFamily(fam) {
+      currentFilterFamily = fam;
+      renderInspectorPills();
+    }
+
+    function toggleInspectorDrawer() {
+      const drawer = document.getElementById('inspectorDrawer');
+      drawer.classList.toggle('open');
+    }
+
+    function toggleMobileViewport() {
+      document.body.classList.toggle('viewport-mobile');
+    }
+
+    function switchUIState(state) {
+      ['Loading', 'Empty', 'Error', 'Offline'].forEach(k => {
+        document.getElementById('stateBanner' + k).classList.remove('active');
+      });
+      if (state === 'loading') document.getElementById('stateBannerLoading').classList.add('active');
+      if (state === 'empty') document.getElementById('stateBannerEmpty').classList.add('active');
+      if (state === 'error') document.getElementById('stateBannerError').classList.add('active');
+      if (state === 'offline') document.getElementById('stateBannerOffline').classList.add('active');
+    }
+
+    function switchRole(role) {
+      const roleMap = {
+        visiteur: ['PUB', 'PUB-01'],
+        client: ['ACC', 'ACC-02'],
+        guichet: ['AGT', 'AGT-03'],
+        controle: ['AGT', 'AGT-05'],
+        exploitation: ['EXP', 'EXP-01'],
+        direction: ['DIR', 'DIR-01'],
+        admin: ['ADM', 'ADM-01']
+      };
+      const target = roleMap[role] || ['PUB', 'PUB-01'];
+      navigateFamily(target[0], target[1]);
+    }
+
+    function navigateFamily(family, screenId) {
+      document.querySelectorAll('.family-view').forEach(el => el.classList.remove('active'));
+      const targetView = document.getElementById('view-' + family);
+      if (targetView) targetView.classList.add('active');
+
+      document.querySelectorAll('.main-nav .nav-item').forEach(el => el.classList.remove('active'));
+      const navBtn = document.getElementById('nav-' + family);
+      if (navBtn) navBtn.classList.add('active');
+
+      inspectScreen(screenId || (family + '-01'));
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function inspectScreen(screenId) {
+      currentScreenId = screenId;
+      const found = SCREENS_77.find(s => s.id === screenId) || SCREENS_77[8];
+      document.getElementById('currentScreenCode').textContent = found.id;
+      document.getElementById('currentScreenTitle').textContent = found.title;
+      document.getElementById('currentScreenFamilyLabel').textContent = `(Famille : ${found.family} • 77/77 écrans couverts)`;
+      renderInspectorPills();
+
+      const anchorSection = document.getElementById('sec-' + screenId);
+      if (anchorSection) {
+        anchorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    }
+
+    function formatFCFA(num) {
+      return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ' ') + ' FCFA';
+    }
+
+    function changeCount(type, delta) {
+      counts[type] = Math.max(0, counts[type] + delta);
+      if (counts.adults === 0 && counts.children === 0) counts.adults = 1;
+      document.getElementById('countAdults').textContent = counts.adults;
+      document.getElementById('countChildren').textContent = counts.children;
+      document.getElementById('countToddlers').textContent = counts.toddlers;
+      recalcSimulator();
+    }
+
+    function recalcSimulator() {
+      const totalPayingPax = counts.adults + counts.children;
+      const isGroup20Plus = totalPayingPax >= 20;
+
+      // RÈGLE MÉTIER STRICTE :
+      // En groupe (>=20), l'entrée adulte passe de 1 000 à 700 FCFA,
+      // MAIS l'entrée enfant reste protégée à 500 FCFA (jamais majorée à 700 FCFA !).
+      const zooAdultUnit = isGroup20Plus ? 700 : 1000;
+      const zooChildUnit = 500;
+
+      const zooCost = document.getElementById('chkZoo').checked
+        ? (counts.adults * zooAdultUnit + counts.children * zooChildUnit) : 0;
+      const piscineCost = document.getElementById('chkPiscine').checked
+        ? (counts.adults * 2500 + counts.children * 1500) : 0;
+      const pirogueCost = document.getElementById('chkPirogue').checked
+        ? (counts.adults * 1000 + counts.children * 500) : 0;
+      const chevalCost = document.getElementById('chkCheval').checked
+        ? (counts.adults * 1000 + counts.children * 500) : 0;
+      const repasCost = document.getElementById('chkRepas').checked
+        ? (counts.adults * 5000 + counts.children * 2500) : 0;
+
+      document.getElementById('subZoo').textContent = formatFCFA(zooCost);
+      document.getElementById('subPiscine').textContent = formatFCFA(piscineCost);
+      document.getElementById('subPirogue').textContent = formatFCFA(pirogueCost);
+      document.getElementById('subCheval').textContent = formatFCFA(chevalCost);
+      document.getElementById('subRepas').textContent = formatFCFA(repasCost);
+
+      const total = zooCost + piscineCost + pirogueCost + chevalCost + repasCost;
+      document.getElementById('grandTotalFCFA').textContent = formatFCFA(total);
+
+      const badge = document.getElementById('groupStatusBadge');
+      if (isGroup20Plus) {
+        badge.textContent = 'Groupe 20+ (Adulte 700 FCFA / Enfant protégé 500 FCFA)';
+        badge.className = 'status-badge status-info';
+      } else {
+        badge.textContent = 'Tarif Individuel / Famille';
+        badge.className = 'status-badge status-success';
+      }
+
+      const lines = [];
+      lines.push(`<div>👥 <strong>Participants :</strong> ${counts.adults} Adulte(s), ${counts.children} Enfant(s) (3-12 ans), ${counts.toddlers} Tout-petit(s) (<3 ans : Gratuit)</div>`);
+      if (zooCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Entrée Parc & Zoo (${counts.adults}×${zooAdultUnit} + ${counts.children}×${zooChildUnit})</span><strong>${formatFCFA(zooCost)}</strong></div>`);
+      if (piscineCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Piscine Semi-Olympique</span><strong>${formatFCFA(piscineCost)}</strong></div>`);
+      if (pirogueCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Balade en Pirogue (Lac d'Ahala)</span><strong>${formatFCFA(pirogueCost)}</strong></div>`);
+      if (chevalCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Équitation / Manèges</span><strong>${formatFCFA(chevalCost)}</strong></div>`);
+      if (repasCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Repas Le Château des Saveurs</span><strong>${formatFCFA(repasCost)}</strong></div>`);
+      document.getElementById('cartBreakdown').innerHTML = lines.join('');
+      document.getElementById('ticketPax').textContent = `${counts.adults} Adulte(s), ${counts.children} Enfant(s), ${counts.toddlers} Tout-petit(s)`;
+    }
+
+    function addActivityAndGo(actKey) {
+      navigateFamily('RES', 'RES-03');
+      if (actKey === 'zoo') document.getElementById('chkZoo').checked = true;
+      if (actKey === 'piscine') document.getElementById('chkPiscine').checked = true;
+      if (actKey === 'pirogue') document.getElementById('chkPirogue').checked = true;
+      if (actKey === 'cheval') document.getElementById('chkCheval').checked = true;
+      recalcSimulator();
+    }
+
+    function updatePaymentDemoState(state) {
+      const box = document.getElementById('momoStateFeedback');
+      const map = {
+        CONFIRMED: { cls: 'status-badge status-success', text: '✅ Paiement de démonstration confirmé — Billet QR ECP-2026-84920 actif' },
+        PENDING: { cls: 'status-badge status-info', text: '⏳ En attente : composez #150# (Orange) ou *126# (MTN) sur votre téléphone pour valider' },
+        FAILED: { cls: 'status-badge status-error', text: '❌ Paiement échoué (Solde insuffisant). Votre panier reste sauvegardé (RES-11)' },
+        EXPIRED: { cls: 'status-badge status-warning', text: '⌛ Délai de confirmation expiré. Cliquez pour relancer une notification ou payer au guichet' },
+        CANCELLED: { cls: 'status-badge status-warning', text: '🚫 Transaction annulée sur le mobile. Vous pouvez choisir un autre mode de règlement' }
+      };
+      const cfg = map[state] || map.CONFIRMED;
+      box.className = cfg.cls;
+      box.textContent = cfg.text;
+    }
+
+    // Guichet POS (AGT-03 / AGT-04)
+    function renderPos() {
+      const listEl = document.getElementById('posItemsList');
+      const totalEl = document.getElementById('posTotalFCFA');
+      if (posItems.length === 0) {
+        listEl.textContent = 'Aucune prestation sélectionnée.';
+        totalEl.textContent = '0 FCFA';
+        return;
+      }
+      let sum = 0;
+      listEl.innerHTML = posItems.map(item => {
+        const sub = item.price * item.qty;
+        sum += sub;
+        return `<div>• ${item.qty}× ${item.name} : <strong>${formatFCFA(sub)}</strong></div>`;
+      }).join('');
+      totalEl.textContent = formatFCFA(sum);
+    }
+
+    function addPosItem(name, price) {
+      const existing = posItems.find(i => i.name === name);
+      if (existing) existing.qty += 1;
+      else posItems.push({ name, price, qty: 1 });
+      renderPos();
+    }
+
+    function clearPos() {
+      posItems = [];
+      renderPos();
+    }
+
+    function emitPosTicket(method) {
+      alert(`Ticket Guichet émis (${method}) — Impression thermique avec QR Code unique enregistrée dans le journal de session (AGT-08).`);
+    }
+
+    // Contrôle des entrées : 7 verdicts (AGT-06)
+    function triggerScanVerdict(verdict) {
+      inspectScreen('AGT-06');
+      const box = document.getElementById('scanResultBox');
+      const title = document.getElementById('scanResultTitle');
+      const desc = document.getElementById('scanResultDesc');
+
+      const verdicts = {
+        VALID: {
+          bg: 'var(--color-success-bg)', color: 'var(--color-success-text)', border: 'var(--color-success-border)',
+          title: '1/7 • ✅ BILLET VALIDE — AUTORISER L\'ENTRÉE',
+          desc: 'Référence ECP-2026-84920 • M. Jean-Paul MBARGA (2 Adultes, 2 Enfants). Prestations : Zoo + Piscine + Pirogue.'
+        },
+        USED: {
+          bg: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: 'var(--color-error-border)',
+          title: '2/7 • ⛔ BILLET DÉJÀ UTILISÉ — REFUSER L\'ENTRÉE',
+          desc: 'Ce code QR a déjà été scanné aujourd\'hui à 10h14 au Tourniquet Principal par Mme Clarisse ATANGANA.'
+        },
+        WRONG_DATE: {
+          bg: 'var(--color-warning-bg)', color: 'var(--color-warning-text)', border: 'var(--color-warning-border)',
+          title: '3/7 • 📅 MAUVAISE DATE DE VISITE',
+          desc: 'Ce billet est valable pour le 22/11/2026. Orienter le visiteur vers le Guichet #1 pour un report de date.'
+        },
+        EXPIRED: {
+          bg: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: 'var(--color-error-border)',
+          title: '4/7 • ⌛ BILLET EXPIRÉ',
+          desc: 'La date de validité de ce billet (12/09/2026) est dépassée.'
+        },
+        CANCELLED: {
+          bg: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: 'var(--color-error-border)',
+          title: '5/7 • 🚫 BILLET ANNULÉ',
+          desc: 'Cette réservation a été annulée avant règlement.'
+        },
+        WRONG_ZONE: {
+          bg: 'var(--color-warning-bg)', color: 'var(--color-warning-text)', border: 'var(--color-warning-border)',
+          title: '6/7 • ⚠️ PRESTATION DIFFÉRENTE (ACCÈS PISCINE NON INCLUS)',
+          desc: 'Ce billet inclut uniquement l\'Entrée Parc & Zoo (500/1 000 FCFA). Proposer le supplément Piscine (1 500/2 500 FCFA) en caisse.'
+        },
+        UNKNOWN: {
+          bg: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: 'var(--color-error-border)',
+          title: '7/7 • ❓ CODE QR INCONNU',
+          desc: 'Aucune réservation ECOPARK ne correspond à ce code. Utiliser la recherche manuelle par nom ou téléphone (AGT-07).'
+        }
+      };
+
+      const v = verdicts[verdict] || verdicts.VALID;
+      box.style.background = v.bg;
+      box.style.color = v.color;
+      box.style.borderColor = v.border;
+      title.textContent = v.title;
+      desc.textContent = v.desc;
+    }
+
+    function filterFAQSearch(query) {
+      inspectScreen('PUB-19');
+      const q = (query || '').toLowerCase();
+      const container = document.getElementById('faqListContainer');
+      if (q.includes('introuvable') || q.includes('xyz')) {
+        container.innerHTML = `<div style="padding:12px;background:var(--color-warning-bg);color:var(--color-warning-text);border-radius:8px;">Aucun résultat pour « ${query} » (État vide PUB-19). Essayez « piscine », « pirogue », « Ewondo » ou « CFP ».</div>`;
+      }
+    }
+
+    // Initialisation au chargement
+    renderInspectorPills();
+    recalcSimulator();
+    renderPos();
+  </script>
+</body>
+</html>
+"""
+
+OUTPUT_HTML.write_text(HTML_CONTENT, encoding="utf-8")
+print(f"Prototype ecrit avec succes : {OUTPUT_HTML} ({OUTPUT_HTML.stat().st_size} octets)")

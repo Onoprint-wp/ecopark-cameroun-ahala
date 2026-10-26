@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+
+<html class="h-full" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECOPARK Yaoundé — Réservation &amp; Espace Visiteur</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700&amp;family=Source+Sans+3:wght@400;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          "colors": {
+            "surface-bright": "#f1fde8",
+            "outline-variant": "#c2c9ba",
+            "surface": "#f1fde8",
+            "on-secondary-fixed-variant": "#0a5300",
+            "tertiary-fixed": "#dee5d8",
+            "on-error": "#ffffff",
+            "tertiary": "#252c24",
+            "on-secondary-container": "#127500",
+            "surface-container-highest": "#dae6d2",
+            "secondary-container": "#92fb76",
+            "inverse-on-surface": "#e8f5e0",
+            "tertiary-fixed-dim": "#c2c9bc",
+            "primary-container": "#1d490d",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-high": "#e0ecd8",
+            "on-tertiary-fixed-variant": "#42493f",
+            "on-secondary": "#ffffff",
+            "inverse-primary": "#a1d589",
+            "background": "#f1fde8",
+            "inverse-surface": "#293326",
+            "secondary-fixed-dim": "#77de5d",
+            "primary-fixed-dim": "#a1d589",
+            "on-secondary-fixed": "#022100",
+            "on-background": "#141e12",
+            "on-primary": "#ffffff",
+            "secondary": "#106e00",
+            "on-primary-fixed-variant": "#245014",
+            "primary-fixed": "#bcf1a2",
+            "on-error-container": "#93000a",
+            "tertiary-container": "#3b4239",
+            "on-tertiary": "#ffffff",
+            "on-primary-container": "#86b970",
+            "surface-container-low": "#ebf7e3",
+            "secondary-fixed": "#92fb76",
+            "on-surface-variant": "#42493d",
+            "on-primary-fixed": "#052100",
+            "surface-container": "#e6f2dd",
+            "primary": "#0a3100",
+            "surface-dim": "#d2deca",
+            "error": "#ba1a1a",
+            "on-tertiary-container": "#a7aea2",
+            "error-container": "#ffdad6",
+            "on-tertiary-fixed": "#171d16",
+            "surface-tint": "#3c692a",
+            "outline": "#72796c",
+            "surface-variant": "#dae6d2",
+            "on-surface": "#141e12"
+          },
+          "borderRadius": {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          "spacing": {
+            "space-xl": "2.5rem",
+            "space-xs": "0.25rem",
+            "margin": "3rem",
+            "gutter": "1.5rem",
+            "space-md": "1rem",
+            "space-lg": "1.5rem",
+            "margin-mobile": "1.25rem",
+            "gutter-mobile": "1rem",
+            "space-sm": "0.5rem"
+          },
+          "fontFamily": {
+            "label-sm": ["\"Source Sans 3\""],
+            "headline-lg-mobile": ["Barlow Condensed"],
+            "headline-sm": ["Barlow Condensed"],
+            "display-lg-mobile": ["Barlow Condensed"],
+            "label-md": ["\"Source Sans 3\""],
+            "headline-md": ["Barlow Condensed"],
+            "display-lg": ["Barlow Condensed"],
+            "body-sm": ["\"Source Sans 3\""],
+            "body-md": ["\"Source Sans 3\""],
+            "title-md": ["\"Source Sans 3\""],
+            "body-lg": ["\"Source Sans 3\""],
+            "headline-lg": ["Barlow Condensed"]
+          },
+          "fontSize": {
+            "label-sm": ["11px", { "lineHeight": "16px", "letterSpacing": "0.06em", "fontWeight": "700" }],
+            "headline-lg-mobile": ["30px", { "lineHeight": "36px", "fontWeight": "600" }],
+            "headline-sm": ["22px", { "lineHeight": "28px", "fontWeight": "600" }],
+            "display-lg-mobile": ["38px", { "lineHeight": "44px", "letterSpacing": "0em", "fontWeight": "700" }],
+            "label-md": ["13px", { "lineHeight": "18px", "letterSpacing": "0.04em", "fontWeight": "600" }],
+            "headline-md": ["28px", { "lineHeight": "34px", "fontWeight": "600" }],
+            "display-lg": ["56px", { "lineHeight": "64px", "letterSpacing": "-0.01em", "fontWeight": "700" }],
+            "body-sm": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+            "body-md": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+            "title-md": ["18px", { "lineHeight": "24px", "fontWeight": "600" }],
+            "body-lg": ["18px", { "lineHeight": "28px", "fontWeight": "400" }],
+            "headline-lg": ["40px", { "lineHeight": "48px", "fontWeight": "600" }]
+          }
+        }
+      }
+    }
+  </script>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-full flex flex-col">
+<!-- TopNavBar (Web Header) -->
+<header class="bg-surface-container-lowest sticky top-0 z-40 shadow-sm w-full px-space-lg flex justify-between items-center h-16">
+<div class="flex items-center space-x-6">
+<span class="text-headline-sm font-headline-sm uppercase tracking-wide text-primary font-bold">ECOPARK Yaoundé</span>
+<div class="hidden md:flex items-center space-x-4">
+<a class="text-primary font-title-md text-title-md border-b-2 border-primary pb-1" href="#reservation">Réservation</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-150" href="#groupe">Devis Groupe</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-150" href="#billet">Billet QR</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-150" href="#espace">Espace Visiteur</a>
+</div>
+</div>
+<div class="flex items-center space-x-3">
+<div class="relative hidden sm:block">
+<span class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+<span class="material-symbols-outlined text-sm">search</span>
+</span>
+<input class="bg-surface-container-low border border-outline-variant rounded-lg pl-9 pr-4 py-1.5 text-body-sm focus:outline-none focus:border-primary" placeholder="Rechercher une activité..." type="text"/>
+</div>
+<button class="bg-[#1D490D] text-white px-4 py-2 rounded-lg font-label-md text-label-md hover:bg-[#16390A] transition-all active:scale-98">
+        Scan Ticket
+      </button>
+<button aria-label="Notifications" class="p-2 rounded-full hover:bg-surface-container text-on-surface-variant">
+<span class="material-symbols-outlined">notifications</span>
+</button>
+<img class="w-9 h-9 rounded-full object-cover border border-outline-variant" data-alt="Internal Park Ranger Agent Profile Avatar showing a smiling African park ranger in a green conservation uniform with lush tropical foliage in the background under bright equatorial sunlight." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDZyREV9x6Z5A2aG7791SIdgMPfXj-CBlrCgSPke_QC4kxKLf-4LMKK4RfDBS2SOwYpjcEn7N9Jj00SoWWWUDlk_Ra2GMPkwLck2o0JlrrzXSTFy7w2UF5yTbJy7ZWww6rDbBuoIdL4iY1vxDq5OOvfuKzPC1agb29cSkkPnyFy5mH0zyU_iqtL1GOBp-lKuWgQCnV7NnswcfpBgT1Wibo7Duei-pNTCAsH9ww4ct301FaW8kcI96xXUNi4DuWjtBbLgMirsvvhgg"/>
+</div>
+</header>
+<!-- Main Content Canvas -->
+<main class="flex-1 max-w-[1280px] w-full mx-auto px-4 md:px-12 py-8 space-y-12">
+<!-- Hero Section with Asymmetric Layout -->
+<section class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-10 shadow-sm">
+<div class="lg:col-span-7 space-y-6">
+<div class="inline-flex items-center space-x-2 bg-surface-container px-3 py-1 rounded-full border border-outline-variant">
+<span class="w-2.5 h-2.5 rounded-full bg-[#1F880B]"></span>
+<span class="font-label-sm text-label-sm text-primary uppercase">Sanctuaire Naturel &amp; Loisirs • Ahala</span>
+</div>
+<h1 class="font-headline-lg text-headline-lg md:text-display-lg text-primary leading-tight">
+          Parcours de Réservation &amp; Espace Visiteur ECOPARK
+        </h1>
+<p class="text-body-lg text-on-surface-variant">
+          Vivez l'expérience unique de la canopée vivante à Yaoundé. Réservez vos billets, planifiez vos excursions scolaires, séminaires à la salle Menkii Essomba Anton et gérez votre espace visiteur en toute sérénité.
+        </p>
+<div class="flex flex-wrap gap-4 pt-2">
+<a class="bg-[#1D490D] text-white px-6 py-3 rounded-lg font-title-md text-title-md hover:bg-[#16390A] transition-all shadow-sm" href="#reservation">
+            Réserver un Billet
+          </a>
+<a class="bg-white text-[#1D490D] border-1.5 border-[#1D490D] px-6 py-3 rounded-lg font-title-md text-title-md hover:bg-surface-container transition-all" href="#groupe">
+            Demande Groupe &amp; Séminaire
+          </a>
+</div>
+</div>
+<div class="lg:col-span-5 grid grid-cols-2 gap-4">
+<div class="space-y-4">
+<img alt="Family walking in the lush tropical forest path of Ecopark Yaoundé Ahala under golden sunlight filtering through dense green canopy foliage." class="rounded-xl object-cover h-48 w-full shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1WKgDH3X52sb7b2Ji_DnwN15J9fiEc0b5oT4Dh7rm5pO7vEaX5_WZc7yZgDk5_ZdpacigvUt_RlE7vjRETaFk4B3IjIp6muijdKIDzZ8VkPKmsIY99zCUPJkbnfHjSmArAj5oVU3vqCtxqfcWVtIUgn3CbcxNcvEwt3x3dumcQ1B5K8BX0uDuxQzX837tStCa1uLV2nQGKVVAwa6XmOmlXXbwmzvCKkG6-OoMxtJ2cs7jW3iFL6X8jlWg"/>
+<div class="bg-surface-container p-4 rounded-xl border border-outline-variant">
+<span class="font-headline-sm text-headline-sm text-primary">2,500 FCFA</span>
+<p class="text-body-sm text-on-surface-variant">Tarif Adulte Entrée Parc</p>
+</div>
+</div>
+<div class="space-y-4 pt-6">
+<div class="bg-surface-container p-4 rounded-xl border border-outline-variant">
+<span class="font-headline-sm text-headline-sm text-primary">0 - 1,500 FCFA</span>
+<p class="text-body-sm text-on-surface-variant">Enfants &amp; Bébés</p>
+</div>
+<img alt="Panoramas of Ecopark swimming pool and leisure lake with visitors enjoying paddle boats, wooden walkways and tropical trees in Yaoundé." class="rounded-xl object-cover h-48 w-full shadow-sm" src="https://lh3.googleusercontent.com/aida/AEtjO1VfA3JuEM5m0iUOHhLtTmkRL-QE3ta17QPk4CWNf9s7lrgPiKLB6tGahze8MMb1Kaog0-pzD_81SBB4bt-_yAgu5t-1V_9O1wcisByPji_JKD1nW5v0X5M9Y8730XZqh7zvzCllFkxpF3barMDp-mX9MiEy2tKvMU22bWUZn2If-YoI-F78WQNJGyk33pJXVNxAOVdn2C5mxzIXsX1RbjIc9gaP9xD3t_7ZS7Eu6pQIjpc_xGETll-iVg"/>
+</div>
+</div>
+</section>
+<!-- RES-01 to RES-05: Réservation & Panier Dynamique -->
+<section class="space-y-6" id="reservation">
+<div class="flex flex-col md:flex-row md:items-end justify-between border-b border-outline-variant pb-4">
+<div>
+<span class="font-label-sm text-label-sm text-primary uppercase">Étape 1 sur 3</span>
+<h2 class="font-headline-md text-headline-md text-primary">Configuration de la Visite &amp; Panier FCFA</h2>
+</div>
+<p class="text-body-sm text-on-surface-variant mt-1 md:mt-0">Sélectionnez votre date, vos participants et vos activités additionnelles.</p>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Form Options -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8 space-y-6 shadow-sm">
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-2">Date de Visite</label>
+<input class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 text-on-surface focus:border-primary focus:ring-2 focus:ring-[#1F880B]/20" type="date" value="2025-05-15"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-2">Créneau Horaire</label>
+<select class="w-full h-12 bg-white border border-outline-variant rounded-lg px-4 text-on-surface focus:border-primary focus:ring-2 focus:ring-[#1F880B]/20">
+<option>08:00 - 12:00 (Matinée Canopée)</option>
+<option>12:00 - 16:00 (Après-midi Loisirs)</option>
+<option>16:00 - 19:00 (Crépuscule &amp; Resto)</option>
+</select>
+</div>
+</div>
+<div class="space-y-4 pt-4 border-t border-outline-variant">
+<h3 class="font-title-md text-title-md text-primary">Participants</h3>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+<div>
+<span class="font-title-md text-title-md block">Adultes (12 ans et +)</span>
+<span class="text-body-sm text-on-surface-variant">Accès complet parc &amp; sentiers — 2,500 FCFA</span>
+</div>
+<div class="flex items-center space-x-3">
+<button class="w-8 h-8 rounded-full bg-white border border-outline-variant flex items-center justify-center font-bold text-primary hover:bg-surface-container" type="button">-</button>
+<span class="font-title-md w-6 text-center">2</span>
+<button class="w-8 h-8 rounded-full bg-white border border-outline-variant flex items-center justify-center font-bold text-primary hover:bg-surface-container" type="button">+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+<div>
+<span class="font-title-md text-title-md block">Enfants (3 à 11 ans)</span>
+<span class="text-body-sm text-on-surface-variant">Accès jeux &amp; pataugeoire — 1,500 FCFA</span>
+</div>
+<div class="flex items-center space-x-3">
+<button class="w-8 h-8 rounded-full bg-white border border-outline-variant flex items-center justify-center font-bold text-primary hover:bg-surface-container" type="button">-</button>
+<span class="font-title-md w-6 text-center">1</span>
+<button class="w-8 h-8 rounded-full bg-white border border-outline-variant flex items-center justify-center font-bold text-primary hover:bg-surface-container" type="button">+</button>
+</div>
+</div>
+<div class="flex items-center justify-between p-3 bg-surface-container-low rounded-lg border border-outline-variant">
+<div>
+<span class="font-title-md text-title-md block">Bébés (0 à 2 ans)</span>
+<span class="text-body-sm text-on-surface-variant">Gratuit</span>
+</div>
+<div class="flex items-center space-x-3">
+<button class="w-8 h-8 rounded-full bg-white border border-outline-variant flex items-center justify-center font-bold text-primary hover:bg-surface-container" type="button">-</button>
+<span class="font-title-md w-6 text-center">0</span>
+<button class="w-8 h-8 rounded-full bg-white border border-outline-variant flex items-center justify-center font-bold text-primary hover:bg-surface-container" type="button">+</button>
+</div>
+</div>
+</div>
+<div class="space-y-4 pt-4 border-t border-outline-variant">
+<h3 class="font-title-md text-title-md text-primary">Activités &amp; Loisirs Optionnels</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+<label class="flex items-start space-x-3 p-3 bg-white border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low">
+<input checked="" class="mt-1 rounded text-primary focus:ring-[#1F880B]" type="checkbox"/>
+<div>
+<span class="font-title-md text-body-md block">Visite Guidée Faune</span>
+<span class="text-body-sm text-on-surface-variant">1,000 FCFA / pers.</span>
+</div>
+</label>
+<label class="flex items-start space-x-3 p-3 bg-white border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low">
+<input class="mt-1 rounded text-primary focus:ring-[#1F880B]" type="checkbox"/>
+<div>
+<span class="font-title-md text-body-md block">Location Pédalo (Lac)</span>
+<span class="text-body-sm text-on-surface-variant">2,000 FCFA / 30min</span>
+</div>
+</label>
+<label class="flex items-start space-x-3 p-3 bg-white border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low">
+<input checked="" class="mt-1 rounded text-primary focus:ring-[#1F880B]" type="checkbox"/>
+<div>
+<span class="font-title-md text-body-md block">Tyrolienne Canopée</span>
+<span class="text-body-sm text-on-surface-variant">3,500 FCFA / pers.</span>
+</div>
+</label>
+<label class="flex items-start space-x-3 p-3 bg-white border border-outline-variant rounded-lg cursor-pointer hover:bg-surface-container-low">
+<input class="mt-1 rounded text-primary focus:ring-[#1F880B]" type="checkbox"/>
+<div>
+<span class="font-title-md text-body-md block">Menu Terroir (Brai)</span>
+<span class="text-body-sm text-on-surface-variant">5,000 FCFA / menu</span>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Dynamic Summary Card -->
+<div class="lg:col-span-5 space-y-6">
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8 space-y-6 shadow-sm sticky top-24">
+<h3 class="font-headline-sm text-headline-sm text-primary border-b border-outline-variant pb-3">Panier &amp; Transparence FCFA</h3>
+<div class="space-y-3 text-body-md">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">2x Adultes (2,500 FCFA)</span>
+<span class="font-semibold">5,000 FCFA</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">1x Enfant (1,500 FCFA)</span>
+<span class="font-semibold">1,500 FCFA</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Visite Guidée Faune (2 pers.)</span>
+<span class="font-semibold">2,000 FCFA</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Tyrolienne Canopée (2 pers.)</span>
+<span class="font-semibold">7,000 FCFA</span>
+</div>
+</div>
+<div class="border-t border-outline-variant pt-4 space-y-2">
+<div class="flex justify-between text-body-lg font-bold text-primary">
+<span>Total Général</span>
+<span>15,500 FCFA</span>
+</div>
+<span class="text-body-sm text-on-surface-variant block">Taxes et entretien du sanctuaire inclus.</span>
+</div>
+<div class="space-y-4 pt-4 border-t border-outline-variant">
+<h4 class="font-title-md text-title-md text-primary">Coordonnées (Cameroun +237)</h4>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Nom Complet</label>
+<input class="w-full h-11 bg-white border border-outline-variant rounded-lg px-3 text-body-sm" type="text" value="Jean-Paul Mvondo"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Téléphone Mobile (+237)</label>
+<input class="w-full h-11 bg-white border border-outline-variant rounded-lg px-3 text-body-sm" type="text" value="690 12 34 56"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Email (Optionnel pour le Billet PDF)</label>
+<input class="w-full h-11 bg-white border border-outline-variant rounded-lg px-3 text-body-sm" type="email" value="jeanpaul.mvondo@example.cm"/>
+</div>
+</div>
+<a class="w-full block text-center bg-[#1D490D] text-white py-3.5 rounded-lg font-title-md text-title-md hover:bg-[#16390A] transition-all shadow-sm" href="#paiement">
+              Procéder au Paiement Sécurisé
+            </a>
+</div>
+</div>
+</div>
+</section>
+<!-- RES-06 to RES-08: Paiement & États Transactionnels -->
+<section class="space-y-6 pt-6" id="paiement">
+<div class="border-b border-outline-variant pb-4">
+<span class="font-label-sm text-label-sm text-primary uppercase">Étape 2 sur 3</span>
+<h2 class="font-headline-md text-headline-md text-primary">Paiement Mobile &amp; Guichet Ahala</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- MTN MoMo -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 space-y-4 shadow-sm hover:border-primary transition-all">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary">MTN Mobile Money</span>
+<span class="material-symbols-outlined text-[#1F880B] text-3xl">phone_android</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Paiement instantané par USSD ou notification push sur votre numéro MoMo camerounais.</p>
+<div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 font-semibold">
+            Ne jamais saisir de code PIN sur des sites tiers. Validez uniquement sur votre écran officiel MTN.
+          </div>
+<button class="w-full bg-[#1D490D] text-white py-2.5 rounded-lg font-label-md text-label-md" onclick="alert('Simulation: Notification de paiement envoyée sur le +237 690 12 34 56')">Payer 15,500 FCFA (MTN)</button>
+</div>
+<!-- Orange Money -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 space-y-4 shadow-sm hover:border-primary transition-all">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary">Orange Money</span>
+<span class="material-symbols-outlined text-[#1F880B] text-3xl">phone_android</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Validation rapide via code #150# ou application Orange Money Cameroun.</p>
+<div class="p-3 bg-amber-50 border border-amber-200 rounded-lg text-xs text-amber-900 font-semibold">
+            Ne jamais saisir de code PIN. Vérifiez le montant de 15,500 FCFA avant confirmation.
+          </div>
+<button class="w-full bg-[#1D490D] text-white py-2.5 rounded-lg font-label-md text-label-md" onclick="alert('Simulation: Demande Orange Money initiée.')">Payer 15,500 FCFA (Orange)</button>
+</div>
+<!-- Guichet Ahala -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 space-y-4 shadow-sm hover:border-primary transition-all">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary">Guichet Ecopark Ahala</span>
+<span class="material-symbols-outlined text-[#1F880B] text-3xl">storefront</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Réservez en ligne et payez directement en espèces ou par carte sur place à l'entrée du parc.</p>
+<div class="p-3 bg-blue-50 border border-blue-200 rounded-lg text-xs text-blue-900 font-semibold">
+            Votre réservation sera conservée pendant 2 heures avant votre arrivée au guichet.
+          </div>
+<button class="w-full bg-white text-[#1D490D] border-1.5 border-[#1D490D] py-2.5 rounded-lg font-label-md text-label-md" onclick="alert('Réservation enregistrée pour paiement au guichet.')">Réserver au Guichet</button>
+</div>
+</div>
+<!-- Transaction States Demonstration (RES-07) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8 space-y-4 shadow-sm">
+<h3 class="font-headline-sm text-headline-sm text-primary">Simulation des 4 États Transactionnels</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+<div class="p-4 bg-emerald-50 border border-emerald-200 rounded-lg space-y-2">
+<div class="flex items-center space-x-2 text-emerald-800 font-bold">
+<span class="material-symbols-outlined text-sm">check_circle</span>
+<span>Confirmé</span>
+</div>
+<p class="text-xs text-emerald-700">Paiement validé avec succès. Billet QR généré instantanément.</p>
+</div>
+<div class="p-4 bg-rose-50 border border-rose-200 rounded-lg space-y-2">
+<div class="flex items-center space-x-2 text-rose-800 font-bold">
+<span class="material-symbols-outlined text-sm">error</span>
+<span>Échoué</span>
+</div>
+<p class="text-xs text-rose-700">Solde insuffisant ou erreur réseau MoMo. Veuillez réessayer.</p>
+</div>
+<div class="p-4 bg-amber-50 border border-amber-200 rounded-lg space-y-2">
+<div class="flex items-center space-x-2 text-amber-800 font-bold">
+<span class="material-symbols-outlined text-sm">cancel</span>
+<span>Annulé</span>
+</div>
+<p class="text-xs text-amber-700">Transaction interrompue par l'utilisateur. Panier intact.</p>
+</div>
+<div class="p-4 bg-slate-50 border border-slate-200 rounded-lg space-y-2">
+<div class="flex items-center space-x-2 text-slate-800 font-bold">
+<span class="material-symbols-outlined text-sm">schedule</span>
+<span>Expiré</span>
+</div>
+<p class="text-xs text-slate-700">Délai de paiement de 15 minutes dépassé. Veuillez recréer le panier.</p>
+</div>
+</div>
+</div>
+</section>
+<!-- RES-09 to RES-12: Billet QR & Demandes de Groupe -->
+<section class="space-y-6 pt-6" id="billet">
+<div class="border-b border-outline-variant pb-4">
+<span class="font-label-sm text-label-sm text-primary uppercase">Étape 3 sur 3 &amp; Groupes</span>
+<h2 class="font-headline-md text-headline-md text-primary">Billet QR Numérique &amp; Réservations de Groupe</h2>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+<!-- Printable Digital Ticket Mockup -->
+<div class="lg:col-span-5 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8 space-y-6 shadow-sm">
+<div class="flex justify-between items-start border-b border-outline-variant pb-4">
+<div>
+<span class="font-headline-sm text-headline-sm text-primary block">ECO-YAO-9842</span>
+<span class="text-body-sm text-on-surface-variant">Billet Officiel Validé</span>
+</div>
+<span class="bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-label-sm text-label-sm">ACTIF</span>
+</div>
+<div class="flex items-center justify-center p-6 bg-surface-container-low rounded-xl border border-dashed border-outline-variant">
+<!-- Simulated QR code representation using icon and styling -->
+<div class="text-center space-y-2">
+<span class="material-symbols-outlined text-6xl text-primary">qr_code_2</span>
+<p class="text-xs text-on-surface-variant font-mono">SCANNEZ À L'ENTRÉE D'AHALA</p>
+</div>
+</div>
+<div class="space-y-2 text-body-sm">
+<div class="flex justify-between"><span class="text-on-surface-variant">Visiteur :</span><span class="font-semibold">Jean-Paul Mvondo</span></div>
+<div class="flex justify-between"><span class="text-on-surface-variant">Date :</span><span class="font-semibold">15 Mai 2025 (08:00)</span></div>
+<div class="flex justify-between"><span class="text-on-surface-variant">Participants :</span><span class="font-semibold">2 Adultes, 1 Enfant</span></div>
+<div class="flex justify-between"><span class="text-on-surface-variant">Options :</span><span class="font-semibold">Visite Faune, Tyrolienne</span></div>
+</div>
+<button class="w-full bg-[#1D490D] text-white py-2.5 rounded-lg font-title-md text-title-md flex items-center justify-center space-x-2" onclick="window.print()">
+<span class="material-symbols-outlined text-sm">print</span>
+<span>Imprimer / Télécharger le Billet</span>
+</button>
+</div>
+<!-- Group & Seminar Booking Form (Menkii Essomba Anton) -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant rounded-xl p-6 md:p-8 space-y-6 shadow-sm" id="groupe">
+<h3 class="font-headline-sm text-headline-sm text-primary">Demande de Groupe, Séminaire &amp; Scolaire</h3>
+<p class="text-body-sm text-on-surface-variant">Organisez vos événements d'entreprise ou excursions scolaires dans notre salle dédiée <strong class="text-primary">Menkii Essomba Anton</strong>.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Nom de l'Organisation / École</label>
+<input class="w-full h-11 bg-white border border-outline-variant rounded-lg px-3 text-body-sm" placeholder="Ex: Collège Vogt / Entreprise SABC" type="text"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Type d'Événement</label>
+<select class="w-full h-11 bg-white border border-outline-variant rounded-lg px-3 text-body-sm">
+<option>Séminaire &amp; Réunion (Salle Menkii)</option>
+<option>Excursion Scolaire &amp; Pédagogique</option>
+<option>Retire d'Entreprise &amp; Team Building</option>
+<option>Célébration Familiale / Fête</option>
+</select>
+</div>
+</div>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Nombre Estimé de Personnes</label>
+<input class="w-full h-11 bg-white border border-outline-variant rounded-lg px-3 text-body-sm" placeholder="Ex: 45" type="number"/>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Date Souhaitée</label>
+<input class="w-full h-11 bg-white border border-outline-variant rounded-lg px-3 text-body-sm" type="date"/>
+</div>
+</div>
+<div>
+<label class="block font-label-md text-label-md text-on-surface mb-1">Besoins Particuliers &amp; Restauration</label>
+<textarea class="w-full bg-white border border-outline-variant rounded-lg p-3 text-body-sm" placeholder="Précisez si vous souhaitez la sonorisation, les repas du terroir ou un guide naturaliste dédié..." rows="3"></textarea>
+</div>
+<button class="w-full bg-[#1D490D] text-white py-3 rounded-lg font-title-md text-title-md hover:bg-[#16390A] transition-all" onclick="alert('Demande de groupe transmise avec succès ! Un conseiller Ecopark vous contactera sous 24h.')">
+            Envoyer la Demande de Devis Groupe
+          </button>
+</div>
+</div>
+</section>
+<!-- ACC-01 to ACC-06: Espace Visiteur & Tableau de Bord -->
+<section class="space-y-6 pt-6" id="espace">
+<div class="border-b border-outline-variant pb-4">
+<span class="font-label-sm text-label-sm text-primary uppercase">Espace Visiteur &amp; CFP</span>
+<h2 class="font-headline-md text-headline-md text-primary">Tableau de Bord &amp; Suivi de Candidature CFP</h2>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Next Visit Card -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 space-y-4 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary">Prochaine Visite</span>
+<span class="material-symbols-outlined text-[#1F880B]">event_upcoming</span>
+</div>
+<p class="text-body-md font-semibold text-on-surface">15 Mai 2025 à 08:00</p>
+<p class="text-body-sm text-on-surface-variant">Canopée &amp; Sentiers Ahala — 3 participants</p>
+<div class="pt-2">
+<a class="text-primary font-title-md text-title-md hover:underline flex items-center space-x-1" href="#billet">
+<span>Afficher mon billet</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- CFP Application Status -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 space-y-4 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary">Candidature CFP</span>
+<span class="material-symbols-outlined text-[#1F880B]">school</span>
+</div>
+<p class="text-body-md font-semibold text-on-surface">Formation Guide Éco-Tourisme</p>
+<div class="inline-flex items-center space-x-2 bg-amber-50 text-amber-800 px-2.5 py-1 rounded-full text-xs font-semibold">
+<span class="w-2 h-2 rounded-full bg-amber-500"></span>
+<span>Dossier en cours d'évaluation</span>
+</div>
+<p class="text-body-sm text-on-surface-variant">Centre de Formation Professionnelle d'Ecopark (Session Juin 2025).</p>
+</div>
+<!-- Preferences & Profile -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl p-6 space-y-4 shadow-sm">
+<div class="flex items-center justify-between">
+<span class="font-headline-sm text-headline-sm text-primary">Préférences Visiteur</span>
+<span class="material-symbols-outlined text-[#1F880B]">settings</span>
+</div>
+<p class="text-body-md font-semibold text-on-surface">Jean-Paul Mvondo</p>
+<p class="text-body-sm text-on-surface-variant">+237 690 12 34 56 • Yaoundé, Cameroun</p>
+<div class="pt-2 flex space-x-3">
+<button class="text-xs bg-surface-container px-3 py-1.5 rounded-lg font-label-md text-primary hover:bg-surface-container-high">Modifier Profil</button>
+<button class="text-xs bg-rose-50 text-rose-700 px-3 py-1.5 rounded-lg font-label-md hover:bg-rose-100">Déconnexion</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Additional Imagery Showcase -->
+<section class="grid grid-cols-1 md:grid-cols-2 gap-8 pt-6">
+<div class="relative rounded-2xl overflow-hidden shadow-sm border border-outline-variant h-80">
+<img alt="Group of family and friends dining under a traditional thatched roof pavilion at Ecopark Yaoundé overlooking lush tropical forest hills and stone-built lodges." class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida/AEtjO1UXQsLC4QOTAEieXhGxHqpMqj1JDmd96eCkQuHM7kIvG5R6KSlmGc4h5TS3uLW9YaPQPPYjZeUFbDD3HNFYXfVYoBI2FxuCRWD0KTYO_caeL-wOLUZzT_Ec3g_RhAC7sehf91ohTI5BZlyYIdsXK4Oo1izt2FPZk2Ewg7L5N_eDJIpuETX-yxInDF06_UFcYtFnhFioLxCLVPiAsgGU9AB_33xOKkeLUofpMO4SaumWIVfF_qp9nrPAxw"/>
+<div class="absolute inset-0 bg-gradient-to-t from-primary/80 via-transparent to-transparent flex flex-col justify-end p-6 text-white">
+<h3 class="font-headline-sm text-headline-sm">Restauration du Terroir &amp; Paillotes</h3>
+<p class="text-body-sm text-white/90">Dégustez des plats authentiques camerounais au cœur de la canopée.</p>
+</div>
+</div>
+<div class="bg-surface-container border border-outline-variant rounded-2xl p-8 flex flex-col justify-between space-y-6">
+<div class="space-y-3">
+<span class="font-label-sm text-label-sm text-primary uppercase">Conservation &amp; Éducation</span>
+<h3 class="font-headline-md text-headline-md text-primary">Préserver la Biodiversité Équatoriale</h3>
+<p class="text-body-md text-on-surface-variant">
+            Chaque billet acheté contribue directement à la protection de la flore endémique, des sentiers pédestres et aux programmes éducatifs de notre sanctuaire à Ahala.
+          </p>
+</div>
+<div class="flex items-center space-x-4">
+<div class="flex items-center space-x-2 text-primary font-bold">
+<span class="material-symbols-outlined">eco</span>
+<span>100% Éco-responsable</span>
+</div>
+<div class="flex items-center space-x-2 text-primary font-bold">
+<span class="material-symbols-outlined">verified</span>
+<span>Certifié Ministère du Tourisme</span>
+</div>
+</div>
+</div>
+</section>
+</main>
+<!-- Footer -->
+<footer class="bg-surface-container-high border-t border-outline-variant mt-16 py-12 px-4 md:px-12">
+<div class="max-w-[1280px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+<div class="space-y-3">
+<span class="font-headline-sm text-headline-sm text-primary uppercase block">ECOPARK Yaoundé</span>
+<p class="text-body-sm text-on-surface-variant">Le sanctuaire naturel et de loisirs d'Ahala. Un havre de paix au cœur de la forêt équatoriale.</p>
+</div>
+<div class="space-y-2">
+<h4 class="font-title-md text-title-md text-primary">Navigation</h4>
+<ul class="space-y-1 text-body-sm text-on-surface-variant">
+<li><a class="hover:text-primary" href="#reservation">Réservation en ligne</a></li>
+<li><a class="hover:text-primary" href="#groupe">Devis Groupe &amp; Séminaire</a></li>
+<li><a class="hover:text-primary" href="#billet">Billet &amp; QR Code</a></li>
+<li><a class="hover:text-primary" href="#espace">Espace Visiteur</a></li>
+</ul>
+</div>
+<div class="space-y-2">
+<h4 class="font-title-md text-title-md text-primary">Contact Ahala</h4>
+<p class="text-body-sm text-on-surface-variant">Quartier Ahala, Yaoundé, Cameroun</p>
+<p class="text-body-sm text-on-surface-variant">Tél : +237 222 00 00 00 / 690 00 00 00</p>
+<p class="text-body-sm text-on-surface-variant">Email : contact@ecoparkyaounde.cm</p>
+</div>
+<div class="space-y-2">
+<h4 class="font-title-md text-title-md text-primary">Horaires d'Ouverture</h4>
+<p class="text-body-sm text-on-surface-variant">Lundi au Dimanche : 08:00 - 19:00</p>
+<p class="text-body-sm text-on-surface-variant">Ouvert les jours fériés.</p>
+</div>
+</div>
+<div class="max-w-[1280px] mx-auto mt-8 pt-6 border-t border-outline-variant text-center text-body-sm text-on-surface-variant">
+      © 2025 ECOPARK Yaoundé-Ahala. Tous droits réservés. Design Canopée Vivante.
+    </div>
+</footer>
+</body></html>

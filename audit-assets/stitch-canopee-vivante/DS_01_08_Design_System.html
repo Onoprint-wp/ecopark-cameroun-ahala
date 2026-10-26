@@ -1,0 +1,1478 @@
+<!DOCTYPE html>
+
+<html class="scroll-smooth" lang="fr"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>ECOPARK Yaoundé — Référentiel Design System DS-01 à DS-08</title>
+<!-- Google Fonts: Barlow Condensed & Source Sans 3 -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,500;0,600;0,700;0,800;1,600&amp;family=Source+Sans+3:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols Outlined -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS with Forms and Container Queries -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            "on-background": "#141e12",
+            "tertiary": "#252c24",
+            "secondary-container": "#92fb76",
+            "tertiary-container": "#3b4239",
+            "primary-container": "#1d490d",
+            "on-secondary-container": "#127500",
+            "on-primary-fixed-variant": "#245014",
+            "on-secondary-fixed": "#022100",
+            "on-tertiary": "#ffffff",
+            "inverse-on-surface": "#e8f5e0",
+            "on-error": "#ffffff",
+            "tertiary-fixed": "#dee5d8",
+            "surface-container-high": "#e0ecd8",
+            "surface": "#f1fde8",
+            "surface-container-low": "#ebf7e3",
+            "surface-container-lowest": "#ffffff",
+            "inverse-surface": "#293326",
+            "primary-fixed-dim": "#a1d589",
+            "on-surface": "#141e12",
+            "on-error-container": "#93000a",
+            "primary-fixed": "#bcf1a2",
+            "background": "#f1fde8",
+            "on-tertiary-fixed": "#171d16",
+            "on-primary-fixed": "#052100",
+            "inverse-primary": "#a1d589",
+            "error": "#ba1a1a",
+            "surface-container-highest": "#dae6d2",
+            "on-secondary-fixed-variant": "#0a5300",
+            "on-surface-variant": "#42493d",
+            "on-tertiary-fixed-variant": "#42493f",
+            "tertiary-fixed-dim": "#c2c9bc",
+            "on-primary": "#ffffff",
+            "error-container": "#ffdad6",
+            "on-primary-container": "#86b970",
+            "surface-variant": "#dae6d2",
+            "on-secondary": "#ffffff",
+            "primary": "#0a3100",
+            "outline-variant": "#c2c9ba",
+            "outline": "#72796c",
+            "secondary-fixed": "#92fb76",
+            "surface-dim": "#d2deca",
+            "surface-tint": "#3c692a",
+            "surface-bright": "#f1fde8",
+            "secondary-fixed-dim": "#77de5d",
+            "on-tertiary-container": "#a7aea2",
+            "secondary": "#106e00",
+            "surface-container": "#e6f2dd"
+          },
+          borderRadius: {
+            "DEFAULT": "0.25rem",
+            "lg": "0.5rem",
+            "xl": "0.75rem",
+            "full": "9999px"
+          },
+          spacing: {
+            "space-lg": "1.5rem",
+            "gutter-mobile": "1rem",
+            "space-xl": "2.5rem",
+            "margin-mobile": "1.25rem",
+            "space-xs": "0.25rem",
+            "space-md": "1rem",
+            "gutter": "1.5rem",
+            "margin": "3rem",
+            "space-sm": "0.5rem"
+          },
+          fontFamily: {
+            "headline-sm": ["Barlow Condensed", "sans-serif"],
+            "headline-lg-mobile": ["Barlow Condensed", "sans-serif"],
+            "headline-lg": ["Barlow Condensed", "sans-serif"],
+            "label-sm": ["\"Source Sans 3\"", "sans-serif"],
+            "title-md": ["\"Source Sans 3\"", "sans-serif"],
+            "label-md": ["\"Source Sans 3\"", "sans-serif"],
+            "headline-md": ["Barlow Condensed", "sans-serif"],
+            "display-lg-mobile": ["Barlow Condensed", "sans-serif"],
+            "body-md": ["\"Source Sans 3\"", "sans-serif"],
+            "display-lg": ["Barlow Condensed", "sans-serif"],
+            "body-sm": ["\"Source Sans 3\"", "sans-serif"],
+            "body-lg": ["\"Source Sans 3\"", "sans-serif"]
+          },
+          fontSize: {
+            "headline-sm": ["22px", { lineHeight: "28px", fontWeight: "600" }],
+            "headline-lg-mobile": ["30px", { lineHeight: "36px", fontWeight: "600" }],
+            "headline-lg": ["40px", { lineHeight: "48px", fontWeight: "600" }],
+            "label-sm": ["11px", { lineHeight: "16px", letterSpacing: "0.06em", fontWeight: "700" }],
+            "title-md": ["18px", { lineHeight: "24px", fontWeight: "600" }],
+            "label-md": ["13px", { lineHeight: "18px", letterSpacing: "0.04em", fontWeight: "600" }],
+            "headline-md": ["28px", { lineHeight: "34px", fontWeight: "600" }],
+            "display-lg-mobile": ["38px", { lineHeight: "44px", letterSpacing: "0em", fontWeight: "700" }],
+            "body-md": ["16px", { lineHeight: "24px", fontWeight: "400" }],
+            "display-lg": ["56px", { lineHeight: "64px", letterSpacing: "-0.01em", fontWeight: "700" }],
+            "body-sm": ["14px", { lineHeight: "20px", fontWeight: "400" }],
+            "body-lg": ["18px", { lineHeight: "28px", fontWeight: "400" }]
+          }
+        }
+      }
+    }
+  </script>
+<style>
+    .material-symbols-outlined {
+      font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+      display: inline-block;
+      vertical-align: middle;
+      line-height: 1;
+    }
+    .material-symbols-outlined.fill {
+      font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+    }
+    /* Canopy organic cut */
+    .leaf-contour {
+      border-radius: 32px 8px 32px 8px;
+    }
+    .leaf-contour-sm {
+      border-radius: 18px 4px 18px 4px;
+    }
+    /* Concentric subtle tree rings background */
+    .concentric-rings {
+      background-image: radial-gradient(circle at 80% 20%, rgba(29, 73, 13, 0.04) 0%, transparent 40%),
+                        radial-gradient(circle at 20% 80%, rgba(31, 136, 11, 0.03) 0%, transparent 50%);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-surface font-body-md antialiased selection:bg-secondary-container selection:text-on-secondary-container">
+<!-- TOP APP BAR (Shared Web Header) -->
+<header class="bg-surface-container-lowest border-b border-outline-variant shadow-sm docked full-width top-0 z-40 sticky">
+<div class="w-full px-space-lg flex justify-between items-center h-16 max-w-[1440px] mx-auto">
+<!-- Brand & Title -->
+<div class="flex items-center gap-space-md">
+<div class="w-10 h-10 rounded-full bg-primary-container flex items-center justify-center text-on-primary shadow-sm">
+<span class="material-symbols-outlined text-primary-fixed">forest</span>
+</div>
+<div>
+<span class="text-headline-sm font-headline-sm uppercase tracking-wide text-primary font-bold">ECOPARK Yaoundé</span>
+<span class="hidden md:inline-block ml-2 px-2 py-0.5 rounded-full bg-surface-container text-primary font-label-sm text-label-sm">DS-01 → DS-08</span>
+</div>
+</div>
+<!-- Navigation Links -->
+<nav class="hidden lg:flex items-center space-x-6">
+<a class="border-b-2 border-primary text-primary font-title-md text-title-md pb-1" href="#ds-01">Console</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-150" href="#ds-04">Ticketing</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-150" href="#ds-06">Specimens &amp; Parcels</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-150" href="#ds-07">Transactions</a>
+<a class="text-on-surface-variant hover:text-primary font-body-md text-body-md transition-colors duration-150" href="#ds-08">System Matrix</a>
+</nav>
+<!-- Trailing Controls -->
+<div class="flex items-center gap-3">
+<button class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary hover:bg-surface-container text-label-md font-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">translate</span>
+<span>FR (+237)</span>
+</button>
+<button class="hidden sm:inline-flex items-center gap-2 px-3 py-1.5 rounded-lg border border-outline-variant bg-surface-container-lowest text-primary hover:bg-surface-container text-label-md font-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">notifications</span>
+</button>
+<button class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-surface-container hover:bg-surface-container-high text-primary font-label-md text-label-md" type="button">
+<span class="material-symbols-outlined text-[18px]">support_agent</span>
+<span>Agent Help</span>
+</button>
+<button class="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary-container text-on-primary hover:bg-primary font-title-md text-title-md shadow-sm active:scale-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">qr_code_scanner</span>
+<span>Scan Ticket</span>
+</button>
+</div>
+</div>
+</header>
+<!-- QUICK ANCHOR SUB-BAR / TECHNICAL BADGE -->
+<div class="bg-surface-container-lowest border-b border-outline-variant sticky top-16 z-30 shadow-xs">
+<div class="max-w-[1440px] mx-auto px-4 md:px-space-lg py-2.5 flex flex-wrap items-center justify-between gap-3 text-body-sm font-body-sm">
+<div class="flex items-center gap-2 flex-wrap">
+<span class="inline-flex items-center gap-1.5 bg-primary-container text-on-primary font-label-sm text-label-sm px-2.5 py-1 rounded-full uppercase tracking-wider">
+<span class="w-2 h-2 rounded-full bg-secondary-container animate-pulse"></span>
+          RÉFÉRENTIEL OFFICIEL ECOPARK YAOUNDÉ-AHALA
+        </span>
+<span class="px-2 py-0.5 rounded bg-surface-container text-primary font-label-sm text-label-sm font-semibold">v1.2</span>
+<span class="inline-flex items-center gap-1 text-secondary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+          WCAG 2.2 AA (&gt; 7:1)
+        </span>
+<span class="text-outline font-body-sm">|</span>
+<span class="italic text-on-surface-variant font-body-sm">« Canopée vivante — Le cercle du vivant »</span>
+</div>
+<!-- Quick Section Anchor Links -->
+<nav class="flex items-center gap-1.5 overflow-x-auto py-1 scrollbar-none text-label-sm font-label-sm">
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-01">DS-01 Marque</a>
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-02">DS-02 Tokens</a>
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-03">DS-03 Typo &amp; Photo</a>
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-04">DS-04 Navigation</a>
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-05">DS-05 Formulaires</a>
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-06">DS-06 Cartes &amp; Tarifs</a>
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-07">DS-07 Contrôle &amp; Métier</a>
+<a class="px-2.5 py-1 rounded bg-surface text-primary hover:bg-surface-container font-semibold whitespace-nowrap" href="#ds-08">DS-08 77 Écrans</a>
+</nav>
+</div>
+</div>
+<!-- MAIN DOCUMENTATION CANVAS -->
+<main class="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-space-lg py-space-xl space-y-space-xl concentric-rings">
+<!-- HERO INTRODUCTION BANNER -->
+<section class="bg-surface-container-lowest border border-outline-variant p-6 md:p-10 leaf-contour shadow-sm relative overflow-hidden">
+<div class="relative z-10 max-w-4xl space-y-4">
+<div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-surface-container text-primary font-label-md text-label-md">
+<span class="material-symbols-outlined text-[18px]">verified_user</span>
+          Direction Artistique et Spécifications Officielles
+        </div>
+<h1 class="text-display-lg-mobile md:text-display-lg font-display-lg text-primary leading-tight">
+          Système de Conception ECOPARK Yaoundé
+        </h1>
+<p class="text-body-lg font-body-lg text-on-surface-variant max-w-3xl">
+          Harmonisation écotouristique, préservation de la biodiversité équatoriale et rigueur opérationnelle à Ahala. Ce document formalise les tokens, composants modulaires, flux de validation de billets en FCFA et matrices de l'ensemble des 77 écrans applicatifs.
+        </p>
+<div class="flex flex-wrap gap-4 pt-2">
+<a class="inline-flex items-center gap-2 px-5 py-3 rounded-lg bg-primary-container text-on-primary hover:bg-primary font-title-md text-title-md transition-all active:scale-95 shadow-sm" href="#ds-04">
+<span class="material-symbols-outlined">palette</span>
+<span>Explorer les Composants</span>
+</a>
+<a class="inline-flex items-center gap-2 px-5 py-3 rounded-lg border-2 border-primary-container text-primary bg-surface-container-lowest hover:bg-surface-container font-title-md text-title-md transition-all" href="#ds-07">
+<span class="material-symbols-outlined">qr_code_scanner</span>
+<span>Émulateur Guichet Ahala</span>
+</a>
+</div>
+</div>
+<!-- Subtle watermark decoration -->
+<div class="absolute -right-12 -bottom-12 w-80 h-80 rounded-full border-[18px] border-primary-fixed-dim/20 pointer-events-none"></div>
+<div class="absolute -right-24 -bottom-24 w-96 h-96 rounded-full border border-primary/10 pointer-events-none"></div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-01: VUE GÉNÉRALE DE LA MARQUE & LOGOTYPE                                -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-01">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">01</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-01 : Vue Générale de la Marque &amp; Logotype</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Sanctuaire d'Ahala, Yaoundé — Géométrie sacrée du végétal et rosette protectrice</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Identité Graphique</span>
+</div>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- Brand Concept Card -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 leaf-contour shadow-sm space-y-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">nature_people</span>
+<h3 class="text-headline-sm font-headline-sm">Le Cercle du Vivant</h3>
+</div>
+<p class="text-body-md font-body-md text-on-surface-variant">
+            Le logotype s'ancre dans la rosette végétale rayonnante : la circularité incarne la continuité des cycles biologiques équatoriaux, l'abri fourni par la haute canopée du massif d'Ahala et l'accueil communautaire des familles et chercheurs.
+          </p>
+<div class="bg-surface-container p-4 rounded-lg space-y-2">
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="font-semibold text-primary">Localisation :</span>
+<span>Ahala II, Yaoundé, Cameroun (+237)</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="font-semibold text-primary">Écosystème :</span>
+<span>Zone humide, forêt dense, pisciculture</span>
+</div>
+<div class="flex justify-between text-body-sm font-body-sm">
+<span class="font-semibold text-primary">Statut légal :</span>
+<span>Site agréé Ministère du Tourisme &amp; CFP</span>
+</div>
+</div>
+</div>
+<!-- Official Logo Presentation Plate -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-sm flex flex-col items-center justify-center text-center space-y-4">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-primary font-bold">Rendu Officiel Logotype Circulaire</span>
+<!-- Vector Badge Logo Reconstruction -->
+<div class="relative w-44 h-44 rounded-full bg-surface-container-lowest border-4 border-primary-container shadow-md flex flex-col items-center justify-center p-3">
+<div class="absolute inset-1.5 rounded-full border border-dashed border-secondary"></div>
+<!-- Leaf & Canopy Symbol -->
+<div class="flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[48px] fill" style="font-variation-settings: 'FILL' 1;">eco</span>
+</div>
+<div class="text-headline-sm font-headline-sm text-primary-container font-extrabold tracking-tight mt-1">
+              ECOPARK
+            </div>
+<div class="bg-error px-2 py-0.5 rounded text-[9px] font-bold tracking-widest text-on-error uppercase mt-0.5">
+              CAMEROUN
+            </div>
+<span class="text-[9px] text-on-surface-variant mt-1 font-semibold tracking-wider">AHALA • YAOUNDÉ</span>
+</div>
+<div class="text-body-sm font-body-sm text-on-surface-variant">
+            Disque protecteur blanc <strong>#FFFFFF</strong>, feuillage stylisé vert feuille <strong>#1F880B</strong> et cartouche carmin <strong>CAMEROUN</strong>.
+          </div>
+</div>
+<!-- Strict Rules & Clear Space -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 leaf-contour shadow-sm space-y-4">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">rule</span>
+<h3 class="text-headline-sm font-headline-sm">Règles d'Usage Strictes</h3>
+</div>
+<ul class="space-y-2.5 text-body-sm font-body-sm">
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span><strong>Zone d'exclusion X :</strong> Dégagement minimal égal à la hauteur de la lettre "E" sur tout le périmètre.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-secondary text-[18px]">check_circle</span>
+<span><strong>Tailles minimales :</strong> 36px pour mobile / webapp agent, 48px pour grand écran et affichage signalétique.</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-error text-[18px]">cancel</span>
+<span><strong>Interdit :</strong> Ne jamais étirer, condenser ou désolidariser le cartouche "CAMEROUN".</span>
+</li>
+<li class="flex items-start gap-2">
+<span class="material-symbols-outlined text-error text-[18px]">cancel</span>
+<span><strong>Interdit :</strong> Aucune recoloration ou dégradé étranger hors palette validée.</span>
+</li>
+</ul>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-02: CATALOGUE DES TOKENS À 3 NIVEAUX                                    -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-02">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">02</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-02 : Catalogue des Tokens à 3 Niveaux</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Primitifs, sémantiques et composants avec accessibilité pour le daltonisme</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Design Tokens</span>
+</div>
+<!-- 3 Layers Architecture Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container border-b border-outline-variant text-primary font-headline-sm text-headline-sm">
+<th class="p-4">Niveau de Token</th>
+<th class="p-4">Identifiant Token</th>
+<th class="p-4">Valeur Brute / Rôle</th>
+<th class="p-4">Aperçu Visuel</th>
+<th class="p-4">Conformité WCAG</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm text-body-sm">
+<!-- Primitifs -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">1. Primitif</td>
+<td class="p-4 font-mono text-xs">--color-brand-deep</td>
+<td class="p-4">#1D490D (Vert Forêt Ahala)</td>
+<td class="p-4">
+<div class="w-20 h-7 rounded border border-outline-variant bg-[#1D490D] flex items-center justify-center text-white text-[10px] font-mono">#1D490D</div>
+</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-semibold text-xs">Contraste 11.4:1 (AAA)</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">1. Primitif</td>
+<td class="p-4 font-mono text-xs">--color-brand-leaf</td>
+<td class="p-4">#1F880B (Vert Feuille Vivante)</td>
+<td class="p-4">
+<div class="w-20 h-7 rounded border border-outline-variant bg-[#1F880B] flex items-center justify-center text-white text-[10px] font-mono">#1F880B</div>
+</td>
+<td class="p-4"><span class="px-2 py-0.5 rounded bg-surface-container text-secondary font-semibold text-xs">Accent &amp; Décoratif</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">1. Primitif</td>
+<td class="p-4 font-mono text-xs">--color-surface-soft</td>
+<td class="p-4">#EDF4E7 (Brume Végétale)</td>
+<td class="p-4">
+<div class="w-20 h-7 rounded border border-outline-variant bg-[#EDF4E7] flex items-center justify-center text-primary text-[10px] font-mono">#EDF4E7</div>
+</td>
+<td class="p-4"><span class="text-on-surface-variant text-xs">Fond d'immersion</span></td>
+</tr>
+<!-- Sémantiques -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-secondary">2. Sémantique</td>
+<td class="p-4 font-mono text-xs">color-text-heading</td>
+<td class="p-4">primary-container (#1D490D)</td>
+<td class="p-4"><span class="font-headline-sm text-primary font-bold">Titre Sanctuaire</span></td>
+<td class="p-4"><span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-semibold text-xs">Conforme AA Large</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-secondary">2. Sémantique</td>
+<td class="p-4 font-mono text-xs">color-text-body</td>
+<td class="p-4">#1E281B (Encre Végétale Sombre)</td>
+<td class="p-4"><span class="text-on-surface">Texte de lecture fluide</span></td>
+<td class="p-4"><span class="px-2 py-0.5 rounded bg-surface-container-highest text-primary font-semibold text-xs">Contraste 13.1:1 (AAA)</span></td>
+</tr>
+<!-- Composants -->
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-outline">3. Composant</td>
+<td class="p-4 font-mono text-xs">btn-primary-bg</td>
+<td class="p-4">var(--color-brand-deep)</td>
+<td class="p-4">
+<span class="px-3 py-1 rounded bg-primary-container text-white text-xs font-semibold">Bouton Valider</span>
+</td>
+<td class="p-4"><span class="text-secondary font-bold text-xs">Cible min 48px</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-outline">3. Composant</td>
+<td class="p-4 font-mono text-xs">card-radius-leaf</td>
+<td class="p-4">32px 8px 32px 8px (Silhouette feuille)</td>
+<td class="p-4">
+<div class="w-16 h-8 bg-surface-container-high leaf-contour border border-outline-variant"></div>
+</td>
+<td class="p-4"><span class="text-on-surface-variant text-xs">Signature géométrique</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- State Catalogue with Explicit Labels (Colorblind Safe) -->
+<div class="space-y-3">
+<h3 class="text-headline-sm font-headline-sm text-primary">Catalogue des États Sémantiques (Conformité Daltonisme)</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Obligation stricte d'associer un pictogramme SVG distinct et un libellé textuel sans ambiguïté à toute couleur d'état.</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+<!-- Succès -->
+<div class="bg-surface-container-lowest border-2 border-secondary p-4 rounded-xl flex items-start gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container flex items-center justify-center text-secondary shrink-0">
+<span class="material-symbols-outlined text-[24px] fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md text-secondary">Succès</span>
+<span class="text-label-sm font-label-sm bg-surface-container text-secondary px-2 py-0.5 rounded">#1F880B</span>
+</div>
+<p class="text-body-sm font-body-sm font-bold text-on-surface mt-1">« Opération réussie »</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Validation de transaction MoMo ou pass imprimé.</p>
+</div>
+</div>
+<!-- Avertissement -->
+<div class="bg-surface-container-lowest border-2 border-amber-600 p-4 rounded-xl flex items-start gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-amber-50 flex items-center justify-center text-amber-700 shrink-0">
+<span class="material-symbols-outlined text-[24px] fill" style="font-variation-settings: 'FILL' 1;">warning</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md text-amber-800">Avertissement</span>
+<span class="text-label-sm font-label-sm bg-amber-100 text-amber-900 px-2 py-0.5 rounded">#D97706</span>
+</div>
+<p class="text-body-sm font-body-sm font-bold text-on-surface mt-1">« Vigilance requise »</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Fermeture imminente ou billet déjà scanné.</p>
+</div>
+</div>
+<!-- Erreur -->
+<div class="bg-surface-container-lowest border-2 border-error p-4 rounded-xl flex items-start gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-error-container flex items-center justify-center text-error shrink-0">
+<span class="material-symbols-outlined text-[24px] fill" style="font-variation-settings: 'FILL' 1;">cancel</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md text-error">Erreur</span>
+<span class="text-label-sm font-label-sm bg-error-container text-error px-2 py-0.5 rounded">#DC2626</span>
+</div>
+<p class="text-body-sm font-body-sm font-bold text-on-surface mt-1">« Action requise »</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Solde insuffisant ou billet contrefait.</p>
+</div>
+</div>
+<!-- Information -->
+<div class="bg-surface-container-lowest border-2 border-sky-600 p-4 rounded-xl flex items-start gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-sky-50 flex items-center justify-center text-sky-700 shrink-0">
+<span class="material-symbols-outlined text-[24px] fill" style="font-variation-settings: 'FILL' 1;">info</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md text-sky-800">Information</span>
+<span class="text-label-sm font-label-sm bg-sky-100 text-sky-900 px-2 py-0.5 rounded">#0284C7</span>
+</div>
+<p class="text-body-sm font-body-sm font-bold text-on-surface mt-1">« Information parc »</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Règlement des sentiers botaniques &amp; faune.</p>
+</div>
+</div>
+<!-- Focus -->
+<div class="bg-surface-container-lowest border-2 border-outline-variant p-4 rounded-xl flex items-start gap-3 shadow-sm">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-primary shrink-0 ring-4 ring-primary-container ring-offset-2">
+<span class="material-symbols-outlined text-[24px]">center_focus_strong</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md text-primary">Focus Accessible</span>
+<span class="text-label-sm font-label-sm bg-surface-container text-primary px-2 py-0.5 rounded">3px offset 2px</span>
+</div>
+<p class="text-body-sm font-body-sm font-bold text-on-surface mt-1">« Navigation Clavier »</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Anneau vert structurant #1D490D visible.</p>
+</div>
+</div>
+<!-- Désactivé -->
+<div class="bg-surface-container-lowest border-2 border-dashed border-outline-variant p-4 rounded-xl flex items-start gap-3 shadow-sm opacity-60">
+<div class="w-10 h-10 rounded-full bg-surface-container-high flex items-center justify-center text-outline shrink-0">
+<span class="material-symbols-outlined text-[24px]">block</span>
+</div>
+<div>
+<div class="flex items-center gap-2">
+<span class="text-title-md font-title-md text-on-surface-variant">Désactivé</span>
+<span class="text-label-sm font-label-sm bg-surface-container text-on-surface-variant px-2 py-0.5 rounded">Opacité 40%</span>
+</div>
+<p class="text-body-sm font-body-sm font-bold text-on-surface mt-1">« Non sélectionnable »</p>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Curseur not-allowed et aria-disabled="true".</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-03: TYPOGRAPHIE, GRILLE & CHARTE PHOTOGRAPHIQUE LOCALE                 -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-03">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">03</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-03 : Typographie, Grille &amp; Charte Photographique</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Échelle modulaire, structure 12 colonnes et scènes vivantes d'Ahala</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Fondations Visuelles</span>
+</div>
+<!-- Typography Specimen Grid -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Barlow Condensed Titles -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 leaf-contour shadow-sm space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<h3 class="text-headline-md font-headline-md text-primary">Barlow Condensed (Titres &amp; Métriques)</h3>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold text-primary">Display / Structure</span>
+</div>
+<div class="space-y-4">
+<div class="border-b border-surface-container-high pb-2">
+<span class="text-label-sm font-label-sm text-outline">H1 Display / 48px / Semibold 600</span>
+<p class="text-headline-lg font-headline-lg text-primary">Sanctuaire Écotouristique d'Ahala</p>
+</div>
+<div class="border-b border-surface-container-high pb-2">
+<span class="text-label-sm font-label-sm text-outline">H2 Section / 32px / Semibold 600</span>
+<p class="text-headline-md font-headline-md text-primary">Pisciculture, Canopée &amp; Biodiversité</p>
+</div>
+<div>
+<span class="text-label-sm font-label-sm text-outline">H3 Carte / 22px / Semibold 600</span>
+<p class="text-headline-sm font-headline-sm text-primary">Tarification Officielle en Francs CFA (XAF)</p>
+</div>
+</div>
+</div>
+<!-- Source Sans 3 Body -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-sm space-y-4">
+<div class="flex items-center justify-between border-b border-outline-variant pb-2">
+<h3 class="text-headline-md font-headline-md text-primary">Source Sans 3 (Corps, Formulaires &amp; Données)</h3>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-semibold text-primary">Lecture Continue</span>
+</div>
+<div class="space-y-4">
+<div class="border-b border-surface-container-high pb-2">
+<span class="text-label-sm font-label-sm text-outline">Body-lg / 18px / Regular 400</span>
+<p class="text-body-lg font-body-lg text-on-surface">Les sentiers d'interprétation écologique serpentent sur 14 hectares de forêt sempervirente préservée.</p>
+</div>
+<div class="border-b border-surface-container-high pb-2">
+<span class="text-label-sm font-label-sm text-outline">Body-md / 16px / Regular 400</span>
+<p class="text-body-md font-body-md text-on-surface">Validation d'accès par QR code crypté directement aux bornes mobiles des gardes forestiers d'Ahala.</p>
+</div>
+<div class="flex gap-4">
+<div>
+<span class="text-label-sm font-label-sm text-outline">Label-md / 13px / Semibold 600</span>
+<p class="text-label-md font-label-md text-primary uppercase font-bold tracking-wider">MATRICULE AGENT : AGT-237-04</p>
+</div>
+<div>
+<span class="text-label-sm font-label-sm text-outline">Micro / 11px / Bold 700</span>
+<p class="text-label-sm font-label-sm text-outline tracking-wider">REPOS HEBDOMADAIRE : LUNDI</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Authentic Local Photographic Gallery -->
+<div class="space-y-3">
+<div class="flex items-center justify-between">
+<div>
+<h3 class="text-headline-sm font-headline-sm text-primary">Charte Photographique Locale &amp; Réaliste (Ahala, Cameroun)</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Priorité absolue aux personnes camerounaises, lumière naturelle d'Afrique centrale sous feuillage équatorial.</p>
+</div>
+<span class="inline-flex items-center gap-1 text-label-sm font-label-sm text-secondary bg-surface-container px-2.5 py-1 rounded-full">
+<span class="material-symbols-outlined text-[16px]">no_photography</span>
+            Bannissement des banques d'images génériques
+          </span>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- Photo 1: Family under canopy -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm group">
+<div class="h-56 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Une famille camerounaise souriante comprenant le père, la mère et deux jeunes enfants marche tranquillement le long d'un sentier en terre battue au sein de la dense forêt équatoriale d'Ecopark Yaoundé Ahala. La lumière du soleil filtre à travers la canopée verdoyante luxuriante avec des fougères géantes et des grands arbres tropicaux. Les teintes dominantes sont le vert émeraude, le blanc naturel et la terre ocre chaleureuse, transmettant joie et sérénité familiale." src="https://lh3.googleusercontent.com/aida-public/AB6AXuDJdPwdlBGJ12W0oeaHz58Ziniu_3SLtbYvIy7_Red2YYKFsdyZKROMa7_a6PiJkJCXKGO4XppCirLYwJnePwP7hjIzeh0Mk7FL7taP0f8_Bvtsfs3BKX2V373jy46fB2nIKBhVv6UF861V6tu4NMEiogvV1EdXfGjLxxRt_MWvMppf84g4K-pVqODT1eBFxNWFaXwKM15U7nRiKptuirO0lL5EmSf4QepxEqHI4ifDbnLZY37OHHdCHomZgRiobsdh0nUFYGrYJA"/>
+<div class="absolute top-3 left-3 bg-primary-container text-white text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                Visite Familiale
+              </div>
+</div>
+<div class="p-4 space-y-1">
+<h4 class="font-headline-sm text-headline-sm text-primary">Sentier des Canopées d'Ahala</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Immersion pédagogique pour les familles camerounaises au cœur de la forêt primaire périurbaine.</p>
+</div>
+</div>
+<!-- Photo 2: Students in CFP agroecology & fish ponds -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm group">
+<div class="h-56 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Un groupe d'étudiants et jeunes stagiaires camerounais du Centre de Formation Professionnelle Ecopark en gilets beiges de rangers examinent activement un bassin de pisciculture et une serre maraîchère à Ahala. On observe des étangs rectangulaires d'eau douce avec des poissons frétillants et des cultures biologiques sous abri moderne sur fond de collines verdoyantes de Yaoundé sous un ciel tropical lumineux." src="https://lh3.googleusercontent.com/aida-public/AB6AXuAFqrI570gy4Le-IZ8yYCfMvzYEnEQGmxMZZWzCPfzVQ8Ls4qSlQ9o9_TezSY9d_HOqsIx5T-oXHyLSE6W3_lL3YnG901UDUq5jq7WdgChhBfUukQwkNHNK2MTXZZPVoA5gF5WbZRxVkSzs6Uoag1RJLZAaUvzM5E7LuDcXGWKwnsKUImc1qicWlYLoJLJDtJrqjukheK2KaH2NnWAUEn-yiXkfdyyVrrGlG444zgHrWwQTIIAmoq-F2tqYu8FVaSD30vgDGKZS6w"/>
+<div class="absolute top-3 left-3 bg-secondary text-white text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                CFP Agroécologie &amp; Pisciculture
+              </div>
+</div>
+<div class="p-4 space-y-1">
+<h4 class="font-headline-sm text-headline-sm text-primary">Apprentissage et Métiers Verts</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Pratique sur le terrain des bassins piscicoles et des serres pédagogiques de formation continue.</p>
+</div>
+</div>
+<!-- Photo 3: Traditional wood restaurant terrasse -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm group">
+<div class="h-56 overflow-hidden relative">
+<img class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" data-alt="Une terrasse chaleureuse en bois indigène au restaurant panoramique d'Ecopark Ahala où des convives locaux dégustent des plats camerounais traditionnels comprenant du poisson braisé frais et des plantains mûrs. L'architecture en matériaux écologiques et toits de paille s'intègre harmonieusement aux collines boisées environnantes sous une douce lumière dorée de fin d'après-midi équatorial." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBThOFLrb6nAnMVsC-zqncTQ2zcvc1ioXcfD6H2GxofQ8GqHTJOcxckTuxGDKZAXlLoLxIOWyKPNv4r1YApyYXqkKgAk872XEYLpxGpjrISSx6sBwxsKNpqVchGV0kfef2rwq3CVPIG-smrdNKs_x3ueaXManqDtrrozDIROjrbl4dghZPS8ic0a2xr8s5w276jABHPwvI7qnOQDpRgoDtJi78XOpX3Ml_8ReReswVNv4mjLzFnx-2NsRBE1njkdJ8m3Pq6T6bfgQ"/>
+<div class="absolute top-3 left-3 bg-primary-container text-white text-[11px] font-bold px-2.5 py-1 rounded-full uppercase tracking-wider">
+                Hôtellerie &amp; Gastronomie
+              </div>
+</div>
+<div class="p-4 space-y-1">
+<h4 class="font-headline-sm text-headline-sm text-primary">Terrasses &amp; Saveurs du Terroir</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Dégustation des produits issus de la pisciculture et de l'agriculture biologique du parc.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-04: NAVIGATION & BOUTONS INTERACTIFS                                    -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-04">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">04</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-04 : Navigation &amp; Boutons Interactifs</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Tiroir Console d'Agent, en-tête public, fil d'Ariane et cibles tactiles 48px</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Composants d'Action</span>
+</div>
+<!-- Navigation Demonstrator: SideNavBar & Breadcrumbs -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<!-- SideNav Mockup (Agent Console Drawer) -->
+<div class="bg-surface border border-outline-variant rounded-xl p-4 shadow-sm flex flex-col justify-between">
+<div class="space-y-4">
+<!-- Header Drawer -->
+<div class="flex items-center gap-3 border-b border-outline-variant pb-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">shield</span>
+</div>
+<div>
+<h4 class="font-headline-sm text-headline-sm text-primary">Console d'Agent</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Poste Central • Yaoundé (+237)</p>
+</div>
+</div>
+<!-- Tab List -->
+<div class="space-y-1">
+<a class="flex items-center gap-3 px-space-sm py-2 rounded-lg bg-primary-container text-on-primary font-title-md text-title-md shadow-xs" href="#ds-04">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span>Overview</span>
+</a>
+<a class="flex items-center gap-3 px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-body-md text-body-md transition-colors" href="#ds-07">
+<span class="material-symbols-outlined text-[20px]">qr_code_scanner</span>
+<span>Access Validation</span>
+</a>
+<a class="flex items-center gap-3 px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-body-md text-body-md transition-colors" href="#ds-06">
+<span class="material-symbols-outlined text-[20px]">confirmation_number</span>
+<span>Ticket Sales (FCFA)</span>
+</a>
+<a class="flex items-center gap-3 px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-body-md text-body-md transition-colors" href="#ds-03">
+<span class="material-symbols-outlined text-[20px]">potted_plant</span>
+<span>Flora &amp; Fauna Catalog</span>
+</a>
+<a class="flex items-center gap-3 px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-body-md text-body-md transition-colors" href="#ds-08">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span>Agent Logs</span>
+</a>
+<a class="flex items-center gap-3 px-space-sm py-2 rounded-lg text-on-surface-variant hover:bg-surface-container-high hover:text-primary font-body-md text-body-md transition-colors" href="#ds-08">
+<span class="material-symbols-outlined text-[20px]">grid_view</span>
+<span>Coverage Matrix</span>
+</a>
+</div>
+<!-- CTA inside drawer -->
+<button class="w-full py-2.5 rounded-lg bg-secondary text-white font-title-md text-title-md flex items-center justify-center gap-2 shadow-xs hover:bg-opacity-95 transition-all" type="button">
+<span class="material-symbols-outlined text-[20px]">add_circle</span>
+<span>New Entry Pass</span>
+</button>
+</div>
+<!-- Drawer Footer -->
+<div class="border-t border-outline-variant pt-3 mt-6 space-y-1">
+<div class="flex items-center gap-3 px-space-sm py-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px]">menu_book</span>
+<span>Park Guidelines</span>
+</div>
+<div class="flex items-center gap-3 px-space-sm py-1.5 text-on-surface-variant font-body-sm text-body-sm">
+<span class="material-symbols-outlined text-[18px]">sync</span>
+<span>Device Sync</span>
+</div>
+</div>
+</div>
+<!-- Breadcrumbs & Interactive Button States Matrix -->
+<div class="lg:col-span-2 space-y-6">
+<!-- Breadcrumb demonstrator -->
+<div class="bg-surface-container-lowest border border-outline-variant p-4 rounded-xl shadow-sm space-y-3">
+<div class="flex items-center justify-between">
+<span class="text-label-sm font-label-sm uppercase tracking-wider text-outline">Fil d'Ariane &amp; Onglets Système</span>
+<span class="text-xs text-secondary font-semibold">ARIA breadcrumb compliant</span>
+</div>
+<!-- Breadcrumbs -->
+<nav aria-label="Fil d'Ariane" class="flex items-center gap-2 text-body-sm font-body-sm text-on-surface-variant flex-wrap">
+<a class="hover:text-primary transition-colors" href="#">Accueil Ahala</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<a class="hover:text-primary transition-colors" href="#">Préparer ma visite</a>
+<span class="material-symbols-outlined text-[14px]">chevron_right</span>
+<span aria-current="page" class="font-bold text-primary">Simulation &amp; Billet Électronique</span>
+</nav>
+<!-- Segmented Tabs -->
+<div class="flex items-center gap-1 p-1 bg-surface-container rounded-lg max-w-md">
+<button class="flex-1 py-1.5 text-center text-label-md font-label-md bg-surface-container-lowest text-primary rounded shadow-xs font-semibold" type="button">
+                Tarifs Visiteurs
+              </button>
+<button class="flex-1 py-1.5 text-center text-label-md font-label-md text-on-surface-variant hover:text-primary font-semibold" type="button">
+                Formations CFP
+              </button>
+<button class="flex-1 py-1.5 text-center text-label-md font-label-md text-on-surface-variant hover:text-primary font-semibold" type="button">
+                Événements Privés
+              </button>
+</div>
+</div>
+<!-- Buttons Matrix -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 leaf-contour shadow-sm space-y-4">
+<h3 class="text-headline-sm font-headline-sm text-primary">Matrice d'États des Boutons (Hauteur Min. 48px Mobile)</h3>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+<!-- Bouton Principal (Vert Profond #1D490D) -->
+<div class="space-y-2 p-3 bg-surface-container-low rounded-lg">
+<span class="text-label-sm font-label-sm text-primary font-bold">Principal : Vert Profond (#1D490D)</span>
+<div class="flex flex-wrap gap-2">
+<!-- Repos -->
+<button class="min-h-[48px] px-4 py-2.5 rounded-lg bg-primary-container text-white font-title-md text-title-md hover:bg-primary transition-all" type="button">
+                    Repos
+                  </button>
+<!-- Hover/Active -->
+<button class="min-h-[48px] px-4 py-2.5 rounded-lg bg-primary text-white font-title-md text-title-md shadow-inner scale-[0.98]" type="button">
+                    Actif / Hover
+                  </button>
+<!-- Loading -->
+<button class="min-h-[48px] px-4 py-2.5 rounded-lg bg-primary-container text-white font-title-md text-title-md inline-flex items-center gap-2 cursor-wait" type="button">
+<svg class="animate-spin h-5 w-5 text-white" fill="none" viewbox="0 0 24 24">
+<circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+<path class="opacity-75" d="M4 12a8 8 0 018-8v8H4z" fill="currentColor"></path>
+</svg>
+<span>Chargement...</span>
+</button>
+<!-- Disabled -->
+<button class="min-h-[48px] px-4 py-2.5 rounded-lg bg-primary-container text-white font-title-md text-title-md opacity-40 cursor-not-allowed" disabled="" type="button">
+                    Désactivé
+                  </button>
+</div>
+</div>
+<!-- Bouton Secondaire (Blanc bordure #1D490D) -->
+<div class="space-y-2 p-3 bg-surface-container-low rounded-lg">
+<span class="text-label-sm font-label-sm text-primary font-bold">Secondaire : Contour (#1D490D)</span>
+<div class="flex flex-wrap gap-2">
+<!-- Repos -->
+<button class="min-h-[48px] px-4 py-2.5 rounded-lg bg-surface-container-lowest text-primary border-2 border-primary-container font-title-md text-title-md hover:bg-surface-container transition-all" type="button">
+                    Secondaire Repos
+                  </button>
+<!-- Focus visible -->
+<button class="min-h-[48px] px-4 py-2.5 rounded-lg bg-surface-container-lowest text-primary border-2 border-primary-container font-title-md text-title-md ring-4 ring-secondary/30 ring-offset-1" type="button">
+                    Focus Visible
+                  </button>
+<!-- Disabled -->
+<button class="min-h-[48px] px-4 py-2.5 rounded-lg bg-surface-container-lowest text-outline border-2 border-outline font-title-md text-title-md opacity-40 cursor-not-allowed" disabled="" type="button">
+                    Contour Inactif
+                  </button>
+</div>
+</div>
+</div>
+<!-- Tertiaire & Cible Ergonomique -->
+<div class="flex flex-wrap items-center justify-between gap-4 pt-2 border-t border-outline-variant">
+<button class="min-h-[48px] px-3 py-2 text-primary hover:bg-surface-container rounded-lg font-title-md text-title-md inline-flex items-center gap-1.5" type="button">
+<span class="material-symbols-outlined text-[18px]">arrow_back</span>
+<span>Lien Tertiaire / Retour</span>
+</button>
+<div class="flex items-center gap-2 text-body-sm font-body-sm text-secondary bg-surface-container px-3 py-1.5 rounded-lg">
+<span class="material-symbols-outlined text-[18px]">touch_app</span>
+<span>Ergonomie tactile conforme : minimum 48px × 48px garanti</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-05: FORMULAIRES & ACCESSIBILITÉ WCAG 2.2 AA                             -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-05">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">05</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-05 : Formulaires &amp; Accessibilité WCAG 2.2 AA</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Saisies sécurisées Cameroun (+237), calendrier Ahala et téléversement CFP</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Interactions et Saisie</span>
+</div>
+<!-- Live Interactive Form Panel -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 md:p-8 leaf-contour shadow-sm space-y-6">
+<!-- Accessible Alert Banner (role="alert") -->
+<div aria-live="polite" class="bg-surface-container border-l-4 border-secondary p-4 rounded-r-lg flex items-start gap-3" role="alert">
+<span class="material-symbols-outlined text-secondary text-[24px]">verified</span>
+<div>
+<h4 class="font-title-md text-title-md text-primary">Formulaire d'Enregistrement de Visite &amp; Stage CFP</h4>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Les champs précédés d'un astérisque (*) sont obligatoires. Les labels demeurent visibles de façon permanente au-dessus des champs.</p>
+</div>
+</div>
+<form class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" onsubmit="event.preventDefault();">
+<!-- Text field: Nom complet -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-primary font-bold" for="visitor-name">
+              Nom complet du visiteur ou responsable *
+            </label>
+<div class="relative">
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/45 focus:border-primary-container focus:ring-2 focus:ring-secondary/20 outline-none transition-all" id="visitor-name" name="visitor-name" placeholder="Ex: Jean-Paul Mbianda" required="" type="text"/>
+<span class="material-symbols-outlined absolute right-3 top-3 text-outline">badge</span>
+</div>
+<p class="text-xs text-on-surface-variant">Identité conforme à la pièce d'identité officielle.</p>
+</div>
+<!-- Phone Cameroon Field (+237) -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-primary font-bold" for="visitor-phone">
+              Téléphone Mobile Money Cameroun (+237) *
+            </label>
+<div class="flex">
+<span class="inline-flex items-center px-3 rounded-l-lg border border-r-0 border-outline-variant bg-surface-container text-primary font-bold text-body-sm">
+                🇨🇲 +237
+              </span>
+<input class="w-full h-12 px-4 rounded-r-lg border border-outline-variant bg-surface-container-lowest text-on-surface placeholder:text-on-surface-variant/45 focus:border-primary-container focus:ring-2 focus:ring-secondary/20 outline-none transition-all" id="visitor-phone" name="visitor-phone" pattern="[6][0-9]{8}" placeholder="699 00 00 00" required="" type="tel"/>
+</div>
+<p class="text-xs text-on-surface-variant">Format 9 chiffres : MTN Mobile Money ou Orange Money.</p>
+</div>
+<!-- Date Picker with Weekly Rest Rules -->
+<div class="space-y-1.5">
+<label class="block text-label-md font-label-md text-primary font-bold" for="visit-date">
+              Date de visite souhaitée *
+            </label>
+<div class="relative">
+<input class="w-full h-12 px-4 rounded-lg border border-outline-variant bg-surface-container-lowest text-on-surface focus:border-primary-container focus:ring-2 focus:ring-secondary/20 outline-none transition-all" id="visit-date" name="visit-date" required="" type="date"/>
+</div>
+<p class="text-xs text-amber-700 flex items-center gap-1 font-semibold">
+<span class="material-symbols-outlined text-[14px]">info</span>
+              Fermé le Lundi (repos faunique). Mar-Dim : 09h00 - 18h30.
+            </p>
+</div>
+<!-- Incremental Person Counter: Adultes -->
+<div class="space-y-1.5 bg-surface-container p-3 rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center">
+<div>
+<span class="block text-label-md font-label-md text-primary font-bold">Adultes (≥12 ans)</span>
+<span class="text-xs text-on-surface-variant">1 000 FCFA / pers.</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-lowest rounded-lg border border-outline-variant p-1">
+<button class="w-8 h-8 rounded bg-surface hover:bg-surface-container text-primary font-bold flex items-center justify-center transition-colors" onclick="decrement('counter-adults')" type="button">-</button>
+<span class="font-headline-sm text-headline-sm text-primary w-6 text-center" id="counter-adults">2</span>
+<button class="w-8 h-8 rounded bg-surface hover:bg-surface-container text-primary font-bold flex items-center justify-center transition-colors" onclick="increment('counter-adults')" type="button">+</button>
+</div>
+</div>
+</div>
+<!-- Incremental Person Counter: Enfants -->
+<div class="space-y-1.5 bg-surface-container p-3 rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center">
+<div>
+<span class="block text-label-md font-label-md text-primary font-bold">Enfants (3 à 11 ans)</span>
+<span class="text-xs text-on-surface-variant">500 FCFA / enfant</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-lowest rounded-lg border border-outline-variant p-1">
+<button class="w-8 h-8 rounded bg-surface hover:bg-surface-container text-primary font-bold flex items-center justify-center transition-colors" onclick="decrement('counter-kids')" type="button">-</button>
+<span class="font-headline-sm text-headline-sm text-primary w-6 text-center" id="counter-kids">1</span>
+<button class="w-8 h-8 rounded bg-surface hover:bg-surface-container text-primary font-bold flex items-center justify-center transition-colors" onclick="increment('counter-kids')" type="button">+</button>
+</div>
+</div>
+</div>
+<!-- Incremental Person Counter: Bébés (<3 ans gratuit) -->
+<div class="space-y-1.5 bg-surface-container p-3 rounded-xl border border-outline-variant">
+<div class="flex justify-between items-center">
+<div>
+<span class="block text-label-md font-label-md text-primary font-bold">Bébés (&lt;3 ans)</span>
+<span class="text-xs text-secondary font-bold">Gratuit (0 FCFA)</span>
+</div>
+<div class="flex items-center gap-3 bg-surface-container-lowest rounded-lg border border-outline-variant p-1">
+<button class="w-8 h-8 rounded bg-surface hover:bg-surface-container text-primary font-bold flex items-center justify-center transition-colors" onclick="decrement('counter-babies')" type="button">-</button>
+<span class="font-headline-sm text-headline-sm text-primary w-6 text-center" id="counter-babies">0</span>
+<button class="w-8 h-8 rounded bg-surface hover:bg-surface-container text-primary font-bold flex items-center justify-center transition-colors" onclick="increment('counter-babies')" type="button">+</button>
+</div>
+</div>
+</div>
+<!-- File Upload Zone for CFP Ecopark Candidates -->
+<div class="md:col-span-2 lg:col-span-3 space-y-1.5">
+<label class="block text-label-md font-label-md text-primary font-bold">
+              Téléversement Dossier de Candidature CFP Ecopark (Optionnel)
+            </label>
+<div class="border-2 border-dashed border-outline-variant hover:border-primary-container rounded-xl p-6 text-center bg-surface-container/40 transition-colors cursor-pointer">
+<span class="material-symbols-outlined text-[36px] text-secondary">cloud_upload</span>
+<p class="text-body-md font-body-md text-primary font-semibold mt-1">Glissez votre CV ou relevé de notes ou cliquez pour parcourir</p>
+<p class="text-xs text-on-surface-variant">Formats acceptés : PDF, PNG, JPG (Poids maximal : 10 Mo). Certifié confidentiel.</p>
+</div>
+</div>
+<!-- Error Feedback Container Specimen (ARIA compliant) -->
+<div class="md:col-span-2 lg:col-span-3 bg-error-container border border-error/40 p-4 rounded-xl flex items-start gap-3 text-on-error-container">
+<span class="material-symbols-outlined text-error text-[24px]">error</span>
+<div>
+<p class="font-title-md text-title-md font-bold">Récapitulatif des erreurs (Exemple démonstratif)</p>
+<ul class="text-body-sm font-body-sm list-disc pl-5 mt-1 space-y-0.5">
+<li>Le numéro de téléphone camerounais doit comporter 9 chiffres débutant par 6.</li>
+<li>Le parc est fermé au public le Lundi : veuillez sélectionner du Mardi au Dimanche.</li>
+</ul>
+</div>
+</div>
+</form>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-06: CARTES, TABLEAUX TARIFAIRES FCFA & FAQ                              -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-06">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">06</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-06 : Cartes, Tableaux Tarifaires FCFA &amp; FAQ</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Cartes à silhouette feuille, hébergements d'Ahala et grille tarifaire en Francs CFA</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Modèles &amp; Tarification</span>
+</div>
+<!-- 3 Specific Cards (Faune, Hébergement, CFP) -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<!-- 1. Carte Activité Faune -->
+<div class="bg-surface-container-lowest border border-outline-variant leaf-contour shadow-sm p-6 flex flex-col justify-between relative border-b-4 border-b-secondary">
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-bold uppercase">
+                Faune &amp; Réserve
+              </span>
+<span class="text-headline-sm font-headline-sm text-primary">1 000 FCFA</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-primary">Circuit Volière &amp; Primates</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              Observation guidée des perroquets gris du Gabon, singes patas et tortues géantes dans des enclos paysagers respectant les biotopes naturels.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant flex items-center justify-between mt-4">
+<span class="text-xs text-outline font-semibold">Durée : 1h30</span>
+<button class="px-3 py-1.5 rounded-lg bg-primary-container text-white text-xs font-bold hover:bg-primary transition-all" type="button">
+              Détails Parcours
+            </button>
+</div>
+</div>
+<!-- 2. Carte Hébergement / Hôtels d'Ahala -->
+<div class="bg-surface-container-lowest border border-outline-variant leaf-contour shadow-sm p-6 flex flex-col justify-between relative border-b-4 border-b-secondary">
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-bold uppercase">
+                Écolodges Ahala
+              </span>
+<span class="text-headline-sm font-headline-sm text-primary">25 000 FCFA <span class="text-xs text-outline">/nuit</span></span>
+</div>
+<h3 class="text-headline-md font-headline-md text-primary">Pavillon Ewondo &amp; Chanthel</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              Bungalows climatisés en matériaux locaux, literie haut de gamme, vue imprenable sur les étangs piscicoles et petit-déjeuner du terroir inclus.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant flex items-center justify-between mt-4">
+<span class="text-xs text-secondary font-bold">3 suites disponibles</span>
+<button class="px-3 py-1.5 rounded-lg bg-primary-container text-white text-xs font-bold hover:bg-primary transition-all" type="button">
+              Réserver Écolodge
+            </button>
+</div>
+</div>
+<!-- 3. Carte Filière CFP d'Ecopark -->
+<div class="bg-surface-container-lowest border border-outline-variant leaf-contour shadow-sm p-6 flex flex-col justify-between relative border-b-4 border-b-secondary">
+<div class="space-y-3">
+<div class="flex justify-between items-start">
+<span class="px-2.5 py-1 rounded-full bg-surface-container text-primary font-label-sm text-label-sm font-bold uppercase">
+                Centre de Formation (CFP)
+              </span>
+<span class="text-headline-sm font-headline-sm text-secondary">Agréé MINEFOP</span>
+</div>
+<h3 class="text-headline-md font-headline-md text-primary">Agroécologie &amp; Pisciculture</h3>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+              Cycle modulaire certifiant de 3 à 6 mois. Maîtrise pratique de la reproduction des alevins, de la gestion des étangs et du maraîchage bio.
+            </p>
+</div>
+<div class="pt-4 border-t border-outline-variant flex items-center justify-between mt-4">
+<span class="text-xs text-outline font-semibold">Session Octobre 2024</span>
+<button class="px-3 py-1.5 rounded-lg bg-primary-container text-white text-xs font-bold hover:bg-primary transition-all" type="button">
+              Télécharger Syllabus
+            </button>
+</div>
+</div>
+</div>
+<!-- Official Transparent Pricing Table in FCFA (XAF) -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 bg-surface-container border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">payments</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Grille Tarifaire Officielle d'Entrée &amp; Loisirs (Francs CFA - XAF)</h3>
+</div>
+<span class="text-xs font-semibold px-2.5 py-1 rounded bg-surface-container-highest text-primary">Tarifs homologués</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-primary font-headline-sm text-headline-sm border-b border-outline-variant">
+<th class="p-4">Prestation / Expérience</th>
+<th class="p-4">Bénéficiaires / Conditions</th>
+<th class="p-4">Tarif Officiel (FCFA)</th>
+<th class="p-4">Paiement Accepté</th>
+<th class="p-4">Action</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm text-body-sm">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">Entrée Adulte</td>
+<td class="p-4">Visiteurs dès 12 ans révolus</td>
+<td class="p-4 font-headline-sm text-headline-sm text-primary font-bold">1 000 FCFA</td>
+<td class="p-4">Espèces, Orange Money, MTN MoMo</td>
+<td class="p-4"><button class="text-secondary font-bold hover:underline" type="button">Ajouter +</button></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">Entrée Enfant</td>
+<td class="p-4">De 3 ans à 11 ans (sur justificatif)</td>
+<td class="p-4 font-headline-sm text-headline-sm text-primary font-bold">500 FCFA</td>
+<td class="p-4">Espèces, Orange Money, MTN MoMo</td>
+<td class="p-4"><button class="text-secondary font-bold hover:underline" type="button">Ajouter +</button></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">Entrée Tout-petit</td>
+<td class="p-4">Moins de 3 ans révolus</td>
+<td class="p-4 font-headline-sm text-headline-sm text-secondary font-bold">GRATUIT</td>
+<td class="p-4">Billet symbolique remis</td>
+<td class="p-4"><span class="text-outline text-xs">Automatique</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">Balade en Pédalo</td>
+<td class="p-4">Par embarcation (30 minutes de navigation)</td>
+<td class="p-4 font-headline-sm text-headline-sm text-primary font-bold">1 000 FCFA</td>
+<td class="p-4">Guichet nautique / Mobile</td>
+<td class="p-4"><button class="text-secondary font-bold hover:underline" type="button">Ajouter +</button></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-4 font-bold text-primary">Tyrolienne de la Canopée</td>
+<td class="p-4">Par saut assisté avec équipement certifié</td>
+<td class="p-4 font-headline-sm text-headline-sm text-primary font-bold">2 500 FCFA</td>
+<td class="p-4">Guichet Aventure / Mobile</td>
+<td class="p-4"><button class="text-secondary font-bold hover:underline" type="button">Ajouter +</button></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<!-- Accessible Interactive FAQ Accordion -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-sm space-y-4">
+<h3 class="text-headline-sm font-headline-sm text-primary">Foire Aux Questions (FAQ Visiteurs &amp; Sécurité)</h3>
+<div class="space-y-3">
+<!-- Accordion Item 1 (Expanded) -->
+<details class="group bg-surface-container-low border border-outline-variant rounded-lg p-4 open:bg-surface-container transition-colors" open="">
+<summary class="flex justify-between items-center font-title-md text-title-md text-primary cursor-pointer list-none">
+<span>Quels sont les jours et horaires d'ouverture d'ECOPARK Ahala ?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform text-primary">expand_more</span>
+</summary>
+<p class="mt-3 text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Le sanctuaire est ouvert du Mardi au Dimanche de 09h00 à 18h30 sans interruption. <strong>Le Lundi est strictement réservé au repos faunique</strong>, aux nettoyages des étangs et aux soins vétérinaires. Aucun visiteur n'est admis le lundi.
+            </p>
+</details>
+<!-- Accordion Item 2 -->
+<details class="group bg-surface-container-low border border-outline-variant rounded-lg p-4 open:bg-surface-container transition-colors">
+<summary class="flex justify-between items-center font-title-md text-title-md text-primary cursor-pointer list-none">
+<span>Peut-on régler ses billets par MTN Mobile Money ou Orange Money ?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform text-primary">expand_more</span>
+</summary>
+<p class="mt-3 text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Oui, nous acceptons les paiements instantanés via les deux opérateurs nationaux camerounais (+237). À aucun moment le personnel ou l'application ne vous demandera votre code secret PIN personnel.
+            </p>
+</details>
+<!-- Accordion Item 3 -->
+<details class="group bg-surface-container-low border border-outline-variant rounded-lg p-4 open:bg-surface-container transition-colors">
+<summary class="flex justify-between items-center font-title-md text-title-md text-primary cursor-pointer list-none">
+<span>Comment s'inscrire aux formations en pisciculture et agroécologie du CFP ?</span>
+<span class="material-symbols-outlined group-open:rotate-180 transition-transform text-primary">expand_more</span>
+</summary>
+<p class="mt-3 text-body-sm font-body-sm text-on-surface-variant leading-relaxed">
+              Le Centre de Formation Professionnelle d'Ecopark accueille des promotions trimestrielles. Vous pouvez déposer votre dossier en ligne via l'écran DS-05 ou vous présenter directement au secrétariat du parc avec une copie de votre CNI et votre dernier diplôme scolaire.
+            </p>
+</details>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-07: COMPOSANTS MÉTIER & CONTRÔLE DE VISITE                             -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-07">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">07</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-07 : Composants Métier &amp; Contrôle de Visite</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Calculateur de budget, émulateur scanner de barrière et ticket officiel</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Opérations Guichet</span>
+</div>
+<!-- Live Budget Calculator & Reservation Status Matrix -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+<!-- Interactive Budget Calculator -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 leaf-contour shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined">calculate</span>
+<h3 class="text-headline-sm font-headline-sm">Calculateur Budgétaire Immédiat (FCFA)</h3>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-secondary text-xs font-bold">Temps Réel</span>
+</div>
+<div class="space-y-3 bg-surface-container-low p-4 rounded-xl border border-outline-variant text-body-sm">
+<div class="flex justify-between items-center py-1">
+<span>2 Adultes × 1 000 FCFA :</span>
+<span class="font-bold text-primary">2 000 FCFA</span>
+</div>
+<div class="flex justify-between items-center py-1">
+<span>1 Enfant × 500 FCFA :</span>
+<span class="font-bold text-primary">500 FCFA</span>
+</div>
+<div class="flex justify-between items-center py-1">
+<span>1 Pédalo (30 min) :</span>
+<span class="font-bold text-primary">1 000 FCFA</span>
+</div>
+<div class="border-t border-outline-variant pt-2 flex justify-between items-center text-title-md">
+<span class="font-bold text-primary">Montant Total Estimé :</span>
+<span class="font-headline-lg font-headline-lg text-secondary font-extrabold">3 500 FCFA</span>
+</div>
+</div>
+<!-- Strict Mobile Money Security Note -->
+<div class="bg-error-container/40 border border-error/20 p-3 rounded-lg flex items-center gap-2 text-on-surface text-xs font-semibold">
+<span class="material-symbols-outlined text-error text-[18px]">security</span>
+<span>Pour votre sécurité, ECOPARK ne demande jamais votre code secret PIN Mobile Money.</span>
+</div>
+</div>
+<!-- 4 Reservation Status Matrix -->
+<div class="bg-surface-container-lowest border border-outline-variant p-6 rounded-xl shadow-sm space-y-4">
+<h3 class="text-headline-sm font-headline-sm text-primary">Matrice des 4 Statuts de Réservation</h3>
+<div class="grid grid-cols-2 gap-3 text-body-sm">
+<div class="p-3 rounded-lg border border-amber-500/40 bg-amber-50/50 space-y-1">
+<div class="flex items-center gap-1.5 text-amber-800 font-bold">
+<span class="material-symbols-outlined text-[16px]">hourglass_top</span>
+<span>1. En Attente</span>
+</div>
+<p class="text-xs text-on-surface-variant">Paiement guichet ou en cours sur passerelle MoMo.</p>
+</div>
+<div class="p-3 rounded-lg border border-secondary/40 bg-surface-container space-y-1">
+<div class="flex items-center gap-1.5 text-secondary font-bold">
+<span class="material-symbols-outlined text-[16px]">verified</span>
+<span>2. Confirmé</span>
+</div>
+<p class="text-xs text-on-surface-variant">Fonds validés, QR code prêt pour l'accès aux bornes.</p>
+</div>
+<div class="p-3 rounded-lg border border-error/40 bg-error-container/30 space-y-1">
+<div class="flex items-center gap-1.5 text-error font-bold">
+<span class="material-symbols-outlined text-[16px]">cancel</span>
+<span>3. Échoué</span>
+</div>
+<p class="text-xs text-on-surface-variant">Transaction interrompue ou solde client insuffisant.</p>
+</div>
+<div class="p-3 rounded-lg border border-outline/40 bg-surface-container-high space-y-1">
+<div class="flex items-center gap-1.5 text-on-surface-variant font-bold">
+<span class="material-symbols-outlined text-[16px]">history</span>
+<span>4. Expiré</span>
+</div>
+<p class="text-xs text-on-surface-variant">Délai de visite dépassé sans présentation au parc.</p>
+</div>
+</div>
+<!-- Cash Register Key Indicators -->
+<div class="border-t border-outline-variant pt-3 grid grid-cols-3 gap-2 text-center">
+<div class="bg-surface-container p-2 rounded-lg">
+<span class="text-label-sm font-label-sm text-outline">Entrées Jour</span>
+<p class="text-headline-sm font-headline-sm text-primary">342</p>
+</div>
+<div class="bg-surface-container p-2 rounded-lg">
+<span class="text-label-sm font-label-sm text-outline">Total Perçu</span>
+<p class="text-headline-sm font-headline-sm text-secondary">428 500 F</p>
+</div>
+<div class="bg-surface-container p-2 rounded-lg">
+<span class="text-label-sm font-label-sm text-outline">Mix MoMo / Cash</span>
+<p class="text-headline-sm font-headline-sm text-primary">74% / 26%</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Ticket Specimen & Gate Scanner Emulation -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+<!-- Official Ticket Specimen -->
+<div class="lg:col-span-5 bg-surface-container-lowest border-2 border-primary-container p-5 rounded-2xl shadow-md relative overflow-hidden flex flex-col justify-between">
+<div class="border-b border-dashed border-outline-variant pb-4 space-y-2">
+<div class="flex justify-between items-start">
+<div>
+<span class="text-[10px] font-bold text-secondary uppercase tracking-widest">Billet d'Accès Officiel</span>
+<h4 class="text-headline-md font-headline-md text-primary">ECOPARK YAOUNDÉ</h4>
+</div>
+<span class="px-2 py-0.5 rounded bg-surface-container text-xs font-bold text-primary">PASS JOURNÉE</span>
+</div>
+<p class="text-xs text-on-surface-variant">Sanctuaire Écotouristique d'Ahala II, Cameroun</p>
+</div>
+<!-- Ticket Details -->
+<div class="py-4 space-y-2 text-body-sm">
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Réf. Réservation :</span>
+<span class="font-mono font-bold text-primary">#ECO-2024-8841</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Titulaire :</span>
+<span class="font-bold text-primary">Jean-Paul MBIANDA</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Participants :</span>
+<span class="font-bold text-primary">2 Adultes + 1 Enfant</span>
+</div>
+<div class="flex justify-between">
+<span class="text-on-surface-variant">Date de Visite :</span>
+<span class="font-bold text-primary">Samedi 19 Octobre 2024</span>
+</div>
+</div>
+<!-- Simulated QR Code Plate -->
+<div class="bg-surface-container p-4 rounded-xl flex flex-col items-center justify-center text-center space-y-2 border border-outline-variant">
+<div class="w-32 h-32 bg-surface-container-lowest p-2 rounded-lg border-2 border-primary-container flex items-center justify-center">
+<span class="material-symbols-outlined text-[80px] text-primary">qr_code_2</span>
+</div>
+<span class="text-[10px] font-bold tracking-wider text-error uppercase">DÉMONSTRATION NON VALABLE EN CAISSE</span>
+</div>
+<div class="pt-3 border-t border-dashed border-outline-variant text-[11px] text-on-surface-variant text-center">
+            Présenter ce billet imprimé ou sur smartphone à la barrière principale d'Ahala.
+          </div>
+</div>
+<!-- Barrier Scanner Emulator with 4 Operator Feedback States -->
+<div class="lg:col-span-7 bg-surface-container-lowest border border-outline-variant p-6 leaf-contour shadow-sm space-y-4">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2 text-primary">
+<span class="material-symbols-outlined text-secondary">scanner</span>
+<h3 class="text-headline-sm font-headline-sm">Émulateur de Validation à la Barrière d'Ahala</h3>
+</div>
+<span class="text-xs bg-surface-container px-2 py-0.5 rounded font-mono text-primary">Borne #01 - Poste Nord</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Retour visuel immédiat reçu par l'agent de garde lors de la lecture du code crypté :</p>
+<div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+<!-- 1. Vert: Billet Valide -->
+<div class="bg-surface-container border-2 border-secondary p-4 rounded-xl space-y-2">
+<div class="flex items-center gap-2 text-secondary">
+<span class="material-symbols-outlined text-[24px] fill" style="font-variation-settings: 'FILL' 1;">check_circle</span>
+<span class="font-title-md text-title-md font-bold">ACCÈS AUTORISÉ</span>
+</div>
+<p class="text-body-sm font-body-sm font-semibold text-primary">Billet #ECO-2024-8841 Valide</p>
+<p class="text-xs text-on-surface-variant">2 Adultes + 1 Enfant. Barrière motorisée déverrouillée.</p>
+</div>
+<!-- 2. Orange: Billet Déjà Scanné -->
+<div class="bg-amber-50 border-2 border-amber-600 p-4 rounded-xl space-y-2">
+<div class="flex items-center gap-2 text-amber-800">
+<span class="material-symbols-outlined text-[24px] fill" style="font-variation-settings: 'FILL' 1;">warning</span>
+<span class="font-title-md text-title-md font-bold">DÉJÀ SCANNÉ</span>
+</div>
+<p class="text-body-sm font-body-sm font-semibold text-amber-900">Billet déjà consommé</p>
+<p class="text-xs text-on-surface-variant">Scanné aujourd'hui à 10h14 au Guichet Nautique.</p>
+</div>
+<!-- 3. Rouge: Billet Invalide -->
+<div class="bg-error-container/30 border-2 border-error p-4 rounded-xl space-y-2">
+<div class="flex items-center gap-2 text-error">
+<span class="material-symbols-outlined text-[24px] fill" style="font-variation-settings: 'FILL' 1;">cancel</span>
+<span class="font-title-md text-title-md font-bold">BILLET INVALIDE</span>
+</div>
+<p class="text-body-sm font-body-sm font-semibold text-error">Signature numérique inconnue</p>
+<p class="text-xs text-on-surface-variant">Code expiré ou contrefaçon. Renvoyer vers le bureau d'accueil.</p>
+</div>
+<!-- 4. Bleu: Mode Hors-Ligne -->
+<div class="bg-sky-50 border-2 border-sky-600 p-4 rounded-xl space-y-2">
+<div class="flex items-center gap-2 text-sky-800">
+<span class="material-symbols-outlined text-[24px]">cloud_off</span>
+<span class="font-title-md text-title-md font-bold">MODE HORS-LIGNE</span>
+</div>
+<p class="text-body-sm font-body-sm font-semibold text-sky-900">Validation sur Cache Local</p>
+<p class="text-xs text-on-surface-variant">Réseau dégradé : synchronisation automatique dès rétablissement.</p>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- ========================================================================= -->
+<!-- DS-08: ARCHITECTURE RESPONSIVE & MATRICE DES 77 ÉCRANS                     -->
+<!-- ========================================================================= -->
+<section class="scroll-mt-32 space-y-6" id="ds-08">
+<div class="border-b border-outline-variant pb-3 flex items-center justify-between">
+<div class="flex items-center gap-3">
+<span class="w-8 h-8 rounded-lg bg-primary-container text-on-primary flex items-center justify-center font-headline-sm text-headline-sm">08</span>
+<div>
+<h2 class="text-headline-lg-mobile md:text-headline-lg font-headline-lg text-primary">DS-08 : Architecture &amp; Matrice Complète des 77 Écrans</h2>
+<p class="text-body-sm font-body-sm text-on-surface-variant">Cartographie exhaustive des 8 domaines applicatifs et déclinaisons responsive</p>
+</div>
+</div>
+<span class="hidden sm:inline-block font-label-sm text-label-sm uppercase tracking-wider text-outline">Couverture Système</span>
+</div>
+<!-- Responsive Breakpoint Cards -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl shadow-sm space-y-2">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined">smartphone</span>
+<span>Mobile First (320px - 480px)</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            4 colonnes, gouttières 16px, navigation basse tactile (BottomNav), actions principales empilées et cibles tactiles rigoureuses de 48px.
+          </p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl shadow-sm space-y-2">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined">tablet_mac</span>
+<span>Tablette Guichet (768px - 1024px)</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            8 colonnes, gouttières 20px, tiroir rétractable d'agent, mode hybride paysage pour saisie rapide des encaissements en caisse.
+          </p>
+</div>
+<div class="bg-surface-container-lowest border border-outline-variant p-5 rounded-xl shadow-sm space-y-2">
+<div class="flex items-center gap-2 text-primary font-bold">
+<span class="material-symbols-outlined">desktop_windows</span>
+<span>Grand Écran (1280px+)</span>
+</div>
+<p class="text-body-sm font-body-sm text-on-surface-variant">
+            12 colonnes, max canvas 1440px, navigation supérieure complète, tableaux d'analyse financière et supervision des flux en temps réel.
+          </p>
+</div>
+</div>
+<!-- The 77 Screens Exhaustive Matrix Table -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl overflow-hidden shadow-sm">
+<div class="p-4 bg-surface-container border-b border-outline-variant flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">view_quilt</span>
+<h3 class="text-headline-sm font-headline-sm text-primary">Cartographie des 77 Écrans ECOPARK Yaoundé (8 Domaines)</h3>
+</div>
+<span class="px-2.5 py-1 rounded bg-primary-container text-white text-xs font-bold font-mono">TOTAL : 77 ÉCRANS</span>
+</div>
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-surface-container-low text-primary font-headline-sm text-headline-sm border-b border-outline-variant">
+<th class="p-3">Code Domaine</th>
+<th class="p-3">Intitulé du Domaine Applicatif</th>
+<th class="p-3">Volume</th>
+<th class="p-3">Portée Fonctionnelle &amp; Cibles</th>
+<th class="p-3">Sécurité &amp; Cloisonnement</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-outline-variant font-body-sm text-body-sm">
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">DS-01 à DS-08</td>
+<td class="p-3 font-semibold text-primary">Design System &amp; Référentiel Technique</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">8 écrans</span></td>
+<td class="p-3">Tokens, composants, boutons, formulaires, tarifs FCFA et règles WCAG.</td>
+<td class="p-3"><span class="text-secondary font-semibold text-xs">Public &amp; Développeurs</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">PUB-01 à PUB-12</td>
+<td class="p-3 font-semibold text-primary">Portail Public &amp; Expériences Ahala</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">12 écrans</span></td>
+<td class="p-3">Accueil, circuits faune, pisciculture, terrasses, écolodges, plan interactif.</td>
+<td class="p-3"><span class="text-secondary font-semibold text-xs">Grand Public Universel</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">RES-01 à RES-14</td>
+<td class="p-3 font-semibold text-primary">Réservation, Billetterie &amp; Groupes</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">14 écrans</span></td>
+<td class="p-3">Tunnel d'achat, calcul de panier en FCFA, paiement Orange / MTN MoMo.</td>
+<td class="p-3"><span class="text-primary font-semibold text-xs">Chiffrement SSL / HTTPS</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">ACC-01 à ACC-08</td>
+<td class="p-3 font-semibold text-primary">Espace Visiteur &amp; Mon Compte</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">8 écrans</span></td>
+<td class="p-3">Historique des visites, téléchargement des billets QR, candidatures CFP.</td>
+<td class="p-3"><span class="text-primary font-semibold text-xs">Authentification OTP SMS</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">AGT-01 à AGT-16</td>
+<td class="p-3 font-semibold text-primary">Console Agents Guichets &amp; Barrière</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">16 écrans</span></td>
+<td class="p-3">Scanner QR barrière, émission manuelle de tickets, clôture journalière caisse.</td>
+<td class="p-3"><span class="text-amber-800 font-semibold text-xs">Cloisonnement IP &amp; Rôle Agent</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">EXP-01 à EXP-08</td>
+<td class="p-3 font-semibold text-primary">Gestion Écosystème, Restauration &amp; CFP</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">8 écrans</span></td>
+<td class="p-3">Suivi sanitaire faune, alimentation bassins piscicoles, planning formateurs.</td>
+<td class="p-3"><span class="text-amber-800 font-semibold text-xs">Accès Métier Restreint</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">DIR-01 à DIR-06</td>
+<td class="p-3 font-semibold text-primary">Console Direction &amp; Indicateurs Clés</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">6 écrans</span></td>
+<td class="p-3">Tableau de bord financier FCFA, fréquentation globale, reporting ministériel.</td>
+<td class="p-3"><span class="text-error font-semibold text-xs">Double Authentification 2FA</span></td>
+</tr>
+<tr class="hover:bg-surface-container-low transition-colors">
+<td class="p-3 font-mono font-bold text-primary">ADM-01 à ADM-05</td>
+<td class="p-3 font-semibold text-primary">Administration Système &amp; Paramétrages</td>
+<td class="p-3"><span class="px-2 py-0.5 rounded bg-surface-container font-bold text-primary">5 écrans</span></td>
+<td class="p-3">Gestion des clés API passerelles MoMo, gestion des rôles, logs de sécurité.</td>
+<td class="p-3"><span class="text-error font-semibold text-xs">Super-Admin Ahala</span></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</section>
+</main>
+<!-- FOOTER OFFICIEL -->
+<footer class="bg-surface-container border-t border-outline-variant py-10 text-on-surface-variant font-body-sm text-body-sm">
+<div class="max-w-[1440px] mx-auto px-4 md:px-space-lg flex flex-col md:flex-row items-center justify-between gap-6">
+<div class="flex items-center gap-3">
+<div class="w-10 h-10 rounded-full bg-primary-container text-primary-fixed flex items-center justify-center font-bold">
+<span class="material-symbols-outlined text-[20px]">forest</span>
+</div>
+<div>
+<p class="font-headline-sm text-headline-sm text-primary uppercase font-bold">ECOPARK YAOUNDÉ — AHALA II</p>
+<p class="text-xs">République du Cameroun • Préservation, Écotourisme &amp; Formation Professionnelle</p>
+</div>
+</div>
+<div class="flex flex-wrap items-center justify-center gap-4 text-xs font-semibold">
+<a class="hover:text-primary transition-colors" href="#ds-01">Charte Graphique</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#ds-02">Spécifications WCAG 2.2</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#ds-06">Tarifs Homologués FCFA</a>
+<span>•</span>
+<a class="hover:text-primary transition-colors" href="#ds-08">Architecture 77 Écrans</a>
+</div>
+<div class="text-center md:text-right text-xs">
+<p>© 2024 ECOPARK Ahala Cameroun. Tous droits réservés.</p>
+<p class="text-secondary font-bold">Système validé : « Canopée vivante — Le cercle du vivant »</p>
+</div>
+</div>
+</footer>
+<!-- Light Vanilla Script for Interactive Counters -->
+<script>
+    function increment(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        let val = parseInt(el.textContent, 10) || 0;
+        el.textContent = val + 1;
+      }
+    }
+    function decrement(id) {
+      const el = document.getElementById(id);
+      if (el) {
+        let val = parseInt(el.textContent, 10) || 0;
+        if (val > 0) {
+          el.textContent = val - 1;
+        }
+      }
+    }
+  </script>
+</body></html>
