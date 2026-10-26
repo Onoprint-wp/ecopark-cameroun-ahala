@@ -71,8 +71,34 @@ VALUES
   ('piscine', 'Piscine Semi-Olympique', 'EAU_PLEIN_AIR', 'Baignade surveillée avec maître-nageur sauveteur.', 1500, 2500, 2000, 1500, 300),
   ('pirogue', 'Balade en Pirogue / Pédalo sur le Lac', 'EAU_PLEIN_AIR', 'Traversée commentée du lac d''Ahala avec gilet de sauvetage fourni.', 500, 1000, 800, 500, 250),
   ('cheval', 'Équitation (Tour à Cheval) & Manèges', 'EAU_PLEIN_AIR', 'Initiation équestre encadrée et manèges enfants.', 500, 1000, 800, 500, 200),
-  ('saveurs', 'Repas — Le Château des Saveurs', 'RESTAURATION', 'Gastronomie camerounaise : poisson braisé d''Ahala, poulet DG, Ndolè, plantains mûrs.', 2500, 5000, 4500, 2500, 400)
+  ('saveurs', 'Repas — Le Château des Saveurs', 'RESTAURATION', 'Gastronomie camerounaise : poisson braisé d''Ahala, poulet DG, Ndolè, plantains mûrs.', 2500, 5000, 4500, 2500, 400),
+  ('nutrition_poissons', 'Sachet Nutrition Poissons & Tortues (Order Bump)', 'NATURE_FAUNE', 'Sachet d''aliment piscicole pour nourrir les poissons des étangs d''Ahala avec les enfants.', 500, 500, 500, 500, 800),
+  ('pergola_lac', 'Pergola Privée Bord du Lac & Service Prioritaire 13h', 'RESTAURATION', 'Réservation garantie d''une pergola ombragée au bord de l''eau avec précommande cuisine sans attente.', 0, 5000, 5000, 0, 25),
+  ('navette_yaounde', 'Navette Climatisée A/R Yaoundé — Ahala', 'GROUPES_B2B', 'Prise en charge aller-retour depuis le centre de Yaoundé (flotte 5, 18 et 32 places).', 1000, 1500, 1200, 1000, 180)
 ON CONFLICT (slug) DO NOTHING;
+
+-- ============================================================================
+-- 2B. Formules Packagées (« Pass Tout-Inclus » — Stratégie Panier Moyen & Coupe-File)
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS public.sales_bundles (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  bundle_code TEXT UNIQUE NOT NULL, -- 'PASS_DECOUVERTE', 'PASS_ROYALE', 'PACK_COUPLE_EWONDO'
+  title TEXT NOT NULL,
+  subtitle TEXT NOT NULL,
+  included_slugs TEXT[] NOT NULL DEFAULT '{}',
+  adult_bundle_price_fcfa INTEGER NOT NULL CHECK (adult_bundle_price_fcfa >= 0),
+  child_bundle_price_fcfa INTEGER NOT NULL CHECK (child_bundle_price_fcfa >= 0),
+  savings_label TEXT NOT NULL,
+  is_featured BOOLEAN NOT NULL DEFAULT FALSE,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+INSERT INTO public.sales_bundles (bundle_code, title, subtitle, included_slugs, adult_bundle_price_fcfa, child_bundle_price_fcfa, savings_label, is_featured)
+VALUES
+  ('PASS_DECOUVERTE', 'Pass Découverte Nature', 'Zoo + Balade en Pirogue + Tour à Cheval + Coupe-File QR', ARRAY['zoo', 'pirogue', 'cheval'], 2500, 1500, '3 activités combinées en 1 seul QR Code', FALSE),
+  ('PASS_ROYALE', 'Pass Journée Royale Tout-Inclus', 'Zoo + Piscine Semi-Olympique + Pirogue + Repas Chaud Château des Saveurs', ARRAY['zoo', 'piscine', 'pirogue', 'saveurs'], 8500, 4500, 'Le Plus Choisi • Repas & Coupe-File inclus', TRUE),
+  ('PACK_COUPLE_EWONDO', 'Pack Escapade Couple / VIP Week-end', 'Suite Cité Ewondo Climatisée + 2 Repas Saveurs + Piscine + Pirogue + Pergola', ARRAY['zoo', 'piscine', 'pirogue', 'saveurs', 'pergola_lac'], 45000, 0, 'Forfait Duo VIP tout compris avec nuitée/day-use', FALSE)
+ON CONFLICT (bundle_code) DO NOTHING;
 
 -- ============================================================================
 -- 3. Cités Hôtelières : Ewondo, Chanthel & Bene (PUB-08, PUB-09, EXP-04)
@@ -110,6 +136,10 @@ CREATE TABLE IF NOT EXISTS public.bookings (
   children_count INTEGER NOT NULL DEFAULT 0 CHECK (children_count >= 0),
   toddlers_count INTEGER NOT NULL DEFAULT 0 CHECK (toddlers_count >= 0),
   selected_activities TEXT[] NOT NULL DEFAULT '{}',
+  selected_bundle_code TEXT, -- ex: 'PASS_DECOUVERTE', 'PASS_ROYALE', 'PACK_COUPLE_EWONDO'
+  order_bumps TEXT[] NOT NULL DEFAULT '{}', -- ex: ARRAY['nutrition_poissons', 'pergola_lac', 'navette_yaounde']
+  pergola_reserved BOOLEAN NOT NULL DEFAULT FALSE,
+  kitchen_preorders INTEGER NOT NULL DEFAULT 0 CHECK (kitchen_preorders >= 0),
   total_fcfa INTEGER NOT NULL CHECK (total_fcfa >= 0),
   payment_method TEXT NOT NULL DEFAULT 'OM', -- 'OM', 'MOMO', 'GUICHET'
   payment_state payment_status NOT NULL DEFAULT 'PENDING',
@@ -154,6 +184,24 @@ CREATE TABLE IF NOT EXISTS public.cfp_applications (
 );
 
 -- ============================================================================
+-- 6B. Prise de Rendez-Vous (Repérage Événementiel, Direction B2B/Écoles, Orientation CFP)
+-- ============================================================================
+CREATE TABLE IF NOT EXISTS public.appointments (
+  id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+  appointment_ref TEXT UNIQUE NOT NULL, -- ex: RDV-2026-4820
+  visitor_name TEXT NOT NULL,
+  visitor_phone TEXT NOT NULL,
+  organization_name TEXT,
+  purpose_code TEXT NOT NULL, -- 'reperage_mariage', 'seminaire_b2b', 'visite_ecole', 'orientation_cfp'
+  purpose_label TEXT NOT NULL,
+  appointment_date DATE NOT NULL,
+  time_slot TEXT NOT NULL, -- '09h30', '11h00', '14h00', '16h00'
+  meeting_mode TEXT NOT NULL DEFAULT 'SUR_SITE', -- 'SUR_SITE' (Ahala Barrière), 'WHATSAPP_APPEL'
+  status TEXT NOT NULL DEFAULT 'CONFIRME', -- 'CONFIRME', 'HONORE', 'REPORTE', 'ANNULE'
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+
+-- ============================================================================
 -- 7. Journal d'Audit Immuable (ADM-08)
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.audit_logs (
@@ -167,15 +215,20 @@ CREATE TABLE IF NOT EXISTS public.audit_logs (
 
 -- Activation Row Level Security (RLS) sur toutes les tables
 ALTER TABLE public.catalog_activities ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.sales_bundles ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.lodge_cities ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.bookings ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.group_quotes ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.cfp_applications ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public.appointments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public.audit_logs ENABLE ROW LEVEL SECURITY;
 
--- Politiques de lecture publique pour le catalogue et les cités hôtelières
+-- Politiques de lecture publique pour le catalogue, les packs et les cités hôtelières
 CREATE POLICY "Public read active catalog" ON public.catalog_activities
   FOR SELECT USING (is_active = TRUE);
+
+CREATE POLICY "Public read sales bundles" ON public.sales_bundles
+  FOR SELECT USING (TRUE);
 
 CREATE POLICY "Public read lodge cities" ON public.lodge_cities
   FOR SELECT USING (TRUE);

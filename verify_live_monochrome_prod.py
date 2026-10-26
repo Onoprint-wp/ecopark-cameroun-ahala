@@ -22,6 +22,7 @@ ROUTES = [
     "/hotellerie",
     "/formation",
     "/reserver",
+    "/rdv",
     "/guichet",
     "/direction",
     "/admin",
@@ -219,6 +220,16 @@ def run_live_audit():
         page.wait_for_timeout(450)
         page.screenshot(path=art_dir + r"\hf_live_3_odometer_qr_pass_3d.png")
 
+        page.evaluate("navigateFamily('PUB', 'PUB-18');")
+        page.locator("#sec-PUB-18").scroll_into_view_if_needed()
+        page.wait_for_timeout(450)
+        page.screenshot(path=art_dir + r"\hf_live_5_prise_de_rdv_section.png")
+
+        page.evaluate("openRdvModalSprint1('reperage_mariage'); selectRdvSlot('11h00 – 12h00'); submitRdvSprint1();")
+        page.wait_for_timeout(450)
+        page.screenshot(path=art_dir + r"\hf_live_4_prise_de_rdv_modal.png")
+        page.evaluate("closeSprint1Modals();")
+
         # D. Vérification qu'aucun code technique (PUB-xx, RES-xx) n'est visible en mode visiteur
         leaked_codes = page.evaluate("""() => {
             document.body.classList.remove('inspector-active');
@@ -260,6 +271,15 @@ def run_live_audit():
             window.submitCfpApplicationSprint1();
             const cfpApps = window.loadDB().cfpApplications;
 
+            // 1c. Prise de RDV (Repérage / B2B / Écoles / CFP)
+            window.openRdvModalSprint1('seminaire_b2b');
+            window.selectRdvSlot('14h00 – 15h00');
+            document.getElementById('rdvVisitorName').value = 'Dr Christophe FOE NDI';
+            document.getElementById('rdvOrgName').value = 'Direction Générale & Séminaire';
+            const rdvRef = window.submitRdvSprint1();
+            window.closeSprint1Modals();
+            const rdvList = window.loadDB().appointments || [];
+
             // 2. Generation Billet QR
             navigateFamily('RES', 'RES-03');
             const refBefore = document.getElementById('qrScanInput').value.trim();
@@ -283,6 +303,7 @@ def run_live_audit():
             return {
                 latestQuoteId: quotes[0] ? quotes[0].reference : null,
                 latestCfpId: cfpApps[0] ? cfpApps[0].reference : null,
+                latestRdvId: rdvList[0] ? rdvList[0].reference : rdvRef,
                 refBefore,
                 refAfter,
                 firstScanTitle,
@@ -290,7 +311,8 @@ def run_live_audit():
                 unknownScanTitle
             };
         }""")
-        print(f"  [E2E SPRINT 1] Devis: {e2e_result['latestQuoteId']} | CFP: {e2e_result['latestCfpId']} | Billet: {e2e_result['refAfter']}")
+        print(f"  [E2E SPRINT 1] Devis: {e2e_result['latestQuoteId']} | CFP: {e2e_result['latestCfpId']} | RDV: {e2e_result['latestRdvId']} | Billet: {e2e_result['refAfter']}")
+        assert e2e_result["latestRdvId"] and e2e_result["latestRdvId"].startswith("RDV-2026-"), f"RDV non cree: {e2e_result['latestRdvId']}"
         print(f"  [E2E SCAN 1]   {e2e_result['firstScanTitle']}")
         print(f"  [E2E SCAN 2]   {e2e_result['secondScanTitle']}")
         print(f"  [E2E SCAN 7]   {e2e_result['unknownScanTitle']}")
