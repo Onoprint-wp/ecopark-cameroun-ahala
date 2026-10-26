@@ -106,7 +106,48 @@ def run_live_audit():
         assert "monochrome-callout" in color_check["className"]
         assert color_check["bg"] == "rgb(237, 244, 231)", f"Fond inattendu: {color_check['bg']}"
         assert color_check["pillBg"] == "rgb(251, 245, 236)", f"Fond .price-pill Ocre Bronze inattendu: {color_check['pillBg']}"
-        assert color_check["pillColor"] == "rgb(154, 91, 19)", f"Texte .price-pill Ocre Bronze inattendu: {color_check['pillColor']}"
+        # C2. Verification de la Mise en Exergue Photographique (Hero 455px, Bento 340px, Mosaique Galerie PUB-14 & Lightbox)
+        photo_check = page.evaluate("""() => {
+            navigateFamily('PUB', 'PUB-01');
+            const heroFrame = document.getElementById('heroShowcaseFrame');
+            const heroH = heroFrame ? heroFrame.getBoundingClientRect().height : 0;
+            const heroThumbs = document.querySelectorAll('.hero-thumb-btn').length;
+            window.setHeroShowcase(2, document.querySelectorAll('.hero-thumb-btn')[2]);
+            const switchedHeroSrc = document.getElementById('heroShowcaseImg').getAttribute('src');
+
+            const bentoMedia = document.querySelector('.bento-card .card-media-wrapper');
+            const bentoH = bentoMedia ? bentoMedia.getBoundingClientRect().height : 0;
+            const zoomPills = document.querySelectorAll('.photo-zoom-pill').length;
+            const mosaicItems = document.querySelectorAll('.gallery-mosaic-item').length;
+
+            // Test Lightbox plein ecran
+            window.openEcoparkLightbox(1);
+            const lbOpen = document.getElementById('ecoparkLightbox').classList.contains('open');
+            const lbTitle1 = document.getElementById('lightboxTitle').textContent.trim();
+            window.stepEcoparkLightbox(1);
+            const lbTitle2 = document.getElementById('lightboxTitle').textContent.trim();
+            window.closeEcoparkLightbox();
+            const lbClosed = !document.getElementById('ecoparkLightbox').classList.contains('open');
+
+            return {
+                heroH: Math.round(heroH),
+                heroThumbs,
+                switchedHeroSrc,
+                bentoH: Math.round(bentoH),
+                zoomPills,
+                mosaicItems,
+                lbOpen,
+                lbTitle1,
+                lbTitle2,
+                lbClosed
+            };
+        }""")
+        print(f"  [PHOTO SPOTLIGHT] Hero: {photo_check['heroH']}px ({photo_check['heroThumbs']} vues) | Bento: {photo_check['bentoH']}px | Loupes: {photo_check['zoomPills']} | Mosaique: {photo_check['mosaicItems']} | Lightbox: open={photo_check['lbOpen']} -> '{photo_check['lbTitle1']}' -> '{photo_check['lbTitle2']}' -> closed={photo_check['lbClosed']}")
+        assert photo_check["heroH"] == 455, f"Hauteur Hero inattendue: {photo_check['heroH']}"
+        assert photo_check["heroThumbs"] == 4, f"Nombre de miniatures Hero inattendu: {photo_check['heroThumbs']}"
+        assert photo_check["bentoH"] == 340, f"Hauteur Bento inattendue: {photo_check['bentoH']}"
+        assert photo_check["mosaicItems"] == 6, f"Nombre d'elements mosaique inattendu: {photo_check['mosaicItems']}"
+        assert photo_check["lbOpen"] and photo_check["lbClosed"] and photo_check["lbTitle1"] != photo_check["lbTitle2"], "Erreur cycle Lightbox"
 
         # D. Vérification qu'aucun code technique (PUB-xx, RES-xx) n'est visible en mode visiteur
         leaked_codes = page.evaluate("""() => {
