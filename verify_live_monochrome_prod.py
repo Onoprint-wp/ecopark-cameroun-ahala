@@ -116,7 +116,7 @@ def run_live_audit():
             const switchedHeroSrc = document.getElementById('heroShowcaseImg').getAttribute('src');
 
             const bentoMedia = document.querySelector('.bento-card .card-media-wrapper');
-            const bentoH = bentoMedia ? bentoMedia.getBoundingClientRect().height : 0;
+            const bentoH = bentoMedia ? bentoMedia.offsetHeight : 0;
             const zoomPills = document.querySelectorAll('.photo-zoom-pill').length;
             const mosaicItems = document.querySelectorAll('.gallery-mosaic-item').length;
 
@@ -148,6 +148,76 @@ def run_live_audit():
         assert photo_check["bentoH"] == 340, f"Hauteur Bento inattendue: {photo_check['bentoH']}"
         assert photo_check["mosaicItems"] == 6, f"Nombre d'elements mosaique inattendu: {photo_check['mosaicItems']}"
         assert photo_check["lbOpen"] and photo_check["lbClosed"] and photo_check["lbTitle1"] != photo_check["lbTitle2"], "Erreur cycle Lightbox"
+
+        # C3. Verification des 3 Animations HyperFrames (heygen-com/hyperframes)
+        hf_check = page.evaluate("""() => {
+            navigateFamily('PUB', 'PUB-01');
+            const tlKeys = Object.keys(window.__timelines || {});
+            // Test Animation 1 : Hero Scene Reel + Sync KPI
+            window.setHeroShowcase(1, document.querySelectorAll('.hero-thumb-btn')[1]);
+            const kpi1Active = document.getElementById('heroKpiCard1').classList.contains('kpi-active-sync');
+            const captionText = document.getElementById('heroSceneCaptionText').textContent.trim();
+            const playheadBars = document.querySelectorAll('.hero-playhead-bar').length;
+
+            // Test Animation 2 : Carte Vectorielle SVG du Parc Ahala (Zones A -> E) & Staggered Bento
+            const svgExists = !!document.getElementById('ahalaTrailSvg');
+            const activePathExists = !!document.getElementById('ahalaActivePath');
+            window.selectAhalaZone(3);
+            const zone3Text = document.getElementById('ahalaZoneDetailText').textContent.trim();
+            const staggerClips = document.querySelectorAll('.bento-card.clip, .gallery-mosaic-item.clip').length;
+
+            // Test Animation 3 : Kinetic FCFA Odometer & Apple Wallet QR Pass 3D Reveal
+            navigateFamily('RES', 'RES-03');
+            window.changeCount('adults', 1);
+            const updatedTotalText = document.getElementById('grandTotalFCFA').textContent.trim();
+            const updatedTargetAttr = document.getElementById('grandTotalFCFA').getAttribute('data-target-fcfa');
+            window.changeCount('adults', -1);
+            const sheenExists = !!document.getElementById('qrPassSheen');
+            window.__timelines['ecopark-qr-pass'].play();
+
+            return {
+                tlKeys,
+                kpi1Active,
+                captionText,
+                playheadBars,
+                svgExists,
+                activePathExists,
+                zone3Text,
+                staggerClips,
+                updatedTotalText,
+                updatedTargetAttr,
+                sheenExists
+            };
+        }""")
+        print(f"  [HYPERFRAMES TIMELINES] Registre: {hf_check['tlKeys']} | Playheads: {hf_check['playheadBars']} | Clips Bento/Mosaique: {hf_check['staggerClips']}")
+        print(f"  [HYPERFRAMES ANIM 1]    KPI Piscine Sync: {hf_check['kpi1Active']} | Caption: '{hf_check['captionText']}'")
+        print(f"  [HYPERFRAMES ANIM 2]    SVG Trail: {hf_check['svgExists']} | Zone D Detail: '{hf_check['zone3Text'][:65]}...'")
+        print(f"  [HYPERFRAMES ANIM 3]    Odometre FCFA (+1 adulte): {hf_check['updatedTotalText']} (target={hf_check['updatedTargetAttr']}) | QR Sheen 3D: {hf_check['sheenExists']}")
+        assert "ecopark-hero-reel" in hf_check["tlKeys"], "Timeline ecopark-hero-reel manquante"
+        assert "ecopark-ahala-map" in hf_check["tlKeys"], "Timeline ecopark-ahala-map manquante"
+        assert "ecopark-qr-pass" in hf_check["tlKeys"], "Timeline ecopark-qr-pass manquante"
+        assert hf_check["kpi1Active"], "La carte KPI Piscine n'est pas synchronisee avec la scene 2 du Hero"
+        assert hf_check["playheadBars"] == 4, "Les 4 barres de progression .hero-playhead-bar sont manquantes"
+        assert hf_check["svgExists"] and hf_check["activePathExists"], "La carte vectorielle SVG #ahalaTrailSvg est manquante"
+        assert hf_check["staggerClips"] == 12, f"Attendu 12 clips Stagger Bento/Mosaique, obtenu {hf_check['staggerClips']}"
+        assert hf_check["updatedTargetAttr"] == "18500", f"Odometre FCFA inattendu: {hf_check['updatedTargetAttr']}"
+        assert hf_check["sheenExists"], "Le reflet speculaire #qrPassSheen est manquant sur #demoTicketCard"
+
+        # Capture des 3 visuels de validation HyperFrames en production
+        art_dir = r"C:\Users\PcGamerCm\.gemini\antigravity\brain\a7ec3e06-7022-4aad-b64e-501927169ab1"
+        page.evaluate("navigateFamily('PUB', 'PUB-01'); setHeroShowcase(1, document.querySelectorAll('.hero-thumb-btn')[1]);")
+        page.wait_for_timeout(450)
+        page.screenshot(path=art_dir + r"\hf_live_1_hero_reel_sync.png")
+
+        page.locator("#ahalaMapContainer").scroll_into_view_if_needed()
+        page.evaluate("selectAhalaZone(3);")
+        page.wait_for_timeout(450)
+        page.screenshot(path=art_dir + r"\hf_live_2_ahala_svg_map.png")
+
+        page.evaluate("navigateFamily('RES', 'RES-03'); changeCount('adults', 1); createLiveBookingSprint1();")
+        page.locator("#demoTicketCard").scroll_into_view_if_needed()
+        page.wait_for_timeout(450)
+        page.screenshot(path=art_dir + r"\hf_live_3_odometer_qr_pass_3d.png")
 
         # D. Vérification qu'aucun code technique (PUB-xx, RES-xx) n'est visible en mode visiteur
         leaked_codes = page.evaluate("""() => {
