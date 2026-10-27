@@ -270,7 +270,9 @@
         };
       }
     },
-    staff_profiles: { key: 'user_id', realtime: 'governance', order: 'full_name' }
+    staff_profiles: { key: 'user_id', realtime: 'governance', order: 'full_name' },
+    daily_quotas: { key: 'id', realtime: 'staff', order: 'quota_date' },
+    gateway_health: { key: 'provider', realtime: 'governance', order: 'provider' }
   };
   Mappers.registry = Registry;
 
@@ -651,6 +653,30 @@
   LocalDemoDriver.prototype.rpc = function (name) {
     return Promise.resolve({ ok: false, error: Errors.make('NOT_AVAILABLE_IN_DEMO', 'Fonction serveur « ' + name + ' » indisponible en mode démonstration.') });
   };
+  /** Suppression directe d'une ligne sans cycle de vie (ex. dérogation de quota) */
+  LocalDemoDriver.prototype.removeRow = function (entity, id) {
+    var self = this;
+    var key = Registry[entity].key;
+    if (!Rules.canEdit(self.role)) return self._fail({ code: '42501' });
+    self.store.patch(function (s) {
+      var rows = self._rows(s, entity);
+      var idx = rows.findIndex(function (r) { return r[key] === id; });
+      if (idx >= 0) rows.splice(idx, 1);
+    }, { source: 'local', entity: entity, op: 'removeRow' });
+    return Promise.resolve({ ok: true, data: 'DELETED' });
+  };
+  /** Réglage du site (site_settings est stocké comme un objet clé -> valeur) */
+  LocalDemoDriver.prototype.saveSetting = function (key, value) {
+    var self = this;
+    if (!Rules.canEdit(self.role)) return self._fail({ code: '42501' });
+    self.store.patch(function (s) {
+      s.content = s.content || {};
+      s.content.site_settings = s.content.site_settings || {};
+      s.content.site_settings[key] = clone(value);
+      self._audit(s, 'UPDATE', 'site_settings', key);
+    }, { source: 'local', entity: 'site_settings', op: 'saveSetting' });
+    return Promise.resolve({ ok: true, data: clone(value) });
+  };
   LocalDemoDriver.prototype.logEvent = function (code, entity, id, description) {
     var self = this;
     self.store.patch(function (s) { self._audit(s, code, entity || '-', description); }, { source: 'local', op: 'logEvent' });
@@ -815,6 +841,21 @@
   SupabaseDriver.prototype.rpc = function (name, args) {
     return this._res(this.client.rpc(name, args || {}));
   };
+  SupabaseDriver.prototype.removeRow = function (entity, id) {
+    var key = Registry[entity].key;
+    return this._res(this.client.from(entity).delete().eq(key, id).select(key), { entity: entity }).then(function (r) {
+      if (r.ok && (!r.data || !r.data.length)) return { ok: false, error: Errors.translate(null, { kind: 'NO_ROWS_RIGHTS' }) };
+      return r.ok ? { ok: true, data: 'DELETED' } : r;
+    });
+  };
+  SupabaseDriver.prototype.saveSetting = function (key, value) {
+    var self = this;
+    return self._res(self.client.from('site_settings').update({ value: value }).eq('key', key).select('key'), { entity: 'site_settings' })
+      .then(function (r) {
+        if (r.ok && (!r.data || !r.data.length)) return { ok: false, error: Errors.translate(null, { kind: 'NO_ROWS_RIGHTS' }) };
+        return r;
+      });
+  };
   SupabaseDriver.prototype.logEvent = function (code, entity, id, description, payload) {
     return this._res(this.client.rpc('log_admin_event', {
       p_action_code: code, p_entity_table: entity || null, p_entity_id: id || null, p_description: description || '', p_payload: payload || null
@@ -955,11 +996,11 @@
   ['list', 'get', 'rpc', 'session', 'refreshContent'].forEach(function (m) {
     EcoparkData[m] = function () { var d = EcoparkData.driver; return d[m].apply(d, arguments); };
   });
-  ['create', 'update', 'duplicate', 'setStatus', 'remove', 'logEvent'].forEach(function (m) {
+  ['create', 'update', 'duplicate', 'setStatus', 'remove', 'logEvent', 'removeRow', 'saveSetting'].forEach(function (m) {
     EcoparkData[m] = function () {
       var d = EcoparkData.driver;
       var args = arguments;
-      var entity = m === 'logEvent' ? null : args[0];
+      var entity = m === 'logEvent' ? null : (m === 'saveSetting' ? 'site_settings' : args[0]);
       // Affichage optimiste (production) : la modification apparaît tout de suite, puis
       // elle est confirmée par la base ou annulée par le retour arrière.
       if (m === 'update' && EcoparkData.driverName === 'supabase' && Registry[entity] && Registry[entity].content && entity !== 'site_settings') {

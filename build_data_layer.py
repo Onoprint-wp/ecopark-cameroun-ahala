@@ -51,9 +51,33 @@ def script_safe(text: str) -> str:
     return text.replace("</", "<\\/")
 
 
+def minify_js(src: str) -> str:
+    """
+    Allègement prudent pour l'intégration au HTML (la source lisible reste dans js/) :
+    retire les lignes de commentaire complètes (// ... et blocs /* ... */ en début de ligne),
+    l'indentation et les lignes vides. Ne touche jamais au contenu d'une ligne de code.
+    Hypothèse vérifiée : les modules n'utilisent pas de gabarits `...` multilignes.
+    """
+    out, in_block = [], False
+    for line in src.splitlines():
+        s = line.strip()
+        if in_block:
+            if "*/" in s:
+                in_block = False
+            continue
+        if s.startswith("/*"):
+            if "*/" not in s[2:]:
+                in_block = True
+            continue
+        if not s or s.startswith("//"):
+            continue
+        out.append(s)
+    return "\n".join(out)
+
+
 def build_head_block(config: dict) -> str:
     snapshot = json.loads(SNAPSHOT_JSON.read_text(encoding="utf-8"))
-    data_layer = DATA_LAYER_JS.read_text(encoding="utf-8")
+    data_layer = minify_js(DATA_LAYER_JS.read_text(encoding="utf-8"))
     parts = [
         HEAD_START,
         '  <script id="ecoparkConfig">window.ECOPARK_CONFIG = ' + json.dumps(config, ensure_ascii=False) + ";</script>",

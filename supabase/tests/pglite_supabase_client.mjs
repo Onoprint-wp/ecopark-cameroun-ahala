@@ -35,6 +35,7 @@ export function createPgliteSupabaseClient(db) {
     }
     insert(row) { this.op = 'insert'; this.payload = row; return this; }
     update(patch) { this.op = 'update'; this.payload = patch; return this; }
+    delete() { this.op = 'delete'; return this; }
     eq(col, val) { this.filters.push([col, val]); return this; }
     order(col, opts) { this.orders.push([col, !opts || opts.ascending !== false]); return this; }
     range(a, b) { this.rangeV = [a, b]; return this; }
@@ -58,6 +59,8 @@ export function createPgliteSupabaseClient(db) {
         const cols = Object.keys(rows[0]);
         const values = rows.map((r) => '(' + cols.map((c) => { params.push(param(r[c])); return `$${params.length}`; }).join(', ') + ')');
         sqlText = `INSERT INTO ${t} (${cols.map(ident).join(', ')}) VALUES ${values.join(', ')}${this.returning ? ' RETURNING *' : ''}`;
+      } else if (this.op === 'delete') {
+        sqlText = `DELETE FROM ${t}${this._where(params)}${this.returning ? ' RETURNING *' : ''}`;
       } else {
         const sets = Object.keys(this.payload).map((c) => { params.push(param(this.payload[c])); return `${ident(c)} = $${params.length}`; });
         sqlText = `UPDATE ${t} SET ${sets.join(', ')}${this._where(params)}${this.returning ? ' RETURNING *' : ''}`;

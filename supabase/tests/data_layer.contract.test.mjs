@@ -161,6 +161,21 @@ async function contract(env) {
     ok(reread.ok && reread.data.length === 0, 'Le visiteur ne peut relire aucun devis (RLS)');
   }
 
+  // Réglages du site et dérogations de jauge (console ADM-03)
+  await env.as(U.exp);
+  const wbNow = ED.setting('weather_banner');
+  const sv = await ED.saveSetting('weather_banner', Object.assign({}, wbNow, { active_preset: 'RAIN_GUARANTEE' }));
+  ok(sv.ok && ED.setting('weather_banner').active_preset === 'RAIN_GUARANTEE', 'Bandeau météo enregistré et relu (saveSetting)', sv.ok ? '' : sv.error.message);
+  const pisc = ED.content('catalog_activities').find((r) => r.slug === 'piscine');
+  const qc = await ED.create('daily_quotas', { activity_id: pisc.id, quota_date: '2026-11-07', capacity: 60, reason: 'Contrat' });
+  ok(qc.ok, 'Dérogation de jauge créée', qc.ok ? '' : qc.error.message);
+  const ql = await ED.list('daily_quotas', { filters: { quota_date: '2026-11-07' } });
+  const qrow = ql.ok && ql.data.find((r) => r.activity_id === pisc.id);
+  ok(!!qrow && qrow.capacity === 60, 'Dérogation relue pour la date');
+  const qd = qrow ? await ED.removeRow('daily_quotas', qrow.id) : { ok: false };
+  const ql2 = await ED.list('daily_quotas', { filters: { quota_date: '2026-11-07' } });
+  ok(qd.ok && ql2.ok && !ql2.data.some((r) => r.activity_id === pisc.id), 'Retour à la jauge standard (removeRow)');
+
   if (env.asNoMfa) {
     await env.asNoMfa(U.dir);
     const z = ED.content('catalog_activities').find((r) => r.slug === 'zoo');

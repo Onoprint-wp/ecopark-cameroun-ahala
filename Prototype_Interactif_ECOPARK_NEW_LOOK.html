@@ -2582,6 +2582,105 @@
       display: none !important;
     }
 
+      /* ECOPARK_ADMIN_CSS:START */
+    #view-ADM .adm-console { display: grid; gap: 22px; }
+    #view-ADM .adm-rolebar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
+      background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 12px 16px; }
+    #view-ADM .adm-rolebar-left { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+    #view-ADM .adm-rights { font-size: 13.5px; color: var(--color-text-muted); }
+    #view-ADM .adm-inline { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--color-text-muted); }
+    #view-ADM .adm-inline select { min-height: 36px; font-size: 13px; padding: 4px 10px; width: auto; }
+    #view-ADM .adm-who { font-size: 13.5px; font-weight: 600; color: var(--color-brand-deep); }
+    #view-ADM .adm-card { background: var(--color-white); border: 1px solid var(--color-border); border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-card); padding: 22px; }
+    #view-ADM .adm-card > h3 { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; }
+    #view-ADM .adm-lead { margin: 0 0 14px; color: var(--color-text-muted); font-size: 14.5px; }
+    #view-ADM .adm-badge { display: inline-flex; align-items: center; gap: 4px; border-radius: 999px; padding: 2px 10px; font-size: 12px;
+      font-weight: 600; white-space: nowrap; border: 1px solid transparent; }
+    #view-ADM .adm-badge-live { background: #EDF4E7; color: #1D490D; border-color: rgba(29, 73, 13, 0.2); }
+    #view-ADM .adm-badge-draft { background: #FBF5EC; color: #9A5B13; border-color: rgba(196, 125, 43, 0.35); }
+    #view-ADM .adm-badge-archived { background: #F3F4F1; color: #5B6657; border-color: #D9DED5; }
+    #view-ADM .adm-badge-error { background: var(--color-error-bg); color: var(--color-error-text); border-color: var(--color-error-border); }
+    #view-ADM .adm-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 12px; }
+    #view-ADM .adm-tabs button { border: 1px solid var(--color-border); background: var(--color-white); color: var(--color-brand-deep);
+      border-radius: 999px; padding: 6px 14px; font-size: 13.5px; font-weight: 600; cursor: pointer; }
+    #view-ADM .adm-tabs button.active { background: var(--color-brand-deep); color: var(--color-white); border-color: var(--color-brand-deep); }
+    #view-ADM .adm-toolbar { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-bottom: 10px; }
+    #view-ADM .adm-toolbar .form-control { min-height: 38px; font-size: 13.5px; width: auto; }
+    #view-ADM .adm-toolbar input[type="search"] { min-width: 240px; flex: 1; }
+    #view-ADM .adm-kpis { display: flex; gap: 14px; flex-wrap: wrap; font-size: 13px; color: var(--color-text-muted); margin-bottom: 10px; }
+    #view-ADM .adm-kpi b { color: var(--color-brand-deep); font-size: 15px; }
+    #view-ADM .adm-table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+    #view-ADM .adm-table th { text-align: left; font-size: 12px; text-transform: uppercase; letter-spacing: .03em; color: var(--color-text-muted);
+      padding: 8px 10px; border-bottom: 1px solid var(--color-border); white-space: nowrap; }
+    #view-ADM .adm-table td { padding: 10px; border-bottom: 1px solid #EEF3EA; vertical-align: top; }
+    #view-ADM .adm-col-offer { min-width: 240px; max-width: 360px; }
+    #view-ADM .adm-sub { font-size: 12px; color: var(--color-text-muted); margin-top: 2px; }
+    #view-ADM .adm-origin { color: #9A5B13; }
+    #view-ADM .adm-prices { display: grid; gap: 2px; font-size: 12.5px; min-width: 200px; }
+    #view-ADM .adm-prices em { color: var(--color-text-muted); font-style: normal; }
+    #view-ADM .adm-actions { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+    #view-ADM .adm-act { border: 1px solid var(--color-border-strong); background: var(--color-white); color: var(--color-brand-deep);
+      border-radius: 8px; padding: 4px 10px; font-size: 12.5px; font-weight: 600; cursor: pointer; white-space: nowrap; }
+    #view-ADM .adm-act:hover:not([disabled]) { background: #EDF4E7; }
+    #view-ADM .adm-act[disabled] { opacity: .45; cursor: not-allowed; }
+    #view-ADM .adm-act-dup { border-color: rgba(196, 125, 43, 0.55); color: #9A5B13; background: #FBF5EC; }
+    #view-ADM .adm-act-pub { border-color: var(--color-brand-leaf); color: var(--color-white); background: var(--color-brand-leaf); }
+    #view-ADM .adm-act-pub:hover:not([disabled]) { background: var(--color-brand-deep); }
+    #view-ADM .adm-act-del { border-color: var(--color-error-border); color: var(--color-error-text); }
+    #view-ADM .adm-row-new { background: #FBF5EC; box-shadow: inset 4px 0 0 #C47D2B; }
+    #view-ADM .adm-row-archived { opacity: .62; }
+    #view-ADM .adm-empty { color: var(--color-text-muted); text-align: center; padding: 18px; }
+    #view-ADM .adm-cms-row { display: grid; gap: 8px; padding: 12px 0; border-bottom: 1px solid #EEF3EA; }
+    #view-ADM .adm-cms-main strong { margin-right: 6px; }
+    #view-ADM .adm-out { color: var(--color-error-text); }
+    #view-ADM .adm-gw { display: flex; justify-content: space-between; gap: 12px; align-items: center; flex-wrap: wrap;
+      border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 12px 14px; margin-bottom: 10px; }
+    #view-ADM .adm-op { display: inline-block; border-radius: 6px; padding: 1px 8px; font-size: 12px; font-weight: 600; background: #EDF4E7; color: #1D490D; white-space: nowrap; }
+    #view-ADM .adm-op-duplicate, #view-ADM .adm-op-guard_reject { background: #FBF5EC; color: #9A5B13; }
+    #view-ADM .adm-op-delete, #view-ADM .adm-op-archive { background: var(--color-error-bg); color: var(--color-error-text); }
+    #view-ADM .adm-nowrap { white-space: nowrap; }
+    #view-ADM .adm-note { background: #FBF5EC; border: 1px solid rgba(196, 125, 43, 0.35); color: #6E420E; border-radius: 10px; padding: 10px 12px; font-size: 13.5px; margin: 10px 0; }
+    #view-ADM .adm-note-ok { background: #EDF4E7; border-color: rgba(29, 73, 13, 0.2); color: #1D490D; }
+    #view-ADM .adm-note-error { background: var(--color-error-bg); border-color: var(--color-error-border); color: var(--color-error-text); }
+    #view-ADM .adm-note:empty { display: none; }
+    #view-ADM .adm-rules { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 12px; }
+    #view-ADM .adm-rule { border: 1px solid var(--color-border); border-radius: var(--radius-md); padding: 12px 14px; font-size: 14px; }
+    #view-ADM .adm-rule strong { display: block; color: var(--color-brand-deep); margin-bottom: 4px; }
+    #view-ADM .adm-weather-preview { margin-top: 8px; font-size: 13.5px; background: #EDF4E7; border-radius: 10px; padding: 8px 12px; color: var(--color-brand-deep); }
+    #view-ADM .adm-modal-overlay { position: fixed; inset: 0; z-index: 3200; display: none; align-items: center; justify-content: center;
+      background: rgba(20, 34, 17, 0.45); padding: 16px; }
+    #view-ADM .adm-modal-overlay.open { display: flex; }
+    #view-ADM .adm-modal-card { background: var(--color-white); border-radius: var(--radius-lg); box-shadow: 0 28px 68px rgba(20, 34, 17, 0.25);
+      width: min(860px, 100%); max-height: calc(100vh - 32px); overflow: auto; padding: 22px 24px; }
+    #view-ADM .adm-confirm-card { width: min(520px, 100%); }
+    #view-ADM .adm-modal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+    #view-ADM .adm-modal-head h4, #view-ADM .adm-confirm-card h4 { margin: 2px 0 0; font-family: var(--font-heading); font-size: 1.35rem; color: var(--color-brand-deep); }
+    #view-ADM .adm-eyebrow { font-size: 12px; text-transform: uppercase; letter-spacing: .05em; color: var(--color-brand-leaf); font-weight: 700; }
+    #view-ADM .adm-form { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 14px; margin-top: 8px; }
+    #view-ADM .adm-field-wide { grid-column: 1 / -1; }
+    #view-ADM .adm-field { display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+    #view-ADM .adm-field .form-label { display: block; margin: 0; font-size: 13px; font-weight: 600; }
+    #view-ADM .adm-field .form-control { min-height: 38px; font-size: 14px; width: 100%; max-width: none; }
+    #view-ADM .btn[disabled], #view-ADM button[disabled].btn-primary, #view-ADM button[disabled].btn-secondary { opacity: .45; cursor: not-allowed; box-shadow: none; }
+    #view-ADM .adm-field-err { color: var(--color-error-text); font-size: 12.5px; min-height: 0; margin-top: 2px; }
+    #view-ADM .adm-invalid { border-color: var(--color-error-border) !important; background: #FFF8F7; }
+    #view-ADM .adm-check { display: flex; flex-direction: row; gap: 8px; align-items: center; font-size: 14px; padding-top: 22px; }
+    #view-ADM .adm-diff { margin-top: 12px; font-size: 13px; color: var(--color-text-muted); }
+    #view-ADM .adm-diff ul { margin: 4px 0 0; padding-left: 18px; color: var(--color-text); }
+    #view-ADM .adm-modal-actions { display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap; margin-top: 16px; }
+    #view-ADM .adm-modal-actions > div { display: flex; gap: 8px; flex-wrap: wrap; }
+    #view-ADM .adm-btn-danger { background: var(--color-error-text) !important; border-color: var(--color-error-text) !important; color: #fff !important; }
+    #view-ADM .adm-toast { position: fixed; right: 18px; bottom: 18px; z-index: 3300; display: none; gap: 12px; align-items: center;
+      background: var(--color-brand-deep); color: #fff; border-radius: 14px; padding: 12px 16px; max-width: 460px; font-size: 14px; box-shadow: var(--shadow-elevated); }
+    #view-ADM .adm-toast.show { display: flex; }
+    #view-ADM .adm-toast-error { background: var(--color-error-text); }
+    #view-ADM .adm-toast-undo { background: #FBF5EC; color: #9A5B13; border: 0; border-radius: 8px; padding: 5px 12px; font-weight: 700; cursor: pointer; }
+    @media (max-width: 760px) {
+      #view-ADM .adm-form { grid-template-columns: 1fr; }
+      #view-ADM .adm-card { padding: 16px; }
+    }
+    /* ECOPARK_ADMIN_CSS:END */
   </style>
 </head>
 <body>
@@ -4723,73 +4822,177 @@
       <!-- ====================================================================
            FAMILLE 8 : ADMINISTRATION DE LA PLATEFORME (ADM-01 à ADM-08)
            ==================================================================== -->
+      <!-- ECOPARK_ADMIN_VIEW:START -->
       <section class="family-view" id="view-ADM">
         <div class="subnav-bar">
           <div class="container">
             <div class="subnav-list">
-              <button class="subnav-pill active" onclick="inspectScreen('ADM-01')">ADM-01 Catalogue Activités</button>
-              <button class="subnav-pill" onclick="inspectScreen('ADM-02')">ADM-02 Règles Tarifaires & Âges</button>
-              <button class="subnav-pill" onclick="inspectScreen('ADM-03')">ADM-03 Quotas & Horaires</button>
-              <button class="subnav-pill" onclick="inspectScreen('ADM-04')">ADM-04 CMS Médias & Badges Photos</button>
-              <button class="subnav-pill" onclick="inspectScreen('ADM-05')">ADM-05 Rôles & Permissions (7 Rôles)</button>
-              <button class="subnav-pill" onclick="inspectScreen('ADM-06')">ADM-06/07 Paramètres & Intégrations (Sans secrets)</button>
-              <button class="subnav-pill" onclick="inspectScreen('ADM-08')">ADM-08 Journal d'Audit Immuable</button>
+              <button class="subnav-pill active" onclick="inspectScreen('ADM-01')">ADM-01 Catalogue &amp; Tarifs</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-02')">ADM-02 Règles tarifaires</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-03')">ADM-03 Jauges &amp; Météo</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-04')">ADM-04 Agenda &amp; Carte</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-05')">ADM-05 Comptes équipe</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-06')">ADM-06/07 Passerelles</button>
+              <button class="subnav-pill" onclick="inspectScreen('ADM-08')">ADM-08 Journal d'audit</button>
             </div>
           </div>
         </div>
 
         <div class="section">
-          <div class="container">
+          <div class="container adm-console">
             <div class="section-header">
-              <span class="eyebrow"><span class="tech-code-tag"><span class="tech-code-tag">ADM-01 à ADM-08 • </span></span>Gouvernance, Sécurité, Tarifs & Audit</span>
-              <h2>Administration de la Plateforme ECOPARK</h2>
+              <span class="eyebrow"><span class="tech-code-tag">ADM-01 à ADM-08 • </span>Gouvernance, tarifs, contenus &amp; audit</span>
+              <h2>Administration de la plateforme ECOPARK</h2>
             </div>
 
-            <div class="grid-12">
-              <div class="col-6 card">
-                <h3><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> <span class="tech-code-tag">ADM-02 & ADM-07 — </span>Verrouillage Tarifaire & Passerelles (Sans Secrets Exposés)</h3>
-                <ul style="padding-left:20px;font-size:15px;display:grid;gap:8px;">
-                  <li><strong>Règle `ADM-02` (Protection Tarif Enfant) :</strong> Verrouillage actif empêchant toute règle promotionnelle de remplacer le tarif enfant (`500 FCFA`) par un tarif groupe adulte (`700 FCFA`).</li>
-                  <li><strong>Passerelle Orange Money WebPay<span class="tech-code-tag"> (`ADM-07`)</span> :</strong> Clé API Marchand <code>••••••••••••••9F2A</code> (Masquée côté client, stockée en variable d'environnement serveur).</li>
-                  <li><strong>Passerelle MTN MoMo Collection<span class="tech-code-tag"> (`ADM-07`)</span> :</strong> Clé API Marchand <code>••••••••••••••4C81</code> (Masquée).</li>
-                </ul>
-              </div>
+            <div class="adm-rolebar" id="admRoleBar"></div>
 
-              <div class="col-6 card">
-                <h3><span class="icon-medallion"><svg class="svg-mono" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span> <span class="tech-code-tag">ADM-08 — </span>Journal d'Audit des Actions Sensibles</h3>
-                <div class="table-responsive">
-                  <table>
-                    <thead>
-                      <tr>
-                        <th>Horodatage</th>
-                        <th>Acteur & Rôle</th>
-                        <th>Action Auditée</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <tr>
-                        <td>26/10/2026 08:45</td>
-                        <td>Admin Plateforme (ADM)</td>
-                        <td>Vérification de la grille tarifaire officielle en FCFA (0 tarif en devise étrangère).</td>
-                      </tr>
-                      <tr>
-                        <td>26/10/2026 09:12</td>
-                        <td>Mme Clarisse ATANGANA (AGT)</td>
-                        <td>Ouverture session caisse Guichet #1 (Fond : 50 000 FCFA).</td>
-                      </tr>
-                      <tr>
-                        <td>26/10/2026 11:30</td>
-                        <td>Chef d'Exploitation (EXP)</td>
-                        <td>Validation du devis scolaire <code>DEV-2026-3104</code>.</td>
-                      </tr>
-                    </tbody>
-                  </table>
+            <div class="adm-card" id="sec-ADM-01">
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 6h13"/><path d="M8 12h13"/><path d="M8 18h13"/><path d="M3 6h.01"/><path d="M3 12h.01"/><path d="M3 18h.01"/></svg> <span class="tech-code-tag">ADM-01 — </span>Catalogue, formules &amp; cités hôtelières</h3>
+              <p class="adm-lead">Ajouter, modifier, dupliquer, publier ou archiver une offre. Toute nouvelle fiche et toute copie restent en brouillon, invisibles du public, jusqu'à leur publication.</p>
+              <div class="adm-tabs" id="admCatalogTabs">
+                <button type="button" data-tab="catalog_activities" class="active">Activités</button>
+                <button type="button" data-tab="sales_bundles">Formules (Pass)</button>
+                <button type="button" data-tab="lodge_cities">Cités hôtelières</button>
+              </div>
+              <div class="adm-toolbar">
+                <input type="search" class="form-control" id="admCatalogSearch" placeholder="Rechercher un intitulé, un code, une description..." aria-label="Rechercher dans le catalogue" />
+                <select class="form-control" id="admPoleFilter" aria-label="Filtrer par pôle">
+                  <option value="ALL">Tous les pôles</option>
+                  <option value="NATURE_FAUNE">Nature &amp; Faune</option>
+                  <option value="EAU_PLEIN_AIR">Eau &amp; Plein air</option>
+                  <option value="RESTAURATION">Restauration</option>
+                  <option value="HEBERGEMENT">Hébergement</option>
+                  <option value="GROUPES_B2B">Groupes &amp; Navettes</option>
+                  <option value="FORMATION_CFP">Formation CFP</option>
+                </select>
+                <select class="form-control" id="admStatusFilter" aria-label="Filtrer par statut">
+                  <option value="ACTIVE">En ligne + brouillons</option>
+                  <option value="PUBLISHED">En ligne</option>
+                  <option value="DRAFT">Brouillons</option>
+                  <option value="ARCHIVED">Archivées</option>
+                  <option value="ALL">Toutes (y compris archives)</option>
+                </select>
+                <button type="button" class="btn btn-primary btn-sm" id="admAddOffer">+ Ajouter une offre</button>
+              </div>
+              <div class="adm-kpis" id="admCatalogKpis"></div>
+              <div class="table-responsive">
+                <table class="adm-table" id="admCatalogTable">
+                  <thead><tr><th>Offre</th><th>Tarifs (FCFA)</th><th>Capacité</th><th>Statut</th><th>Actions</th></tr></thead>
+                  <tbody id="admCatalogBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="adm-card" id="sec-ADM-02">
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> <span class="tech-code-tag">ADM-02 — </span>Règles tarifaires appliquées par la base</h3>
+              <div class="adm-rules">
+                <div class="adm-rule"><strong>Tarif enfant protégé</strong>Le tarif enfant en groupe ne peut jamais dépasser le tarif enfant individuel de la même activité (500 FCFA au Zoo, 1 500 FCFA à la Piscine).</div>
+                <div class="adm-rule"><strong>Publication par la Direction</strong>L'exploitation et l'administrateur préparent les brouillons ; seule la Direction met un tarif en ligne ou modifie un prix déjà publié.</div>
+                <div class="adm-rule"><strong>Copie = brouillon</strong>Dupliquer crée une version de travail invisible du public. À la publication, elle peut remplacer l'offre d'origine sans changer son adresse.</div>
+                <div class="adm-rule"><strong>Rien ne se perd</strong>Une fiche déjà publiée ou vendue est archivée, jamais effacée. Chaque action est inscrite au journal d'audit.</div>
+              </div>
+            </div>
+
+            <div class="adm-card" id="sec-ADM-03">
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg> <span class="tech-code-tag">ADM-03 — </span>Jauges du jour &amp; bandeau météo</h3>
+              <div class="grid-12" style="gap:18px;">
+                <div class="col-7">
+                  <div class="adm-toolbar">
+                    <label class="adm-inline" for="admQuotaDate"><span>Jour concerné</span></label>
+                    <input type="date" class="form-control" id="admQuotaDate" />
+                  </div>
+                  <div class="table-responsive">
+                    <table class="adm-table">
+                      <thead><tr><th>Activité</th><th>Standard</th><th>Jauge du jour</th><th>Disponibilité</th><th></th></tr></thead>
+                      <tbody id="admQuotaBody"></tbody>
+                    </table>
+                  </div>
                 </div>
+                <div class="col-5">
+                  <label class="form-label" for="admWeatherPreset">Message affiché en haut du site</label>
+                  <select class="form-control" id="admWeatherPreset"></select>
+                  <label class="form-label" for="admWeatherCustom" style="margin-top:10px;">Message personnalisé (facultatif, remplace le préréglage)</label>
+                  <textarea class="form-control" id="admWeatherCustom" rows="2" maxlength="160"></textarea>
+                  <div class="adm-weather-preview" id="admWeatherPreview"></div>
+                  <button type="button" class="btn btn-primary btn-sm" id="admWeatherSave" style="margin-top:10px;">Publier sur le site</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="adm-card" id="sec-ADM-04">
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/></svg> <span class="tech-code-tag">ADM-04 — </span>Agenda de la semaine &amp; carte du Château des Saveurs</h3>
+              <p class="adm-lead">Dupliquez un événement pour le reproduire un autre jour (jour férié, édition spéciale), réordonnez, ou signalez un plat en rupture.</p>
+              <div class="grid-12" style="gap:18px;">
+                <div class="col-6">
+                  <div class="adm-toolbar"><strong>Agenda (/agenda)</strong><button type="button" class="btn btn-secondary btn-sm" id="admAddAgenda">+ Ajouter un événement</button></div>
+                  <div id="admAgendaList"></div>
+                </div>
+                <div class="col-6">
+                  <div class="adm-toolbar"><strong>Carte du restaurant</strong><button type="button" class="btn btn-secondary btn-sm" id="admAddMenu">+ Ajouter un plat</button></div>
+                  <div id="admMenuList"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="adm-card" id="sec-ADM-05">
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg> <span class="tech-code-tag">ADM-05 — </span>Comptes de l'équipe &amp; rôles</h3>
+              <div class="adm-toolbar"><span class="adm-rights">5 rôles d'équipe : guichet, contrôle, exploitation, direction, administrateur.</span>
+                <button type="button" class="btn btn-secondary btn-sm" id="admStaffAdd">+ Nouveau compte</button></div>
+              <div class="table-responsive">
+                <table class="adm-table">
+                  <thead><tr><th>Membre &amp; poste</th><th>Rôle</th><th>Statut</th><th>Actions</th></tr></thead>
+                  <tbody id="admStaffBody"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <div class="adm-card" id="sec-ADM-06">
+              <span id="sec-ADM-07"></span>
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></svg> <span class="tech-code-tag">ADM-06 &amp; ADM-07 — </span>Passerelles de paiement &amp; WhatsApp</h3>
+              <p class="adm-lead">État des connexions uniquement : aucune clé secrète n'est stockée ni affichée dans le navigateur.</p>
+              <div id="admGatewayList"></div>
+            </div>
+
+            <div class="adm-card" id="sec-ADM-08">
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> <span class="tech-code-tag">ADM-08 — </span>Journal d'audit immuable</h3>
+              <div class="adm-toolbar">
+                <select class="form-control" id="admAuditOp" aria-label="Filtrer par opération">
+                  <option value="ALL">Toutes les opérations</option>
+                  <option value="INSERT">Ajouts</option>
+                  <option value="UPDATE">Modifications</option>
+                  <option value="DUPLICATE">Duplications</option>
+                  <option value="PUBLISH">Publications</option>
+                  <option value="ARCHIVE">Archivages</option>
+                  <option value="DELETE">Suppressions</option>
+                  <option value="RESTORE">Restaurations</option>
+                  <option value="GUARD_REJECT">Garde-fou tarifaire</option>
+                  <option value="EXPORT_CSV">Exports</option>
+                </select>
+                <input type="search" class="form-control" id="admAuditSearch" placeholder="Rechercher un acteur, une fiche..." aria-label="Rechercher dans le journal" />
+                <button type="button" class="btn btn-secondary btn-sm" id="admAuditExport">Exporter (CSV)</button>
+                <button type="button" class="btn btn-secondary btn-sm" id="admAuditVerify">Vérifier l'intégrité</button>
+              </div>
+              <div class="adm-note" id="admChainResult"></div>
+              <div class="table-responsive">
+                <table class="adm-table" id="admAuditTable">
+                  <thead><tr><th>Horodatage</th><th>Opération</th><th>Acteur</th><th>Détail</th></tr></thead>
+                  <tbody id="admAuditBody"></tbody>
+                </table>
+              </div>
+              <div class="adm-toolbar" style="justify-content:space-between;margin-top:10px;">
+                <span class="adm-rights" id="admAuditCount"></span>
+                <span class="adm-actions"><button type="button" class="adm-act" id="admAuditPrev">Précédent</button><button type="button" class="adm-act" id="admAuditNext">Suivant</button></span>
               </div>
             </div>
           </div>
         </div>
+
+        <div class="adm-modal-overlay" id="admEditor" role="dialog" aria-modal="true" aria-label="Édition d'une fiche"><div class="adm-modal-card" id="admEditorCard"></div></div>
+        <div class="adm-modal-overlay" id="admConfirm" role="alertdialog" aria-modal="true" aria-label="Confirmation"><div class="adm-modal-card adm-confirm-card"></div></div>
+        <div class="adm-toast" id="admToast" role="status" aria-live="polite"></div>
       </section>
+      <!-- ECOPARK_ADMIN_VIEW:END -->
 
       <!-- ====================================================================
            FAMILLE 1 : DESIGN SYSTEM & PLANCHES STITCH MCP (DS-01 à DS-08)
@@ -5423,1023 +5626,962 @@
   <script id="ecoparkConfig">window.ECOPARK_CONFIG = {"env": "local", "dataDriver": "local", "snapshotVersion": "2026-10-27T10:54:22.874Z"};</script>
   <script type="application/json" id="ecoparkContentSnapshot">{"source":"migrations","content":{"catalog_activities":[{"id":"fbc062da-4de3-4542-9714-1606d04c2447","slug":"cheval","title":"Équitation (Tour à Cheval) & Manèges","pole":"EAU_PLEIN_AIR","description":"Initiation équestre encadrée et manèges enfants.","child_price_fcfa":500,"adult_price_fcfa":1000,"group_adult_price_fcfa":800,"group_child_price_fcfa":500,"daily_capacity":200,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-CHEVAL","status":"PUBLISHED","sort_order":10,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"dcaf3892-dcd1-45d9-a373-92a9476a59e2","slug":"navette_yaounde","title":"Navette Climatisée A/R Yaoundé — Ahala","pole":"GROUPES_B2B","description":"Prise en charge aller-retour depuis le centre de Yaoundé (flotte 5, 18 et 32 places).","child_price_fcfa":1000,"adult_price_fcfa":1500,"group_adult_price_fcfa":1200,"group_child_price_fcfa":1000,"daily_capacity":180,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-NAVETTE-YAOUNDE","status":"PUBLISHED","sort_order":20,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"f09b37ab-d0aa-4ea8-b23f-c06432dcd798","slug":"nutrition_poissons","title":"Sachet Nutrition Poissons & Tortues (Order Bump)","pole":"NATURE_FAUNE","description":"Sachet d'aliment piscicole pour nourrir les poissons des étangs d'Ahala avec les enfants.","child_price_fcfa":500,"adult_price_fcfa":500,"group_adult_price_fcfa":500,"group_child_price_fcfa":500,"daily_capacity":800,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-NUTRITION-POISSONS","status":"PUBLISHED","sort_order":30,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"5a9bf208-d6eb-4cb5-a898-e31172c6232a","slug":"pergola_lac","title":"Pergola Privée Bord du Lac & Service Prioritaire 13h","pole":"RESTAURATION","description":"Réservation garantie d'une pergola ombragée au bord de l'eau avec précommande cuisine sans attente.","child_price_fcfa":0,"adult_price_fcfa":5000,"group_adult_price_fcfa":5000,"group_child_price_fcfa":0,"daily_capacity":25,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-PERGOLA-LAC","status":"PUBLISHED","sort_order":40,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"385d6a41-154b-4c7b-a519-b3238740dc25","slug":"pirogue","title":"Balade en Pirogue / Pédalo sur le Lac","pole":"EAU_PLEIN_AIR","description":"Traversée commentée du lac d'Ahala avec gilet de sauvetage fourni.","child_price_fcfa":500,"adult_price_fcfa":1000,"group_adult_price_fcfa":800,"group_child_price_fcfa":500,"daily_capacity":250,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-PIROGUE","status":"PUBLISHED","sort_order":50,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"42163e55-985d-4306-b0dc-0e14e0c54d09","slug":"piscine","title":"Piscine Semi-Olympique","pole":"EAU_PLEIN_AIR","description":"Baignade surveillée avec maître-nageur sauveteur.","child_price_fcfa":1500,"adult_price_fcfa":2500,"group_adult_price_fcfa":2000,"group_child_price_fcfa":1500,"daily_capacity":300,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-PISCINE","status":"PUBLISHED","sort_order":60,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"d8d94032-f80f-4d82-b3f6-23df226c506c","slug":"saveurs","title":"Repas — Le Château des Saveurs","pole":"RESTAURATION","description":"Gastronomie camerounaise : poisson braisé d'Ahala, poulet DG, Ndolè, plantains mûrs.","child_price_fcfa":2500,"adult_price_fcfa":5000,"group_adult_price_fcfa":4500,"group_child_price_fcfa":2500,"daily_capacity":400,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-SAVEURS","status":"PUBLISHED","sort_order":70,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"0f38484f-461f-4dd4-a467-08c4ae849729","slug":"zoo","title":"Entrée Parc & Jardin Zoologique","pole":"NATURE_FAUNE","description":"Observation des chimpanzés, tortues géantes, autruches, paons et allées botaniques.","child_price_fcfa":500,"adult_price_fcfa":1000,"group_adult_price_fcfa":700,"group_child_price_fcfa":500,"daily_capacity":1200,"is_active":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"CAT-ZOO","status":"PUBLISHED","sort_order":80,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"}],"sales_bundles":[{"id":"9c9eb12f-7b82-4553-b067-71a47742c254","bundle_code":"PACK_COUPLE_EWONDO","title":"Pack Escapade Couple / VIP Week-end","subtitle":"Suite Cité Ewondo Climatisée + 2 Repas Saveurs + Piscine + Pirogue + Pergola","included_slugs":["zoo","piscine","pirogue","saveurs","pergola_lac"],"adult_bundle_price_fcfa":45000,"child_bundle_price_fcfa":0,"savings_label":"Forfait Duo VIP tout compris avec nuitée/day-use","is_featured":false,"created_at":"2026-10-27T10:54:22.718Z","sku":"PCK-PACK-COUPLE-EWONDO","status":"PUBLISHED","sort_order":10,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"8ae88f30-5c99-4e7b-956a-fe90a4168857","bundle_code":"PASS_DECOUVERTE","title":"Pass Découverte Nature","subtitle":"Zoo + Balade en Pirogue + Tour à Cheval + Coupe-File QR","included_slugs":["zoo","pirogue","cheval"],"adult_bundle_price_fcfa":2500,"child_bundle_price_fcfa":1500,"savings_label":"3 activités combinées en 1 seul QR Code","is_featured":false,"created_at":"2026-10-27T10:54:22.718Z","sku":"PCK-PASS-DECOUVERTE","status":"PUBLISHED","sort_order":20,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"},{"id":"ff8ef6d1-2e09-4e34-a5a0-8d29bf576b0b","bundle_code":"PASS_ROYALE","title":"Pass Journée Royale Tout-Inclus","subtitle":"Zoo + Piscine Semi-Olympique + Pirogue + Repas Chaud Château des Saveurs","included_slugs":["zoo","piscine","pirogue","saveurs"],"adult_bundle_price_fcfa":8500,"child_bundle_price_fcfa":4500,"savings_label":"Le Plus Choisi • Repas & Coupe-File inclus","is_featured":true,"created_at":"2026-10-27T10:54:22.718Z","sku":"PCK-PASS-ROYALE","status":"PUBLISHED","sort_order":30,"updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.718Z"}],"lodge_cities":[{"id":"d34f380c-0f2e-426b-b43b-c5e39992209a","code":"BENE","name":"Cité Bene (Standard)","category":"Pavillon Détente","min_price_fcfa":10000,"max_price_fcfa":15000,"total_rooms":10,"available_rooms":0,"amenities":["Lit double","Salle d'eau privée","Proximité lac"],"sku":"LOD-BENE","status":"PUBLISHED","sort_order":10,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"15e66052-c100-4839-b8bc-002303a606bf","code":"CHANTHEL","name":"Cité Chanthel (Confort)","category":"Pavillon Nature Confort","min_price_fcfa":15000,"max_price_fcfa":25000,"total_rooms":12,"available_rooms":3,"amenities":["Ventilation/Clim","Salle d'eau privée","Calme forestier"],"sku":"LOD-CHANTHEL","status":"PUBLISHED","sort_order":20,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"ee84dda0-b4b3-482a-8ddd-dc383daa0b34","code":"EWONDO","name":"Cité Ewondo (VIP)","category":"Haut Standing Climatisé","min_price_fcfa":25000,"max_price_fcfa":30000,"total_rooms":8,"available_rooms":2,"amenities":["Climatisation","Eau chaude","Petit-déjeuner","Accès Parc inclus"],"sku":"LOD-EWONDO","status":"PUBLISHED","sort_order":30,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"}],"agenda_events":[{"id":"4ab3bf48-d5a2-4e52-a189-e9904af130ef","code":"EVT_MERCREDI_CFP","day_filter":"MER_JEU","target_weekday":3,"badge":"Mercredi & Jeudi • 10h00 – 16h00","title":"Journée Pédagogique Faune & Portes Ouvertes Campus CFP","short_label":"Mercredi Pédagogique & Portes Ouvertes CFP","price_text":"Entrée : 500 FCFA (Enfant) / 1 000 FCFA (Adulte) • Orientation CFP Gratuite","from_price_fcfa":500,"spots_text":"Accès libre & Groupes scolaires sur réservation","description":"Idéal pour les familles en semaine, les écoles maternelles/primaires et les futurs apprenants souhaitant visiter les ateliers pratiques du CFP ECOPARK agréé MINEFOP.","schedule":["10h00 – 11h30 : Visite guidée du Jardin Zoologique (gorille « ToTo », tortues géantes, paons) et des allées botaniques.","11h30 – 13h00 : Démonstration d'aquaculture sur les étangs d'Ahala & séance d'orientation CFP (5 filières, inscription 50 000 FCFA).","13h00 – 16h00 : Déjeuner au Château des Saveurs, balade en pirogue et baignade surveillée."],"bundle_code":"PASS_DECOUVERTE","dish":"Poisson Braisé d'Ahala (Étang frais)","meal_slot":"Service 12h30","pergola":false,"nutrition":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png","status":"PUBLISHED","sort_order":10,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"1363e57d-effd-483e-b08c-52287be35fa4","code":"EVT_VENDREDI_AFTERWORK","day_filter":"VENDREDI","target_weekday":5,"badge":"Vendredi • 15h30 – 20h30","title":"Afterwork « Brise du Lac & Poisson Braisé d'Ahala »","short_label":"Vendredi Afterwork Brise du Lac & Grillades","price_text":"Plats dès 3 500 FCFA • Pergola Privée Bord du Lac : +5 000 FCFA","from_price_fcfa":3500,"spots_text":"Plus que 4 pergolas disponibles ce vendredi","description":"Évitez les embouteillages du vendredi soir à Yaoundé : rejoignez Ahala Barrière (face station Tradex) pour savourer le poisson frais des étangs braisé à la minute sous une pergola privée.","schedule":["15h30 – 17h30 : Accueil coupe-file, promenade au bord du lac d'Ahala et installation sous pergola privée.","17h30 – 20h30 : Service grillades & Poisson Braisé d'Ahala au Château des Saveurs, ambiance musicale douce.","Option Séjour : Possibilité de prolonger en nuitée dans les Cités Bene (10k), Chanthel (15k) ou Ewondo VIP (25k FCFA)."],"bundle_code":"CUSTOM","dish":"Poisson Braisé d'Ahala (Étang frais)","meal_slot":"Service 15h00","pergola":true,"nutrition":false,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":20,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"8315e300-f30f-43e7-8613-c2a861cd514d","code":"EVT_SAMEDI_FAMILLE","day_filter":"SAMEDI","target_weekday":6,"badge":"Samedi • 10h30 & 15h00","title":"Samedi Famille : Rencontre Soigneurs « Gorille ToTo » & Régate Pirogues","short_label":"Samedi Famille • Gorille ToTo & Pirogues","price_text":"Pass Découverte : 1 500 FCFA (Enfant) • 2 500 FCFA (Adulte)","from_price_fcfa":1500,"spots_text":"Tarif enfant strictement garanti à 500 FCFA (entrée)","description":"La sortie préférée des enfants à Yaoundé : nourrissage commenté aux étangs, rencontre avec le gorille « ToTo », balade sécurisée en pirogue avec gilet et piscine semi-olympique.","schedule":["10h30 – 12h00 : Rencontre avec les soigneurs du Zoo (« ToTo ») & nourrissage des poissons et tortues aux étangs.","12h30 – 14h30 : Déjeuner familial au Château des Saveurs (Menu Enfant 2 500 FCFA & spécialités camerounaises).","14h30 – 17h30 : Traversée en pirogue sur le lac, initiation équestre encadrée et piscine surveillée par maître-nageur."],"bundle_code":"PASS_DECOUVERTE","dish":"Menu Enfant & Grillades Douces","meal_slot":"Service 12h30","pergola":false,"nutrition":true,"image_src":"audit-assets/ecopark-real-media/balade_pirogue3.jpg","status":"PUBLISHED","sort_order":30,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"8f17ea5a-5725-4c04-9f43-4e0662c0f676","code":"EVT_DIMANCHE_ROYAL","day_filter":"DIMANCHE","target_weekday":0,"badge":"Dimanche • 12h00 – 17h30","title":"Grand Dimanche Royal : Buffet Camerounais & Ambiance Acoustique Live","short_label":"Grand Dimanche Royal • Buffet & Live","price_text":"Pass Journée Royale Tout-Inclus : 4 500 FCFA (Enfant) • 8 500 FCFA (Adulte)","from_price_fcfa":4500,"spots_text":"Réservation QR fortement conseillée (Service 12h30 / 13h30 garanti)","description":"Le grand rendez-vous dominical d'ECOPARK Ahala : grands classiques du Château des Saveurs (Poulet DG Royal, Ndolé Crevettes, Poisson Braisé), ambiance acoustique au bord du lac et accès illimité Parc + Piscine + Pirogue.","schedule":["09h30 – 12h00 : Accès coupe-file au Portail d'Ahala (QR Code), visite du Zoo et balade matinale en pirogue.","12h30 – 15h00 : Grand Service Dominical au Château des Saveurs (zéro attente pour les détenteurs du Pass QR) & animation acoustique.","15h00 – 18h00 : Détente à la Piscine Semi-Olympique et sous les pergolas ombragées."],"bundle_code":"PASS_ROYALE","dish":"Poulet DG Royal Plantain Mûr","meal_slot":"Service 13h30","pergola":true,"nutrition":true,"image_src":"audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg","status":"PUBLISHED","sort_order":40,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"}],"menu_items":[{"id":"26c4e2f9-f401-4531-98b6-f3eb5ed76119","sku":"MNU-POISSON-BRAISE","category":"GRILLADE","name":"Poisson Braisé d'Ahala (Étang frais)","description":"Poisson frais pêché dans les étangs d'Ahala et braisé à la minute aux épices du terroir, servi avec plantains mûrs ou miondo.","price_fcfa":null,"is_signature":true,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":10,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"15e3548f-499b-427c-982d-88ccf3f028e6","sku":"MNU-POULET-DG","category":"PLAT","name":"Poulet DG Royal Plantain Mûr","description":"Le grand classique camerounais du Château des Saveurs : volaille fermière, plantains mûrs dorés, légumes frais et sauce parfumée.","price_fcfa":null,"is_signature":true,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":20,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"010606f1-bb9d-4ba8-833f-9bdc18d76993","sku":"MNU-NDOLE-ROYAL","category":"PLAT","name":"Ndolé Royal Crevettes & Miondo","description":"Ndolé onctueux préparé selon la tradition avec crevettes, bœuf fondant et accompagnements chauds.","price_fcfa":null,"is_signature":true,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":30,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"},{"id":"13076b26-1cba-4cc1-ae14-f3f211dba4db","sku":"MNU-MENU-ENFANT","category":"MENU_ENFANT","name":"Menu Enfant & Grillades Douces","description":"Portion adaptée aux enfants (3–12 ans) avec grillades tendres, frites de plantain et jus naturel (Bissap / Ananas).","price_fcfa":2500,"is_signature":false,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png","status":"PUBLISHED","sort_order":40,"created_at":"2026-10-27T10:54:22.803Z","updated_at":"2026-10-27T10:54:22.803Z","version":1,"first_published_at":"2026-10-27T10:54:22.803Z"}],"site_settings":{"opening_hours":{"label":"Mar–Dim : 09h00–18h00","closed_days":["LUNDI"]},"weather_banner":{"presets":{"SUNNY":"27 °C Ensoleillé • Accès RN3 fluide (15 min) • Tous les espaces ouverts","WEEKEND_PEAK":"Grand Dimanche Royal (29 °C ensoleillé) • Forte affluence : billet QR coupe-file recommandé","RAIN_GUARANTEE":"Averse tropicale passagère • Garantie Pluie active (report 90 j gratuit en 1 clic)"},"active_preset":"SUNNY","custom_message":null}}},"generatedAt":"2026-10-27T10:54:22.874Z"}</script>
   <script id="ecoparkDataLayer">
-/*!
- * ECOPARK — Couche d'accès aux données (Phase 3)
- * ---------------------------------------------------------------------------
- * Un « magasin » local lu de façon synchrone par les écrans existants (loadDB),
- * alimenté par l'un des deux pilotes interchangeables :
- *   - LocalDemoDriver : localStorage (mode démo, comportement historique)
- *   - SupabaseDriver  : supabase-js + Realtime (production)
- *
- * Aucune dépendance. Compatible navigateur et Node (tests via vm).
- * Expose : window.EcoparkData
- */
 (function (root) {
-  'use strict';
-
-  // ==========================================================================
-  // 0. OUTILS
-  // ==========================================================================
-  var clone = function (v) { return v === undefined ? undefined : JSON.parse(JSON.stringify(v)); };
-  var has = function (o, k) { return Object.prototype.hasOwnProperty.call(o, k); };
-  var noop = function () {};
-
-  function safeStorage() {
-    try {
-      var s = root.localStorage;
-      var k = '__ecopark_probe__';
-      s.setItem(k, '1');
-      s.removeItem(k);
-      return s;
-    } catch (e) {
-      var mem = {};
-      return {
-        getItem: function (k) { return has(mem, k) ? mem[k] : null; },
-        setItem: function (k, v) { mem[k] = String(v); },
-        removeItem: function (k) { delete mem[k]; }
-      };
-    }
-  }
-
-  // ==========================================================================
-  // 1. CONVERTISSEURS (format base <-> format historique du site)
-  // ==========================================================================
-  var Mappers = {};
-
-  /** '2026-11-15' -> '15/11/2026' (les valeurs déjà au format JJ/MM/AAAA sont conservées) */
-  Mappers.isoToFr = function (iso) {
-    if (!iso) return '';
-    var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso));
-    return m ? m[3] + '/' + m[2] + '/' + m[1] : String(iso);
-  };
-  /** '15/11/2026' ou '2026-11-15' -> '2026-11-15' ; null si invalide */
-  Mappers.frToIso = function (fr) {
-    if (!fr) return null;
-    var s = String(fr).trim();
-    var iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
-    if (iso) return s;
-    var m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s);
-    if (!m) return null;
-    var d = ('0' + m[1]).slice(-2);
-    var mo = ('0' + m[2]).slice(-2);
-    return m[3] + '-' + mo + '-' + d;
-  };
-  /** '2026-10-26T08:45:00Z' -> '26/10/2026 09:45' (heure de Yaoundé, UTC+1) */
-  Mappers.tsToFr = function (ts) {
-    if (!ts) return '';
-    var d = new Date(ts);
-    if (isNaN(d.getTime())) return String(ts);
-    var local = new Date(d.getTime() + 60 * 60 * 1000); // Africa/Douala = UTC+1, sans heure d'été
-    var p = function (n) { return ('0' + n).slice(-2); };
-    return p(local.getUTCDate()) + '/' + p(local.getUTCMonth() + 1) + '/' + local.getUTCFullYear() +
-      ' ' + p(local.getUTCHours()) + ':' + p(local.getUTCMinutes());
-  };
-  Mappers.toFcfa = function (v) {
-    var n = typeof v === 'number' ? v : parseInt(String(v == null ? '' : v).replace(/[^0-9-]/g, ''), 10);
-    if (!isFinite(n) || n < 0) return 0;
-    return Math.round(n);
-  };
-
-  function invert(map) {
-    var out = {};
-    Object.keys(map).forEach(function (k) { out[map[k]] = k; });
-    return out;
-  }
-
-  // --- Devis groupes ---------------------------------------------------------
-  var QUOTE_STATUS = { EN_ETUDE: 'Proforma générée', PROFORMA_ENVOYEE: 'Proposition envoyée', VALIDE: 'Validé', ANNULE: 'Annulé' };
-  var QUOTE_STATUS_INV = Object.assign(invert(QUOTE_STATUS), { 'En étude': 'EN_ETUDE' });
-  function quoteGroupType(label) {
-    var t = String(label || '');
-    if (/S[ée]minaire|Entreprise|ONG|Minist/i.test(t)) return 'entreprise';
-    if (/Mariage|R[ée]ception|R[ée]union|Gala/i.test(t)) return 'mariage_evenement';
-    return 'ecole';
-  }
-  var GROUP_TYPE_LABEL = { ecole: 'Excursion scolaire', entreprise: 'Séminaire & Conférence', mariage_evenement: 'Mariage / Réception' };
-
-  // --- Candidatures CFP ------------------------------------------------------
-  var CFP_STATUS = {
-    DOSSIER_RECU: 'Dossier reçu (Inscription 50 000 FCFA)',
-    INSCRIPTION_REGLEE: 'Inscription réglée (50 000 FCFA)',
-    ADMIS: 'Admis Rentrée (50 000 FCFA réglés)'
-  };
-  var CFP_STATUS_INV = invert(CFP_STATUS);
-
-  // --- Rendez-vous -----------------------------------------------------------
-  var RDV_STATUS = { CONFIRME: 'RDV Confirmé', HONORE: 'RDV Honoré', REPORTE: 'RDV Reporté', ANNULE: 'RDV Annulé' };
-  var RDV_MODE = { SUR_SITE: 'Sur site (Ahala Barrière)', WHATSAPP_APPEL: 'Appel WhatsApp' };
-
-  // --- Réservations ----------------------------------------------------------
-  // Statut historique du site <-> (payment_state, cancelled_at, rescheduled)
-  function bookingLegacyStatus(row) {
-    if (row.cancelled_at) return 'CANCELLED';
-    if (row.rescheduled_from_date) return 'REPORTED';
-    if (row.payment_state === 'PENDING') return 'HELD_11H';
-    if (row.payment_state === 'CONFIRMED') return 'CONFIRMED';
-    return row.payment_state || 'CONFIRMED';
-  }
-
-  /**
-   * Registre des entités : table, clé primaire, lecture publique, temps réel,
-   * clé de stockage dans le format historique (legacyKey) et convertisseurs.
-   */
-  var Registry = {
-    catalog_activities: { key: 'id', publicRead: true, realtime: 'public', content: true, priceGoverned: true, order: 'sort_order' },
-    sales_bundles:      { key: 'id', publicRead: true, realtime: 'public', content: true, priceGoverned: true, order: 'sort_order' },
-    lodge_cities:       { key: 'id', publicRead: true, realtime: 'public', content: true, priceGoverned: true, order: 'sort_order' },
-    agenda_events:      { key: 'id', publicRead: true, realtime: 'public', content: true, order: 'sort_order' },
-    menu_items:         { key: 'id', publicRead: true, realtime: 'public', content: true, order: 'sort_order' },
-    site_settings:      { key: 'key', publicRead: true, realtime: 'public', content: true, order: 'key' },
-    group_quotes: {
-      key: 'id', publicInsert: true, realtime: 'staff', legacyKey: 'quotes', legacyId: 'reference',
-      fromRow: function (r) {
-        return {
-          reference: r.quote_reference,
-          org: r.organization_name,
-          contact: r.contact_name,
-          phone: r.contact_phone,
-          type: r.notes || GROUP_TYPE_LABEL[r.group_type] || r.group_type,
-          pax: r.participants_count,
-          date: Mappers.isoToFr(r.preferred_date),
-          budgetFcfa: r.estimated_budget_fcfa,
-          status: QUOTE_STATUS[r.status] || r.status,
-          _id: r.id
-        };
-      },
-      toRow: function (q) {
-        var type = String(q.type || '');
-        return {
-          quote_reference: q.reference,
-          organization_name: q.org,
-          contact_name: q.contact || q.org,
-          contact_phone: q.phone,
-          group_type: quoteGroupType(type),
-          preferred_date: Mappers.frToIso(q.date),
-          participants_count: Math.max(10, parseInt(q.pax, 10) || 10),
-          hall_menkii_included: /Menkii/i.test(type),
-          shuttle_included: /Navette/i.test(type),
-          estimated_budget_fcfa: Mappers.toFcfa(q.budgetFcfa),
-          notes: type || null,
-          status: QUOTE_STATUS_INV[q.status] || 'EN_ETUDE'
-        };
-      }
-    },
-    cfp_applications: {
-      key: 'id', publicInsert: true, realtime: 'staff', legacyKey: 'cfpApplications', legacyId: 'reference',
-      fromRow: function (r) {
-        var plan = r.payment_plan === 'INTEGRAL' ? 'Paiement intégral (300 000 FCFA)' : 'Échéancier 4 tranches (100k + 3x50k FCFA)';
-        return {
-          reference: r.application_ref,
-          name: r.candidate_name + ' (' + r.candidate_age + ' ans)',
-          track: r.program_track + ' • ' + plan,
-          phone: r.candidate_phone,
-          status: CFP_STATUS[r.status] || r.status,
-          _id: r.id
-        };
-      },
-      toRow: function (a) {
-        var nm = /^(.*?)\s*\((\d+)\s*ans\)\s*$/.exec(String(a.name || ''));
-        var parts = String(a.track || '').split(' • ');
-        return {
-          application_ref: a.reference,
-          candidate_name: nm ? nm[1] : String(a.name || ''),
-          candidate_age: nm ? parseInt(nm[2], 10) : (parseInt(a.age, 10) || 19),
-          candidate_phone: a.phone,
-          program_track: parts[0] || 'Hôtellerie',
-          payment_plan: /int[ée]gral/i.test(parts[1] || '') ? 'INTEGRAL' : '4_TRANCHES',
-          status: CFP_STATUS_INV[a.status] || 'DOSSIER_RECU'
-        };
-      }
-    },
-    appointments: {
-      key: 'id', publicInsert: true, realtime: 'staff', legacyKey: 'appointments', legacyId: 'reference',
-      fromRow: function (r) {
-        return {
-          reference: r.appointment_ref,
-          visitorName: r.visitor_name,
-          org: r.organization_name || '',
-          phone: r.visitor_phone,
-          purposeCode: r.purpose_code,
-          purposeLabel: r.purpose_label,
-          date: Mappers.isoToFr(r.appointment_date),
-          slot: r.time_slot,
-          mode: RDV_MODE[r.meeting_mode] || r.meeting_mode,
-          status: (RDV_STATUS[r.status] || r.status) + ' (' + r.time_slot + ')',
-          _id: r.id
-        };
-      },
-      toRow: function (a) {
-        var st = String(a.status || '');
-        var status = /Annul/i.test(st) ? 'ANNULE' : /Report/i.test(st) ? 'REPORTE' : /Honor/i.test(st) ? 'HONORE' : 'CONFIRME';
-        return {
-          appointment_ref: a.reference,
-          visitor_name: a.visitorName,
-          visitor_phone: a.phone,
-          organization_name: a.org || null,
-          purpose_code: a.purposeCode,
-          purpose_label: a.purposeLabel,
-          appointment_date: Mappers.frToIso(a.date),
-          time_slot: a.slot,
-          meeting_mode: /WhatsApp|Appel/i.test(String(a.mode || '')) ? 'WHATSAPP_APPEL' : 'SUR_SITE',
-          status: status
-        };
-      }
-    },
-    bookings: {
-      key: 'id', realtime: 'staff', legacyKey: 'bookings', legacyId: 'reference',
-      fromRow: function (r) {
-        var acts = (r.selected_bundle_code ? [r.selected_bundle_code] : []).concat(r.selected_activities || []);
-        return {
-          reference: r.reference_code,
-          holder: r.visitor_name,
-          phone: r.visitor_phone,
-          date: Mappers.isoToFr(r.visit_date),
-          paxSummary: r.adults_count + ' Adulte(s), ' + r.children_count + ' Enfant(s) • ' + (acts.join(' + ') || 'Visite'),
-          totalFcfa: r.total_fcfa,
-          payMethod: r.payment_method,
-          lodgeCity: r.lodge_city || null,
-          hasPergola: !!(r.has_pergola || r.pergola_reserved),
-          status: bookingLegacyStatus(r),
-          scanned: r.qr_status === 'USED' || !!r.scanned_at,
-          scannedAt: r.scanned_at ? Mappers.tsToFr(r.scanned_at) : null,
-          _id: r.id
-        };
-      },
-      toRow: function (b) {
-        var pax = /(\d+)\s*Adulte[^,]*,\s*(\d+)\s*Enfant/i.exec(String(b.paxSummary || ''));
-        return {
-          reference_code: b.reference,
-          visitor_name: b.holder,
-          visitor_phone: b.phone,
-          visit_date: Mappers.frToIso(b.date),
-          adults_count: pax ? parseInt(pax[1], 10) : 1,
-          children_count: pax ? parseInt(pax[2], 10) : 0,
-          total_fcfa: Mappers.toFcfa(b.totalFcfa),
-          payment_method: b.payMethod || 'OM',
-          payment_state: b.status === 'HELD_11H' ? 'PENDING' : 'CONFIRMED',
-          lodge_city: b.lodgeCity || null,
-          has_pergola: !!b.hasPergola
-        };
-      }
-    },
-    audit_logs: {
-      key: 'id', realtime: 'governance', legacyKey: 'auditLogs', readOnly: true, order: 'seq',
-      fromRow: function (r) {
-        return {
-          time: Mappers.tsToFr(r.created_at),
-          actor: r.actor_name + (r.actor_role ? ' (' + r.actor_role + ')' : ''),
-          action: r.description,
-          operation: r.operation,
-          seq: r.seq,
-          _id: r.id
-        };
-      }
-    },
-    staff_profiles: { key: 'user_id', realtime: 'governance', order: 'full_name' }
-  };
-  Mappers.registry = Registry;
-
-  // ==========================================================================
-  // 2. ERREURS — traduction en français
-  // ==========================================================================
-  var Errors = {};
-  Errors.make = function (code, message, hint, raw) {
-    return { code: code, message: message, hint: hint || '', raw: raw || null };
-  };
-  /**
-   * @param err  erreur PostgREST / Supabase ({code, message, hint, details}) ou Error
-   * @param ctx  {entity, row, kind: 'NO_ROWS_RIGHTS' | 'VERSION_CONFLICT' | 'NETWORK'}
-   */
-  Errors.translate = function (err, ctx) {
-    ctx = ctx || {};
-    if (ctx.kind === 'VERSION_CONFLICT') {
-      return Errors.make('VERSION_CONFLICT', 'Cette fiche vient d\'être modifiée par quelqu\'un d\'autre. Rechargez-la avant d\'enregistrer.');
-    }
-    if (ctx.kind === 'NO_ROWS_RIGHTS') {
-      return Errors.make('NO_RIGHTS', 'Rien n\'a été enregistré : votre rôle ne permet pas de modifier cette fiche, ou votre double authentification a expiré.');
-    }
-    var msg = String((err && (err.message || err.error_description)) || err || '');
-    var code = String((err && err.code) || '');
-    var full = msg + ' ' + String((err && err.details) || '') + ' ' + String((err && err.hint) || '');
-    var row = ctx.row || {};
-
-    if (ctx.kind === 'NETWORK' || /Failed to fetch|NetworkError|network|ECONNREFUSED|timeout/i.test(msg)) {
-      return Errors.make('NETWORK', 'Connexion perdue : rien n\'a été enregistré. Vérifiez le réseau puis réessayez.', '', err);
-    }
-    if (/JWT expired|invalid JWT|PGRST301|PGRST303/i.test(full)) {
-      return Errors.make('SESSION_EXPIRED', 'Votre session a expiré. Reconnectez-vous pour continuer.', '', err);
-    }
-    if (/ECOPARK_PUBLISH_REQUIRES_DIRECTION/.test(full)) {
-      return Errors.make('PUBLISH_REQUIRES_DIRECTION', 'Seule la Direction peut publier ou retirer un tarif en ligne. Votre brouillon est enregistré.', '', err);
-    }
-    if (/ECOPARK_PUBLISHED_PRICE_LOCKED/.test(full)) {
-      return Errors.make('PUBLISHED_PRICE_LOCKED', 'Ce tarif est en ligne : dupliquez la fiche en brouillon, puis faites-la publier par la Direction.', '', err);
-    }
-    if (/chk_child_group_price_never_higher_than_individual/.test(full)) {
-      var child = row.child_price_fcfa;
-      var grp = row.group_child_price_fcfa;
-      var detail = (grp != null && child != null) ? ' (' + grp + ' FCFA saisis, plafond ' + child + ' FCFA)' : '';
-      return Errors.make('CHILD_PRICE_GUARD', 'Le tarif enfant groupe ne peut pas dépasser le tarif enfant individuel' + detail + '.', '', err);
-    }
-    if (/ECOPARK_SELF_ROLE_CHANGE_FORBIDDEN/.test(full)) {
-      return Errors.make('SELF_ROLE_CHANGE', 'Vous ne pouvez pas modifier votre propre rôle ni votre propre statut.', '', err);
-    }
-    if (/ECOPARK_AUDIT_IMMUTABLE/.test(full)) {
-      return Errors.make('AUDIT_IMMUTABLE', 'Le journal d\'audit ne peut être ni modifié ni effacé.', '', err);
-    }
-    if (/ECOPARK_DUPLICATE_NOT_SUPPORTED/.test(full)) {
-      return Errors.make('DUPLICATE_NOT_SUPPORTED', 'Ce type de fiche ne peut pas être dupliqué.', '', err);
-    }
-    if (/ECOPARK_NOT_FOUND/.test(full) || code === 'P0002') {
-      return Errors.make('NOT_FOUND', 'Cette fiche n\'existe plus (elle a peut-être été supprimée).', '', err);
-    }
-    if (code === '23505' || /duplicate key/i.test(full)) {
-      return Errors.make('DUPLICATE_KEY', 'Ce code (référence, SKU ou slug) existe déjà.', '', err);
-    }
-    if (code === '23514' || /violates check constraint/i.test(full)) {
-      return Errors.make('INVALID_VALUE', 'Une valeur saisie est refusée par les règles métier (montant, nombre de participants, date...).', '', err);
-    }
-    if (code === '42501' || /row-level security|permission denied|ECOPARK_FORBIDDEN/i.test(full)) {
-      return Errors.make('FORBIDDEN', 'Action non autorisée pour votre rôle.', '', err);
-    }
-    return Errors.make('UNKNOWN', 'L\'opération n\'a pas abouti. Réessayez ou contactez l\'administrateur.', msg, err);
-  };
-
-  // ==========================================================================
-  // 3. CONFIGURATION & CHOIX DU PILOTE
-  // ==========================================================================
-  function readConfig() {
-    var cfg = clone(root.ECOPARK_CONFIG || {}) || {};
-    cfg.env = cfg.env || 'local';
-    return cfg;
-  }
-  function resolveDriverName(cfg, search) {
-    var params;
-    try { params = new URLSearchParams(search || ''); } catch (e) { params = { get: function () { return null; } }; }
-    if (params.get('demo') === '77') return 'local';
-    if (cfg.dataDriver !== 'supabase') return 'local';
-    if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) return 'local';
-    return 'supabase';
-  }
-
-  // ==========================================================================
-  // 4. MAGASIN (état lu de façon synchrone par loadDB)
-  // ==========================================================================
-  function Store(opts) {
-    this.storage = opts.storage;
-    this.persistKey = opts.persistKey;        // null = mémoire uniquement
-    this.persistFilter = opts.persistFilter;  // fonction(state) -> partie à persister
-    this.defaults = clone(opts.defaults || {});
-    this.listeners = [];
-    this.state = this._read();
-  }
-  Store.prototype._read = function () {
-    var base = clone(this.defaults);
-    if (!this.persistKey) return base;
-    try {
-      var raw = this.storage.getItem(this.persistKey);
-      return raw ? Object.assign(base, JSON.parse(raw)) : base;
-    } catch (e) { return base; }
-  };
-  Store.prototype.persist = function () {
-    if (!this.persistKey) return;
-    try {
-      var part = this.persistFilter ? this.persistFilter(this.state) : this.state;
-      this.storage.setItem(this.persistKey, JSON.stringify(part));
-    } catch (e) { /* quota plein : on reste en mémoire */ }
-  };
-  /** Relit l'état persistant (synchronisation entre onglets du même navigateur) */
-  Store.prototype.reload = function () {
-    this.state = this._read();
-    return this.state;
-  };
-  /** Copie profonde, dans le format historique attendu par loadDB() */
-  Store.prototype.snapshot = function () {
-    return Object.assign(clone(this.defaults), clone(this.state));
-  };
-  Store.prototype.replace = function (next, meta) {
-    this.state = clone(next);
-    this.persist();
-    this.emit(meta || { source: 'replace' });
-  };
-  Store.prototype.patch = function (fn, meta) {
-    var draft = clone(this.state);
-    var out = fn(draft);
-    this.state = out || draft;
-    this.persist();
-    this.emit(meta || { source: 'patch' });
-  };
-  Store.prototype.subscribe = function (fn) {
-    var self = this;
-    self.listeners.push(fn);
-    return function () { self.listeners = self.listeners.filter(function (l) { return l !== fn; }); };
-  };
-  Store.prototype.emit = function (meta) {
-    this.listeners.slice().forEach(function (l) { try { l(meta); } catch (e) { /* écran défaillant isolé */ } });
-  };
-  Store.prototype.content = function (entity) {
-    var c = this.state.content || {};
-    return c[entity] || (entity === 'site_settings' ? {} : []);
-  };
-
-  // ==========================================================================
-  // 5. RÈGLES MÉTIER PARTAGÉES (reproduites en démo, appliquées par la base en prod)
-  // ==========================================================================
-  var PRICE_COLS = {
-    catalog_activities: ['child_price_fcfa', 'adult_price_fcfa', 'group_adult_price_fcfa', 'group_child_price_fcfa'],
-    sales_bundles: ['adult_bundle_price_fcfa', 'child_bundle_price_fcfa'],
-    lodge_cities: ['min_price_fcfa', 'max_price_fcfa']
-  };
-  var UNIQUE_COLS = {
-    catalog_activities: [['slug', '-copie-'], ['sku', '-COPIE-']],
-    sales_bundles: [['bundle_code', '_COPIE_'], ['sku', '-COPIE-']],
-    agenda_events: [['code', '_COPIE_']],
-    menu_items: [['sku', '-COPIE-']]
-  };
-  var TITLE_COL = { catalog_activities: 'title', sales_bundles: 'title', agenda_events: 'title', menu_items: 'name' };
-  var Rules = {
-    isPriceEntity: function (e) { return has(PRICE_COLS, e); },
-    canPublish: function (entity, role) {
-      if (Rules.isPriceEntity(entity)) return role === 'direction';
-      return ['responsable_exploitation', 'direction', 'administrateur_plateforme'].indexOf(role) >= 0;
-    },
-    canEdit: function (role) {
-      return ['responsable_exploitation', 'direction', 'administrateur_plateforme'].indexOf(role) >= 0;
-    },
-    canDelete: function (entity, role) {
-      if (Rules.isPriceEntity(entity)) return role === 'direction' || role === 'administrateur_plateforme';
-      return Rules.canEdit(role);
-    },
-    childGuard: function (entity, row) {
-      if (entity !== 'catalog_activities') return null;
-      if (row.group_child_price_fcfa > row.child_price_fcfa) {
-        return { code: '23514', message: 'new row violates check constraint "chk_child_group_price_never_higher_than_individual"' };
-      }
-      return null;
-    },
-    uniqueCopy: function (rows, col, base, sep) {
-      var b = String(base).replace(/(-|_)copie(-|_)\d+$/i, '');
-      var n = 0;
-      var candidate;
-      var taken = {};
-      rows.forEach(function (r) { taken[r[col]] = true; });
-      do { n += 1; candidate = b + sep + n; } while (taken[candidate]);
-      return candidate;
-    }
-  };
-
-  // ==========================================================================
-  // 6. PILOTE DÉMO (localStorage) — reproduit les règles de la base
-  // ==========================================================================
-  function LocalDemoDriver(store, opts) {
-    this.name = 'local';
-    this.store = store;
-    this.role = (opts && opts.demoRole) || 'direction';
-    this.uid = 0;
-  }
-  LocalDemoDriver.prototype.init = function () { return Promise.resolve({ ok: true }); };
-  LocalDemoDriver.prototype._newId = function () {
-    this.uid += 1;
-    return 'demo-' + Date.now().toString(36) + '-' + this.uid;
-  };
-  LocalDemoDriver.prototype._rows = function (state, entity) {
-    var reg = Registry[entity];
-    if (!reg) throw new Error('Entité inconnue : ' + entity);
-    if (reg.legacyKey) { state[reg.legacyKey] = state[reg.legacyKey] || []; return state[reg.legacyKey]; }
-    state.content = state.content || {};
-    state.content[entity] = state.content[entity] || [];
-    return state.content[entity];
-  };
-  LocalDemoDriver.prototype._fail = function (raw, ctx) { return Promise.resolve({ ok: false, error: Errors.translate(raw, ctx) }); };
-  LocalDemoDriver.prototype._audit = function (state, op, entity, label) {
-    state.auditLogs = state.auditLogs || [];
-    var verbs = { INSERT: 'Ajout', UPDATE: 'Modification', DELETE: 'Suppression définitive', DUPLICATE: 'Duplication (brouillon)', PUBLISH: 'Publication', ARCHIVE: 'Archivage', RESTORE: 'Restauration' };
-    var d = new Date();
-    var p = function (n) { return ('0' + n).slice(-2); };
-    state.auditLogs.unshift({
-      time: p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()),
-      actor: 'Mode démonstration (' + this.role + ')',
-      action: (verbs[op] || op) + ' — ' + entity + ' « ' + (label || '?') + ' »',
-      operation: op
-    });
-  };
-  LocalDemoDriver.prototype.list = function (entity, q) {
-    q = q || {};
-    var rows = clone(this._rows(this.store.state, entity));
-    if (q.filters) {
-      rows = rows.filter(function (r) {
-        return Object.keys(q.filters).every(function (k) { return r[k] === q.filters[k]; });
-      });
-    }
-    return Promise.resolve({ ok: true, data: rows });
-  };
-  LocalDemoDriver.prototype.get = function (entity, id) {
-    var key = Registry[entity].legacyKey ? (Registry[entity].legacyId || 'reference') : Registry[entity].key;
-    var row = this._rows(this.store.state, entity).filter(function (r) { return r[key] === id; })[0];
-    return Promise.resolve(row ? { ok: true, data: clone(row) } : { ok: false, error: Errors.translate({ code: 'P0002' }) });
-  };
-  LocalDemoDriver.prototype.create = function (entity, data) {
-    var self = this;
-    var reg = Registry[entity];
-    var row = clone(data);
-    if (reg.content && entity !== 'site_settings') {
-      if (!Rules.canEdit(self.role)) return self._fail({ code: '42501' });
-      row.id = row.id || self._newId();
-      row.status = row.status || 'DRAFT';
-      if (Rules.isPriceEntity(entity) && row.status !== 'DRAFT' && self.role !== 'direction') {
-        return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
-      }
-      var guard = Rules.childGuard(entity, row);
-      if (guard) return self._fail(guard, { row: row });
-      row.version = 1;
-    }
-    var dupKey = (UNIQUE_COLS[entity] || []).filter(function (uc) {
-      return self._rows(self.store.state, entity).some(function (r) { return r[uc[0]] === row[uc[0]]; });
-    })[0];
-    if (dupKey) return self._fail({ code: '23505' });
-    self.store.patch(function (s) {
-      var rows = self._rows(s, entity);
-      rows.unshift(row);
-      if (reg.content) self._audit(s, 'INSERT', entity, row[TITLE_COL[entity]] || row.key);
-    }, { source: 'local', entity: entity, op: 'create' });
-    return Promise.resolve({ ok: true, data: clone(row) });
-  };
-  LocalDemoDriver.prototype.update = function (entity, id, patch, version) {
-    var self = this;
-    var reg = Registry[entity];
-    var keyCol = reg.legacyKey ? (reg.legacyId || 'reference') : reg.key;
-    var current = self._rows(self.store.state, entity).filter(function (r) { return r[keyCol] === id; })[0];
-    if (!current) return self._fail({ code: 'P0002' });
-    if (reg.content) {
-      if (!Rules.canEdit(self.role)) return self._fail(null, { kind: 'NO_ROWS_RIGHTS' });
-      if (version != null && current.version !== version) return self._fail(null, { kind: 'VERSION_CONFLICT' });
-      var next = Object.assign(clone(current), patch);
-      if (Rules.isPriceEntity(entity) && self.role !== 'direction') {
-        if (next.status !== current.status && (next.status === 'PUBLISHED' || current.status === 'PUBLISHED')) {
-          return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
-        }
-        if (current.status === 'PUBLISHED' && PRICE_COLS[entity].some(function (c) { return next[c] !== current[c]; })) {
-          return self._fail({ message: 'ECOPARK_PUBLISHED_PRICE_LOCKED' });
-        }
-      }
-      var guard = Rules.childGuard(entity, next);
-      if (guard) return self._fail(guard, { row: next });
-    }
-    var saved;
-    self.store.patch(function (s) {
-      var rows = self._rows(s, entity);
-      var idx = rows.findIndex(function (r) { return r[keyCol] === id; });
-      saved = Object.assign(rows[idx], patch);
-      if (reg.content) {
-        saved.version = (current.version || 1) + 1;
-        if (saved.status === 'PUBLISHED' && !saved.first_published_at) saved.first_published_at = new Date().toISOString();
-        self._audit(s, 'UPDATE', entity, saved[TITLE_COL[entity]] || saved.key);
-      }
-    }, { source: 'local', entity: entity, op: 'update' });
-    return Promise.resolve({ ok: true, data: clone(saved) });
-  };
-  LocalDemoDriver.prototype.duplicate = function (entity, id) {
-    var self = this;
-    if (!UNIQUE_COLS[entity]) return self._fail({ message: 'ECOPARK_DUPLICATE_NOT_SUPPORTED' });
-    if (!Rules.canEdit(self.role)) return self._fail({ message: 'ECOPARK_FORBIDDEN' });
-    var rows = self._rows(self.store.state, entity);
-    var src = rows.filter(function (r) { return r.id === id; })[0];
-    if (!src) return self._fail({ code: 'P0002' });
-    var copy = clone(src);
-    copy.id = self._newId();
-    UNIQUE_COLS[entity].forEach(function (uc) { copy[uc[0]] = Rules.uniqueCopy(rows, uc[0], src[uc[0]], uc[1]); });
-    var tc = TITLE_COL[entity];
-    copy[tc] = src[tc] + ' (Copie)';
-    if (entity === 'agenda_events') copy.short_label = src.short_label + ' (Copie)';
-    if (entity === 'sales_bundles') copy.is_featured = false;
-    copy.status = 'DRAFT';
-    copy.duplicated_from = src.id;
-    copy.first_published_at = null;
-    copy.version = 1;
-    copy.sort_order = (src.sort_order || 0) + 1;
-    self.store.patch(function (s) {
-      var list = self._rows(s, entity);
-      var idx = list.findIndex(function (r) { return r.id === id; });
-      list.splice(idx + 1, 0, copy);
-      self._audit(s, 'DUPLICATE', entity, copy[tc]);
-    }, { source: 'local', entity: entity, op: 'duplicate' });
-    return Promise.resolve({ ok: true, data: copy.id });
-  };
-  LocalDemoDriver.prototype.setStatus = function (entity, id, status, replaceOriginal) {
-    var self = this;
-    var rows = self._rows(self.store.state, entity);
-    var row = rows.filter(function (r) { return r.id === id; })[0];
-    if (!row) return self._fail({ code: 'P0002' });
-    var needsPublishRight = status === 'PUBLISHED' || (row.status === 'PUBLISHED' && status === 'DRAFT');
-    if (needsPublishRight && !Rules.canPublish(entity, self.role)) return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
-    if (status === 'ARCHIVED' && !Rules.canDelete(entity, self.role)) return self._fail({ message: 'ECOPARK_FORBIDDEN' });
-    var origin = row.duplicated_from ? rows.filter(function (r) { return r.id === row.duplicated_from; })[0] : null;
-    var target = id;
-    self.store.patch(function (s) {
-      var list = self._rows(s, entity);
-      var draft = list.filter(function (r) { return r.id === id; })[0];
-      if (status === 'PUBLISHED' && replaceOriginal && origin && origin.status === 'PUBLISHED') {
-        var o = list.filter(function (r) { return r.id === origin.id; })[0];
-        var keep = { id: o.id, status: o.status, version: o.version, first_published_at: o.first_published_at, duplicated_from: o.duplicated_from, sort_order: o.sort_order };
-        (UNIQUE_COLS[entity] || []).forEach(function (uc) { keep[uc[0]] = o[uc[0]]; });
-        Object.assign(o, clone(draft), keep);
-        var tc = TITLE_COL[entity];
-        o[tc] = String(o[tc]).replace(/\s*\(Copie\)$/, '');
-        if (o.short_label) o.short_label = String(o.short_label).replace(/\s*\(Copie\)$/, '');
-        o.version = (o.version || 1) + 1;
-        draft.status = 'ARCHIVED';
-        target = o.id;
-        self._audit(s, 'PUBLISH', entity, o[tc]);
-      } else {
-        draft.status = status;
-        draft.version = (draft.version || 1) + 1;
-        if (status === 'PUBLISHED' && !draft.first_published_at) draft.first_published_at = new Date().toISOString();
-        self._audit(s, status === 'PUBLISHED' ? 'PUBLISH' : status === 'ARCHIVED' ? 'ARCHIVE' : 'RESTORE', entity, draft[TITLE_COL[entity]]);
-      }
-    }, { source: 'local', entity: entity, op: 'setStatus' });
-    return Promise.resolve({ ok: true, data: target });
-  };
-  LocalDemoDriver.prototype.remove = function (entity, id) {
-    var self = this;
-    if (!Rules.canDelete(entity, self.role)) return self._fail({ message: 'ECOPARK_FORBIDDEN' });
-    var row = self._rows(self.store.state, entity).filter(function (r) { return r.id === id; })[0];
-    if (!row) return self._fail({ code: 'P0002' });
-    var hard = row.status === 'DRAFT' && !row.first_published_at;
-    self.store.patch(function (s) {
-      var list = self._rows(s, entity);
-      var idx = list.findIndex(function (r) { return r.id === id; });
-      if (hard) list.splice(idx, 1); else { list[idx].status = 'ARCHIVED'; list[idx].version = (list[idx].version || 1) + 1; }
-      self._audit(s, hard ? 'DELETE' : 'ARCHIVE', entity, row[TITLE_COL[entity]]);
-    }, { source: 'local', entity: entity, op: 'remove' });
-    return Promise.resolve({ ok: true, data: hard ? 'DELETED' : 'ARCHIVED' });
-  };
-  LocalDemoDriver.prototype.rpc = function (name) {
-    return Promise.resolve({ ok: false, error: Errors.make('NOT_AVAILABLE_IN_DEMO', 'Fonction serveur « ' + name + ' » indisponible en mode démonstration.') });
-  };
-  LocalDemoDriver.prototype.logEvent = function (code, entity, id, description) {
-    var self = this;
-    self.store.patch(function (s) { self._audit(s, code, entity || '-', description); }, { source: 'local', op: 'logEvent' });
-    return Promise.resolve({ ok: true });
-  };
-  LocalDemoDriver.prototype.subscribe = function () { return noop; };
-  LocalDemoDriver.prototype.session = function () {
-    return Promise.resolve({ ok: true, data: { role: this.role, full_name: 'Mode démonstration', mfa_satisfied: true, demo: true } });
-  };
-  LocalDemoDriver.prototype.refreshContent = function () { return Promise.resolve({ ok: true }); };
-
-  // ==========================================================================
-  // 7. PILOTE SUPABASE
-  // ==========================================================================
-  function SupabaseDriver(store, opts) {
-    this.name = 'supabase';
-    this.store = store;
-    this.client = opts.client;
-    this.channels = [];
-    this.pending = {};
-    this.debounceMs = opts.debounceMs == null ? 250 : opts.debounceMs;
-    this.pollMs = opts.pollMs == null ? 60000 : opts.pollMs;
-    this.pollTimer = null;
-    this.realtimeHealthy = false;
-    this.onStatus = opts.onStatus || noop;
-  }
-  SupabaseDriver.prototype._res = function (promise, ctx) {
-    return Promise.resolve(promise).then(function (r) {
-      if (r && r.error) return { ok: false, error: Errors.translate(r.error, ctx) };
-      return { ok: true, data: r ? r.data : null, count: r ? r.count : null };
-    }, function (e) {
-      return { ok: false, error: Errors.translate(e, Object.assign({ kind: 'NETWORK' }, ctx || {})) };
-    });
-  };
-  SupabaseDriver.prototype.init = function () {
-    var self = this;
-    return self.refreshContent().then(function (r) {
-      self._subscribeContent();
-      self._startPolling();
-      return r;
-    });
-  };
-  /** Relit tout le contenu public (lignes publiées ; tout le contenu si l'utilisateur est membre de l'équipe) */
-  SupabaseDriver.prototype.refreshContent = function (only) {
-    var self = this;
-    var entities = only ? [].concat(only) : Object.keys(Registry).filter(function (e) { return Registry[e].content; });
-    return Promise.all(entities.map(function (e) {
-      return self._res(self.client.from(e).select('*').order(Registry[e].order || 'id')).then(function (r) { return [e, r]; });
-    })).then(function (pairs) {
-      var failed = pairs.filter(function (p) { return !p[1].ok; });
-      self.store.patch(function (s) {
-        s.content = s.content || {};
-        pairs.forEach(function (p) {
-          if (!p[1].ok) return;
-          if (p[0] === 'site_settings') {
-            var obj = {};
-            (p[1].data || []).forEach(function (row) { obj[row.key] = row.value; });
-            s.content.site_settings = obj;
-          } else {
-            s.content[p[0]] = p[1].data || [];
-          }
-        });
-        s.contentFetchedAt = new Date().toISOString();
-      }, { source: 'supabase', op: 'refreshContent', entities: entities });
-      return failed.length ? { ok: false, error: failed[0][1].error } : { ok: true };
-    });
-  };
-  SupabaseDriver.prototype._schedule = function (entity) {
-    var self = this;
-    if (self.pending[entity]) return;
-    self.pending[entity] = setTimeout(function () {
-      delete self.pending[entity];
-      if (Registry[entity] && Registry[entity].content) self.refreshContent(entity);
-      else self.store.emit({ source: 'realtime', entity: entity });
-    }, self.debounceMs);
-  };
-  SupabaseDriver.prototype._subscribeContent = function () {
-    var self = this;
-    if (!self.client.channel) return;
-    var ch = self.client.channel('ecopark-public-content');
-    Object.keys(Registry).filter(function (e) { return Registry[e].realtime === 'public'; }).forEach(function (e) {
-      ch = ch.on('postgres_changes', { event: '*', schema: 'public', table: e }, function () { self._schedule(e); });
-    });
-    ch.subscribe(function (status) {
-      self.realtimeHealthy = status === 'SUBSCRIBED';
-      self.onStatus(self.realtimeHealthy ? 'live' : 'paused');
-    });
-    self.channels.push(ch);
-  };
-  SupabaseDriver.prototype._startPolling = function () {
-    var self = this;
-    if (!self.pollMs || typeof setInterval === 'undefined') return;
-    // Filet de sécurité : le temps réel ne prévient pas un visiteur qu'une fiche
-    // publiée vient d'être archivée (la RLS masque la nouvelle ligne) -> relecture périodique.
-    // Toutes les 60 s si le temps réel est coupé, toutes les 5 min s'il fonctionne.
-    self.pollTimer = setInterval(function () {
-      var hidden = root.document && root.document.visibilityState === 'hidden';
-      var last = Date.parse(self.store.state.contentFetchedAt || 0) || 0;
-      var maxAge = self.realtimeHealthy ? self.pollMs * 5 : self.pollMs;
-      if (!hidden && Date.now() - last >= maxAge - 1000) self.refreshContent();
-    }, self.pollMs);
-  };
-  SupabaseDriver.prototype.stop = function () {
-    var self = this;
-    if (self.pollTimer) clearInterval(self.pollTimer);
-    self.channels.forEach(function (c) { try { self.client.removeChannel(c); } catch (e) { /* déjà fermé */ } });
-    self.channels = [];
-  };
-  SupabaseDriver.prototype.list = function (entity, q) {
-    q = q || {};
-    var reg = Registry[entity];
-    var query = this.client.from(entity).select('*', q.count ? { count: 'exact' } : undefined);
-    if (q.filters) Object.keys(q.filters).forEach(function (k) { query = query.eq(k, q.filters[k]); });
-    query = query.order(q.order || reg.order || reg.key, { ascending: q.ascending !== false });
-    if (q.range) query = query.range(q.range[0], q.range[1]);
-    return this._res(query).then(function (r) {
-      if (r.ok && reg.fromRow && q.legacy) r.data = (r.data || []).map(reg.fromRow);
-      return r;
-    });
-  };
-  SupabaseDriver.prototype.get = function (entity, id) {
-    return this._res(this.client.from(entity).select('*').eq(Registry[entity].key, id).maybeSingle());
-  };
-  SupabaseDriver.prototype.create = function (entity, data, opts) {
-    var reg = Registry[entity];
-    var row = reg.toRow && opts && opts.legacy ? reg.toRow(data) : clone(data);
-    var q = this.client.from(entity).insert(row);
-    // Le dépôt public (devis, CFP, RDV) n'a pas le droit de relire la ligne : pas de RETURNING.
-    var publicSubmit = reg.publicInsert && opts && opts.anonymous;
-    if (!publicSubmit) q = q.select('*').single();
-    return this._res(q, { entity: entity, row: row });
-  };
-  SupabaseDriver.prototype.update = function (entity, id, patch, version) {
-    var self = this;
-    var reg = Registry[entity];
-    // Fiche complète connue du magasin : permet de citer le plafond exact dans les messages d'erreur
-    var known = reg.content ? (self.store.content(entity) || []).filter(function (r) { return r[reg.key] === id; })[0] : null;
-    var ctxRow = Object.assign({}, known || {}, patch);
-    var q = self.client.from(entity).update(patch).eq(reg.key, id);
-    if (version != null) q = q.eq('version', version);
-    return self._res(q.select('*'), { entity: entity, row: ctxRow }).then(function (r) {
-      if (!r.ok) return r;
-      if (r.data && r.data.length === 1) return { ok: true, data: r.data[0] };
-      // 0 ligne : soit la version est périmée, soit la RLS a masqué la ligne (droits / MFA)
-      return self._res(self.client.from(entity).select(reg.key + ',version').eq(reg.key, id).maybeSingle()).then(function (cur) {
-        if (cur.ok && cur.data && version != null && cur.data.version !== version) {
-          return { ok: false, error: Errors.translate(null, { kind: 'VERSION_CONFLICT' }), current: cur.data };
-        }
-        return { ok: false, error: Errors.translate(null, { kind: 'NO_ROWS_RIGHTS' }) };
-      });
-    });
-  };
-  SupabaseDriver.prototype.duplicate = function (entity, id) {
-    return this._res(this.client.rpc('admin_duplicate', { p_entity: entity, p_id: id }), { entity: entity });
-  };
-  SupabaseDriver.prototype.setStatus = function (entity, id, status, replaceOriginal) {
-    return this._res(this.client.rpc('admin_set_status', { p_entity: entity, p_id: id, p_status: status, p_replace_original: !!replaceOriginal }), { entity: entity });
-  };
-  SupabaseDriver.prototype.remove = function (entity, id) {
-    return this._res(this.client.rpc('admin_delete', { p_entity: entity, p_id: id }), { entity: entity });
-  };
-  SupabaseDriver.prototype.rpc = function (name, args) {
-    return this._res(this.client.rpc(name, args || {}));
-  };
-  SupabaseDriver.prototype.logEvent = function (code, entity, id, description, payload) {
-    return this._res(this.client.rpc('log_admin_event', {
-      p_action_code: code, p_entity_table: entity || null, p_entity_id: id || null, p_description: description || '', p_payload: payload || null
-    }));
-  };
-  SupabaseDriver.prototype.subscribe = function (entity, cb) {
-    var self = this;
-    if (!self.client.channel) return noop;
-    var ch = self.client.channel('ecopark-' + entity + '-' + Math.random().toString(36).slice(2, 8))
-      .on('postgres_changes', { event: '*', schema: 'public', table: entity }, function (payload) { cb(payload); })
-      .subscribe();
-    self.channels.push(ch);
-    return function () { try { self.client.removeChannel(ch); } catch (e) { /* déjà fermé */ } };
-  };
-  SupabaseDriver.prototype.session = function () {
-    return this._res(this.client.rpc('get_my_profile'));
-  };
-
-  // ==========================================================================
-  // 8. FAÇADE PUBLIQUE
-  // ==========================================================================
-  var EcoparkData = {
-    version: '3.0.0',
-    Mappers: Mappers,
-    Errors: Errors,
-    Rules: Rules,
-    Store: Store,
-    LocalDemoDriver: LocalDemoDriver,
-    SupabaseDriver: SupabaseDriver,
-    resolveDriverName: resolveDriverName,
-    driver: null,
-    driverName: 'local',
-    store: null,
-    config: null,
-    _legacy: null,
-    _ready: null,
-    _warned: {}
-  };
-
-  /**
-   * Déclaré par index.html avant init() : clé de stockage historique et état par défaut.
-   * @param {{storageKey: string, defaults: object, snapshot?: object}} legacy
-   */
-  EcoparkData.configureLegacy = function (legacy) {
-    EcoparkData._legacy = legacy;
-  };
-
-  /**
-   * Démarre la couche de données. Synchrone pour le magasin (loadDB utilisable aussitôt),
-   * asynchrone pour l'hydratation réseau (promesse retournée).
-   * @param {{client?: object, storage?: object, search?: string, demoRole?: string, pollMs?: number, debounceMs?: number, onStatus?: function}} [opts]
-   */
-  EcoparkData.init = function (opts) {
-    opts = opts || {};
-    var cfg = readConfig();
-    var legacy = EcoparkData._legacy || { storageKey: 'ecopark_ahala_db_sprint1_v1', defaults: {} };
-    var search = opts.search != null ? opts.search : (root.location ? root.location.search : '');
-    var name = resolveDriverName(cfg, search);
-    if (name === 'supabase' && !opts.client && !(root.supabase && root.supabase.createClient)) name = 'local';
-    var storage = opts.storage || safeStorage();
-
-    var defaults = clone(legacy.defaults || {});
-    defaults.content = clone((legacy.snapshot && legacy.snapshot.content) || {});
-
-    var store;
-    if (name === 'local') {
-      store = new Store({ storage: storage, persistKey: legacy.storageKey, defaults: defaults });
-      if (!store.state.content || !Object.keys(store.state.content).length) store.state.content = clone(defaults.content);
-      EcoparkData.driver = new LocalDemoDriver(store, { demoRole: opts.demoRole });
-    } else {
-      // Production : seul le contenu PUBLIC est persisté en cache (jamais les données d'équipe)
-      store = new Store({
-        storage: storage,
-        persistKey: 'ecopark_cache_v2_' + cfg.env,
-        defaults: defaults,
-        persistFilter: function (s) { return { content: s.content, contentFetchedAt: s.contentFetchedAt, snapshotVersion: cfg.snapshotVersion || null }; }
-      });
-      if (store.state.snapshotVersion && store.state.snapshotVersion !== (cfg.snapshotVersion || null)) {
-        store.state = clone(defaults); // nouvelle copie de secours publiée : cache obsolète
-      }
-      var client = opts.client || root.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
-        auth: { persistSession: true, autoRefreshToken: true }
-      });
-      EcoparkData.driver = new SupabaseDriver(store, {
-        client: client, pollMs: opts.pollMs, debounceMs: opts.debounceMs, onStatus: opts.onStatus
-      });
-    }
-    EcoparkData.config = cfg;
-    EcoparkData.store = store;
-    EcoparkData.driverName = name;
-    EcoparkData._ready = EcoparkData.driver.init();
-    return EcoparkData._ready;
-  };
-  EcoparkData.ready = function () { return EcoparkData._ready || Promise.resolve({ ok: true }); };
-
-  // --- Compatibilité avec loadDB / saveDB du site --------------------------
-  /**
-   * loadDB() historique. En démo, relit localStorage à chaque appel exactement comme
-   * avant (zéro régression, y compris entre onglets). En production : magasin en mémoire.
-   */
-  EcoparkData.legacyLoad = function () {
-    if (EcoparkData.driverName === 'local') EcoparkData.store.reload();
-    return EcoparkData.store.snapshot();
-  };
-  /**
-   * saveDB() historique. En démo : persistance locale comme avant.
-   * En production : l'écran est mis à jour en mémoire uniquement, et l'appel non migré est signalé.
-   */
-  EcoparkData.legacySave = function (db, caller) {
-    var store = EcoparkData.store;
-    store.state = clone(db);
-    store.persist();
-    if (EcoparkData.driverName === 'supabase') {
-      var who = caller || 'inconnu';
-      if (!EcoparkData._warned[who] && root.console && root.console.warn) {
-        EcoparkData._warned[who] = true;
-        root.console.warn('[EcoparkData] saveDB() non migré (' + who + ') : modification visible sur cet écran uniquement, non enregistrée en base.');
-      }
-    }
-  };
-
-  // --- Actions (écritures) avec copie de sécurité et retour arrière --------
-  function withRollback(fn, entity) {
-    var store = EcoparkData.store;
-    var backup = clone(store.state);
-    return fn().then(function (r) {
-      if (!r.ok) { store.replace(backup, { source: 'rollback', entity: entity }); return r; }
-      // Production : relire le contenu concerné sans attendre l'événement temps réel
-      if (EcoparkData.driverName === 'supabase' && entity && Registry[entity] && Registry[entity].content) {
-        return EcoparkData.driver.refreshContent(entity).then(function () { return r; });
-      }
-      return r;
-    }, function (e) {
-      store.replace(backup, { source: 'rollback', entity: entity });
-      return { ok: false, error: Errors.translate(e, { kind: 'NETWORK' }) };
-    });
-  }
-  ['list', 'get', 'rpc', 'session', 'refreshContent'].forEach(function (m) {
-    EcoparkData[m] = function () { var d = EcoparkData.driver; return d[m].apply(d, arguments); };
-  });
-  ['create', 'update', 'duplicate', 'setStatus', 'remove', 'logEvent'].forEach(function (m) {
-    EcoparkData[m] = function () {
-      var d = EcoparkData.driver;
-      var args = arguments;
-      var entity = m === 'logEvent' ? null : args[0];
-      // Affichage optimiste (production) : la modification apparaît tout de suite, puis
-      // elle est confirmée par la base ou annulée par le retour arrière.
-      if (m === 'update' && EcoparkData.driverName === 'supabase' && Registry[entity] && Registry[entity].content && entity !== 'site_settings') {
-        var id = args[1];
-        var patch = args[2];
-        var backupForOptimistic = clone(EcoparkData.store.state);
-        EcoparkData.store.patch(function (s) {
-          var rows = (s.content && s.content[entity]) || [];
-          rows.forEach(function (r) { if (r.id === id) Object.assign(r, patch); });
-        }, { source: 'optimistic', entity: entity });
-        return d.update.apply(d, args).then(function (r) {
-          if (!r.ok) { EcoparkData.store.replace(backupForOptimistic, { source: 'rollback', entity: entity }); return r; }
-          return d.refreshContent(entity).then(function () { return r; });
-        });
-      }
-      return withRollback(function () { return d[m].apply(d, args); }, entity);
-    };
-  });
-  EcoparkData.subscribe = function (entity, cb) { return EcoparkData.driver.subscribe(entity, cb); };
-  EcoparkData.onChange = function (cb) { return EcoparkData.store.subscribe(cb); };
-  /**
-   * Annule un ajout fait par l'ancien code AVANT l'appel à la base (affichage anticipé) :
-   * la copie de sécurité de withRollback contient déjà cet ajout, il faut donc le retirer
-   * explicitement. Déclenche un redessin des écrans (source 'rollback').
-   * @param {string} legacyKey  ex. 'quotes'
-   * @param {function} predicate  ligne à retirer
-   * @param {string} [auditNeedle]  retire aussi les entrées de journal local contenant ce texte
-   */
-  EcoparkData.revertLegacy = function (legacyKey, predicate, auditNeedle) {
-    EcoparkData.store.patch(function (s) {
-      s[legacyKey] = (s[legacyKey] || []).filter(function (row) { return !predicate(row); });
-      if (auditNeedle) {
-        s.auditLogs = (s.auditLogs || []).filter(function (l) { return String(l.action || '').indexOf(auditNeedle) === -1; });
-      }
-    }, { source: 'rollback', entity: legacyKey });
-  };
-  /** Contenu public courant (lignes publiées, triées) — lecture synchrone */
-  EcoparkData.content = function (entity, opts) {
-    var rows = EcoparkData.store.content(entity);
-    if (entity === 'site_settings') return rows;
-    var all = opts && opts.includeDrafts;
-    return rows.filter(function (r) { return all || r.status === 'PUBLISHED'; })
-      .slice().sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
-  };
-  EcoparkData.setting = function (key) {
-    var s = EcoparkData.store ? EcoparkData.store.content('site_settings') : {};
-    return s[key];
-  };
-
-  root.EcoparkData = EcoparkData;
-  if (typeof module !== 'undefined' && module.exports) module.exports = EcoparkData;
+'use strict';
+var clone = function (v) { return v === undefined ? undefined : JSON.parse(JSON.stringify(v)); };
+var has = function (o, k) { return Object.prototype.hasOwnProperty.call(o, k); };
+var noop = function () {};
+function safeStorage() {
+try {
+var s = root.localStorage;
+var k = '__ecopark_probe__';
+s.setItem(k, '1');
+s.removeItem(k);
+return s;
+} catch (e) {
+var mem = {};
+return {
+getItem: function (k) { return has(mem, k) ? mem[k] : null; },
+setItem: function (k, v) { mem[k] = String(v); },
+removeItem: function (k) { delete mem[k]; }
+};
+}
+}
+var Mappers = {};
+Mappers.isoToFr = function (iso) {
+if (!iso) return '';
+var m = /^(\d{4})-(\d{2})-(\d{2})/.exec(String(iso));
+return m ? m[3] + '/' + m[2] + '/' + m[1] : String(iso);
+};
+Mappers.frToIso = function (fr) {
+if (!fr) return null;
+var s = String(fr).trim();
+var iso = /^(\d{4})-(\d{2})-(\d{2})$/.exec(s);
+if (iso) return s;
+var m = /^(\d{1,2})\/(\d{1,2})\/(\d{4})$/.exec(s);
+if (!m) return null;
+var d = ('0' + m[1]).slice(-2);
+var mo = ('0' + m[2]).slice(-2);
+return m[3] + '-' + mo + '-' + d;
+};
+Mappers.tsToFr = function (ts) {
+if (!ts) return '';
+var d = new Date(ts);
+if (isNaN(d.getTime())) return String(ts);
+var local = new Date(d.getTime() + 60 * 60 * 1000); // Africa/Douala = UTC+1, sans heure d'été
+var p = function (n) { return ('0' + n).slice(-2); };
+return p(local.getUTCDate()) + '/' + p(local.getUTCMonth() + 1) + '/' + local.getUTCFullYear() +
+' ' + p(local.getUTCHours()) + ':' + p(local.getUTCMinutes());
+};
+Mappers.toFcfa = function (v) {
+var n = typeof v === 'number' ? v : parseInt(String(v == null ? '' : v).replace(/[^0-9-]/g, ''), 10);
+if (!isFinite(n) || n < 0) return 0;
+return Math.round(n);
+};
+function invert(map) {
+var out = {};
+Object.keys(map).forEach(function (k) { out[map[k]] = k; });
+return out;
+}
+var QUOTE_STATUS = { EN_ETUDE: 'Proforma générée', PROFORMA_ENVOYEE: 'Proposition envoyée', VALIDE: 'Validé', ANNULE: 'Annulé' };
+var QUOTE_STATUS_INV = Object.assign(invert(QUOTE_STATUS), { 'En étude': 'EN_ETUDE' });
+function quoteGroupType(label) {
+var t = String(label || '');
+if (/S[ée]minaire|Entreprise|ONG|Minist/i.test(t)) return 'entreprise';
+if (/Mariage|R[ée]ception|R[ée]union|Gala/i.test(t)) return 'mariage_evenement';
+return 'ecole';
+}
+var GROUP_TYPE_LABEL = { ecole: 'Excursion scolaire', entreprise: 'Séminaire & Conférence', mariage_evenement: 'Mariage / Réception' };
+var CFP_STATUS = {
+DOSSIER_RECU: 'Dossier reçu (Inscription 50 000 FCFA)',
+INSCRIPTION_REGLEE: 'Inscription réglée (50 000 FCFA)',
+ADMIS: 'Admis Rentrée (50 000 FCFA réglés)'
+};
+var CFP_STATUS_INV = invert(CFP_STATUS);
+var RDV_STATUS = { CONFIRME: 'RDV Confirmé', HONORE: 'RDV Honoré', REPORTE: 'RDV Reporté', ANNULE: 'RDV Annulé' };
+var RDV_MODE = { SUR_SITE: 'Sur site (Ahala Barrière)', WHATSAPP_APPEL: 'Appel WhatsApp' };
+function bookingLegacyStatus(row) {
+if (row.cancelled_at) return 'CANCELLED';
+if (row.rescheduled_from_date) return 'REPORTED';
+if (row.payment_state === 'PENDING') return 'HELD_11H';
+if (row.payment_state === 'CONFIRMED') return 'CONFIRMED';
+return row.payment_state || 'CONFIRMED';
+}
+var Registry = {
+catalog_activities: { key: 'id', publicRead: true, realtime: 'public', content: true, priceGoverned: true, order: 'sort_order' },
+sales_bundles:      { key: 'id', publicRead: true, realtime: 'public', content: true, priceGoverned: true, order: 'sort_order' },
+lodge_cities:       { key: 'id', publicRead: true, realtime: 'public', content: true, priceGoverned: true, order: 'sort_order' },
+agenda_events:      { key: 'id', publicRead: true, realtime: 'public', content: true, order: 'sort_order' },
+menu_items:         { key: 'id', publicRead: true, realtime: 'public', content: true, order: 'sort_order' },
+site_settings:      { key: 'key', publicRead: true, realtime: 'public', content: true, order: 'key' },
+group_quotes: {
+key: 'id', publicInsert: true, realtime: 'staff', legacyKey: 'quotes', legacyId: 'reference',
+fromRow: function (r) {
+return {
+reference: r.quote_reference,
+org: r.organization_name,
+contact: r.contact_name,
+phone: r.contact_phone,
+type: r.notes || GROUP_TYPE_LABEL[r.group_type] || r.group_type,
+pax: r.participants_count,
+date: Mappers.isoToFr(r.preferred_date),
+budgetFcfa: r.estimated_budget_fcfa,
+status: QUOTE_STATUS[r.status] || r.status,
+_id: r.id
+};
+},
+toRow: function (q) {
+var type = String(q.type || '');
+return {
+quote_reference: q.reference,
+organization_name: q.org,
+contact_name: q.contact || q.org,
+contact_phone: q.phone,
+group_type: quoteGroupType(type),
+preferred_date: Mappers.frToIso(q.date),
+participants_count: Math.max(10, parseInt(q.pax, 10) || 10),
+hall_menkii_included: /Menkii/i.test(type),
+shuttle_included: /Navette/i.test(type),
+estimated_budget_fcfa: Mappers.toFcfa(q.budgetFcfa),
+notes: type || null,
+status: QUOTE_STATUS_INV[q.status] || 'EN_ETUDE'
+};
+}
+},
+cfp_applications: {
+key: 'id', publicInsert: true, realtime: 'staff', legacyKey: 'cfpApplications', legacyId: 'reference',
+fromRow: function (r) {
+var plan = r.payment_plan === 'INTEGRAL' ? 'Paiement intégral (300 000 FCFA)' : 'Échéancier 4 tranches (100k + 3x50k FCFA)';
+return {
+reference: r.application_ref,
+name: r.candidate_name + ' (' + r.candidate_age + ' ans)',
+track: r.program_track + ' • ' + plan,
+phone: r.candidate_phone,
+status: CFP_STATUS[r.status] || r.status,
+_id: r.id
+};
+},
+toRow: function (a) {
+var nm = /^(.*?)\s*\((\d+)\s*ans\)\s*$/.exec(String(a.name || ''));
+var parts = String(a.track || '').split(' • ');
+return {
+application_ref: a.reference,
+candidate_name: nm ? nm[1] : String(a.name || ''),
+candidate_age: nm ? parseInt(nm[2], 10) : (parseInt(a.age, 10) || 19),
+candidate_phone: a.phone,
+program_track: parts[0] || 'Hôtellerie',
+payment_plan: /int[ée]gral/i.test(parts[1] || '') ? 'INTEGRAL' : '4_TRANCHES',
+status: CFP_STATUS_INV[a.status] || 'DOSSIER_RECU'
+};
+}
+},
+appointments: {
+key: 'id', publicInsert: true, realtime: 'staff', legacyKey: 'appointments', legacyId: 'reference',
+fromRow: function (r) {
+return {
+reference: r.appointment_ref,
+visitorName: r.visitor_name,
+org: r.organization_name || '',
+phone: r.visitor_phone,
+purposeCode: r.purpose_code,
+purposeLabel: r.purpose_label,
+date: Mappers.isoToFr(r.appointment_date),
+slot: r.time_slot,
+mode: RDV_MODE[r.meeting_mode] || r.meeting_mode,
+status: (RDV_STATUS[r.status] || r.status) + ' (' + r.time_slot + ')',
+_id: r.id
+};
+},
+toRow: function (a) {
+var st = String(a.status || '');
+var status = /Annul/i.test(st) ? 'ANNULE' : /Report/i.test(st) ? 'REPORTE' : /Honor/i.test(st) ? 'HONORE' : 'CONFIRME';
+return {
+appointment_ref: a.reference,
+visitor_name: a.visitorName,
+visitor_phone: a.phone,
+organization_name: a.org || null,
+purpose_code: a.purposeCode,
+purpose_label: a.purposeLabel,
+appointment_date: Mappers.frToIso(a.date),
+time_slot: a.slot,
+meeting_mode: /WhatsApp|Appel/i.test(String(a.mode || '')) ? 'WHATSAPP_APPEL' : 'SUR_SITE',
+status: status
+};
+}
+},
+bookings: {
+key: 'id', realtime: 'staff', legacyKey: 'bookings', legacyId: 'reference',
+fromRow: function (r) {
+var acts = (r.selected_bundle_code ? [r.selected_bundle_code] : []).concat(r.selected_activities || []);
+return {
+reference: r.reference_code,
+holder: r.visitor_name,
+phone: r.visitor_phone,
+date: Mappers.isoToFr(r.visit_date),
+paxSummary: r.adults_count + ' Adulte(s), ' + r.children_count + ' Enfant(s) • ' + (acts.join(' + ') || 'Visite'),
+totalFcfa: r.total_fcfa,
+payMethod: r.payment_method,
+lodgeCity: r.lodge_city || null,
+hasPergola: !!(r.has_pergola || r.pergola_reserved),
+status: bookingLegacyStatus(r),
+scanned: r.qr_status === 'USED' || !!r.scanned_at,
+scannedAt: r.scanned_at ? Mappers.tsToFr(r.scanned_at) : null,
+_id: r.id
+};
+},
+toRow: function (b) {
+var pax = /(\d+)\s*Adulte[^,]*,\s*(\d+)\s*Enfant/i.exec(String(b.paxSummary || ''));
+return {
+reference_code: b.reference,
+visitor_name: b.holder,
+visitor_phone: b.phone,
+visit_date: Mappers.frToIso(b.date),
+adults_count: pax ? parseInt(pax[1], 10) : 1,
+children_count: pax ? parseInt(pax[2], 10) : 0,
+total_fcfa: Mappers.toFcfa(b.totalFcfa),
+payment_method: b.payMethod || 'OM',
+payment_state: b.status === 'HELD_11H' ? 'PENDING' : 'CONFIRMED',
+lodge_city: b.lodgeCity || null,
+has_pergola: !!b.hasPergola
+};
+}
+},
+audit_logs: {
+key: 'id', realtime: 'governance', legacyKey: 'auditLogs', readOnly: true, order: 'seq',
+fromRow: function (r) {
+return {
+time: Mappers.tsToFr(r.created_at),
+actor: r.actor_name + (r.actor_role ? ' (' + r.actor_role + ')' : ''),
+action: r.description,
+operation: r.operation,
+seq: r.seq,
+_id: r.id
+};
+}
+},
+staff_profiles: { key: 'user_id', realtime: 'governance', order: 'full_name' },
+daily_quotas: { key: 'id', realtime: 'staff', order: 'quota_date' },
+gateway_health: { key: 'provider', realtime: 'governance', order: 'provider' }
+};
+Mappers.registry = Registry;
+var Errors = {};
+Errors.make = function (code, message, hint, raw) {
+return { code: code, message: message, hint: hint || '', raw: raw || null };
+};
+Errors.translate = function (err, ctx) {
+ctx = ctx || {};
+if (ctx.kind === 'VERSION_CONFLICT') {
+return Errors.make('VERSION_CONFLICT', 'Cette fiche vient d\'être modifiée par quelqu\'un d\'autre. Rechargez-la avant d\'enregistrer.');
+}
+if (ctx.kind === 'NO_ROWS_RIGHTS') {
+return Errors.make('NO_RIGHTS', 'Rien n\'a été enregistré : votre rôle ne permet pas de modifier cette fiche, ou votre double authentification a expiré.');
+}
+var msg = String((err && (err.message || err.error_description)) || err || '');
+var code = String((err && err.code) || '');
+var full = msg + ' ' + String((err && err.details) || '') + ' ' + String((err && err.hint) || '');
+var row = ctx.row || {};
+if (ctx.kind === 'NETWORK' || /Failed to fetch|NetworkError|network|ECONNREFUSED|timeout/i.test(msg)) {
+return Errors.make('NETWORK', 'Connexion perdue : rien n\'a été enregistré. Vérifiez le réseau puis réessayez.', '', err);
+}
+if (/JWT expired|invalid JWT|PGRST301|PGRST303/i.test(full)) {
+return Errors.make('SESSION_EXPIRED', 'Votre session a expiré. Reconnectez-vous pour continuer.', '', err);
+}
+if (/ECOPARK_PUBLISH_REQUIRES_DIRECTION/.test(full)) {
+return Errors.make('PUBLISH_REQUIRES_DIRECTION', 'Seule la Direction peut publier ou retirer un tarif en ligne. Votre brouillon est enregistré.', '', err);
+}
+if (/ECOPARK_PUBLISHED_PRICE_LOCKED/.test(full)) {
+return Errors.make('PUBLISHED_PRICE_LOCKED', 'Ce tarif est en ligne : dupliquez la fiche en brouillon, puis faites-la publier par la Direction.', '', err);
+}
+if (/chk_child_group_price_never_higher_than_individual/.test(full)) {
+var child = row.child_price_fcfa;
+var grp = row.group_child_price_fcfa;
+var detail = (grp != null && child != null) ? ' (' + grp + ' FCFA saisis, plafond ' + child + ' FCFA)' : '';
+return Errors.make('CHILD_PRICE_GUARD', 'Le tarif enfant groupe ne peut pas dépasser le tarif enfant individuel' + detail + '.', '', err);
+}
+if (/ECOPARK_SELF_ROLE_CHANGE_FORBIDDEN/.test(full)) {
+return Errors.make('SELF_ROLE_CHANGE', 'Vous ne pouvez pas modifier votre propre rôle ni votre propre statut.', '', err);
+}
+if (/ECOPARK_AUDIT_IMMUTABLE/.test(full)) {
+return Errors.make('AUDIT_IMMUTABLE', 'Le journal d\'audit ne peut être ni modifié ni effacé.', '', err);
+}
+if (/ECOPARK_DUPLICATE_NOT_SUPPORTED/.test(full)) {
+return Errors.make('DUPLICATE_NOT_SUPPORTED', 'Ce type de fiche ne peut pas être dupliqué.', '', err);
+}
+if (/ECOPARK_NOT_FOUND/.test(full) || code === 'P0002') {
+return Errors.make('NOT_FOUND', 'Cette fiche n\'existe plus (elle a peut-être été supprimée).', '', err);
+}
+if (code === '23505' || /duplicate key/i.test(full)) {
+return Errors.make('DUPLICATE_KEY', 'Ce code (référence, SKU ou slug) existe déjà.', '', err);
+}
+if (code === '23514' || /violates check constraint/i.test(full)) {
+return Errors.make('INVALID_VALUE', 'Une valeur saisie est refusée par les règles métier (montant, nombre de participants, date...).', '', err);
+}
+if (code === '42501' || /row-level security|permission denied|ECOPARK_FORBIDDEN/i.test(full)) {
+return Errors.make('FORBIDDEN', 'Action non autorisée pour votre rôle.', '', err);
+}
+return Errors.make('UNKNOWN', 'L\'opération n\'a pas abouti. Réessayez ou contactez l\'administrateur.', msg, err);
+};
+function readConfig() {
+var cfg = clone(root.ECOPARK_CONFIG || {}) || {};
+cfg.env = cfg.env || 'local';
+return cfg;
+}
+function resolveDriverName(cfg, search) {
+var params;
+try { params = new URLSearchParams(search || ''); } catch (e) { params = { get: function () { return null; } }; }
+if (params.get('demo') === '77') return 'local';
+if (cfg.dataDriver !== 'supabase') return 'local';
+if (!cfg.supabaseUrl || !cfg.supabaseAnonKey) return 'local';
+return 'supabase';
+}
+function Store(opts) {
+this.storage = opts.storage;
+this.persistKey = opts.persistKey;        // null = mémoire uniquement
+this.persistFilter = opts.persistFilter;  // fonction(state) -> partie à persister
+this.defaults = clone(opts.defaults || {});
+this.listeners = [];
+this.state = this._read();
+}
+Store.prototype._read = function () {
+var base = clone(this.defaults);
+if (!this.persistKey) return base;
+try {
+var raw = this.storage.getItem(this.persistKey);
+return raw ? Object.assign(base, JSON.parse(raw)) : base;
+} catch (e) { return base; }
+};
+Store.prototype.persist = function () {
+if (!this.persistKey) return;
+try {
+var part = this.persistFilter ? this.persistFilter(this.state) : this.state;
+this.storage.setItem(this.persistKey, JSON.stringify(part));
+} catch (e) { /* quota plein : on reste en mémoire */ }
+};
+Store.prototype.reload = function () {
+this.state = this._read();
+return this.state;
+};
+Store.prototype.snapshot = function () {
+return Object.assign(clone(this.defaults), clone(this.state));
+};
+Store.prototype.replace = function (next, meta) {
+this.state = clone(next);
+this.persist();
+this.emit(meta || { source: 'replace' });
+};
+Store.prototype.patch = function (fn, meta) {
+var draft = clone(this.state);
+var out = fn(draft);
+this.state = out || draft;
+this.persist();
+this.emit(meta || { source: 'patch' });
+};
+Store.prototype.subscribe = function (fn) {
+var self = this;
+self.listeners.push(fn);
+return function () { self.listeners = self.listeners.filter(function (l) { return l !== fn; }); };
+};
+Store.prototype.emit = function (meta) {
+this.listeners.slice().forEach(function (l) { try { l(meta); } catch (e) { /* écran défaillant isolé */ } });
+};
+Store.prototype.content = function (entity) {
+var c = this.state.content || {};
+return c[entity] || (entity === 'site_settings' ? {} : []);
+};
+var PRICE_COLS = {
+catalog_activities: ['child_price_fcfa', 'adult_price_fcfa', 'group_adult_price_fcfa', 'group_child_price_fcfa'],
+sales_bundles: ['adult_bundle_price_fcfa', 'child_bundle_price_fcfa'],
+lodge_cities: ['min_price_fcfa', 'max_price_fcfa']
+};
+var UNIQUE_COLS = {
+catalog_activities: [['slug', '-copie-'], ['sku', '-COPIE-']],
+sales_bundles: [['bundle_code', '_COPIE_'], ['sku', '-COPIE-']],
+agenda_events: [['code', '_COPIE_']],
+menu_items: [['sku', '-COPIE-']]
+};
+var TITLE_COL = { catalog_activities: 'title', sales_bundles: 'title', agenda_events: 'title', menu_items: 'name' };
+var Rules = {
+isPriceEntity: function (e) { return has(PRICE_COLS, e); },
+canPublish: function (entity, role) {
+if (Rules.isPriceEntity(entity)) return role === 'direction';
+return ['responsable_exploitation', 'direction', 'administrateur_plateforme'].indexOf(role) >= 0;
+},
+canEdit: function (role) {
+return ['responsable_exploitation', 'direction', 'administrateur_plateforme'].indexOf(role) >= 0;
+},
+canDelete: function (entity, role) {
+if (Rules.isPriceEntity(entity)) return role === 'direction' || role === 'administrateur_plateforme';
+return Rules.canEdit(role);
+},
+childGuard: function (entity, row) {
+if (entity !== 'catalog_activities') return null;
+if (row.group_child_price_fcfa > row.child_price_fcfa) {
+return { code: '23514', message: 'new row violates check constraint "chk_child_group_price_never_higher_than_individual"' };
+}
+return null;
+},
+uniqueCopy: function (rows, col, base, sep) {
+var b = String(base).replace(/(-|_)copie(-|_)\d+$/i, '');
+var n = 0;
+var candidate;
+var taken = {};
+rows.forEach(function (r) { taken[r[col]] = true; });
+do { n += 1; candidate = b + sep + n; } while (taken[candidate]);
+return candidate;
+}
+};
+function LocalDemoDriver(store, opts) {
+this.name = 'local';
+this.store = store;
+this.role = (opts && opts.demoRole) || 'direction';
+this.uid = 0;
+}
+LocalDemoDriver.prototype.init = function () { return Promise.resolve({ ok: true }); };
+LocalDemoDriver.prototype._newId = function () {
+this.uid += 1;
+return 'demo-' + Date.now().toString(36) + '-' + this.uid;
+};
+LocalDemoDriver.prototype._rows = function (state, entity) {
+var reg = Registry[entity];
+if (!reg) throw new Error('Entité inconnue : ' + entity);
+if (reg.legacyKey) { state[reg.legacyKey] = state[reg.legacyKey] || []; return state[reg.legacyKey]; }
+state.content = state.content || {};
+state.content[entity] = state.content[entity] || [];
+return state.content[entity];
+};
+LocalDemoDriver.prototype._fail = function (raw, ctx) { return Promise.resolve({ ok: false, error: Errors.translate(raw, ctx) }); };
+LocalDemoDriver.prototype._audit = function (state, op, entity, label) {
+state.auditLogs = state.auditLogs || [];
+var verbs = { INSERT: 'Ajout', UPDATE: 'Modification', DELETE: 'Suppression définitive', DUPLICATE: 'Duplication (brouillon)', PUBLISH: 'Publication', ARCHIVE: 'Archivage', RESTORE: 'Restauration' };
+var d = new Date();
+var p = function (n) { return ('0' + n).slice(-2); };
+state.auditLogs.unshift({
+time: p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()),
+actor: 'Mode démonstration (' + this.role + ')',
+action: (verbs[op] || op) + ' — ' + entity + ' « ' + (label || '?') + ' »',
+operation: op
+});
+};
+LocalDemoDriver.prototype.list = function (entity, q) {
+q = q || {};
+var rows = clone(this._rows(this.store.state, entity));
+if (q.filters) {
+rows = rows.filter(function (r) {
+return Object.keys(q.filters).every(function (k) { return r[k] === q.filters[k]; });
+});
+}
+return Promise.resolve({ ok: true, data: rows });
+};
+LocalDemoDriver.prototype.get = function (entity, id) {
+var key = Registry[entity].legacyKey ? (Registry[entity].legacyId || 'reference') : Registry[entity].key;
+var row = this._rows(this.store.state, entity).filter(function (r) { return r[key] === id; })[0];
+return Promise.resolve(row ? { ok: true, data: clone(row) } : { ok: false, error: Errors.translate({ code: 'P0002' }) });
+};
+LocalDemoDriver.prototype.create = function (entity, data) {
+var self = this;
+var reg = Registry[entity];
+var row = clone(data);
+if (reg.content && entity !== 'site_settings') {
+if (!Rules.canEdit(self.role)) return self._fail({ code: '42501' });
+row.id = row.id || self._newId();
+row.status = row.status || 'DRAFT';
+if (Rules.isPriceEntity(entity) && row.status !== 'DRAFT' && self.role !== 'direction') {
+return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
+}
+var guard = Rules.childGuard(entity, row);
+if (guard) return self._fail(guard, { row: row });
+row.version = 1;
+}
+var dupKey = (UNIQUE_COLS[entity] || []).filter(function (uc) {
+return self._rows(self.store.state, entity).some(function (r) { return r[uc[0]] === row[uc[0]]; });
+})[0];
+if (dupKey) return self._fail({ code: '23505' });
+self.store.patch(function (s) {
+var rows = self._rows(s, entity);
+rows.unshift(row);
+if (reg.content) self._audit(s, 'INSERT', entity, row[TITLE_COL[entity]] || row.key);
+}, { source: 'local', entity: entity, op: 'create' });
+return Promise.resolve({ ok: true, data: clone(row) });
+};
+LocalDemoDriver.prototype.update = function (entity, id, patch, version) {
+var self = this;
+var reg = Registry[entity];
+var keyCol = reg.legacyKey ? (reg.legacyId || 'reference') : reg.key;
+var current = self._rows(self.store.state, entity).filter(function (r) { return r[keyCol] === id; })[0];
+if (!current) return self._fail({ code: 'P0002' });
+if (reg.content) {
+if (!Rules.canEdit(self.role)) return self._fail(null, { kind: 'NO_ROWS_RIGHTS' });
+if (version != null && current.version !== version) return self._fail(null, { kind: 'VERSION_CONFLICT' });
+var next = Object.assign(clone(current), patch);
+if (Rules.isPriceEntity(entity) && self.role !== 'direction') {
+if (next.status !== current.status && (next.status === 'PUBLISHED' || current.status === 'PUBLISHED')) {
+return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
+}
+if (current.status === 'PUBLISHED' && PRICE_COLS[entity].some(function (c) { return next[c] !== current[c]; })) {
+return self._fail({ message: 'ECOPARK_PUBLISHED_PRICE_LOCKED' });
+}
+}
+var guard = Rules.childGuard(entity, next);
+if (guard) return self._fail(guard, { row: next });
+}
+var saved;
+self.store.patch(function (s) {
+var rows = self._rows(s, entity);
+var idx = rows.findIndex(function (r) { return r[keyCol] === id; });
+saved = Object.assign(rows[idx], patch);
+if (reg.content) {
+saved.version = (current.version || 1) + 1;
+if (saved.status === 'PUBLISHED' && !saved.first_published_at) saved.first_published_at = new Date().toISOString();
+self._audit(s, 'UPDATE', entity, saved[TITLE_COL[entity]] || saved.key);
+}
+}, { source: 'local', entity: entity, op: 'update' });
+return Promise.resolve({ ok: true, data: clone(saved) });
+};
+LocalDemoDriver.prototype.duplicate = function (entity, id) {
+var self = this;
+if (!UNIQUE_COLS[entity]) return self._fail({ message: 'ECOPARK_DUPLICATE_NOT_SUPPORTED' });
+if (!Rules.canEdit(self.role)) return self._fail({ message: 'ECOPARK_FORBIDDEN' });
+var rows = self._rows(self.store.state, entity);
+var src = rows.filter(function (r) { return r.id === id; })[0];
+if (!src) return self._fail({ code: 'P0002' });
+var copy = clone(src);
+copy.id = self._newId();
+UNIQUE_COLS[entity].forEach(function (uc) { copy[uc[0]] = Rules.uniqueCopy(rows, uc[0], src[uc[0]], uc[1]); });
+var tc = TITLE_COL[entity];
+copy[tc] = src[tc] + ' (Copie)';
+if (entity === 'agenda_events') copy.short_label = src.short_label + ' (Copie)';
+if (entity === 'sales_bundles') copy.is_featured = false;
+copy.status = 'DRAFT';
+copy.duplicated_from = src.id;
+copy.first_published_at = null;
+copy.version = 1;
+copy.sort_order = (src.sort_order || 0) + 1;
+self.store.patch(function (s) {
+var list = self._rows(s, entity);
+var idx = list.findIndex(function (r) { return r.id === id; });
+list.splice(idx + 1, 0, copy);
+self._audit(s, 'DUPLICATE', entity, copy[tc]);
+}, { source: 'local', entity: entity, op: 'duplicate' });
+return Promise.resolve({ ok: true, data: copy.id });
+};
+LocalDemoDriver.prototype.setStatus = function (entity, id, status, replaceOriginal) {
+var self = this;
+var rows = self._rows(self.store.state, entity);
+var row = rows.filter(function (r) { return r.id === id; })[0];
+if (!row) return self._fail({ code: 'P0002' });
+var needsPublishRight = status === 'PUBLISHED' || (row.status === 'PUBLISHED' && status === 'DRAFT');
+if (needsPublishRight && !Rules.canPublish(entity, self.role)) return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
+if (status === 'ARCHIVED' && !Rules.canDelete(entity, self.role)) return self._fail({ message: 'ECOPARK_FORBIDDEN' });
+var origin = row.duplicated_from ? rows.filter(function (r) { return r.id === row.duplicated_from; })[0] : null;
+var target = id;
+self.store.patch(function (s) {
+var list = self._rows(s, entity);
+var draft = list.filter(function (r) { return r.id === id; })[0];
+if (status === 'PUBLISHED' && replaceOriginal && origin && origin.status === 'PUBLISHED') {
+var o = list.filter(function (r) { return r.id === origin.id; })[0];
+var keep = { id: o.id, status: o.status, version: o.version, first_published_at: o.first_published_at, duplicated_from: o.duplicated_from, sort_order: o.sort_order };
+(UNIQUE_COLS[entity] || []).forEach(function (uc) { keep[uc[0]] = o[uc[0]]; });
+Object.assign(o, clone(draft), keep);
+var tc = TITLE_COL[entity];
+o[tc] = String(o[tc]).replace(/\s*\(Copie\)$/, '');
+if (o.short_label) o.short_label = String(o.short_label).replace(/\s*\(Copie\)$/, '');
+o.version = (o.version || 1) + 1;
+draft.status = 'ARCHIVED';
+target = o.id;
+self._audit(s, 'PUBLISH', entity, o[tc]);
+} else {
+draft.status = status;
+draft.version = (draft.version || 1) + 1;
+if (status === 'PUBLISHED' && !draft.first_published_at) draft.first_published_at = new Date().toISOString();
+self._audit(s, status === 'PUBLISHED' ? 'PUBLISH' : status === 'ARCHIVED' ? 'ARCHIVE' : 'RESTORE', entity, draft[TITLE_COL[entity]]);
+}
+}, { source: 'local', entity: entity, op: 'setStatus' });
+return Promise.resolve({ ok: true, data: target });
+};
+LocalDemoDriver.prototype.remove = function (entity, id) {
+var self = this;
+if (!Rules.canDelete(entity, self.role)) return self._fail({ message: 'ECOPARK_FORBIDDEN' });
+var row = self._rows(self.store.state, entity).filter(function (r) { return r.id === id; })[0];
+if (!row) return self._fail({ code: 'P0002' });
+var hard = row.status === 'DRAFT' && !row.first_published_at;
+self.store.patch(function (s) {
+var list = self._rows(s, entity);
+var idx = list.findIndex(function (r) { return r.id === id; });
+if (hard) list.splice(idx, 1); else { list[idx].status = 'ARCHIVED'; list[idx].version = (list[idx].version || 1) + 1; }
+self._audit(s, hard ? 'DELETE' : 'ARCHIVE', entity, row[TITLE_COL[entity]]);
+}, { source: 'local', entity: entity, op: 'remove' });
+return Promise.resolve({ ok: true, data: hard ? 'DELETED' : 'ARCHIVED' });
+};
+LocalDemoDriver.prototype.rpc = function (name) {
+return Promise.resolve({ ok: false, error: Errors.make('NOT_AVAILABLE_IN_DEMO', 'Fonction serveur « ' + name + ' » indisponible en mode démonstration.') });
+};
+LocalDemoDriver.prototype.removeRow = function (entity, id) {
+var self = this;
+var key = Registry[entity].key;
+if (!Rules.canEdit(self.role)) return self._fail({ code: '42501' });
+self.store.patch(function (s) {
+var rows = self._rows(s, entity);
+var idx = rows.findIndex(function (r) { return r[key] === id; });
+if (idx >= 0) rows.splice(idx, 1);
+}, { source: 'local', entity: entity, op: 'removeRow' });
+return Promise.resolve({ ok: true, data: 'DELETED' });
+};
+LocalDemoDriver.prototype.saveSetting = function (key, value) {
+var self = this;
+if (!Rules.canEdit(self.role)) return self._fail({ code: '42501' });
+self.store.patch(function (s) {
+s.content = s.content || {};
+s.content.site_settings = s.content.site_settings || {};
+s.content.site_settings[key] = clone(value);
+self._audit(s, 'UPDATE', 'site_settings', key);
+}, { source: 'local', entity: 'site_settings', op: 'saveSetting' });
+return Promise.resolve({ ok: true, data: clone(value) });
+};
+LocalDemoDriver.prototype.logEvent = function (code, entity, id, description) {
+var self = this;
+self.store.patch(function (s) { self._audit(s, code, entity || '-', description); }, { source: 'local', op: 'logEvent' });
+return Promise.resolve({ ok: true });
+};
+LocalDemoDriver.prototype.subscribe = function () { return noop; };
+LocalDemoDriver.prototype.session = function () {
+return Promise.resolve({ ok: true, data: { role: this.role, full_name: 'Mode démonstration', mfa_satisfied: true, demo: true } });
+};
+LocalDemoDriver.prototype.refreshContent = function () { return Promise.resolve({ ok: true }); };
+function SupabaseDriver(store, opts) {
+this.name = 'supabase';
+this.store = store;
+this.client = opts.client;
+this.channels = [];
+this.pending = {};
+this.debounceMs = opts.debounceMs == null ? 250 : opts.debounceMs;
+this.pollMs = opts.pollMs == null ? 60000 : opts.pollMs;
+this.pollTimer = null;
+this.realtimeHealthy = false;
+this.onStatus = opts.onStatus || noop;
+}
+SupabaseDriver.prototype._res = function (promise, ctx) {
+return Promise.resolve(promise).then(function (r) {
+if (r && r.error) return { ok: false, error: Errors.translate(r.error, ctx) };
+return { ok: true, data: r ? r.data : null, count: r ? r.count : null };
+}, function (e) {
+return { ok: false, error: Errors.translate(e, Object.assign({ kind: 'NETWORK' }, ctx || {})) };
+});
+};
+SupabaseDriver.prototype.init = function () {
+var self = this;
+return self.refreshContent().then(function (r) {
+self._subscribeContent();
+self._startPolling();
+return r;
+});
+};
+SupabaseDriver.prototype.refreshContent = function (only) {
+var self = this;
+var entities = only ? [].concat(only) : Object.keys(Registry).filter(function (e) { return Registry[e].content; });
+return Promise.all(entities.map(function (e) {
+return self._res(self.client.from(e).select('*').order(Registry[e].order || 'id')).then(function (r) { return [e, r]; });
+})).then(function (pairs) {
+var failed = pairs.filter(function (p) { return !p[1].ok; });
+self.store.patch(function (s) {
+s.content = s.content || {};
+pairs.forEach(function (p) {
+if (!p[1].ok) return;
+if (p[0] === 'site_settings') {
+var obj = {};
+(p[1].data || []).forEach(function (row) { obj[row.key] = row.value; });
+s.content.site_settings = obj;
+} else {
+s.content[p[0]] = p[1].data || [];
+}
+});
+s.contentFetchedAt = new Date().toISOString();
+}, { source: 'supabase', op: 'refreshContent', entities: entities });
+return failed.length ? { ok: false, error: failed[0][1].error } : { ok: true };
+});
+};
+SupabaseDriver.prototype._schedule = function (entity) {
+var self = this;
+if (self.pending[entity]) return;
+self.pending[entity] = setTimeout(function () {
+delete self.pending[entity];
+if (Registry[entity] && Registry[entity].content) self.refreshContent(entity);
+else self.store.emit({ source: 'realtime', entity: entity });
+}, self.debounceMs);
+};
+SupabaseDriver.prototype._subscribeContent = function () {
+var self = this;
+if (!self.client.channel) return;
+var ch = self.client.channel('ecopark-public-content');
+Object.keys(Registry).filter(function (e) { return Registry[e].realtime === 'public'; }).forEach(function (e) {
+ch = ch.on('postgres_changes', { event: '*', schema: 'public', table: e }, function () { self._schedule(e); });
+});
+ch.subscribe(function (status) {
+self.realtimeHealthy = status === 'SUBSCRIBED';
+self.onStatus(self.realtimeHealthy ? 'live' : 'paused');
+});
+self.channels.push(ch);
+};
+SupabaseDriver.prototype._startPolling = function () {
+var self = this;
+if (!self.pollMs || typeof setInterval === 'undefined') return;
+self.pollTimer = setInterval(function () {
+var hidden = root.document && root.document.visibilityState === 'hidden';
+var last = Date.parse(self.store.state.contentFetchedAt || 0) || 0;
+var maxAge = self.realtimeHealthy ? self.pollMs * 5 : self.pollMs;
+if (!hidden && Date.now() - last >= maxAge - 1000) self.refreshContent();
+}, self.pollMs);
+};
+SupabaseDriver.prototype.stop = function () {
+var self = this;
+if (self.pollTimer) clearInterval(self.pollTimer);
+self.channels.forEach(function (c) { try { self.client.removeChannel(c); } catch (e) { /* déjà fermé */ } });
+self.channels = [];
+};
+SupabaseDriver.prototype.list = function (entity, q) {
+q = q || {};
+var reg = Registry[entity];
+var query = this.client.from(entity).select('*', q.count ? { count: 'exact' } : undefined);
+if (q.filters) Object.keys(q.filters).forEach(function (k) { query = query.eq(k, q.filters[k]); });
+query = query.order(q.order || reg.order || reg.key, { ascending: q.ascending !== false });
+if (q.range) query = query.range(q.range[0], q.range[1]);
+return this._res(query).then(function (r) {
+if (r.ok && reg.fromRow && q.legacy) r.data = (r.data || []).map(reg.fromRow);
+return r;
+});
+};
+SupabaseDriver.prototype.get = function (entity, id) {
+return this._res(this.client.from(entity).select('*').eq(Registry[entity].key, id).maybeSingle());
+};
+SupabaseDriver.prototype.create = function (entity, data, opts) {
+var reg = Registry[entity];
+var row = reg.toRow && opts && opts.legacy ? reg.toRow(data) : clone(data);
+var q = this.client.from(entity).insert(row);
+var publicSubmit = reg.publicInsert && opts && opts.anonymous;
+if (!publicSubmit) q = q.select('*').single();
+return this._res(q, { entity: entity, row: row });
+};
+SupabaseDriver.prototype.update = function (entity, id, patch, version) {
+var self = this;
+var reg = Registry[entity];
+var known = reg.content ? (self.store.content(entity) || []).filter(function (r) { return r[reg.key] === id; })[0] : null;
+var ctxRow = Object.assign({}, known || {}, patch);
+var q = self.client.from(entity).update(patch).eq(reg.key, id);
+if (version != null) q = q.eq('version', version);
+return self._res(q.select('*'), { entity: entity, row: ctxRow }).then(function (r) {
+if (!r.ok) return r;
+if (r.data && r.data.length === 1) return { ok: true, data: r.data[0] };
+return self._res(self.client.from(entity).select(reg.key + ',version').eq(reg.key, id).maybeSingle()).then(function (cur) {
+if (cur.ok && cur.data && version != null && cur.data.version !== version) {
+return { ok: false, error: Errors.translate(null, { kind: 'VERSION_CONFLICT' }), current: cur.data };
+}
+return { ok: false, error: Errors.translate(null, { kind: 'NO_ROWS_RIGHTS' }) };
+});
+});
+};
+SupabaseDriver.prototype.duplicate = function (entity, id) {
+return this._res(this.client.rpc('admin_duplicate', { p_entity: entity, p_id: id }), { entity: entity });
+};
+SupabaseDriver.prototype.setStatus = function (entity, id, status, replaceOriginal) {
+return this._res(this.client.rpc('admin_set_status', { p_entity: entity, p_id: id, p_status: status, p_replace_original: !!replaceOriginal }), { entity: entity });
+};
+SupabaseDriver.prototype.remove = function (entity, id) {
+return this._res(this.client.rpc('admin_delete', { p_entity: entity, p_id: id }), { entity: entity });
+};
+SupabaseDriver.prototype.rpc = function (name, args) {
+return this._res(this.client.rpc(name, args || {}));
+};
+SupabaseDriver.prototype.removeRow = function (entity, id) {
+var key = Registry[entity].key;
+return this._res(this.client.from(entity).delete().eq(key, id).select(key), { entity: entity }).then(function (r) {
+if (r.ok && (!r.data || !r.data.length)) return { ok: false, error: Errors.translate(null, { kind: 'NO_ROWS_RIGHTS' }) };
+return r.ok ? { ok: true, data: 'DELETED' } : r;
+});
+};
+SupabaseDriver.prototype.saveSetting = function (key, value) {
+var self = this;
+return self._res(self.client.from('site_settings').update({ value: value }).eq('key', key).select('key'), { entity: 'site_settings' })
+.then(function (r) {
+if (r.ok && (!r.data || !r.data.length)) return { ok: false, error: Errors.translate(null, { kind: 'NO_ROWS_RIGHTS' }) };
+return r;
+});
+};
+SupabaseDriver.prototype.logEvent = function (code, entity, id, description, payload) {
+return this._res(this.client.rpc('log_admin_event', {
+p_action_code: code, p_entity_table: entity || null, p_entity_id: id || null, p_description: description || '', p_payload: payload || null
+}));
+};
+SupabaseDriver.prototype.subscribe = function (entity, cb) {
+var self = this;
+if (!self.client.channel) return noop;
+var ch = self.client.channel('ecopark-' + entity + '-' + Math.random().toString(36).slice(2, 8))
+.on('postgres_changes', { event: '*', schema: 'public', table: entity }, function (payload) { cb(payload); })
+.subscribe();
+self.channels.push(ch);
+return function () { try { self.client.removeChannel(ch); } catch (e) { /* déjà fermé */ } };
+};
+SupabaseDriver.prototype.session = function () {
+return this._res(this.client.rpc('get_my_profile'));
+};
+var EcoparkData = {
+version: '3.0.0',
+Mappers: Mappers,
+Errors: Errors,
+Rules: Rules,
+Store: Store,
+LocalDemoDriver: LocalDemoDriver,
+SupabaseDriver: SupabaseDriver,
+resolveDriverName: resolveDriverName,
+driver: null,
+driverName: 'local',
+store: null,
+config: null,
+_legacy: null,
+_ready: null,
+_warned: {}
+};
+EcoparkData.configureLegacy = function (legacy) {
+EcoparkData._legacy = legacy;
+};
+EcoparkData.init = function (opts) {
+opts = opts || {};
+var cfg = readConfig();
+var legacy = EcoparkData._legacy || { storageKey: 'ecopark_ahala_db_sprint1_v1', defaults: {} };
+var search = opts.search != null ? opts.search : (root.location ? root.location.search : '');
+var name = resolveDriverName(cfg, search);
+if (name === 'supabase' && !opts.client && !(root.supabase && root.supabase.createClient)) name = 'local';
+var storage = opts.storage || safeStorage();
+var defaults = clone(legacy.defaults || {});
+defaults.content = clone((legacy.snapshot && legacy.snapshot.content) || {});
+var store;
+if (name === 'local') {
+store = new Store({ storage: storage, persistKey: legacy.storageKey, defaults: defaults });
+if (!store.state.content || !Object.keys(store.state.content).length) store.state.content = clone(defaults.content);
+EcoparkData.driver = new LocalDemoDriver(store, { demoRole: opts.demoRole });
+} else {
+store = new Store({
+storage: storage,
+persistKey: 'ecopark_cache_v2_' + cfg.env,
+defaults: defaults,
+persistFilter: function (s) { return { content: s.content, contentFetchedAt: s.contentFetchedAt, snapshotVersion: cfg.snapshotVersion || null }; }
+});
+if (store.state.snapshotVersion && store.state.snapshotVersion !== (cfg.snapshotVersion || null)) {
+store.state = clone(defaults); // nouvelle copie de secours publiée : cache obsolète
+}
+var client = opts.client || root.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey, {
+auth: { persistSession: true, autoRefreshToken: true }
+});
+EcoparkData.driver = new SupabaseDriver(store, {
+client: client, pollMs: opts.pollMs, debounceMs: opts.debounceMs, onStatus: opts.onStatus
+});
+}
+EcoparkData.config = cfg;
+EcoparkData.store = store;
+EcoparkData.driverName = name;
+EcoparkData._ready = EcoparkData.driver.init();
+return EcoparkData._ready;
+};
+EcoparkData.ready = function () { return EcoparkData._ready || Promise.resolve({ ok: true }); };
+EcoparkData.legacyLoad = function () {
+if (EcoparkData.driverName === 'local') EcoparkData.store.reload();
+return EcoparkData.store.snapshot();
+};
+EcoparkData.legacySave = function (db, caller) {
+var store = EcoparkData.store;
+store.state = clone(db);
+store.persist();
+if (EcoparkData.driverName === 'supabase') {
+var who = caller || 'inconnu';
+if (!EcoparkData._warned[who] && root.console && root.console.warn) {
+EcoparkData._warned[who] = true;
+root.console.warn('[EcoparkData] saveDB() non migré (' + who + ') : modification visible sur cet écran uniquement, non enregistrée en base.');
+}
+}
+};
+function withRollback(fn, entity) {
+var store = EcoparkData.store;
+var backup = clone(store.state);
+return fn().then(function (r) {
+if (!r.ok) { store.replace(backup, { source: 'rollback', entity: entity }); return r; }
+if (EcoparkData.driverName === 'supabase' && entity && Registry[entity] && Registry[entity].content) {
+return EcoparkData.driver.refreshContent(entity).then(function () { return r; });
+}
+return r;
+}, function (e) {
+store.replace(backup, { source: 'rollback', entity: entity });
+return { ok: false, error: Errors.translate(e, { kind: 'NETWORK' }) };
+});
+}
+['list', 'get', 'rpc', 'session', 'refreshContent'].forEach(function (m) {
+EcoparkData[m] = function () { var d = EcoparkData.driver; return d[m].apply(d, arguments); };
+});
+['create', 'update', 'duplicate', 'setStatus', 'remove', 'logEvent', 'removeRow', 'saveSetting'].forEach(function (m) {
+EcoparkData[m] = function () {
+var d = EcoparkData.driver;
+var args = arguments;
+var entity = m === 'logEvent' ? null : (m === 'saveSetting' ? 'site_settings' : args[0]);
+if (m === 'update' && EcoparkData.driverName === 'supabase' && Registry[entity] && Registry[entity].content && entity !== 'site_settings') {
+var id = args[1];
+var patch = args[2];
+var backupForOptimistic = clone(EcoparkData.store.state);
+EcoparkData.store.patch(function (s) {
+var rows = (s.content && s.content[entity]) || [];
+rows.forEach(function (r) { if (r.id === id) Object.assign(r, patch); });
+}, { source: 'optimistic', entity: entity });
+return d.update.apply(d, args).then(function (r) {
+if (!r.ok) { EcoparkData.store.replace(backupForOptimistic, { source: 'rollback', entity: entity }); return r; }
+return d.refreshContent(entity).then(function () { return r; });
+});
+}
+return withRollback(function () { return d[m].apply(d, args); }, entity);
+};
+});
+EcoparkData.subscribe = function (entity, cb) { return EcoparkData.driver.subscribe(entity, cb); };
+EcoparkData.onChange = function (cb) { return EcoparkData.store.subscribe(cb); };
+EcoparkData.revertLegacy = function (legacyKey, predicate, auditNeedle) {
+EcoparkData.store.patch(function (s) {
+s[legacyKey] = (s[legacyKey] || []).filter(function (row) { return !predicate(row); });
+if (auditNeedle) {
+s.auditLogs = (s.auditLogs || []).filter(function (l) { return String(l.action || '').indexOf(auditNeedle) === -1; });
+}
+}, { source: 'rollback', entity: legacyKey });
+};
+EcoparkData.content = function (entity, opts) {
+var rows = EcoparkData.store.content(entity);
+if (entity === 'site_settings') return rows;
+var all = opts && opts.includeDrafts;
+return rows.filter(function (r) { return all || r.status === 'PUBLISHED'; })
+.slice().sort(function (a, b) { return (a.sort_order || 0) - (b.sort_order || 0); });
+};
+EcoparkData.setting = function (key) {
+var s = EcoparkData.store ? EcoparkData.store.content('site_settings') : {};
+return s[key];
+};
+root.EcoparkData = EcoparkData;
+if (typeof module !== 'undefined' && module.exports) module.exports = EcoparkData;
 })(typeof window !== 'undefined' ? window : globalThis);
-
   </script>
   <!-- ECOPARK_DATA_LAYER:END -->
+  <!-- ECOPARK_ADMIN_JS:START -->
+  <script id="ecoparkAdminLoader">
+window.ecoparkOpenAdmin = function () {
+  if (window.EcoparkAdmin) return EcoparkAdmin.open();
+  if (window._ecoparkAdminLoading) return window._ecoparkAdminLoading;
+  var base = '/js/';
+  if (location.protocol === 'file:') base = /etape0-site-live\/index\.html$/.test(location.pathname) ? 'js/' : 'etape0-site-live/js/';
+  window._ecoparkAdminLoading = new Promise(function (resolve, reject) {
+    var s = document.createElement('script');
+    s.src = base + 'ecopark-admin.js?v=fc481bc065';
+    s.onload = resolve; s.onerror = reject;
+    document.head.appendChild(s);
+  }).then(function () { return EcoparkAdmin.open(); }, function () {
+    window._ecoparkAdminLoading = null;
+    var bar = document.getElementById('admRoleBar');
+    if (bar) bar.textContent = 'La console d\'administration n\'a pas pu être chargée. Vérifiez la connexion puis rechargez la page.';
+  });
+  return window._ecoparkAdminLoading;
+};
+  </script>
+  <!-- ECOPARK_ADMIN_JS:END -->
 
   <script>
     // Inventaire contractuel complet des 77 écrans
@@ -6606,6 +6748,7 @@
       document.querySelectorAll('.family-view').forEach(el => el.classList.remove('active'));
       const targetView = document.getElementById('view-' + family);
       if (targetView) targetView.classList.add('active');
+      if (family === 'ADM' && window.ecoparkOpenAdmin) ecoparkOpenAdmin(); // ECOPARK_ADMIN_OPEN
 
       document.querySelectorAll('.main-nav .nav-item').forEach(el => el.classList.remove('active'));
       const navMap = {
@@ -6669,6 +6812,12 @@
           triggerSectionFocusHalo(waCard);
         }, 80);
       }
+    }
+
+    function escHtml(v) { // ECOPARK_ESCAPE_HELPER
+      return String(v == null ? '' : v).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
     }
 
     function formatFCFA(num) {
@@ -6937,7 +7086,7 @@
       listEl.innerHTML = posItems.map(item => {
         const sub = item.price * item.qty;
         sum += sub;
-        return `<div>• ${item.qty}× ${item.name} : <strong>${formatFCFA(sub)}</strong></div>`;
+        return `<div>• ${item.qty}× ${escHtml(item.name)} : <strong>${formatFCFA(sub)}</strong></div>`;
       }).join('');
       totalEl.textContent = formatFCFA(sum);
     }
@@ -7669,9 +7818,9 @@
       if (accTbody) {
         const bRows = db.bookings.slice(0, 4).map(b => `
           <tr>
-            <td><strong>${b.reference}</strong></td>
-            <td>${b.date}</td>
-            <td>${b.paxSummary}</td>
+            <td><strong>${escHtml(b.reference)}</strong></td>
+            <td>${escHtml(b.date)}</td>
+            <td>${escHtml(b.paxSummary)}</td>
             <td><strong>${formatFCFA(b.totalFcfa)}</strong></td>
             <td><span class="status-badge ${b.scanned ? 'status-info' : 'status-success'}">${b.scanned ? 'Utilisé (' + b.scannedAt + ')' : 'Confirmé (QR Actif)'}</span></td>
             <td>
@@ -7682,11 +7831,11 @@
         `).join('');
         const qRows = db.quotes.slice(0, 3).map(q => `
           <tr>
-            <td><strong>${q.reference}</strong></td>
-            <td>${q.date}</td>
-            <td>Devis ${q.org} (${q.pax} participants • ${q.type})</td>
+            <td><strong>${escHtml(q.reference)}</strong></td>
+            <td>${escHtml(q.date)}</td>
+            <td>Devis ${escHtml(q.org)} (${escHtml(q.pax)} participants • ${escHtml(q.type)})</td>
             <td><strong>${formatFCFA(q.budgetFcfa)}</strong></td>
-            <td><span class="status-badge status-info">${q.status}</span></td>
+            <td><span class="status-badge status-info">${escHtml(q.status)}</span></td>
             <td>
               <button class="btn btn-secondary btn-sm" onclick="openQuoteModalSprint1()">Consulter Proforma</button>
               <button class="btn btn-secondary btn-sm admin-only-control" style="margin-left:4px;" onclick="navigateFamily('EXP', 'EXP-03')">Back-Office</button>
@@ -7712,15 +7861,15 @@
         expTables[1].innerHTML = `
           <tr>
             <td><code>EXP-03</code> Devis</td>
-            <td>${latestQ.org} (${latestQ.reference})</td>
-            <td>${latestQ.pax} participants • ${latestQ.type} (${latestQ.date})</td>
-            <td><span class="status-badge status-info">${formatFCFA(latestQ.budgetFcfa)} • ${latestQ.status}</span></td>
+            <td>${escHtml(latestQ.org)} (${escHtml(latestQ.reference)})</td>
+            <td>${escHtml(latestQ.pax)} participants • ${escHtml(latestQ.type)} (${escHtml(latestQ.date)})</td>
+            <td><span class="status-badge status-info">${formatFCFA(latestQ.budgetFcfa)} • ${escHtml(latestQ.status)}</span></td>
           </tr>
           <tr>
             <td><code>EXP-06</code> CFP</td>
-            <td>${latestC.name} (${latestC.reference})</td>
-            <td>Filière : ${latestC.track} (${latestC.phone})</td>
-            <td><span class="status-badge status-success">${latestC.status}</span></td>
+            <td>${escHtml(latestC.name)} (${escHtml(latestC.reference)})</td>
+            <td>Filière : ${escHtml(latestC.track)} (${escHtml(latestC.phone)})</td>
+            <td><span class="status-badge status-success">${escHtml(latestC.status)}</span></td>
           </tr>
           <tr>
             <td><code>EXP-07</code> Support</td>
@@ -7741,16 +7890,7 @@
       }
 
       // 5. Mettre à jour le Journal d'Audit (ADM-08)
-      const admTbody = document.querySelector('#view-ADM table tbody');
-      if (admTbody) {
-        admTbody.innerHTML = db.auditLogs.slice(0, 6).map(log => `
-          <tr>
-            <td>${log.time}</td>
-            <td><strong>${log.actor}</strong></td>
-            <td>${log.action}</td>
-          </tr>
-        `).join('');
-      }
+      if (window.EcoparkAdmin) EcoparkAdmin.onDataChanged(); // ECOPARK_ADMIN_SYNC
 
       // 6. Mettre à jour les indicateurs d'impact Écosystème Vente (EXP-04/05 & Panier Moyen B2C)
       const ops = db.opsMetrics || { kitchenPreorders: 18, pergolasReserved: 6, fishPacks: 34, ewondoFree: 2 };
@@ -8338,7 +8478,7 @@
       const sumEl = document.getElementById('rdvConfirmSummary');
       if (refEl) refEl.textContent = ref;
       if (sumEl) {
-        sumEl.innerHTML = `<strong>${visitorName} (${org})</strong> — <em>${purposeLabel}</em><br/>Date : <strong>${date}</strong> • Créneau : <strong>${slot}</strong> • Format : ${mode}`;
+        sumEl.innerHTML = `<strong>${escHtml(visitorName)} (${escHtml(org)})</strong> — <em>${escHtml(purposeLabel)}</em><br/>Date : <strong>${escHtml(date)}</strong> • Créneau : <strong>${escHtml(slot)}</strong> • Format : ${mode}`;
       }
       if (passEl) {
         passEl.classList.add('open');
@@ -8450,11 +8590,11 @@
       if (accTbody && latestRdv && !accTbody.innerHTML.includes(latestRdv.reference)) {
         const rdvRow = `
           <tr>
-            <td><strong>${latestRdv.reference}</strong></td>
-            <td>${latestRdv.date} (${latestRdv.slot})</td>
-            <td>RDV : ${latestRdv.purposeLabel} (${latestRdv.org})</td>
+            <td><strong>${escHtml(latestRdv.reference)}</strong></td>
+            <td>${escHtml(latestRdv.date)} (${escHtml(latestRdv.slot)})</td>
+            <td>RDV : ${escHtml(latestRdv.purposeLabel)} (${escHtml(latestRdv.org)})</td>
             <td><strong>Accueil Gratuit</strong></td>
-            <td><span class="status-badge status-success">${latestRdv.status}</span></td>
+            <td><span class="status-badge status-success">${escHtml(latestRdv.status)}</span></td>
             <td><button class="btn btn-secondary btn-sm" onclick="openRdvModalSprint1('${latestRdv.purposeCode}')">Modifier RDV</button></td>
           </tr>
         `;
@@ -8468,9 +8608,9 @@
         if (rows.length >= 3) {
           rows[2].innerHTML = `
             <td><code>EXP-07</code> Agenda RDV</td>
-            <td>${latestRdv.visitorName} — ${latestRdv.org} (${latestRdv.reference})</td>
-            <td>${latestRdv.purposeLabel} • ${latestRdv.date} (${latestRdv.slot})</td>
-            <td><span class="status-badge status-success">${latestRdv.status}</span></td>
+            <td>${escHtml(latestRdv.visitorName)} — ${escHtml(latestRdv.org)} (${escHtml(latestRdv.reference)})</td>
+            <td>${escHtml(latestRdv.purposeLabel)} • ${escHtml(latestRdv.date)} (${escHtml(latestRdv.slot)})</td>
+            <td><span class="status-badge status-success">${escHtml(latestRdv.status)}</span></td>
           `;
         }
       }
@@ -8549,7 +8689,7 @@
       const bodyEl = document.getElementById('waBubbleBodyText');
       if (bodyEl && (!window._activeWaIntent || window._activeWaIntent === 'PASS_QR')) {
         bodyEl.innerHTML = `
-          <div>• <strong>Visiteur :</strong> ${name} (${phone}) • Date : ${date}</div>
+          <div>• <strong>Visiteur :</strong> ${escHtml(name)} (${escHtml(phone)}) • Date : ${escHtml(date)}</div>
           <div>• <strong>Formule :</strong> ${counts.adults} Adulte(s), ${counts.children} Enfant(s) (Tarif enfant protégé 500 FCFA)</div>
           <div>• <strong>Prestations :</strong> ${itemsSummary}</div>
           <div>• <strong>Total TTC :</strong> <strong style="color:var(--color-brand-deep);">${total}</strong> (${payLabel})</div>
@@ -9496,8 +9636,8 @@
         if (titleEl) titleEl.textContent = `FACTURE PROFORMA OFFICIELLE N° ${qRef}`;
         bodyEl.innerHTML = `
           <div style="display:flex;justify-content:space-between;background:#FBF5EC;padding:12px;border-radius:8px;border:1px solid rgba(196,125,43,0.4);">
-            <div><strong>Client / Institution :</strong> ${org}<br/><strong>Objet :</strong> ${type}</div>
-            <div style="text-align:right;"><strong>Date prévue :</strong> ${date}<br/><strong>Effectif :</strong> ${calc.pax} participants</div>
+            <div><strong>Client / Institution :</strong> ${escHtml(org)}<br/><strong>Objet :</strong> ${escHtml(type)}</div>
+            <div style="text-align:right;"><strong>Date prévue :</strong> ${escHtml(date)}<br/><strong>Effectif :</strong> ${escHtml(calc.pax)} participants</div>
           </div>
           <table style="width:100%;border-collapse:collapse;margin-top:8px;">
             <thead>
@@ -9508,7 +9648,7 @@
             </thead>
             <tbody>
               <tr>
-                <td style="padding:8px;border:1px solid var(--color-border);">${calc.pax} × ${calc.rateDesc}</td>
+                <td style="padding:8px;border:1px solid var(--color-border);">${escHtml(calc.pax)} × ${calc.rateDesc}</td>
                 <td style="padding:8px;border:1px solid var(--color-border);text-align:right;"><strong>${formatFCFA(calc.pax * calc.unitRate)}</strong></td>
               </tr>
               <tr>
@@ -9553,7 +9693,7 @@
         bodyEl.innerHTML = `
           <div style="padding:14px;background:var(--color-surface-soft);border:2px solid var(--color-brand-deep);border-radius:12px;">
             <div style="font-size:1.2rem;font-weight:700;color:var(--color-brand-deep);margin-bottom:6px;">Code Référence : ${ref} • Total TTC : ${totalStr}</div>
-            <div><strong>Titulaire :</strong> ${holder}</div>
+            <div><strong>Titulaire :</strong> ${escHtml(holder)}</div>
             <div><strong>Date &amp; Validité :</strong> ${dateStr} (Report gratuit 90 jours si non scanné)</div>
             <div><strong>Prestations &amp; Logistique :</strong> ${itemsStr}</div>
             <div><strong>Repère GPS :</strong> Route Nationale N°3, Ahala Barrière (En face de la Station Tradex Ahala, Yaoundé)</div>
@@ -9643,11 +9783,11 @@
             const isCancelledRdv = String(r.status || '').toLowerCase().includes('annul');
             htmlRows.push(`
               <tr data-dossier-kind="RDV">
-                <td><strong>${r.reference}</strong></td>
-                <td>${r.date} (${r.slot})</td>
-                <td>RDV : ${r.purposeLabel} (${r.visitorName} — ${r.org})</td>
+                <td><strong>${escHtml(r.reference)}</strong></td>
+                <td>${escHtml(r.date)} (${escHtml(r.slot)})</td>
+                <td>RDV : ${escHtml(r.purposeLabel)} (${escHtml(r.visitorName)} — ${escHtml(r.org)})</td>
                 <td><strong>Accueil Gratuit</strong></td>
-                <td><span class="status-badge ${isCancelledRdv ? 'status-warning' : 'status-success'}">${r.status}</span></td>
+                <td><span class="status-badge ${isCancelledRdv ? 'status-warning' : 'status-success'}">${escHtml(r.status)}</span></td>
                 <td style="display:flex;gap:4px;flex-wrap:wrap;">
                   <button class="btn btn-secondary btn-sm" onclick="openRdvModalSprint1('${r.purposeCode}')">Voir RDV</button>
                   ${isCancelledRdv ? '' : `
@@ -9683,9 +9823,9 @@
 
             htmlRows.push(`
               <tr data-dossier-kind="BOOKING">
-                <td><strong>${b.reference}</strong></td>
-                <td>${b.date}</td>
-                <td>${b.holder} • ${b.paxSummary}</td>
+                <td><strong>${escHtml(b.reference)}</strong></td>
+                <td>${escHtml(b.date)}</td>
+                <td>${escHtml(b.holder)} • ${escHtml(b.paxSummary)}</td>
                 <td><strong>${formatFCFA(b.totalFcfa)}</strong></td>
                 <td><span class="status-badge ${statusCls}">${statusTxt}</span></td>
                 <td style="display:flex;gap:4px;flex-wrap:wrap;">
@@ -9708,11 +9848,11 @@
           if (matchQuery(blob)) {
             htmlRows.push(`
               <tr data-dossier-kind="QUOTE">
-                <td><strong>${qt.reference}</strong></td>
-                <td>${qt.date}</td>
-                <td>Devis ${qt.org} (${qt.pax} participants • ${qt.type})</td>
+                <td><strong>${escHtml(qt.reference)}</strong></td>
+                <td>${escHtml(qt.date)}</td>
+                <td>Devis ${escHtml(qt.org)} (${escHtml(qt.pax)} participants • ${escHtml(qt.type)})</td>
                 <td><strong>${formatFCFA(qt.budgetFcfa)}</strong></td>
-                <td><span class="status-badge status-info">${qt.status}</span></td>
+                <td><span class="status-badge status-info">${escHtml(qt.status)}</span></td>
                 <td style="display:flex;gap:4px;flex-wrap:wrap;">
                   <button class="btn btn-secondary btn-sm" onclick="printOfficialDocument('PROFORMA')">Facture Proforma PDF</button>
                 </td>
@@ -9728,11 +9868,11 @@
           if (matchQuery(blob)) {
             htmlRows.push(`
               <tr data-dossier-kind="CFP">
-                <td><strong>${c.reference}</strong></td>
+                <td><strong>${escHtml(c.reference)}</strong></td>
                 <td>Rentrée 2026</td>
-                <td>Candidature CFP : ${c.name} • Filière ${c.track}</td>
+                <td>Candidature CFP : ${escHtml(c.name)} • Filière ${escHtml(c.track)}</td>
                 <td><strong>50 000 FCFA (Inscr.)</strong></td>
-                <td><span class="status-badge status-success">${c.status}</span></td>
+                <td><span class="status-badge status-success">${escHtml(c.status)}</span></td>
                 <td>
                   <button class="btn btn-secondary btn-sm" onclick="openCfpModalSprint1()">Dossier CFP</button>
                 </td>
