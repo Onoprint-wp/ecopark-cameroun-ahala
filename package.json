@@ -7,6 +7,10 @@
     "test:db": "npm --prefix supabase/tests test",
     "sim:db": "node supabase/tests/simulation_scenarios.mjs",
     "sim:ui": "python scripts/simulate_admin_preview_ui.py",
-    "test:e2e:local": "node -e \"process.env.ECOPARK_BASE_URL='http://localhost:3000'; require('child_process').execSync('python verify_live_monochrome_prod.py', {stdio: 'inherit', env: process.env})\""
+    "test:e2e:local": "node -e \"process.env.ECOPARK_BASE_URL='http://localhost:3000'; require('child_process').execSync('python verify_live_monochrome_prod.py', {stdio: 'inherit', env: process.env})\"",
+    "test:data": "node supabase/tests/data_layer.contract.test.mjs",
+    "test:browser": "python scripts/test_data_layer_browser.py",
+    "snapshot": "node supabase/tests/build_content_snapshot.mjs",
+    "build:data": "python build_data_layer.py"
   }
 }
