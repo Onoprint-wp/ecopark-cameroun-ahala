@@ -10,10 +10,12 @@ Vérifie :
 6. Parcours E2E Sprint 1 (Devis Groupe, Candidature CFP, Billet QR & Anti-fraude double scan au Guichet)
 """
 
+import os
 import urllib.request
 from playwright.sync_api import sync_playwright
 
-BASE_URL = "https://ecopark-cameroun-ahala.vercel.app"
+# Cible surchargeable pour tester en local : $env:ECOPARK_BASE_URL="http://localhost:3000"
+BASE_URL = os.environ.get("ECOPARK_BASE_URL", "https://ecopark-cameroun-ahala.vercel.app").rstrip("/")
 
 ROUTES = [
     "/",
@@ -597,7 +599,7 @@ def run_live_audit():
     assert len(console_errors) == 0, f"Console errors: {console_errors}"
     assert len(page_errors) == 0, f"Page errors: {page_errors}"
     assert len(failed_requests) == 0, f"Failed requests: {failed_requests}"
-    print("\n[SUCCES TOTAL] La version en production https://ecopark-cameroun-ahala.vercel.app est 100 % conforme et sans aucune erreur.")
+    print(f"\n[SUCCES TOTAL] La version testée ({BASE_URL}) est 100 % conforme et sans aucune erreur.")
 
 if __name__ == "__main__":
     run_live_audit()
