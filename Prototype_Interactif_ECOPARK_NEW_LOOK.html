@@ -512,15 +512,35 @@
       .site-topbar-inner > div:first-child {
         display: none;
       }
+      .site-topbar-inner > div:last-child {
+        white-space: nowrap;
+        overflow-x: auto;
+        width: 100%;
+      }
       .site-header-inner {
-        padding: 8px 12px;
+        padding: 6px 10px;
         gap: 6px;
       }
       .brand-logo-disc {
-        width: 36px;
-        height: 36px;
+        width: 34px;
+        height: 34px;
+      }
+      .brand-name {
+        font-size: 1.1rem;
+      }
+      .brand-location {
+        font-size: 10.5px;
+      }
+      .site-header-inner .btn-sm {
+        min-height: 32px;
+        padding: 4px 8px !important;
+        font-size: 11.5px !important;
+      }
+      #btnHeaderRdv {
+        display: none;
       }
       .main-nav {
+        order: 3;
         flex-wrap: nowrap;
         overflow-x: auto;
         width: 100%;
@@ -985,6 +1005,37 @@
       padding: 6px 11px !important;
       font-size: 14px !important;
       white-space: nowrap;
+    }
+    @media (max-width: 768px) {
+      .site-header-inner {
+        padding: 6px 10px !important;
+        gap: 6px !important;
+      }
+      .brand-logo-disc {
+        width: 32px !important;
+        height: 32px !important;
+      }
+      .brand-name {
+        font-size: 1.05rem !important;
+      }
+      .brand-location {
+        font-size: 9.5px !important;
+      }
+      .main-nav {
+        order: 3;
+        flex-wrap: nowrap !important;
+        overflow-x: auto;
+        width: 100%;
+      }
+      .main-nav .nav-item {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+      }
+      .site-header-inner .btn-sm {
+        padding: 4px 8px !important;
+        min-height: 28px !important;
+        font-size: 11px !important;
+      }
     }
 
     /* En mode visiteur normal, masquer toutes les barres techniques .subnav-bar et les codes d'audit */
