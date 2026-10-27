@@ -550,6 +550,44 @@ def run_live_audit():
         page.wait_for_timeout(450)
         page.screenshot(path=art_dir + r"\prod_agenda_semaine_pub16.png")
 
+        # J. Verification du Dispositif « Zero Reservation a l'Aveugle » (Appreciation Visuelle Totale)
+        vis_appreciation_check = page.evaluate("""() => {
+            const agendaMediaCount = document.querySelectorAll('#weeklyAgendaGrid .agenda-card-media img').length;
+            const simThumbCount = document.querySelectorAll('#view-RES .sim-item-thumb').length;
+            const hasLodgePreviewCard = !!document.getElementById('lodgeVisualPreviewCard');
+            const hasKitchenPreviewBox = !!document.getElementById('kitchenVisualPreviewBox');
+            const hasSelectedVisualStrip = !!document.getElementById('simSelectedVisualStrip');
+            const stripChipsCount = document.querySelectorAll('#simSelectedVisualStripTrack .selected-strip-chip').length;
+            const accThumbsCount = document.querySelectorAll('#view-ACC .acc-row-thumb').length;
+            const hasQuoteModalBanner = !!document.getElementById('quoteVisualPreviewBanner');
+            const hasRdvModalBanner = !!document.getElementById('rdvVisualPreviewBanner');
+            const hasCfpModalBanner = !!document.getElementById('cfpVisualPreviewBanner');
+            const hasEvtModalImg = !!document.getElementById('evtModalHeroImg');
+
+            return {
+                agendaMediaCount,
+                simThumbCount,
+                hasLodgePreviewCard,
+                hasKitchenPreviewBox,
+                hasSelectedVisualStrip,
+                stripChipsCount,
+                accThumbsCount,
+                hasAllModalBanners: hasQuoteModalBanner && hasRdvModalBanner && hasCfpModalBanner && hasEvtModalImg
+            };
+        }""")
+        print(f"  [ZERO BLIND BOOKING]    Agenda Imgs={vis_appreciation_check['agendaMediaCount']} | Sim Thumbs={vis_appreciation_check['simThumbCount']} | Lodge Card={vis_appreciation_check['hasLodgePreviewCard']} | Kitchen Card={vis_appreciation_check['hasKitchenPreviewBox']} | Strip Chips={vis_appreciation_check['stripChipsCount']} | ACC Thumbs={vis_appreciation_check['accThumbsCount']} | Modal Banners={vis_appreciation_check['hasAllModalBanners']}")
+        assert vis_appreciation_check["agendaMediaCount"] == 4, "Les 4 cartes de l'Agenda doivent avoir un visuel HD"
+        assert vis_appreciation_check["simThumbCount"] >= 10, "Toutes les lignes du simulateur doivent avoir une vignette photo"
+        assert vis_appreciation_check["hasLodgePreviewCard"] and vis_appreciation_check["hasKitchenPreviewBox"], "Apercu visuel Loges/Cuisine manquant"
+        assert vis_appreciation_check["hasSelectedVisualStrip"] and vis_appreciation_check["stripChipsCount"] >= 3, "Pellicule visuelle de la selection manquante"
+        assert vis_appreciation_check["accThumbsCount"] >= 4, "Vignettes visuelles Mon Espace manquantes"
+        assert vis_appreciation_check["hasAllModalBanners"], "Bandeaux visuels dans les modales (Devis, RDV, CFP, Evenement) manquants"
+
+        page.evaluate("navigateFamily('RES', 'RES-03');")
+        page.locator("#bundleQuickSelector").scroll_into_view_if_needed()
+        page.wait_for_timeout(450)
+        page.screenshot(path=art_dir + r"\prod_visual_appreciation_simulator.png")
+
         browser.close()
 
     print(f"\n=== 3. BILAN DES ERREURS CONSOLE & RESEAU ===")
