@@ -321,6 +321,125 @@ def run_live_audit():
         assert "DÉJÀ UTILISÉ" in e2e_result["secondScanTitle"], f"2nd scan non rejete: {e2e_result['secondScanTitle']}"
         assert "<svg" not in e2e_result["unknownScanTitle"] and "<span" not in e2e_result["unknownScanTitle"], f"Balises HTML brutes dans scanResultTitle: {e2e_result['unknownScanTitle']}"
 
+        # F. Verification des 7 Remediations (Manquements Obligatoire vs Facultatif)
+        remediation_check = page.evaluate("""() => {
+            // 1. CFP : 5 filieres + rejet age < 16 ans + validation age >= 16 ans + 4 tranches
+            window.openCfpModalSprint1();
+            const cfpTrackCount = document.querySelectorAll('#cfpTrack option').length;
+            const cfpPlanCount = document.querySelectorAll('#cfpPaymentPlan option').length;
+            document.getElementById('cfpAge').value = '14';
+            const cfpUnderageRejected = (window.submitCfpApplicationSprint1() === false);
+            document.getElementById('cfpAge').value = '20';
+            document.getElementById('cfpTrack').value = 'Pisciculture';
+            const cfpValidRef = window.submitCfpApplicationSprint1();
+
+            // 2 & 4. Devis Proforma B2B / Ecole / Mariage + Navette
+            window.openQuoteModalSprint1();
+            document.getElementById('quoteType').value = 'Séminaire Ministère / ONG / Entreprise';
+            document.getElementById('quotePax').value = '50';
+            document.getElementById('quoteOptShuttle').checked = true;
+            window.recalcQuoteProformaPreview();
+            const proformaSeminarText = document.getElementById('quoteProformaTotalText').textContent.trim();
+            const quoteRef = window.submitGroupQuoteSprint1();
+
+            // 3, 5 & 6. Simulateur : 3 Cites Hotelieres + Nuitees + Navette + Peche + Tarif Piscine Week-end
+            navigateFamily('RES', 'RES-03');
+            window.applySalesBundle('CUSTOM', false);
+            // Remettre 2 adultes, 2 enfants
+            counts.adults = 2; counts.children = 2; counts.toddlers = 1;
+            document.getElementById('countAdults').textContent = '2';
+            document.getElementById('countChildren').textContent = '2';
+            document.getElementById('chkZoo').checked = true;
+            document.getElementById('chkPiscine').checked = true;
+            document.getElementById('chkPirogue').checked = true;
+            document.getElementById('chkCheval').checked = false;
+            document.getElementById('chkRepas').checked = false;
+
+            // Tester bascule Tarif Piscine Week-end (Enfant 2 500 FCFA au lieu de 1 500 FCFA -> +2 000 FCFA pour 2 enfants)
+            document.getElementById('poolRatePeriod').value = 'WEEKEND_PLEIN';
+            window.recalcSimulator();
+            const subPiscineWeekend = document.getElementById('subPiscine').textContent.trim();
+            document.getElementById('poolRatePeriod').value = 'SEMAINE_PROMO';
+
+            // Tester Cite Chanthel (15 000 FCFA) x 2 nuitees = 30 000 FCFA + Navette A/R (2x1500 + 2x1000 = 5 000 FCFA) + Peche (2 000 FCFA)
+            document.getElementById('chkBumpLodgeEwondo').checked = true;
+            document.getElementById('lodgeCitySelect').value = 'CHANTHEL';
+            document.getElementById('lodgeNightsSelect').value = '2';
+            document.getElementById('chkBumpNavette').checked = true;
+            document.getElementById('chkBumpPeche').checked = true;
+            window.recalcSimulator();
+
+            const subLodgeChanthel2N = document.getElementById('subBumpLodge').textContent.trim();
+            const subNavette = document.getElementById('subBumpNavette').textContent.trim();
+            const subPeche = document.getElementById('subBumpPeche').textContent.trim();
+            const waSummary = document.getElementById('waBubbleBodyText').textContent.trim();
+
+            // 7. Validation stricte des champs obligatoires (Nom vide rejete)
+            const savedName = document.getElementById('visitorName').value;
+            document.getElementById('visitorName').value = '';
+            const emptyNameRejected = (window.createLiveBookingSprint1() === false);
+            document.getElementById('visitorName').value = savedName;
+
+            return {
+                cfpTrackCount,
+                cfpPlanCount,
+                cfpUnderageRejected,
+                cfpValidRef,
+                proformaSeminarText,
+                quoteRef,
+                subPiscineWeekend,
+                subLodgeChanthel2N,
+                subNavette,
+                subPeche,
+                waHasChanthel: waSummary.includes('Chanthel') && waSummary.includes('Navette'),
+                emptyNameRejected
+            };
+        }""")
+        print(f"  [REMEDIATION #1 CFP]     Filieres={remediation_check['cfpTrackCount']} | Plans={remediation_check['cfpPlanCount']} | <16ans rejete={remediation_check['cfpUnderageRejected']} | Ref={remediation_check['cfpValidRef']}")
+        print(f"  [REMEDIATION #4 DEVIS]   Seminaire 50 pax + Navette = {remediation_check['proformaSeminarText']} ({remediation_check['quoteRef']})")
+        print(f"  [REMEDIATION #3/5/6 SIM] Piscine WE={remediation_check['subPiscineWeekend']} | Chanthel 2N={remediation_check['subLodgeChanthel2N']} | Navette={remediation_check['subNavette']} | Peche={remediation_check['subPeche']}")
+        print(f"  [REMEDIATION #2/7 WA/VAL] Sync WhatsApp={remediation_check['waHasChanthel']} | Champ vide bloque={remediation_check['emptyNameRejected']}")
+
+        assert remediation_check["cfpTrackCount"] == 5, "Les 5 filieres CFP sont requises"
+        assert remediation_check["cfpPlanCount"] == 2, "Les 2 plans de paiement CFP sont requis"
+        assert remediation_check["cfpUnderageRejected"], "L'age < 16 ans doit etre bloque au CFP"
+        assert remediation_check["proformaSeminarText"] == "670 000 FCFA", f"Calcul proforma Seminaire inattendu: {remediation_check['proformaSeminarText']}"
+        assert remediation_check["subPiscineWeekend"] == "10 000 FCFA", f"Tarif Piscine Week-end inattendu: {remediation_check['subPiscineWeekend']}"
+        assert remediation_check["subLodgeChanthel2N"] == "30 000 FCFA", f"Tarif Chanthel 2 nuits inattendu: {remediation_check['subLodgeChanthel2N']}"
+        assert remediation_check["subNavette"] == "5 000 FCFA", f"Tarif Navette inattendu: {remediation_check['subNavette']}"
+        assert remediation_check["subPeche"] == "2 000 FCFA", f"Tarif Peche inattendu: {remediation_check['subPeche']}"
+        assert remediation_check["waHasChanthel"], "La Vue WhatsApp ne synchronise pas les nouvelles options"
+        assert remediation_check["emptyNameRejected"], "La validation du champ obligatoire Nom Visiteur n'a pas bloque un champ vide"
+
+        # G. Verification des 4 Optimisations de Positionnement de l'Information
+        pos_check = page.evaluate("""() => {
+            navigateFamily('PUB', 'PUB-01');
+            const routerCards = document.querySelectorAll('#pubQuickIntentRouter .quick-intent-card').length;
+            window.routeVisitorByProfile('HOTEL');
+            const navHotelsActive = document.getElementById('nav-HOTELS').classList.contains('active');
+            const hotelHaloActive = document.getElementById('sec-PUB-08').classList.contains('section-focus-halo');
+
+            navigateFamily('RES', 'RES-03');
+            const stickyCol = document.getElementById('resStickySummaryCol');
+            const stickyPosition = stickyCol ? window.getComputedStyle(stickyCol).position : '';
+            const stickyBarTotal = document.getElementById('stickyBarTotalFcfa') ? document.getElementById('stickyBarTotalFcfa').textContent.trim() : '';
+            const mainTotal = document.getElementById('grandTotalFCFA').textContent.trim();
+
+            return {
+                routerCards,
+                navHotelsActive,
+                hotelHaloActive,
+                stickyPosition,
+                stickyBarSynced: stickyBarTotal === mainTotal && stickyBarTotal.length > 0
+            };
+        }""")
+        print(f"  [POSITIONING #1-4]      Cartes Aiguillage={pos_check['routerCards']} | Nav Hotel Active={pos_check['navHotelsActive']} | Halo Focus={pos_check['hotelHaloActive']} | Col Droite={pos_check['stickyPosition']} | Sticky Bar Sync={pos_check['stickyBarSynced']}")
+        assert pos_check["routerCards"] == 4, "Les 4 cartes d'aiguillage #pubQuickIntentRouter sont requises"
+        assert pos_check["navHotelsActive"], "Le bouton #nav-HOTELS doit etre actif lors de la navigation vers PUB-08"
+        assert pos_check["hotelHaloActive"], "Le halo visuel .section-focus-halo doit s'activer sur #sec-PUB-08"
+        assert pos_check["stickyPosition"] == "sticky", f"Position attendue sticky sur #resStickySummaryCol, obtenu: {pos_check['stickyPosition']}"
+        assert pos_check["stickyBarSynced"], "La barre mobile #mobileStickyConversionBar n'est pas synchronisee avec le total FCFA"
+
         browser.close()
 
     print(f"\n=== 3. BILAN DES ERREURS CONSOLE & RESEAU ===")

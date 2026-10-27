@@ -137,7 +137,10 @@ CREATE TABLE IF NOT EXISTS public.bookings (
   toddlers_count INTEGER NOT NULL DEFAULT 0 CHECK (toddlers_count >= 0),
   selected_activities TEXT[] NOT NULL DEFAULT '{}',
   selected_bundle_code TEXT, -- ex: 'PASS_DECOUVERTE', 'PASS_ROYALE', 'PACK_COUPLE_EWONDO'
-  order_bumps TEXT[] NOT NULL DEFAULT '{}', -- ex: ARRAY['nutrition_poissons', 'pergola_lac', 'navette_yaounde']
+  order_bumps TEXT[] NOT NULL DEFAULT '{}', -- ex: ARRAY['nutrition_poissons', 'pergola_lac', 'navette_yaounde', 'peche_musee']
+  pool_rate_period TEXT NOT NULL DEFAULT 'SEMAINE_PROMO', -- 'SEMAINE_PROMO' (1500 FCFA enfant) vs 'WEEKEND_PLEIN' (2500 FCFA enfant)
+  lodge_city TEXT, -- 'EWONDO', 'CHANTHEL', 'BENE'
+  lodge_nights INTEGER NOT NULL DEFAULT 0 CHECK (lodge_nights >= 0),
   pergola_reserved BOOLEAN NOT NULL DEFAULT FALSE,
   kitchen_preorders INTEGER NOT NULL DEFAULT 0 CHECK (kitchen_preorders >= 0),
   total_fcfa INTEGER NOT NULL CHECK (total_fcfa >= 0),
@@ -162,6 +165,8 @@ CREATE TABLE IF NOT EXISTS public.group_quotes (
   group_type TEXT NOT NULL, -- 'ecole', 'entreprise', 'mariage_evenement'
   preferred_date DATE NOT NULL,
   participants_count INTEGER NOT NULL CHECK (participants_count >= 10),
+  hall_menkii_included BOOLEAN NOT NULL DEFAULT FALSE,
+  shuttle_included BOOLEAN NOT NULL DEFAULT FALSE,
   estimated_budget_fcfa INTEGER NOT NULL CHECK (estimated_budget_fcfa >= 0),
   notes TEXT,
   status TEXT NOT NULL DEFAULT 'EN_ETUDE', -- 'EN_ETUDE', 'PROFORMA_ENVOYEE', 'VALIDE', 'ANNULE'
@@ -175,8 +180,10 @@ CREATE TABLE IF NOT EXISTS public.cfp_applications (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   application_ref TEXT UNIQUE NOT NULL, -- ex: CFP-2026-0412
   candidate_name TEXT NOT NULL,
+  candidate_age INTEGER NOT NULL DEFAULT 19 CHECK (candidate_age >= 16),
   candidate_phone TEXT NOT NULL,
-  program_track TEXT NOT NULL, -- 'Aquaculture', 'Hôtellerie-Restauration', 'Agriculture & Élevage'
+  program_track TEXT NOT NULL, -- 'Hôtellerie', 'Restauration', 'Décoration', 'Agropastorale', 'Pisciculture'
+  payment_plan TEXT NOT NULL DEFAULT '4_TRANCHES', -- '4_TRANCHES' (100k + 3x50k FCFA) ou 'INTEGRAL' (300 000 FCFA)
   registration_fee_fcfa INTEGER NOT NULL DEFAULT 50000 CHECK (registration_fee_fcfa = 50000),
   tuition_fee_fcfa INTEGER NOT NULL DEFAULT 250000 CHECK (tuition_fee_fcfa = 250000),
   status TEXT NOT NULL DEFAULT 'DOSSIER_RECU', -- 'DOSSIER_RECU', 'INSCRIPTION_REGLEE', 'ADMIS'
