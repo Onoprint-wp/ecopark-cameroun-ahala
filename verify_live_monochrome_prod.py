@@ -374,11 +374,11 @@ def run_live_audit():
             const subPeche = document.getElementById('subBumpPeche').textContent.trim();
             const waSummary = document.getElementById('waBubbleBodyText').textContent.trim();
 
-            // 7. Validation stricte des champs obligatoires (Nom vide rejete)
-            const savedName = document.getElementById('visitorName').value;
-            document.getElementById('visitorName').value = '';
+            // 7. Validation stricte des champs (Telephone invalide rejete)
+            const savedPhone = document.getElementById('visitorPhone').value;
+            document.getElementById('visitorPhone').value = '123';
             const emptyNameRejected = (window.createLiveBookingSprint1() === false);
-            document.getElementById('visitorName').value = savedName;
+            document.getElementById('visitorPhone').value = savedPhone;
 
             return {
                 cfpTrackCount,
@@ -439,6 +439,67 @@ def run_live_audit():
         assert pos_check["hotelHaloActive"], "Le halo visuel .section-focus-halo doit s'activer sur #sec-PUB-08"
         assert pos_check["stickyPosition"] == "sticky", f"Position attendue sticky sur #resStickySummaryCol, obtenu: {pos_check['stickyPosition']}"
         assert pos_check["stickyBarSynced"], "La barre mobile #mobileStickyConversionBar n'est pas synchronisee avec le total FCFA"
+
+        # H. Verification du Pack des 7 Omissions (Recherche ACC-01/RES-12, PNG Hors-Ligne, Report Date ACC-05, Cuisine 13h & Navette, Mobile Nav, Meteo/Avis PUB-15, Export CSV DIR-05)
+        omissions_check = page.evaluate("""() => {
+            // 1. Bandeau Meteo & Avis Verifies PUB-15
+            const hasLiveWeatherBar = !!document.getElementById('ahalaLiveWeatherBar');
+            const testimonialCount = document.querySelectorAll('#sec-PUB-15 .testimonial-card').length;
+
+            // 2. Selecteurs contextuels Cuisine 13h & Point de ramassage Navette Yaounde
+            navigateFamily('RES', 'RES-03');
+            document.getElementById('chkRepas').checked = true;
+            document.getElementById('simDishSelect').value = "Poulet DG Royal Plantain Mûr";
+            document.getElementById('simMealSlotSelect').value = "Service 13h30";
+            document.getElementById('chkBumpNavette').checked = true;
+            document.getElementById('simShuttlePickupSelect').value = "Départ Carrefour Bastos (09h15)";
+            window.recalcSimulator();
+            const itemsSummary = window.getActiveSimulatorItemsSummary();
+
+            // 3. Telechargement PNG Hors-Ligne & Impression PDF Billet QR / Proforma
+            const dlRef = window.downloadOfflineQrTicketPng();
+            window.printOfficialDocument('PROFORMA');
+            const printTitle = document.getElementById('officialPrintTitle').textContent.trim();
+            window.closeSprint1Modals();
+
+            // 4. Recherche ACC-01 / RES-12 + Filtre CFP + Report de date sans frais (ACC-05)
+            navigateFamily('ACC', 'ACC-02');
+            window.setAccCategoryFilter('CFP', document.querySelectorAll('#accCategoryFilterBar .acc-filter-pill')[4]);
+            const cfpRowsCount = document.querySelectorAll('#view-ACC table tbody tr[data-dossier-kind="CFP"]').length;
+            window.setAccCategoryFilter('ALL', document.querySelectorAll('#accCategoryFilterBar .acc-filter-pill')[0]);
+
+            const firstBookingRef = window.loadDB().bookings[0].reference;
+            window.openRescheduleModal(firstBookingRef, 'BOOKING');
+            document.getElementById('rescheduleNewDate').value = '2026-12-28';
+            window.confirmRescheduleSprint1();
+            const updatedBookingDate = window.loadDB().bookings[0].date;
+
+            // 5. Navigation tactile mobile (#mobileQuickNavPills) & Export CSV Comptable (DIR-05 / AGT-09)
+            const mobilePillsCount = document.querySelectorAll('#mobileQuickNavPills .mobile-quick-pill').length;
+            const exportedCsvCount = window.exportEcoparkDatabaseCSV();
+
+            return {
+                hasLiveWeatherBar,
+                testimonialCount,
+                hasKitchenAndShuttleInSummary: itemsSummary.includes('Poulet DG Royal') && itemsSummary.includes('Carrefour Bastos'),
+                dlRefValid: dlRef && dlRef.startsWith('ECP-2026-'),
+                printTitleHasProforma: printTitle.includes('FACTURE PROFORMA OFFICIELLE'),
+                cfpRowsCount,
+                updatedBookingDate,
+                mobilePillsCount,
+                exportedCsvCount
+            };
+        }""")
+        print(f"  [OMISSIONS #1-7]        Meteo={omissions_check['hasLiveWeatherBar']} | Avis={omissions_check['testimonialCount']} | Cuisine+Navette={omissions_check['hasKitchenAndShuttleInSummary']} | PNG Offline={omissions_check['dlRefValid']} | Proforma PDF={omissions_check['printTitleHasProforma']} | CFP Rows={omissions_check['cfpRowsCount']} | Report Date={omissions_check['updatedBookingDate']} | Mobile Pills={omissions_check['mobilePillsCount']} | CSV Exported={omissions_check['exportedCsvCount']} lignes")
+        assert omissions_check["hasLiveWeatherBar"], "Bandeau meteo #ahalaLiveWeatherBar manquant"
+        assert omissions_check["testimonialCount"] == 4, f"Attendu 4 avis verifies, obtenu {omissions_check['testimonialCount']}"
+        assert omissions_check["hasKitchenAndShuttleInSummary"], "Les selecteurs Cuisine 13h et Navette Yaounde ne remontent pas dans le recapitulatif"
+        assert omissions_check["dlRefValid"], "Echec generation PNG hors-ligne du Billet QR"
+        assert omissions_check["printTitleHasProforma"], "Echec generation Facture Proforma officielle imprimable"
+        assert omissions_check["cfpRowsCount"] >= 1, "Les dossiers CFP ne s'affichent pas dans Mon Espace"
+        assert omissions_check["updatedBookingDate"] == "2026-12-28", f"Le report de date ACC-05 n'a pas mis a jour la date: {omissions_check['updatedBookingDate']}"
+        assert omissions_check["mobilePillsCount"] == 7, f"Attendu 7 raccourcis mobiles, obtenu {omissions_check['mobilePillsCount']}"
+        assert omissions_check["exportedCsvCount"] >= 4, "Echec export CSV comptable DIR-05 / AGT-09"
 
         browser.close()
 
