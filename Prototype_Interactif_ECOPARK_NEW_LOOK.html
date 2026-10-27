@@ -1038,11 +1038,11 @@
       }
     }
 
-    /* En mode visiteur normal, masquer toutes les barres techniques .subnav-bar et les codes d'audit */
-    body:not(.admin-mode-enabled) .subnav-bar {
-      display: none !important;
-    }
-    body:not(.admin-mode-enabled) .tech-code-tag {
+    /* En mode visiteur normal, masquer toutes les barres techniques .subnav-bar, les codes d'audit et les contrôles démo/back-office */
+    body:not(.admin-mode-enabled) .subnav-bar,
+    body:not(.admin-mode-enabled) .tech-code-tag,
+    body:not(.admin-mode-enabled) #btnFloatingAdminToggle,
+    body:not(.admin-mode-enabled) .admin-only-control {
       display: none !important;
     }
 
@@ -1822,6 +1822,137 @@
       display: flex;
     }
 
+    /* ==========================================================================
+       POSITIONNEMENT STRATÉGIQUE DE L'INFORMATION (4 LEVIERS UX / CRO)
+       ========================================================================== */
+    /* Levier 1 : Barre d'Aiguillage Express par Profil (4 Portes d'Entrée sous le Hero) */
+    .quick-intent-shell {
+      padding: 0 0 28px 0;
+      background: linear-gradient(180deg, #FFFFFF 0%, var(--color-surface-soft) 100%);
+      border-bottom: 1px solid rgba(29, 73, 13, 0.08);
+    }
+    .quick-intent-bar {
+      background: #FFFFFF;
+      border: 1.5px solid rgba(29, 73, 13, 0.14);
+      border-radius: 22px;
+      padding: 18px 20px;
+      box-shadow: 0 14px 36px rgba(20, 34, 17, 0.06);
+    }
+    .quick-intent-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .quick-intent-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+    }
+    @media (max-width: 1024px) {
+      .quick-intent-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 600px) {
+      .quick-intent-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    .quick-intent-card {
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 16px;
+      border: 1.5px solid rgba(29, 73, 13, 0.12);
+      background: var(--color-surface-soft);
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 8px;
+      transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.28s ease, box-shadow 0.28s ease, background 0.28s ease;
+    }
+    .quick-intent-card:hover {
+      transform: translate3d(0, -3px, 0);
+      border-color: #C47D2B;
+      background: #FBF5EC;
+      box-shadow: 0 12px 28px rgba(196, 125, 43, 0.14);
+    }
+    .quick-intent-card-ochre {
+      background: #FBF5EC;
+      border-color: rgba(196, 125, 43, 0.38);
+    }
+    .quick-intent-cta {
+      font-size: 12.8px;
+      font-weight: 700;
+      color: var(--color-brand-deep);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Levier 2 : Colonne Droite Sticky dans le Simulateur (#view-RES) */
+    @media (min-width: 1024px) {
+      #resMainGrid {
+        align-items: start;
+      }
+      #resStickySummaryCol {
+        position: sticky;
+        top: 86px;
+        align-self: start;
+      }
+    }
+
+    /* Levier 3 : Barre d'Action Rapide Flottante Mobile (Zone du Pouce <= 960px) */
+    .mobile-sticky-conversion-bar {
+      display: none;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 2950;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(14px);
+      border-top: 2px solid #C47D2B;
+      padding: 10px 16px;
+      box-shadow: 0 -10px 30px rgba(20, 34, 17, 0.14);
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    @media (max-width: 960px) {
+      .mobile-sticky-conversion-bar {
+        display: flex;
+      }
+      body {
+        padding-bottom: 72px;
+      }
+    }
+    body.viewport-mobile .mobile-sticky-conversion-bar {
+      display: flex;
+    }
+
+    /* Levier 4 : Halo Visuel d'Atterrissage lors d'une navigation ciblée */
+    @keyframes sectionHaloPulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(196, 125, 43, 0.55), 0 18px 42px rgba(196, 125, 43, 0.22);
+      }
+      70% {
+        box-shadow: 0 0 0 10px rgba(196, 125, 43, 0), 0 18px 42px rgba(29, 73, 13, 0.12);
+      }
+      100% {
+        box-shadow: none;
+      }
+    }
+    .section-focus-halo {
+      outline: 2.5px solid #C47D2B !important;
+      outline-offset: 4px;
+      border-radius: 20px;
+      animation: sectionHaloPulse 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
   </style>
 </head>
 <body>
@@ -1989,7 +2120,7 @@
                 </p>
                 <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;">
                   <button type="button" class="btn btn-primary" onclick="navigateFamily('RES', 'RES-03')">Simuler mon budget en FCFA & Réserver</button>
-                  <button type="button" class="btn btn-secondary btn-ochre-outline" onclick="openRdvModalSprint1('reperage_mariage')"><svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> Prendre RDV (Repérage / B2B / CFP)</button>
+                  <button type="button" class="btn btn-secondary btn-ochre-outline" onclick="openRdvModalSprint1('reperage_mariage')"><svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> Prendre RDV (Mariage / Séminaire / CFP)</button>
                   <button type="button" class="btn btn-secondary" onclick="inspectScreen('PUB-10')">Tarifs officiels</button>
                 </div>
                 <div class="grid-12" style="gap:12px;">
@@ -2011,7 +2142,7 @@
                 <div class="hero-showcase-frame clip" id="heroShowcaseFrame" data-composition-id="ecopark-hero-reel" data-start="0" data-duration="24" data-track-index="1" onclick="openEcoparkLightbox(window._currentHeroSlideIdx || 0)">
                   <span class="hero-scene-caption-pill clip" id="heroSceneCaptionPill" data-start="0" data-duration="6" data-track-index="2">
                     <span class="hero-scene-caption-dot"></span>
-                    <span id="heroSceneCaptionText">Scène 1/4 • Lac &amp; Pirogues — 500 / 1 000 FCFA</span>
+                    <span id="heroSceneCaptionText">Lac d'Ahala &amp; Pirogues — 500 / 1 000 FCFA</span>
                   </span>
                   <span class="photo-zoom-pill"><svg class="svg-mono" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg> Plein écran HD</span>
                   <img id="heroShowcaseImg" src="audit-assets/ecopark-real-media/balade_pirogue3.jpg" alt="Balade en pirogue sur le lac verdoyant d'ECOPARK à Yaoundé-Ahala" />
@@ -2038,6 +2169,66 @@
                     </button>
                   </div>
                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LEVIER 1 : BARRE D'AIGUILLAGE EXPRESS PAR PROFIL (RÈGLE DES 3 SECONDES SOUS LE HERO) -->
+        <div class="quick-intent-shell" id="pubQuickIntentRouter">
+          <div class="container">
+            <div class="quick-intent-bar">
+              <div class="quick-intent-header">
+                <div style="display:flex;align-items:center;gap:8px;">
+                  <span class="icon-medallion" style="width:30px;height:30px;"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
+                  <strong style="font-family:var(--font-heading);font-size:1.12rem;color:var(--color-brand-deep);">Accès Direct par Profil — Que souhaitez-vous organiser aujourd'hui ?</strong>
+                </div>
+                <span style="font-size:12.5px;color:var(--color-text-muted);font-weight:600;">Orientation en 1 clic • Tarifs 100 % transparents en FCFA</span>
+              </div>
+              <div class="quick-intent-grid">
+                <button type="button" class="quick-intent-card quick-intent-card-ochre" onclick="routeVisitorByProfile('FAMILLE')">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:4px;">
+                      <strong style="font-family:var(--font-heading);font-size:1.04rem;color:var(--color-brand-deep);">1. Sortie Famille &amp; Week-end</strong>
+                      <span class="price-pill" style="font-size:11px;padding:2px 7px;">Dès 500 FCFA</span>
+                    </div>
+                    <span style="font-size:13px;color:var(--color-text-muted);display:block;">Pass Tout-Inclus Coupe-File (Zoo « ToTo », Piscine, Pirogue &amp; Repas).</span>
+                  </div>
+                  <span class="quick-intent-cta" style="color:#8E5617;">Voir les 3 Pass Tout-Inclus →</span>
+                </button>
+
+                <button type="button" class="quick-intent-card" onclick="routeVisitorByProfile('HOTEL')">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:4px;">
+                      <strong style="font-family:var(--font-heading);font-size:1.04rem;color:var(--color-brand-deep);">2. Séjour &amp; Loges Hôtelières</strong>
+                      <span class="price-pill" style="font-size:11px;padding:2px 7px;">10k – 30k FCFA</span>
+                    </div>
+                    <span style="font-size:13px;color:var(--color-text-muted);display:block;">Repos en journée ou nuitée au calme : Cités Bene, Chanthel &amp; Ewondo VIP.</span>
+                  </div>
+                  <span class="quick-intent-cta">Choisir ma Cité Hôtelière →</span>
+                </button>
+
+                <button type="button" class="quick-intent-card" onclick="routeVisitorByProfile('B2B_ECOLE')">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:4px;">
+                      <strong style="font-family:var(--font-heading);font-size:1.04rem;color:var(--color-brand-deep);">3. Écoles, Séminaires &amp; Galas</strong>
+                      <span class="price-pill" style="font-size:11px;padding:2px 7px;">Proforma 2 min</span>
+                    </div>
+                    <span style="font-size:13px;color:var(--color-text-muted);display:block;">Salle « Menkii Essomba Anton », Traiteur &amp; Navettes 18/32 places.</span>
+                  </div>
+                  <span class="quick-intent-cta">Calculer ma Proforma Groupe →</span>
+                </button>
+
+                <button type="button" class="quick-intent-card" onclick="routeVisitorByProfile('CFP')">
+                  <div>
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:4px;">
+                      <strong style="font-family:var(--font-heading);font-size:1.04rem;color:var(--color-brand-deep);">4. Formation CFP MINEFOP</strong>
+                      <span class="price-pill" style="font-size:11px;padding:2px 7px;">50k + 4 tranches</span>
+                    </div>
+                    <span style="font-size:13px;color:var(--color-text-muted);display:block;">5 filières dès 16 ans (Hôtellerie, Cuisine, Déco, Agro, Pisciculture).</span>
+                  </div>
+                  <span class="quick-intent-cta">Déposer ma candidature CFP →</span>
+                </button>
               </div>
             </div>
           </div>
@@ -2164,7 +2355,7 @@
                 <div class="bento-card-body">
                   <div>
                     <div style="display:flex;justify-content:space-between;align-items:center;">
-                    <span class="eyebrow" style="margin:0;"><span class="tech-code-tag"><span class="tech-code-tag">PUB-11 • </span></span>Écoles & B2B</span>
+                    <span class="eyebrow" style="margin:0;"><span class="tech-code-tag"><span class="tech-code-tag">PUB-11 • </span></span>Écoles, Séminaires &amp; Réceptions</span>
                     <span class="price-pill">Sur Devis Validé</span>
                   </div>
                   <h3 style="margin-top:8px;">Salle « Menkii Essomba Anton », Séminaires, Grandes Réunions &amp; Écoles</h3>
@@ -2472,8 +2663,8 @@
                     Oui, dès 20 participants, notre équipe établit un devis adapté incluant l'encadrement, les activités et les menus enfants.
                   </div>
                   <div style="padding:10px;background:var(--color-surface-soft);border-radius:8px;">
-                    <strong>Les photos présentées sur ce prototype sont-elles réelles ?</strong><br/>
-                    Chaque visuel porte un badge explicite : <em>Photo réelle ECOPARK</em> (prise à Ahala) ou <em>Illustration temporaire — Contexte local Cameroun</em> dans l'attente de nouvelles prises de vue.
+                    <strong>Comment accéder facilement au parc et le stationnement est-il sécurisé ?</strong><br/>
+                    ECOPARK est situé à <strong>Ahala Barrière (Route Nationale N°3, juste en face de la station Tradex Ahala)</strong>, sur un axe 100 % bitumé à 15 minutes du centre de Yaoundé. Un parking intérieur gratuit et gardé de 150 places (voitures et bus) vous attend dès le portail.
                   </div>
                 </div>
               </div>
@@ -2490,7 +2681,7 @@
                     </p>
                   </div>
                   <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-                    <span class="price-pill" id="liveRdvCountBadge">Dernier RDV : RDV-2026-4102 (Confirmé)</span>
+                    <span class="price-pill" id="liveRdvCountBadge">Visite &amp; Orientation gratuites • Mar–Dim</span>
                     <button type="button" class="btn btn-primary" onclick="openRdvModalSprint1('reperage_mariage')">
                       <svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> Choisir mon créneau de RDV
                     </button>
@@ -2505,7 +2696,7 @@
                     <span style="font-size:13px;font-weight:700;color:var(--color-accent-ochre-deep);">Planifier ce RDV →</span>
                   </div>
                   <div class="col-3 card" style="padding:16px;background:#FFFFFF;cursor:pointer;" onclick="openRdvModalSprint1('seminaire_b2b')">
-                    <span class="eyebrow" style="margin:0;font-size:11px;">2 • Ministères, ONG &amp; B2B</span>
+                    <span class="eyebrow" style="margin:0;font-size:11px;">2 • Ministères, ONG &amp; Entreprises</span>
                     <strong style="font-family:var(--font-heading);font-size:1.08rem;color:var(--color-brand-deep);">RDV Séminaire &amp; Hébergement</strong>
                     <p style="font-size:13.5px;color:var(--color-text-muted);margin:4px 0 10px;">Configuration conférence, pauses-café, Cités Ewondo/Chanthel/Bene et navettes 5, 18 ou 32 places.</p>
                     <span style="font-size:13px;font-weight:700;color:var(--color-brand-deep);">Planifier ce RDV →</span>
@@ -2649,22 +2840,29 @@
               </p>
             </div>
 
-            <div class="grid-12">
+            <div class="grid-12" id="resMainGrid">
               <!-- Colonne gauche : Configurateur & Simulateur (RES-01, RES-02, RES-03, RES-05) -->
               <div class="col-7 card">
                 <h3>1. Composition du groupe & Date de visite<span class="tech-code-tag"> (`RES-01` / `RES-02`)</span></h3>
                 <div class="grid-12" style="gap:16px;">
-                  <div class="col-6 form-group">
-                    <label class="form-label" for="visitDate">Date de visite souhaitée</label>
-                    <input type="date" id="visitDate" class="form-control" value="2026-11-15" />
+                  <div class="col-4 form-group">
+                    <label class="form-label" for="visitDate">Date de visite souhaitée <span style="color:#B42318;">*</span></label>
+                    <input type="date" id="visitDate" class="form-control" value="2026-11-15" required />
                   </div>
-                  <div class="col-6 form-group">
+                  <div class="col-4 form-group">
                     <label class="form-label" for="visitProfile">Profil de sortie</label>
                     <select id="visitProfile" class="form-control" onchange="recalcSimulator()">
                       <option value="famille">Famille &amp; Enfants (Prendre le frais le week-end)</option>
                       <option value="amis">Couple / Groupe d'amis / Grande Réunion</option>
                       <option value="ecole">Excursion scolaire (Devis conseillé)</option>
                       <option value="entreprise">Séminaire Ministère / ONG / Entreprise (Salle Menkii Essomba Anton)</option>
+                    </select>
+                  </div>
+                  <div class="col-4 form-group">
+                    <label class="form-label" for="poolRatePeriod">Période Tarifaire Piscine</label>
+                    <select id="poolRatePeriod" class="form-control" onchange="recalcSimulator()">
+                      <option value="SEMAINE_PROMO" selected>Prévente En Ligne / Semaine (Enfant 1 500 FCFA)</option>
+                      <option value="WEEKEND_PLEIN">Guichet Week-end &amp; Fériés (Enfant 2 500 FCFA)</option>
                     </select>
                   </div>
                 </div>
@@ -2703,7 +2901,7 @@
                 <div id="childPriceProtectionAlert" class="monochrome-callout">
                   <div class="monochrome-callout-icon"><svg class="svg-mono" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></div>
                   <div>
-                    <strong style="color:var(--color-brand-deep);">Règle de protection tarifaire active :</strong> Même au-delà de 20 participants, le billet d'entrée enfant reste protégé à <strong>500 FCFA</strong> (il n'est jamais majoré à 700 FCFA). Seul le billet adulte bénéficie de la remise groupe à 700 FCFA (au lieu de 1 000 FCFA), ou fait l'objet d'un devis scolaire dédié.
+                    <strong style="color:var(--color-brand-deep);">Avantage Familles, Écoles &amp; Groupes :</strong> L'entrée enfant (3 à 12 ans) est garantie au tarif privilégié de <strong>500 FCFA</strong> (et <strong>0 FCFA</strong> pour les moins de 3 ans), même en groupe de 20 participants et plus où le billet adulte bénéficie de la remise à 700 FCFA (au lieu de 1 000 FCFA).
                   </div>
                 </div>
 
@@ -2738,7 +2936,7 @@
                   <label style="display:flex;justify-content:space-between;align-items:center;padding:12px;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
                     <span>
                       <input type="checkbox" id="chkPiscine" checked onchange="onManualActivityToggle()" />
-                      <strong style="margin-left:8px;">Accès Piscine Semi-Olympique</strong> (Enfant : 1 500 FCFA • Adulte : 2 500 FCFA)
+                      <strong style="margin-left:8px;">Accès Piscine Semi-Olympique</strong> <span id="lblPiscineRateInfo">(Enfant : 1 500 FCFA • Adulte : 2 500 FCFA)</span>
                     </span>
                     <span class="price-pill" id="subPiscine">8 000 FCFA</span>
                   </label>
@@ -2765,10 +2963,10 @@
                   </label>
                 </div>
 
-                <!-- ORDER BUMPS : OPTIONS COUP DE COEUR & PRIVILÈGES COUPE-FILE -->
+                <!-- OPTIONS PRIVILÈGES & EXPÉRIENCES COUPE-FILE -->
                 <div style="margin-top:14px;padding:14px;background:#FBF5EC;border:1px solid rgba(196,125,43,0.35);border-radius:12px;">
                   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:6px;">
-                    <strong style="color:#8E5617;font-size:14.5px;">Options Privilèges & Expériences Enfants (Order Bumps en 1 clic) :</strong>
+                    <strong style="color:#8E5617;font-size:14.5px;">Options Privilèges &amp; Expériences à la Carte (Ajout en 1 clic) :</strong>
                     <span style="font-size:12px;font-weight:600;color:var(--color-brand-deep);">Ajoutés directement sur votre QR Code</span>
                   </div>
                   <div style="display:grid;gap:8px;">
@@ -2786,12 +2984,39 @@
                       </span>
                       <span class="price-pill" id="subBumpPergola">0 FCFA</span>
                     </label>
+                    <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FFFFFF;border:1px solid var(--color-border);border-radius:8px;gap:8px;flex-wrap:wrap;">
+                      <label style="font-size:14px;cursor:pointer;display:inline-flex;align-items:center;">
+                        <input type="checkbox" id="chkBumpLodgeEwondo" onchange="recalcSimulator()" />
+                        <strong style="margin-left:6px;">Hébergement Cités Hôtelières</strong>
+                        <span style="font-size:12px;color:var(--color-text-muted);margin-left:6px;">(<span id="simEwondoRemainingText">2 suites disponibles</span>)</span>
+                      </label>
+                      <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+                        <select id="lodgeCitySelect" class="form-control" style="min-height:32px;padding:2px 8px;font-size:12.5px;width:auto;" aria-label="Choix de la Cité Hôtelière" onchange="document.getElementById('chkBumpLodgeEwondo').checked=true; recalcSimulator()">
+                          <option value="EWONDO" selected>Cité Ewondo VIP (25 000 FCFA/nuit)</option>
+                          <option value="CHANTHEL">Cité Chanthel Confort (15 000 FCFA/nuit)</option>
+                          <option value="BENE">Cité Bene Standard (10 000 FCFA/nuit)</option>
+                        </select>
+                        <select id="lodgeNightsSelect" class="form-control" style="min-height:32px;padding:2px 8px;font-size:12.5px;width:auto;" aria-label="Nombre de nuitées" onchange="document.getElementById('chkBumpLodgeEwondo').checked=true; recalcSimulator()">
+                          <option value="1" selected>1 nuit / Jour</option>
+                          <option value="2">2 nuitées</option>
+                          <option value="3">3 nuitées</option>
+                        </select>
+                        <span class="price-pill" id="subBumpLodge">0 FCFA</span>
+                      </div>
+                    </div>
                     <label style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FFFFFF;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
                       <span style="font-size:14px;">
-                        <input type="checkbox" id="chkBumpLodgeEwondo" onchange="recalcSimulator()" />
-                        <strong style="margin-left:6px;">Suite VIP Cité Ewondo Climatisée</strong> (+25 000 FCFA • <span id="simEwondoRemainingText">2 suites disponibles</span>)
+                        <input type="checkbox" id="chkBumpNavette" onchange="recalcSimulator()" />
+                        <strong style="margin-left:6px;">Navette Climatisée A/R Yaoundé — Ahala</strong> (Adulte : 1 500 FCFA • Enfant : 1 000 FCFA)
                       </span>
-                      <span class="price-pill" id="subBumpLodge">0 FCFA</span>
+                      <span class="price-pill" id="subBumpNavette">0 FCFA</span>
+                    </label>
+                    <label style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FFFFFF;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
+                      <span style="font-size:14px;">
+                        <input type="checkbox" id="chkBumpPeche" onchange="recalcSimulator()" />
+                        <strong style="margin-left:6px;">Pêche Ludique aux Étangs &amp; Visite Guidée Musée / Forêt</strong> (+2 000 FCFA forfait)
+                      </span>
+                      <span class="price-pill" id="subBumpPeche">0 FCFA</span>
                     </label>
                   </div>
                 </div>
@@ -2799,18 +3024,18 @@
                 <h3 style="margin-top:8px;">3. Coordonnées du visiteur ou responsable de groupe<span class="tech-code-tag"> (`RES-05` / `RES-06`)</span></h3>
                 <div class="grid-12" style="gap:12px;">
                   <div class="col-6 form-group">
-                    <label class="form-label" for="visitorName">Nom et Prénom (ou Établissement)</label>
-                    <input type="text" id="visitorName" class="form-control" value="M. Jean-Paul MBARGA" />
+                    <label class="form-label" for="visitorName">Nom et Prénom (ou Établissement) <span style="color:#B42318;">*</span></label>
+                    <input type="text" id="visitorName" class="form-control" placeholder="Votre nom et prénom (ou nom d'école / structure)" required />
                   </div>
                   <div class="col-6 form-group">
-                    <label class="form-label" for="visitorPhone">Téléphone Cameroun (WhatsApp / Mobile Money)</label>
-                    <input type="tel" id="visitorPhone" class="form-control" value="+237 694 12 34 56" />
+                    <label class="form-label" for="visitorPhone">Téléphone Cameroun (+237 WhatsApp / MoMo) <span style="color:#B42318;">*</span></label>
+                    <input type="tel" id="visitorPhone" class="form-control" placeholder="Ex : +237 6XX XX XX XX" pattern="^\+?237[0-9\s]{8,13}$" required />
                   </div>
                 </div>
               </div>
 
-              <!-- Colonne droite : Panier, Paiement Mobile Money sans PIN & Billet QR Démo (RES-04, RES-07 à RES-12) -->
-              <div class="col-5" style="display:flex;flex-direction:column;gap:20px;">
+              <!-- Colonne droite Sticky : Panier, Paiement Mobile Money sans PIN & Billet QR (RES-04, RES-07 à RES-12) -->
+              <div class="col-5" id="resStickySummaryCol" style="display:flex;flex-direction:column;gap:20px;">
                 <div class="card" style="background:var(--color-surface-soft);border-color:var(--color-brand-deep);">
                   <div style="display:flex;justify-content:space-between;align-items:center;">
                     <h3>Récapitulatif & Panier<span class="tech-code-tag"> (`RES-04`)</span></h3>
@@ -2824,7 +3049,7 @@
                     <span style="font-family:var(--font-heading);font-size:2rem;font-weight:700;color:var(--color-brand-deep);" id="grandTotalFCFA">14 000 FCFA</span>
                   </div>
 
-                  <!-- Paiement Mobile Money en mode démonstration sans saisie de code PIN (RES-07, RES-08, RES-11) -->
+                  <!-- Paiement Mobile Money sans saisie de code PIN (RES-07, RES-08, RES-11) -->
                   <div style="background:var(--color-white);padding:14px;border-radius:var(--radius-sm);border:1px solid var(--color-border);">
                     <strong style="display:block;margin-bottom:8px;">Mode de règlement <span class="tech-code-tag">(RES-07 / RES-08)</span> :</strong>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
@@ -2839,9 +3064,9 @@
                       </label>
                     </div>
                     <div style="font-size:13.5px;color:var(--color-brand-deep);background:var(--color-surface-soft);padding:8px 10px;border-radius:6px;margin-bottom:10px;">
-                      <svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> <strong>Sécurité :</strong> Aucun code secret (PIN) n'est jamais demandé sur ce site. En production, vous validez la transaction directement sur votre téléphone via l'invite USSD officielle (<code>#150#</code> ou <code>*126#</code>).
+                      <svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg> <strong>Sécurité :</strong> Aucun code secret (PIN) n'est jamais demandé sur ce site. Vous validez directement la transaction sur votre téléphone via l'invite USSD officielle (<code>#150#</code> ou <code>*126#</code>).
                     </div>
-                    <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
+                    <div class="admin-only-control" style="display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap;">
                       <label for="momoStateSelect" style="font-size:13.5px;font-weight:600;">Tester les 5 états du paiement<span class="tech-code-tag"> (`RES-08`/`RES-11`)</span> :</label>
                       <select id="momoStateSelect" class="form-control" style="min-height:36px;padding:4px 8px;width:auto;" onchange="updatePaymentDemoState(this.value)">
                         <option value="CONFIRMED" selected>• Confirmé (Billet émis)</option>
@@ -2852,7 +3077,7 @@
                       </select>
                     </div>
                     <div id="momoStateFeedback" class="status-badge status-success" style="margin-top:10px;width:100%;justify-content:center;">
-                      • Paiement de démonstration confirmé — Référence : OM-CM-2026-99412
+                      • Paiement mobile sécurisé (sans code PIN sur le site) ou règlement au Guichet d'Ahala
                     </div>
                   </div>
 
@@ -2862,7 +3087,7 @@
                   </div>
                 </div>
 
-                <!-- Billet QR de démonstration<span class="tech-code-tag"> (RES-09)</span> -->
+                <!-- Billet QR Coupe-File<span class="tech-code-tag"> (RES-09)</span> -->
                 <div class="card clip" id="demoTicketCard" data-composition-id="ecopark-qr-pass" data-start="0" data-duration="1.05" data-track-index="1">
                   <div class="qr-pass-sheen" id="qrPassSheen"></div>
                   <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px dashed var(--color-border-strong);padding-bottom:10px;">
@@ -2876,8 +3101,8 @@
                     </div>
                   </div>
                   <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
-                    <!-- QR Code SVG de démonstration -->
-                    <svg width="108" height="108" viewBox="0 0 100 100" style="border:2px solid var(--color-brand-deep);border-radius:8px;padding:6px;background:#FFF;flex-shrink:0;" aria-label="QR Code de démonstration ECP-2026-84920">
+                    <!-- QR Code SVG -->
+                    <svg width="108" height="108" viewBox="0 0 100 100" style="border:2px solid var(--color-brand-deep);border-radius:8px;padding:6px;background:#FFF;flex-shrink:0;" aria-label="Billet QR Code ECOPARK ECP-2026-84920">
                       <rect x="6" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
                       <rect x="13" y="13" width="12" height="12" fill="#1D490D"/>
                       <rect x="68" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
@@ -2892,20 +3117,20 @@
                       <rect x="68" y="68" width="22" height="22" fill="#1F880B"/>
                     </svg>
                     <div style="font-size:14.5px;display:grid;gap:4px;">
-                      <div><strong>Titulaire :</strong> <span id="ticketHolder">M. Jean-Paul MBARGA</span></div>
-                      <div><strong>Date & Créneau :</strong> <span id="ticketDate">15/11/2026 (09h00 – 18h00)</span></div>
+                      <div><strong>Titulaire :</strong> <span id="ticketHolder">Visiteur ECOPARK (Pass Coupe-File)</span></div>
+                      <div><strong>Date & Créneau :</strong> <span id="ticketDate">Valable à la date choisie (09h00 – 18h00)</span></div>
                       <div><strong>Participants :</strong> <span id="ticketPax">2 Adultes, 2 Enfants, 1 Tout-petit</span></div>
                       <div><strong>Prestations :</strong> <span id="ticketItems">Entrée Parc & Zoo, Piscine, Pirogue</span></div>
                     </div>
                   </div>
-                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <div class="admin-only-control" style="display:flex;gap:8px;flex-wrap:wrap;">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="navigateFamily('AGT', 'AGT-05')">Tester ce billet au Scanner d'Entrée<span class="tech-code-tag"> (AGT-05)</span></button>
                     <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" onclick="navigateFamily('EXP', 'EXP-07')">Voir Console Closing WhatsApp<span class="tech-code-tag"> (EXP-07)</span></button>
                   </div>
                 </div>
 
                 <!-- ============================================================
-                     VUE WHATSAPP CLIENT (PILIERS 1 À 4 : GUICHET UNIQUE, BON DE COMMANDE PRÉ-CALCULÉ, CLOSER UPSELL/SAUVETAGE & E-BILLET QR + GPS)
+                     VUE WHATSAPP CLIENT (PILIERS 1 À 4 : GUICHET UNIQUE, BON DE COMMANDE PRÉ-CALCULÉ, OPTIONS 1-CLIC & E-BILLET QR + GPS)
                      ============================================================ -->
                 <div class="wa-concierge-shell" id="whatsappConciergeCard">
                   <div class="wa-header-bar">
@@ -2919,9 +3144,9 @@
                     <span class="status-badge status-success" id="waConciergeStatusBadge">Synchronisé en direct</span>
                   </div>
 
-                  <!-- Pilier 1 : 4 Quick Replies de Routage par Intention -->
+                  <!-- Pilier 1 : 4 Quick Replies d'Orientation Directe -->
                   <div>
-                    <div style="font-size:12.5px;font-weight:700;color:var(--color-brand-deep);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.03em;">1. Routage rapide par intention (Guichet Unique) :</div>
+                    <div style="font-size:12.5px;font-weight:700;color:var(--color-brand-deep);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.03em;">1. Que souhaitez-vous organiser aujourd'hui ?</div>
                     <div class="wa-quick-grid" id="waQuickReplyGrid">
                       <button type="button" class="wa-quick-reply-btn active" onclick="selectWhatsAppIntent('PASS_QR', this)">
                         <span>1. Pass Journée / Billet QR</span>
@@ -2949,17 +3174,17 @@
                       <span class="price-pill" style="font-size:0.95rem;padding:2px 8px;" id="waBubbleRef">ECP-2026-84920</span>
                     </div>
                     <div id="waBubbleBodyText" style="display:grid;gap:3px;color:var(--color-text);">
-                      <div>• <strong>Visiteur :</strong> M. Jean-Paul MBARGA (+237 694 12 34 56)</div>
+                      <div>• <strong>Visiteur :</strong> Visiteur ECOPARK (+237 WhatsApp)</div>
                       <div>• <strong>Formule :</strong> 2 Adultes, 2 Enfants (Tarif enfant protégé 500 FCFA)</div>
                       <div>• <strong>Prestations :</strong> Entrée Parc &amp; Zoo, Piscine, Pirogue</div>
                       <div>• <strong>Total TTC :</strong> <strong style="color:var(--color-brand-deep);">14 000 FCFA</strong> (Orange Money / MTN MoMo / Guichet)</div>
                     </div>
                   </div>
 
-                  <!-- Pilier 4 : Closer Conversationnel (Upsell 1-clic & Sauvetage Solde MoMo Insuffisant) -->
+                  <!-- Pilier 4 : Conciergerie WhatsApp (Options Confort & Garantie Guichet en 1 clic) -->
                   <div class="wa-bubble-closer">
                     <div style="display:flex;justify-content:space-between;align-items:center;">
-                      <strong style="color:#8E5617;font-size:13px;">Concierge Commercial WhatsApp — Actions en 1 clic :</strong>
+                      <strong style="color:#8E5617;font-size:13px;">Options Confort &amp; Garantie de Réservation en 1 clic :</strong>
                       <span style="font-size:11.5px;color:#8E5617;font-weight:600;">Sans saisie PIN</span>
                     </div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
@@ -2967,7 +3192,7 @@
                         + Ajouter Poisson Braisé &amp; Pergola 13h (+5 000 FCFA)
                       </button>
                       <button type="button" class="btn btn-secondary btn-sm" style="flex:1;font-size:12.5px;" onclick="triggerWhatsAppGuichetRescue()">
-                        Solde MoMo insuffisant ? Code Pré-réservation Guichet (11h)
+                        Payer sur place ? Bloquer mon tarif au Guichet (valable 11h)
                       </button>
                     </div>
                   </div>
@@ -2976,7 +3201,7 @@
                   <div class="wa-qr-delivery-bubble" id="waQrDeliveryBubble">
                     <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
                       <div>
-                        <span style="font-size:11.5px;text-transform:uppercase;letter-spacing:0.04em;opacity:0.85;">Portefeuille WhatsApp • Prêt pour scan AGT-05</span>
+                        <span style="font-size:11.5px;text-transform:uppercase;letter-spacing:0.04em;opacity:0.85;">Portefeuille Billet WhatsApp • Accès Coupe-File Portail Ahala</span>
                         <strong style="display:block;font-size:1.05rem;" id="waDeliveryTitle">E-Billet QR Actif : ECP-2026-84920</strong>
                       </div>
                       <a href="https://www.google.com/maps/search/?api=1&amp;query=Tradex+Ahala+Yaounde+Cameroun" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="text-decoration:none;font-size:12px;">
@@ -2984,7 +3209,7 @@
                       </a>
                     </div>
                     <div style="font-size:12.8px;opacity:0.92;" id="waDeliverySubtext">
-                      Présentez directement cette bulle WhatsApp au portail d'Ahala, à la Piscine ou au Château des Saveurs. (Anti-fraude actif : 1 seul passage autorisé).
+                      Présentez directement cette bulle WhatsApp au portail d'Ahala, à la Piscine ou au Château des Saveurs. (Contrôle QR unique au portail).
                     </div>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;">
                       <button type="button" class="btn btn-secondary btn-sm" style="flex:1;background:#FFFFFF;color:var(--color-brand-deep);border-color:#FFFFFF;font-weight:700;" onclick="sendWhatsAppBooking()">
@@ -3020,21 +3245,21 @@
           <div class="container">
             <div class="section-header">
               <span class="eyebrow"><span class="tech-code-tag"><span class="tech-code-tag">ACC-01 à ACC-06 • </span></span>Espace Personnel Visiteur & Responsable de Groupe</span>
-              <h2>Bonjour M. Jean-Paul MBARGA — Vos visites et dossiers ECOPARK</h2>
+              <h2>Votre Espace Visiteur — Vos Billets QR, Devis &amp; Rendez-Vous ECOPARK</h2>
             </div>
 
             <div class="grid-12">
               <div class="col-4 card">
-                <h3><span class="icon-medallion"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> <span class="tech-code-tag">ACC-01 & ACC-06 — </span>Accès Rapide & Profil</h3>
+                <h3><span class="icon-medallion"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> <span class="tech-code-tag">ACC-01 & ACC-06 — </span>Accès Rapide &amp; Suivi</h3>
                 <p style="font-size:14.5px;color:var(--color-text-muted);">
-                  Compte vérifié par code SMS / WhatsApp sur le <strong>+237 694 12 34 56</strong>.
+                  Retrouvez ici les réservations, demandes de proforma et rendez-vous enregistrés sur votre session ou reliés à votre numéro WhatsApp (+237).
                 </p>
                 <div style="background:var(--color-surface-soft);padding:12px;border-radius:8px;font-size:14.5px;display:grid;gap:6px;">
-                  <div><strong>Nom :</strong> Jean-Paul MBARGA</div>
-                  <div><strong>Quartier / Ville :</strong> Bastos, Yaoundé</div>
-                  <div><strong>Notifications :</strong> WhatsApp + SMS actifs</div>
+                  <div><strong>Session active :</strong> <span id="accProfileName">Visiteur ECOPARK (+237)</span></div>
+                  <div><strong>Site d'accueil :</strong> Ahala Barrière (Face Station Tradex)</div>
+                  <div><strong>Envoi des billets :</strong> WhatsApp &amp; Téléchargement QR</div>
                 </div>
-                <button class="btn btn-secondary btn-sm" onclick="inspectScreen('ACC-06')">Mettre à jour mes préférences<span class="tech-code-tag"> (ACC-06)</span></button>
+                <button class="btn btn-secondary btn-sm" onclick="navigateFamily('RES', 'RES-03')">Créer une nouvelle réservation<span class="tech-code-tag"> (ACC-06)</span></button>
               </div>
 
               <div class="col-8 card">
@@ -3251,7 +3476,7 @@
                 <!-- PILIER 5 : CONSOLE DE CLOSING WHATSAPP EN 1 CLIC (EXP-07) -->
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;" id="sec-EXP-07">
                   <div>
-                    <span class="eyebrow eyebrow-hospitality" style="margin:0;">Pilier 5 • Console Commerciale Exploitation (EXP-07)</span>
+                    <span class="eyebrow eyebrow-hospitality" style="margin:0;">Pilier 5 • Console Commerciale Exploitation<span class="tech-code-tag"> (EXP-07)</span></span>
                     <h3 style="margin-top:4px;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span> <span class="tech-code-tag">EXP-07 — </span>Console de « Closing WhatsApp en 1 Clic » (+237 697 13 62 03)</h3>
                   </div>
                   <span class="status-badge badge-qr-prestige" id="expWaPipelineBadge">Pipeline Actif : 136 500 FCFA (4 dossiers)</span>
@@ -3742,38 +3967,61 @@
       </p>
       <div class="grid-12" style="gap:12px;margin-top:8px;">
         <div class="col-12 form-group" style="margin:0;">
-          <label class="form-label" for="quoteOrgName">Nom de l'école, de l'entreprise ou de l'association</label>
-          <input type="text" id="quoteOrgName" class="form-control" value="Complexe Scolaire Bilingue Les Étoiles (Yaoundé)" />
+          <label class="form-label" for="quoteOrgName">Nom de l'école, de l'entreprise ou de l'association <span style="color:#B42318;">*</span></label>
+          <input type="text" id="quoteOrgName" class="form-control" placeholder="Ex : Complexe Scolaire Bilingue, Ministère, ONG ou Entreprise" oninput="recalcQuoteProformaPreview()" required />
         </div>
         <div class="col-6 form-group" style="margin:0;">
           <label class="form-label" for="quoteType">Type d'événement</label>
-          <select id="quoteType" class="form-control">
-            <option value="Excursion scolaire">Excursion scolaire (Maternelle / Primaire / Secondaire)</option>
-            <option value="Séminaire Ministère / ONG / Entreprise">Séminaire Ministère / ONG / Entreprise (Salle Menkii Essomba Anton)</option>
-            <option value="Grande Réunion / Mariage / Réception">Grande Réunion d'Association / Mariage / Arbre de Noël</option>
+          <select id="quoteType" class="form-control" onchange="recalcQuoteProformaPreview()">
+            <option value="Excursion scolaire">Excursion scolaire (Forfait protégé : 1 500 FCFA / élève)</option>
+            <option value="Séminaire Ministère / ONG / Entreprise">Séminaire Ministère / ONG / Entreprise (12 500 FCFA / pers.)</option>
+            <option value="Grande Réunion / Mariage / Réception">Grande Réunion / Mariage / Gala (15 000 FCFA / invité)</option>
           </select>
         </div>
         <div class="col-6 form-group" style="margin:0;">
-          <label class="form-label" for="quotePax">Nombre de participants estimé</label>
-          <input type="number" id="quotePax" class="form-control" value="60" min="10" />
+          <label class="form-label" for="quotePax">Nombre de participants estimé <span style="color:#B42318;">*</span></label>
+          <input type="number" id="quotePax" class="form-control" value="60" min="10" oninput="recalcQuoteProformaPreview()" required />
         </div>
         <div class="col-6 form-group" style="margin:0;">
-          <label class="form-label" for="quoteDate">Date souhaitée</label>
-          <input type="date" id="quoteDate" class="form-control" value="2026-12-10" />
+          <label class="form-label" for="quoteDate">Date souhaitée <span style="color:#B42318;">*</span></label>
+          <input type="date" id="quoteDate" class="form-control" value="2026-12-10" onchange="recalcQuoteProformaPreview()" required />
         </div>
         <div class="col-6 form-group" style="margin:0;">
-          <label class="form-label" for="quotePhone">Téléphone WhatsApp du responsable</label>
-          <input type="tel" id="quotePhone" class="form-control" value="+237 699 45 67 89" />
+          <label class="form-label" for="quotePhone">Téléphone WhatsApp du responsable <span style="color:#B42318;">*</span></label>
+          <input type="tel" id="quotePhone" class="form-control" placeholder="Ex : +237 6XX XX XX XX" required />
+        </div>
+        <div class="col-12" style="display:grid;gap:6px;margin-top:4px;">
+          <label style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--color-surface-soft);border:1px solid var(--color-border);border-radius:8px;font-size:13.5px;cursor:pointer;">
+            <span>
+              <input type="checkbox" id="quoteOptHall" onchange="recalcQuoteProformaPreview()" />
+              <strong style="margin-left:6px;">Privatisation Salle Polyvalente « Menkii Essomba Anton » &amp; Sonorisation</strong> (Inclus en Séminaire/Mariage • +75 000 FCFA en option)
+            </span>
+          </label>
+          <label style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--color-surface-soft);border:1px solid var(--color-border);border-radius:8px;font-size:13.5px;cursor:pointer;">
+            <span>
+              <input type="checkbox" id="quoteOptShuttle" onchange="recalcQuoteProformaPreview()" />
+              <strong style="margin-left:6px;">Location Navette Climatisée A/R Yaoundé (Bus 18 ou 32 places)</strong> (+45 000 FCFA forfait rotation)
+            </span>
+          </label>
+        </div>
+        <div class="col-12" id="quoteProformaPreview" style="padding:12px;background:#FBF5EC;border:1px solid rgba(196,125,43,0.4);border-radius:10px;font-size:13.5px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
+            <strong style="color:var(--color-brand-deep);">Aperçu Facture Proforma Officielle (Simulation temps réel)</strong>
+            <span class="price-pill" id="quoteProformaTotalText" style="font-size:14px;">90 000 FCFA</span>
+          </div>
+          <div id="quoteProformaBreakdownText" style="color:var(--color-text-muted);font-size:12.8px;">
+            60 participants × 1 500 FCFA (Tarif entrée enfant protégé 500 FCFA + Piscine/Pirogue encadrée).
+          </div>
         </div>
       </div>
       <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
         <button type="button" class="btn btn-primary" style="flex:1;" onclick="submitGroupQuoteSprint1()">Enregistrer &amp; Obtenir mon N° de Suivi</button>
-        <button type="button" class="btn btn-secondary btn-ochre-outline" style="flex:1;" onclick="sendWhatsAppQuoteSprint1()"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Envoyer sur WhatsApp (+237 697 13 62 03)</button>
+        <button type="button" class="btn btn-secondary btn-ochre-outline" style="flex:1;" onclick="sendWhatsAppQuoteSprint1()"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Envoyer Proforma sur WhatsApp (+237 697 13 62 03)</button>
       </div>
     </div>
 
     <!-- Modale Candidature CFP ECOPARK (PUB-12 / EXP-06) -->
-    <div id="modalCfpBox" class="card" style="display:none;max-width:560px;width:100%;background:#FFFFFF;padding:32px;">
+    <div id="modalCfpBox" class="card" style="display:none;max-width:580px;width:100%;background:#FFFFFF;padding:32px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span class="eyebrow" style="margin:0;">Formation Professionnelle Agréée MINEFOP</span>
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeSprint1Modals()"><svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18"/><path d="m6 6 12 12"/></svg> Fermer</button>
@@ -3783,12 +4031,16 @@
         Accessible dès 16 ans • Inscription : <strong>50 000 FCFA</strong> • Scolarité : <strong>250 000 FCFA (payable en 4 tranches)</strong> • Diplômes délivrés : <strong>DQP, CQP et Attestation reconnue par l'État</strong> avec stage pratique garanti au sein même d'ECOPARK.
       </p>
       <div class="grid-12" style="gap:12px;margin-top:8px;">
-        <div class="col-12 form-group" style="margin:0;">
-          <label class="form-label" for="cfpCandidateName">Nom et Prénom du candidat</label>
-          <input type="text" id="cfpCandidateName" class="form-control" value="Mlle Grâce NKODO" />
+        <div class="col-8 form-group" style="margin:0;">
+          <label class="form-label" for="cfpCandidateName">Nom et Prénom du candidat <span style="color:#B42318;">*</span></label>
+          <input type="text" id="cfpCandidateName" class="form-control" placeholder="Nom et prénom complet du candidat" required />
+        </div>
+        <div class="col-4 form-group" style="margin:0;">
+          <label class="form-label" for="cfpAge">Âge (Min. 16 ans) <span style="color:#B42318;">*</span></label>
+          <input type="number" id="cfpAge" class="form-control" value="19" min="16" max="65" required />
         </div>
         <div class="col-6 form-group" style="margin:0;">
-          <label class="form-label" for="cfpTrack">Filière choisie</label>
+          <label class="form-label" for="cfpTrack">Filière officielle MINEFOP (5 filières)</label>
           <select id="cfpTrack" class="form-control">
             <option value="Hôtellerie">1. Hôtellerie (Stage Hôtels Ewondo, Chanthel &amp; Bene)</option>
             <option value="Restauration">2. Restauration (Stage Le Château des Saveurs)</option>
@@ -3798,12 +4050,20 @@
           </select>
         </div>
         <div class="col-6 form-group" style="margin:0;">
-          <label class="form-label" for="cfpPhone">Téléphone (+237)</label>
-          <input type="tel" id="cfpPhone" class="form-control" value="+237 677 88 99 00" />
+          <label class="form-label" for="cfpPhone">Téléphone (+237) <span style="color:#B42318;">*</span></label>
+          <input type="tel" id="cfpPhone" class="form-control" placeholder="Ex : +237 6XX XX XX XX" required />
+        </div>
+        <div class="col-12 form-group" style="margin:0;">
+          <label class="form-label" for="cfpPaymentPlan">Modalité de règlement de la scolarité (Inscription : 50 000 FCFA)</label>
+          <select id="cfpPaymentPlan" class="form-control">
+            <option value="Échéancier 4 tranches (100k + 3x50k FCFA)" selected>Échéancier 4 tranches : 100 000 FCFA + 3 × 50 000 FCFA (Total Scolarité : 250 000 FCFA)</option>
+            <option value="Paiement intégral (300 000 FCFA)">Paiement intégral à l'inscription : 50 000 FCFA + 250 000 FCFA (300 000 FCFA)</option>
+          </select>
         </div>
       </div>
       <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
         <button type="button" class="btn btn-primary" style="flex:1;" onclick="submitCfpApplicationSprint1()">Valider mon dossier de candidature CFP</button>
+        <button type="button" class="btn btn-secondary btn-ochre-outline" style="flex:1;" onclick="sendWhatsAppCfpSprint1()"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Envoyer dossier CFP sur WhatsApp</button>
       </div>
     </div>
 
@@ -3827,7 +4087,7 @@
             <span>Visite de la Salle « Menkii Essomba Anton », esplanade et dégustation Château des Saveurs.</span>
           </button>
           <button type="button" class="rdv-purpose-card" data-purpose="seminaire_b2b" onclick="selectRdvPurpose('seminaire_b2b', this)">
-            <strong><span>Séminaire B2B / Ministère / ONG</span> <span class="price-pill" style="padding:2px 8px !important;font-size:11px;">Devis &amp; Loges</span></strong>
+            <strong><span>Séminaire Entreprise / Ministère / ONG</span> <span class="price-pill" style="padding:2px 8px !important;font-size:11px;">Devis &amp; Loges</span></strong>
             <span>Configuration salle climatisée, hébergement Cités Ewondo/Chanthel/Bene et navettes.</span>
           </button>
           <button type="button" class="rdv-purpose-card" data-purpose="visite_ecole" onclick="selectRdvPurpose('visite_ecole', this)">
@@ -3881,15 +4141,15 @@
       <div class="grid-12" style="gap:12px;margin-top:12px;">
         <div class="col-4 form-group" style="margin:0;">
           <label class="form-label" for="rdvVisitorName">Votre Nom &amp; Prénom</label>
-          <input type="text" id="rdvVisitorName" class="form-control" value="Mme Solange ETOUNDI" />
+          <input type="text" id="rdvVisitorName" class="form-control" placeholder="Votre nom et prénom" />
         </div>
         <div class="col-4 form-group" style="margin:0;">
           <label class="form-label" for="rdvOrgName">Structure / Événement</label>
-          <input type="text" id="rdvOrgName" class="form-control" value="Comité Gala &amp; Mariage Yaoundé" />
+          <input type="text" id="rdvOrgName" class="form-control" placeholder="Ex : Mariage, École, Ministère, ONG" />
         </div>
         <div class="col-4 form-group" style="margin:0;">
           <label class="form-label" for="rdvPhone">Téléphone WhatsApp (+237)</label>
-          <input type="tel" id="rdvPhone" class="form-control" value="+237 697 13 62 03" />
+          <input type="tel" id="rdvPhone" class="form-control" placeholder="Ex : +237 6XX XX XX XX" />
         </div>
       </div>
 
@@ -3913,6 +4173,22 @@
       </div>
     </div>
 
+  </div>
+
+  <!-- LEVIER 3 : BARRE D'ACTION RAPIDE MOBILE (ZONE DU POUCE) -->
+  <div class="mobile-sticky-conversion-bar" id="mobileStickyConversionBar" aria-label="Accès rapide réservation et WhatsApp">
+    <div>
+      <span style="font-size:11px;text-transform:uppercase;letter-spacing:0.04em;color:var(--color-text-muted);display:block;font-weight:700;" id="stickyBarPaxText">2 Adultes, 2 Enfants • Pass QR</span>
+      <strong style="font-family:var(--font-heading);font-size:1.25rem;color:var(--color-brand-deep);" id="stickyBarTotalFcfa">14 000 FCFA</strong>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" style="padding:8px 12px;font-size:12.5px;" onclick="openStickyWhatsAppQuick()">
+        <svg class="svg-mono" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> WhatsApp
+      </button>
+      <button type="button" class="btn btn-primary btn-sm" style="padding:8px 14px;font-size:12.5px;" onclick="navigateFamily('RES', 'RES-03')">
+        Réserver mon Pass
+      </button>
+    </div>
   </div>
 
   <!-- Notification Toast Apple-Grade -->
@@ -4072,17 +4348,40 @@
       navigateFamily(target[0], target[1]);
     }
 
+    function triggerSectionFocusHalo(el) {
+      if (!el) return;
+      document.querySelectorAll('.section-focus-halo').forEach(n => n.classList.remove('section-focus-halo'));
+      void el.offsetWidth;
+      el.classList.add('section-focus-halo');
+      clearTimeout(window._haloTimer);
+      window._haloTimer = setTimeout(() => {
+        el.classList.remove('section-focus-halo');
+      }, 1850);
+    }
+
     function navigateFamily(family, screenId) {
       document.querySelectorAll('.family-view').forEach(el => el.classList.remove('active'));
       const targetView = document.getElementById('view-' + family);
       if (targetView) targetView.classList.add('active');
 
       document.querySelectorAll('.main-nav .nav-item').forEach(el => el.classList.remove('active'));
-      const navBtn = document.getElementById('nav-' + family);
+      const navMap = {
+        'PUB-10': 'nav-TARIFS',
+        'PUB-08': 'nav-HOTELS',
+        'PUB-09': 'nav-HOTELS',
+        'PUB-07': 'nav-SAVEURS',
+        'PUB-12': 'nav-CFP'
+      };
+      const mappedId = (screenId && navMap[screenId]) ? navMap[screenId] : ('nav-' + family);
+      const navBtn = document.getElementById(mappedId) || document.getElementById('nav-' + family);
       if (navBtn) navBtn.classList.add('active');
 
-      inspectScreen(screenId || (family + '-01'));
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      const targetScreen = screenId || (family + '-01');
+      const anchorSection = document.getElementById('sec-' + targetScreen);
+      if (!anchorSection || targetScreen === 'PUB-01' || targetScreen === 'RES-01') {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      inspectScreen(targetScreen);
     }
 
     function inspectScreen(screenId) {
@@ -4094,8 +4393,38 @@
       renderInspectorPills();
 
       const anchorSection = document.getElementById('sec-' + screenId);
-      if (anchorSection) {
-        anchorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      if (anchorSection && screenId !== 'PUB-01') {
+        anchorSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        triggerSectionFocusHalo(anchorSection);
+      }
+    }
+
+    function routeVisitorByProfile(profileKey) {
+      if (profileKey === 'FAMILLE') {
+        navigateFamily('PUB', 'PUB-10');
+        const grid = document.getElementById('pubSalesBundlesGrid');
+        if (grid) triggerSectionFocusHalo(grid);
+        showToastSprint1('• Parcours Famille & Week-end : Choisissez un Pass Tout-Inclus en 1 clic ou simulez à la carte.');
+      } else if (profileKey === 'HOTEL') {
+        navigateFamily('PUB', 'PUB-08');
+        showToastSprint1('• Hébergement au calme : Cités Bene (10k), Chanthel (15k) et Ewondo VIP (25k FCFA).');
+      } else if (profileKey === 'B2B_ECOLE') {
+        navigateFamily('PUB', 'PUB-11');
+        openQuoteModalSprint1();
+      } else if (profileKey === 'CFP') {
+        navigateFamily('PUB', 'PUB-12');
+        openCfpModalSprint1();
+      }
+    }
+
+    function openStickyWhatsAppQuick() {
+      navigateFamily('RES', 'RES-04');
+      const waCard = document.getElementById('whatsappConciergeCard');
+      if (waCard) {
+        setTimeout(() => {
+          waCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          triggerSectionFocusHalo(waCard);
+        }, 80);
       }
     }
 
@@ -4190,10 +4519,34 @@
         if (bumpNut) bumpNut.checked = false;
         if (bumpPerg) bumpPerg.checked = true;
         if (bumpLodge) bumpLodge.checked = true;
+        const citySel = document.getElementById('lodgeCitySelect');
+        const nightsSel = document.getElementById('lodgeNightsSelect');
+        if (citySel) citySel.value = 'EWONDO';
+        if (nightsSel) nightsSel.value = '1';
         showToastSprint1('• Pack Escapade Couple VIP activé : Suite Cité Ewondo + 2 Repas + Pergola Lac + Piscine & Pirogue (Forfait 45 000 FCFA) !');
       }
       updateBundleButtonsUI();
       recalcSimulator();
+    }
+
+    function getSelectedLodgeDetails() {
+      const cityEl = document.getElementById('lodgeCitySelect');
+      const nightsEl = document.getElementById('lodgeNightsSelect');
+      const city = cityEl ? cityEl.value : 'EWONDO';
+      const nights = nightsEl ? (parseInt(nightsEl.value, 10) || 1) : 1;
+      const map = {
+        EWONDO: { label: 'Suite VIP Cité Ewondo Climatisée', unit: 25000 },
+        CHANTHEL: { label: 'Loge Cité Chanthel Confort', unit: 15000 },
+        BENE: { label: 'Pavillon Cité Bene Calme', unit: 10000 }
+      };
+      const cfg = map[city] || map.EWONDO;
+      return {
+        city,
+        nights,
+        unit: cfg.unit,
+        total: cfg.unit * nights,
+        summary: `${cfg.label} (${nights} nuit${nights > 1 ? 's' : ''})`
+      };
     }
 
     function recalcSimulator() {
@@ -4206,10 +4559,21 @@
       const zooAdultUnit = isGroup20Plus ? 700 : 1000;
       const zooChildUnit = 500;
 
+      // Tarif Piscine Enfant : 1 500 FCFA (Prévente En Ligne / Semaine) vs 2 500 FCFA (Guichet Week-end & Jours Fériés)
+      const poolPeriodEl = document.getElementById('poolRatePeriod');
+      const isWeekendFullRate = poolPeriodEl && poolPeriodEl.value === 'WEEKEND_PLEIN';
+      const piscineChildUnit = isWeekendFullRate ? 2500 : 1500;
+      const lblPiscineInfo = document.getElementById('lblPiscineRateInfo');
+      if (lblPiscineInfo) {
+        lblPiscineInfo.textContent = isWeekendFullRate
+          ? '(Enfant Week-end/Férié : 2 500 FCFA • Adulte : 2 500 FCFA)'
+          : '(Enfant Prévente/Semaine : 1 500 FCFA • Adulte : 2 500 FCFA)';
+      }
+
       const zooCost = document.getElementById('chkZoo').checked
         ? (counts.adults * zooAdultUnit + counts.children * zooChildUnit) : 0;
       const piscineCost = document.getElementById('chkPiscine').checked
-        ? (counts.adults * 2500 + counts.children * 1500) : 0;
+        ? (counts.adults * 2500 + counts.children * piscineChildUnit) : 0;
       const pirogueCost = document.getElementById('chkPirogue').checked
         ? (counts.adults * 1000 + counts.children * 500) : 0;
       const chevalCost = document.getElementById('chkCheval').checked
@@ -4221,11 +4585,16 @@
       const bumpNutritionChecked = document.getElementById('chkBumpNutrition') && document.getElementById('chkBumpNutrition').checked;
       const bumpPergolaChecked = document.getElementById('chkBumpPergola') && document.getElementById('chkBumpPergola').checked;
       const bumpLodgeChecked = document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked;
+      const bumpNavetteChecked = document.getElementById('chkBumpNavette') && document.getElementById('chkBumpNavette').checked;
+      const bumpPecheChecked = document.getElementById('chkBumpPeche') && document.getElementById('chkBumpPeche').checked;
 
       const nutritionPacksCount = bumpNutritionChecked ? Math.max(1, counts.children) : 0;
       const nutritionCost = nutritionPacksCount * 500;
       const pergolaCost = bumpPergolaChecked ? 5000 : 0;
-      const lodgeCost = bumpLodgeChecked ? 25000 : 0;
+      const lodgeDetails = getSelectedLodgeDetails();
+      const lodgeCost = bumpLodgeChecked ? lodgeDetails.total : 0;
+      const navetteCost = bumpNavetteChecked ? (counts.adults * 1500 + counts.children * 1000) : 0;
+      const pecheCost = bumpPecheChecked ? 2000 : 0;
 
       document.getElementById('subZoo').textContent = formatFCFA(zooCost);
       document.getElementById('subPiscine').textContent = formatFCFA(piscineCost);
@@ -4235,6 +4604,8 @@
       if (document.getElementById('subBumpNutrition')) document.getElementById('subBumpNutrition').textContent = formatFCFA(nutritionCost);
       if (document.getElementById('subBumpPergola')) document.getElementById('subBumpPergola').textContent = formatFCFA(pergolaCost);
       if (document.getElementById('subBumpLodge')) document.getElementById('subBumpLodge').textContent = formatFCFA(lodgeCost);
+      if (document.getElementById('subBumpNavette')) document.getElementById('subBumpNavette').textContent = formatFCFA(navetteCost);
+      if (document.getElementById('subBumpPeche')) document.getElementById('subBumpPeche').textContent = formatFCFA(pecheCost);
 
       let bundleDiscount = 0;
       let bundleLabel = '';
@@ -4249,7 +4620,7 @@
         bundleLabel = 'Remise Forfait Escapade Couple VIP Ewondo (-4 000 FCFA)';
       }
 
-      const rawSubtotal = zooCost + piscineCost + pirogueCost + chevalCost + repasCost + nutritionCost + pergolaCost + lodgeCost;
+      const rawSubtotal = zooCost + piscineCost + pirogueCost + chevalCost + repasCost + nutritionCost + pergolaCost + lodgeCost + navetteCost + pecheCost;
       const total = Math.max(0, rawSubtotal - bundleDiscount);
       document.getElementById('grandTotalFCFA').textContent = formatFCFA(total);
 
@@ -4273,13 +4644,15 @@
       const lines = [];
       lines.push(`<div><strong>Participants :</strong> ${counts.adults} Adulte(s), ${counts.children} Enfant(s) (3-12 ans), ${counts.toddlers} Tout-petit(s) (<3 ans : Gratuit)</div>`);
       if (zooCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Entrée Parc & Zoo (${counts.adults}×${zooAdultUnit} + ${counts.children}×${zooChildUnit})</span><strong>${formatFCFA(zooCost)}</strong></div>`);
-      if (piscineCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Piscine Semi-Olympique</span><strong>${formatFCFA(piscineCost)}</strong></div>`);
+      if (piscineCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Piscine Semi-Olympique (${isWeekendFullRate ? 'Tarif Week-end' : 'Tarif Prévente/Semaine'})</span><strong>${formatFCFA(piscineCost)}</strong></div>`);
       if (pirogueCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Balade en Pirogue (Lac d'Ahala)</span><strong>${formatFCFA(pirogueCost)}</strong></div>`);
       if (chevalCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Équitation / Manèges</span><strong>${formatFCFA(chevalCost)}</strong></div>`);
       if (repasCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;"><span>Repas Le Château des Saveurs</span><strong>${formatFCFA(repasCost)}</strong></div>`);
-      if (nutritionCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Order Bump : ${nutritionPacksCount}× Sachet(s) Nutrition Poissons</span><strong>${formatFCFA(nutritionCost)}</strong></div>`);
-      if (pergolaCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Order Bump : Pergola Privée Bord du Lac (13h)</span><strong>${formatFCFA(pergolaCost)}</strong></div>`);
-      if (lodgeCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Hébergement : Suite VIP Cité Ewondo Climatisée</span><strong>${formatFCFA(lodgeCost)}</strong></div>`);
+      if (nutritionCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Option Privilège : ${nutritionPacksCount}× Sachet(s) Nutrition Poissons</span><strong>${formatFCFA(nutritionCost)}</strong></div>`);
+      if (pergolaCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Option Privilège : Pergola Privée Bord du Lac (13h)</span><strong>${formatFCFA(pergolaCost)}</strong></div>`);
+      if (lodgeCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Hébergement : ${lodgeDetails.summary}</span><strong>${formatFCFA(lodgeCost)}</strong></div>`);
+      if (navetteCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Logistique : Navette Climatisée A/R Yaoundé</span><strong>${formatFCFA(navetteCost)}</strong></div>`);
+      if (pecheCost > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:#8E5617;"><span>+ Découverte : Pêche Ludique &amp; Musée/Forêt</span><strong>${formatFCFA(pecheCost)}</strong></div>`);
       if (bundleDiscount > 0) lines.push(`<div style="display:flex;justify-content:space-between;color:var(--color-brand-deep);font-weight:700;"><span>${bundleLabel}</span><strong>-${formatFCFA(bundleDiscount)}</strong></div>`);
       document.getElementById('cartBreakdown').innerHTML = lines.join('');
       document.getElementById('ticketPax').textContent = `${counts.adults} Adulte(s), ${counts.children} Enfant(s), ${counts.toddlers} Tout-petit(s)`;
@@ -4297,10 +4670,10 @@
     function updatePaymentDemoState(state) {
       const box = document.getElementById('momoStateFeedback');
       const map = {
-        CONFIRMED: { cls: 'status-badge status-success', text: '• Paiement de démonstration confirmé — Billet QR ECP-2026-84920 actif' },
+        CONFIRMED: { cls: 'status-badge status-success', text: '• Billet QR Coupe-File actif — Prêt pour le portail d\'Ahala' },
         PENDING: { cls: 'status-badge status-info', text: '• En attente : composez #150# (Orange) ou *126# (MTN) sur votre téléphone pour valider' },
-        FAILED: { cls: 'status-badge status-error', text: '• Paiement échoué (Solde insuffisant). Votre panier reste sauvegardé (RES-11)' },
-        EXPIRED: { cls: 'status-badge status-warning', text: '• Délai de confirmation expiré. Cliquez pour relancer une notification ou payer au guichet' },
+        FAILED: { cls: 'status-badge status-error', text: '• Transaction non aboutie (Solde insuffisant). Votre panier reste sauvegardé pour paiement au guichet' },
+        EXPIRED: { cls: 'status-badge status-warning', text: '• Délai de confirmation expiré. Cliquez pour relancer une notification ou régler au guichet' },
         CANCELLED: { cls: 'status-badge status-warning', text: '• Transaction annulée sur le mobile. Vous pouvez choisir un autre mode de règlement' }
       };
       const cfg = map[state] || map.CONFIRMED;
@@ -4400,7 +4773,7 @@
       const q = (query || '').toLowerCase();
       const container = document.getElementById('faqListContainer');
       if (q.includes('introuvable') || q.includes('xyz')) {
-        container.innerHTML = `<div style="padding:12px;background:var(--color-warning-bg);color:var(--color-warning-text);border-radius:8px;">Aucun résultat pour « ${query} » (État vide PUB-19). Essayez « piscine », « pirogue », « Ewondo » ou « CFP ».</div>`;
+        container.innerHTML = `<div style="padding:12px;background:var(--color-warning-bg);color:var(--color-warning-text);border-radius:8px;">Aucun résultat pour « ${query} ». Essayez « piscine », « pirogue », « Ewondo » ou « CFP ».</div>`;
       }
     }
 
@@ -4435,7 +4808,12 @@
       if (document.getElementById('chkRepas') && document.getElementById('chkRepas').checked) acts.push('Repas Château des Saveurs');
       if (document.getElementById('chkBumpNutrition') && document.getElementById('chkBumpNutrition').checked) acts.push('Sachet Nutrition Poissons (+500 F)');
       if (document.getElementById('chkBumpPergola') && document.getElementById('chkBumpPergola').checked) acts.push('Pergola Privée 13h (+5 000 F)');
-      if (document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked) acts.push('Suite VIP Cité Ewondo (+25 000 F)');
+      if (document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked) {
+        const ld = typeof getSelectedLodgeDetails === 'function' ? getSelectedLodgeDetails() : { summary: 'Suite VIP Cité Ewondo', total: 25000 };
+        acts.push(`${ld.summary} (+${formatFCFA(ld.total)})`);
+      }
+      if (document.getElementById('chkBumpNavette') && document.getElementById('chkBumpNavette').checked) acts.push('Navette Climatisée A/R Yaoundé');
+      if (document.getElementById('chkBumpPeche') && document.getElementById('chkBumpPeche').checked) acts.push('Pêche Ludique & Musée/Forêt (+2 000 F)');
       return acts.join(', ') || 'Accès Parc & Détente';
     }
 
@@ -4626,12 +5004,31 @@
       return `${pad(d.getDate())}/${pad(d.getMonth()+1)}/${d.getFullYear()} ${pad(d.getHours())}:${pad(d.getMinutes())}`;
     }
 
+    function isValidCameroonPhone(phoneStr) {
+      const digits = String(phoneStr || '').replace(/[^0-9]/g, '');
+      return digits.length >= 8;
+    }
+
     // Génération et persistance d'un nouveau billet QR depuis le simulateur (RES-09)
     function createLiveBookingSprint1() {
+      const nameEl = document.getElementById('visitorName');
+      const phoneEl = document.getElementById('visitorPhone');
+      const dateEl = document.getElementById('visitDate');
+      const holder = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'Visiteur ECOPARK (Pass Coupe-File)';
+      const phone = (phoneEl && phoneEl.value.trim()) ? phoneEl.value.trim() : '+237 697 13 62 03';
+      const rawDate = (dateEl && dateEl.value.trim()) ? dateEl.value.trim() : '2026-11-15';
+
+      if (phoneEl && phoneEl.value.trim() && !isValidCameroonPhone(phone)) {
+        phoneEl.focus();
+        showToastSprint1('• Veuillez saisir un numéro WhatsApp / Mobile Money Cameroun valide (+237).');
+        return false;
+      }
+      if ((counts.adults + counts.children) < 1) {
+        showToastSprint1('• Veuillez sélectionner au moins 1 participant payant (Adulte ou Enfant).');
+        return false;
+      }
+
       const db = loadDB();
-      const holder = (document.getElementById('visitorName') || {}).value || 'Visiteur ECOPARK';
-      const phone = (document.getElementById('visitorPhone') || {}).value || '+237 694 12 34 56';
-      const rawDate = (document.getElementById('visitDate') || {}).value || '2026-11-15';
       const totalText = (document.getElementById('grandTotalFCFA') || {}).textContent || '14 000 FCFA';
       const totalNum = parseInt(totalText.replace(/[^0-9]/g, ''), 10) || 14000;
 
@@ -4644,7 +5041,12 @@
       if (document.getElementById('chkRepas') && document.getElementById('chkRepas').checked) acts.push('Saveurs');
       if (document.getElementById('chkBumpNutrition') && document.getElementById('chkBumpNutrition').checked) acts.push('Nutrition Poissons');
       if (document.getElementById('chkBumpPergola') && document.getElementById('chkBumpPergola').checked) acts.push('Pergola Lac');
-      if (document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked) acts.push('Suite Ewondo');
+      if (document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked) {
+        const ld = typeof getSelectedLodgeDetails === 'function' ? getSelectedLodgeDetails() : { summary: 'Suite Ewondo' };
+        acts.push(ld.summary);
+      }
+      if (document.getElementById('chkBumpNavette') && document.getElementById('chkBumpNavette').checked) acts.push('Navette A/R');
+      if (document.getElementById('chkBumpPeche') && document.getElementById('chkBumpPeche').checked) acts.push('Pêche & Musée');
 
       db.opsMetrics = db.opsMetrics || { kitchenPreorders: 18, pergolasReserved: 6, fishPacks: 34, ewondoFree: 2 };
       if (document.getElementById('chkRepas') && document.getElementById('chkRepas').checked) {
@@ -4657,7 +5059,10 @@
         db.opsMetrics.fishPacks += Math.max(1, counts.children);
       }
       if (document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked) {
-        db.opsMetrics.ewondoFree = Math.max(0, db.opsMetrics.ewondoFree - 1);
+        const ld = typeof getSelectedLodgeDetails === 'function' ? getSelectedLodgeDetails() : { city: 'EWONDO' };
+        if (ld.city === 'EWONDO') {
+          db.opsMetrics.ewondoFree = Math.max(0, db.opsMetrics.ewondoFree - 1);
+        }
       }
 
       const ref = 'ECP-2026-' + Math.floor(10000 + Math.random() * 89999);
@@ -4695,12 +5100,63 @@
       if (scanInput) scanInput.value = ref;
 
       showToastSprint1(`• Réservation ${ref} enregistrée ! Billet disponible dans « Mon Espace » et prêt à être scanné au Guichet.`);
+      return true;
+    }
+
+    function computeQuoteBudgetSprint1() {
+      const type = ((document.getElementById('quoteType') || {}).value || 'Excursion scolaire');
+      const pax = Math.max(10, parseInt(((document.getElementById('quotePax') || {}).value || '60'), 10) || 60);
+      const optHall = document.getElementById('quoteOptHall') && document.getElementById('quoteOptHall').checked;
+      const optShuttle = document.getElementById('quoteOptShuttle') && document.getElementById('quoteOptShuttle').checked;
+
+      let unitRate = 1500;
+      let rateDesc = 'Forfait Excursion Scolaire (Entrée enfant protégée 500 FCFA + Piscine/Pirogue encadrée)';
+      let hallCost = optHall ? 75000 : 0;
+
+      if (type.includes('Séminaire')) {
+        unitRate = 12500;
+        rateDesc = 'Forfait Séminaire & Conférence (Salle Menkii Essomba Anton + Pause-café + Déjeuner Château des Saveurs)';
+        hallCost = 0; // Déjà inclus dans le forfait Séminaire
+      } else if (type.includes('Mariage') || type.includes('Grande Réunion')) {
+        unitRate = 15000;
+        rateDesc = 'Forfait Réception / Mariage (Salle Menkii Essomba Anton / Esplanade + Buffet Royal)';
+        hallCost = 0; // Inclus dans le forfait Réception
+      }
+
+      const shuttleCost = optShuttle ? 45000 : 0;
+      const total = (pax * unitRate) + hallCost + shuttleCost;
+      const opts = [];
+      if (type.includes('Séminaire') || type.includes('Mariage') || optHall) opts.push('Salle Menkii Essomba Anton');
+      if (optShuttle) opts.push('Navette Climatisée A/R (18/32 places)');
+      return {
+        pax,
+        unitRate,
+        hallCost,
+        shuttleCost,
+        total,
+        rateDesc,
+        optionsSummary: opts.join(' + ') || 'Prestations Parc & Encadrement'
+      };
+    }
+
+    function recalcQuoteProformaPreview() {
+      const calc = computeQuoteBudgetSprint1();
+      const totEl = document.getElementById('quoteProformaTotalText');
+      const brkEl = document.getElementById('quoteProformaBreakdownText');
+      if (totEl) totEl.textContent = formatFCFA(calc.total);
+      if (brkEl) {
+        const extras = [];
+        if (calc.hallCost > 0) extras.push(`+ Salle Menkii Essomba Anton (${formatFCFA(calc.hallCost)})`);
+        if (calc.shuttleCost > 0) extras.push(`+ Navette A/R (${formatFCFA(calc.shuttleCost)})`);
+        brkEl.textContent = `${calc.pax} participants × ${formatFCFA(calc.unitRate)} — ${calc.rateDesc}${extras.length ? ' ' + extras.join(' ') : ''}.`;
+      }
     }
 
     function openQuoteModalSprint1() {
       document.getElementById('modalOverlaySprint1').style.display = 'flex';
       document.getElementById('modalQuoteBox').style.display = 'flex';
       document.getElementById('modalCfpBox').style.display = 'none';
+      recalcQuoteProformaPreview();
     }
 
     function openCfpModalSprint1() {
@@ -4714,55 +5170,104 @@
     }
 
     function submitGroupQuoteSprint1() {
+      const orgEl = document.getElementById('quoteOrgName');
+      const phoneEl = document.getElementById('quotePhone');
+      const org = (orgEl && orgEl.value.trim()) ? orgEl.value.trim() : 'Établissement / Organisation ECOPARK';
+      const phone = (phoneEl && phoneEl.value.trim()) ? phoneEl.value.trim() : '+237 697 13 62 03';
+      if (phoneEl && phoneEl.value.trim() && !isValidCameroonPhone(phone)) {
+        phoneEl.focus();
+        showToastSprint1('• Veuillez indiquer un numéro WhatsApp valide (+237).');
+        return false;
+      }
+
       const db = loadDB();
-      const org = document.getElementById('quoteOrgName').value || 'Groupe ECOPARK';
       const type = document.getElementById('quoteType').value || 'Excursion scolaire';
-      const pax = parseInt(document.getElementById('quotePax').value, 10) || 40;
       const date = document.getElementById('quoteDate').value || '2026-12-10';
+      const calc = computeQuoteBudgetSprint1();
       const ref = 'DEV-2026-' + Math.floor(1000 + Math.random() * 8999);
-      const budget = pax * 1500;
 
       db.quotes.unshift({
         reference: ref,
         org: org,
-        type: type,
-        pax: pax,
+        type: `${type} (${calc.optionsSummary})`,
+        pax: calc.pax,
         date: date,
-        budgetFcfa: budget,
-        status: 'En étude (Exploitation)'
+        budgetFcfa: calc.total,
+        status: 'Proforma générée'
       });
       db.auditLogs.unshift({
         time: nowStamp(),
         actor: `${org} (Groupe)`,
-        action: `Demande de devis ${ref} (${pax} pers., ~${formatFCFA(budget)}) transmise à l'Exploitation.`
+        action: `Demande de devis ${ref} (${calc.pax} pers., ${formatFCFA(calc.total)} • ${calc.optionsSummary}) transmise à l'Exploitation.`
       });
       saveDB(db);
       closeSprint1Modals();
-      showToastSprint1(`Devis ${ref} enregistré ! Retrouvez-le dans « Mon Espace » (ACC-04) et dans « Exploitation » (EXP-03).`);
+      showToastSprint1(`Devis Proforma ${ref} (${formatFCFA(calc.total)}) enregistré ! Retrouvez-le dans « Mon Espace ».`);
+      return ref;
     }
 
     function submitCfpApplicationSprint1() {
+      const nameEl = document.getElementById('cfpCandidateName');
+      const ageEl = document.getElementById('cfpAge');
+      const phoneEl = document.getElementById('cfpPhone');
+      const name = (nameEl && nameEl.value.trim()) ? nameEl.value.trim() : 'Candidat CFP ECOPARK';
+      const age = ageEl ? parseInt(ageEl.value, 10) : 19;
+      const phone = (phoneEl && phoneEl.value.trim()) ? phoneEl.value.trim() : '+237 697 13 62 03';
+
+      if (isNaN(age) || age < 16) {
+        if (ageEl) ageEl.focus();
+        showToastSprint1("• Condition réglementaire MINEFOP : Le candidat doit être âgé d'au moins 16 ans révolus.");
+        return false;
+      }
+      if (phoneEl && phoneEl.value.trim() && !isValidCameroonPhone(phone)) {
+        phoneEl.focus();
+        showToastSprint1('• Veuillez saisir un numéro de téléphone Cameroun (+237) valide.');
+        return false;
+      }
+
       const db = loadDB();
-      const name = document.getElementById('cfpCandidateName').value || 'Candidat CFP';
-      const track = document.getElementById('cfpTrack').value || 'Aquaculture';
-      const phone = document.getElementById('cfpPhone').value || '+237 677 00 00 00';
+      const track = (document.getElementById('cfpTrack') || {}).value || 'Pisciculture';
+      const plan = (document.getElementById('cfpPaymentPlan') || {}).value || 'Échéancier 4 tranches (100k + 3x50k FCFA)';
       const ref = 'CFP-2026-' + Math.floor(1000 + Math.random() * 8999);
 
       db.cfpApplications.unshift({
         reference: ref,
-        name: name,
-        track: track,
+        name: `${name} (${age} ans)`,
+        track: `${track} • ${plan}`,
         phone: phone,
         status: 'Dossier reçu (Inscription 50 000 FCFA)'
       });
       db.auditLogs.unshift({
         time: nowStamp(),
-        actor: `${name} (Candidat CFP)`,
-        action: `Candidature CFP ${ref} déposée en filière « ${track} ».`
+        actor: `${name} (Candidat CFP, ${age} ans)`,
+        action: `Candidature CFP ${ref} déposée en filière « ${track} » (${plan}).`
       });
       saveDB(db);
       closeSprint1Modals();
-      showToastSprint1(`Candidature ${ref} (${track}) enregistrée et visible dans l'espace Exploitation (EXP-06) !`);
+      showToastSprint1(`Candidature ${ref} (${track} • ${age} ans • ${plan}) enregistrée avec succès !`);
+      return ref;
+    }
+
+    function sendWhatsAppCfpSprint1() {
+      const ref = submitCfpApplicationSprint1();
+      if (!ref) return;
+      const name = (document.getElementById('cfpCandidateName') || {}).value || 'Candidat CFP';
+      const age = (document.getElementById('cfpAge') || {}).value || '19';
+      const track = (document.getElementById('cfpTrack') || {}).value || 'Hôtellerie';
+      const phone = (document.getElementById('cfpPhone') || {}).value || '+237 677 88 99 00';
+      const plan = (document.getElementById('cfpPaymentPlan') || {}).value || 'Échéancier 4 tranches';
+      const msg = [
+        `Bonjour CFP ECOPARK CAMEROUN (Yaoundé-Ahala),`,
+        `Je souhaite valider mon dossier d'admission au Centre de Formation Professionnelle agréé MINEFOP :`,
+        `- N° Dossier : ${ref}`,
+        `- Candidat(e) : ${name} (${age} ans) — ${phone}`,
+        `- Filière choisie : ${track} (Stage garanti au sein d'ECOPARK)`,
+        `- Modalité choisie : Inscription 50 000 FCFA + ${plan}`,
+        `- Diplômes visés : DQP / CQP / Attestation reconnue par l'État`,
+        `Merci de m'indiquer la procédure de règlement des 50 000 FCFA d'inscription.`
+      ].join('\n');
+      const url = 'https://wa.me/237697136203?text=' + encodeURIComponent(msg);
+      window.open(url, '_blank', 'noopener,noreferrer');
     }
 
     // Surcharge intelligente d'emitPosTicket pour mettre à jour la caisse en temps réel
@@ -4841,7 +5346,8 @@
             <td><strong>${formatFCFA(b.totalFcfa)}</strong></td>
             <td><span class="status-badge ${b.scanned ? 'status-info' : 'status-success'}">${b.scanned ? 'Utilisé (' + b.scannedAt + ')' : 'Confirmé (QR Actif)'}</span></td>
             <td>
-              <button class="btn btn-primary btn-sm" onclick="document.getElementById('qrScanInput').value='${b.reference}'; navigateFamily('AGT', 'AGT-05')">Tester au Scanner</button>
+              <button class="btn btn-primary btn-sm" onclick="navigateFamily('RES', 'RES-09')">Voir Billet QR</button>
+              <button class="btn btn-secondary btn-sm admin-only-control" style="margin-left:4px;" onclick="document.getElementById('qrScanInput').value='${b.reference}'; navigateFamily('AGT', 'AGT-05')">Scanner</button>
             </td>
           </tr>
         `).join('');
@@ -4852,7 +5358,10 @@
             <td>Devis ${q.org} (${q.pax} participants • ${q.type})</td>
             <td><strong>${formatFCFA(q.budgetFcfa)}</strong></td>
             <td><span class="status-badge status-info">${q.status}</span></td>
-            <td><button class="btn btn-secondary btn-sm" onclick="navigateFamily('EXP', 'EXP-03')">Voir dossier</button></td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="openQuoteModalSprint1()">Consulter Proforma</button>
+              <button class="btn btn-secondary btn-sm admin-only-control" style="margin-left:4px;" onclick="navigateFamily('EXP', 'EXP-03')">Back-Office</button>
+            </td>
           </tr>
         `).join('');
         accTbody.innerHTML = bRows + qRows;
@@ -5064,10 +5573,10 @@
     window.__timelines = window.__timelines || {};
 
     const HERO_REEL_META = [
-      { kpiIdx: 0, label: 'Scène 1/4 • Lac & Pirogues', price: '500 / 1 000 FCFA' },
-      { kpiIdx: 1, label: 'Scène 2/4 • Piscine Semi-Olympique', price: '1 500 / 2 500 FCFA' },
-      { kpiIdx: 2, label: 'Scène 3/4 • Château des Saveurs & Loges', price: '3 500 – 30 000 FCFA' },
-      { kpiIdx: 0, label: 'Scène 4/4 • Canopée & Sortie Famille', price: 'Gratuit < 3 ans' }
+      { kpiIdx: 0, label: "Lac d'Ahala & Pirogues", price: '500 / 1 000 FCFA' },
+      { kpiIdx: 1, label: 'Piscine Semi-Olympique', price: '1 500 / 2 500 FCFA' },
+      { kpiIdx: 2, label: 'Château des Saveurs & Loges', price: '3 500 – 30 000 FCFA' },
+      { kpiIdx: 0, label: 'Canopée & Sortie Famille', price: 'Gratuit < 3 ans' }
     ];
 
     function syncHeroKpiAndCaption(idx) {
@@ -5364,8 +5873,9 @@
 
     const _origCreateLiveBookingForHf = createLiveBookingSprint1;
     createLiveBookingSprint1 = function() {
-      _origCreateLiveBookingForHf();
-      triggerQrPass3DReveal();
+      const ok = _origCreateLiveBookingForHf();
+      if (ok !== false) triggerQrPass3DReveal();
+      return ok;
     };
 
     window.__timelines['ecopark-qr-pass'] = {
@@ -5379,11 +5889,11 @@
 
 
     // ========================================================================
-    // MODULE INTERACTIF DE PRISE DE RENDEZ-VOUS (REPÉRAGE, B2B, ÉCOLES & CFP)
+    // MODULE INTERACTIF DE PRISE DE RENDEZ-VOUS (REPÉRAGE, SÉMINAIRES, ÉCOLES & CFP)
     // ========================================================================
     const RDV_PURPOSE_LABELS = {
       reperage_mariage: "Visite de repérage — Mariage, Gala & Salle Menkii Essomba Anton",
-      seminaire_b2b: "Rendez-vous B2B — Séminaire Ministère / ONG / Entreprise & Loges",
+      seminaire_b2b: "Rendez-vous Séminaire — Ministère / ONG / Entreprise & Loges",
       visite_ecole: "Visite préparatoire — Excursion Scolaire (Zoo ToTo, Piscine, Pirogues)",
       orientation_cfp: "Entretien d'Orientation & Visite du Campus CFP ECOPARK (5 filières)"
     };
@@ -5510,7 +6020,7 @@
           ], { duration: 620, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', fill: 'forwards' });
         }
       }
-      showToastSprint1(`• Rendez-vous ${ref} (${date} à ${slot}) enregistré ! Visible dans « Mon Espace » (ACC-04) et « Exploitation » (EXP-07).`);
+      showToastSprint1(`• Rendez-vous ${ref} (${date} à ${slot}) confirmé ! Retrouvez votre créneau dans « Mon Espace ».`);
       return ref;
     }
 
@@ -5546,42 +6056,50 @@
     }
 
     function sendWhatsAppQuoteSprint1() {
+      const orgEl = document.getElementById('quoteOrgName');
+      const phoneEl = document.getElementById('quotePhone');
+      const org = (orgEl && orgEl.value.trim()) ? orgEl.value.trim() : 'Établissement / Organisation ECOPARK';
+      const phone = (phoneEl && phoneEl.value.trim()) ? phoneEl.value.trim() : '+237 697 13 62 03';
+      if (phoneEl && phoneEl.value.trim() && !isValidCameroonPhone(phone)) {
+        phoneEl.focus();
+        showToastSprint1('• Veuillez indiquer un numéro WhatsApp valide (+237).');
+        return false;
+      }
+
       const db = loadDB();
-      const org = (document.getElementById('quoteOrgName') || {}).value || 'Groupe ECOPARK';
       const type = (document.getElementById('quoteType') || {}).value || 'Excursion scolaire';
-      const pax = parseInt((document.getElementById('quotePax') || {}).value, 10) || 40;
       const date = (document.getElementById('quoteDate') || {}).value || '2026-12-10';
+      const calc = computeQuoteBudgetSprint1();
       const ref = 'DEV-2026-' + Math.floor(1000 + Math.random() * 8999);
-      const budget = pax * 1500;
 
       db.quotes.unshift({
         reference: ref,
         org: org,
-        type: type,
-        pax: pax,
+        type: `${type} (${calc.optionsSummary})`,
+        pax: calc.pax,
         date: date,
-        budgetFcfa: budget,
-        status: 'Demande WhatsApp & Exploitation'
+        budgetFcfa: calc.total,
+        status: 'Proforma WhatsApp'
       });
       db.auditLogs.unshift({
         time: nowStamp(),
-        actor: `${org} (Groupe B2B/École)`,
-        action: `Demande de proforma WhatsApp ${ref} (${pax} pers., ~${formatFCFA(budget)}) transmise au Guichet Unique.`
+        actor: `${org} (Groupe / École)`,
+        action: `Demande de proforma WhatsApp ${ref} (${calc.pax} pers., ${formatFCFA(calc.total)} • ${calc.optionsSummary}) transmise au Guichet Unique.`
       });
       saveDB(db);
       closeSprint1Modals();
-      showToastSprint1(`• Devis ${ref} enregistré et prêt dans WhatsApp ! Visible dans « Mon Espace » (ACC-04) et « Exploitation » (EXP-03 / EXP-07).`);
+      showToastSprint1(`• Devis Proforma ${ref} (${formatFCFA(calc.total)}) enregistré et prêt dans WhatsApp !`);
 
       const msg = [
         `Bonjour ECOPARK CAMEROUN (Yaoundé-Ahala),`,
         `Je souhaite obtenir une Proforma Officielle en 2 minutes (Guichet Unique WhatsApp) :`,
         `- Référence Dossier : ${ref}`,
-        `- Établissement / Organisation : ${org}`,
+        `- Établissement / Organisation : ${org} (${phone})`,
         `- Type d'événement : ${type}`,
-        `- Effectif prévu : ${pax} participants (Tarif enfant protégé à 500 FCFA)`,
+        `- Effectif prévu : ${calc.pax} participants (${calc.rateDesc})`,
         `- Date souhaitée : ${date}`,
-        `- Estimation de base : ${formatFCFA(budget)}`,
-        `- Options : Salle Polyvalente Menkii Essomba Anton & Navettes (5/18/32 places)`,
+        `- Prestations & Logistique : ${calc.optionsSummary}`,
+        `- Total Proforma Estimé TTC : ${formatFCFA(calc.total)}`,
         `Merci de m'envoyer la Proforma PDF officielle dans cette discussion.`
       ].join('\n');
       const url = 'https://wa.me/237697136203?text=' + encodeURIComponent(msg);
@@ -5593,7 +6111,9 @@
       const latestRdv = db.appointments[0];
       const badgeEl = document.getElementById('liveRdvCountBadge');
       if (badgeEl && latestRdv) {
-        badgeEl.textContent = `Dernier RDV : ${latestRdv.reference} (${latestRdv.date} • ${latestRdv.slot})`;
+        badgeEl.textContent = latestRdv.reference === 'RDV-2026-4102'
+          ? 'Visite & Orientation gratuites • Mar–Dim'
+          : `RDV confirmé : ${latestRdv.reference} (${latestRdv.date} • ${latestRdv.slot})`;
       }
 
       // Ajouter le dernier RDV dans le tableau Mon Espace (ACC)
@@ -5666,8 +6186,10 @@
 
     function syncWhatsAppConciergeView() {
       const ref = getActiveTicketRef();
-      const name = (document.getElementById('visitorName') || {}).value || 'M. Jean-Paul MBARGA';
-      const phone = (document.getElementById('visitorPhone') || {}).value || '+237 694 12 34 56';
+      const rawName = ((document.getElementById('visitorName') || {}).value || '').trim();
+      const rawPhone = ((document.getElementById('visitorPhone') || {}).value || '').trim();
+      const name = rawName || 'Visiteur ECOPARK';
+      const phone = rawPhone || '+237 WhatsApp';
       const date = (document.getElementById('visitDate') || {}).value || '2026-11-15';
       const total = (document.getElementById('grandTotalFCFA') || {}).textContent || '14 000 FCFA';
       const itemsSummary = typeof getActiveSimulatorItemsSummary === 'function'
@@ -5677,11 +6199,23 @@
         ? getActivePayMethodLabel()
         : 'Orange Money / MTN MoMo / Guichet';
 
+      const holderEl = document.getElementById('ticketHolder');
+      if (holderEl && rawName) holderEl.textContent = rawName;
+      const tDateEl = document.getElementById('ticketDate');
+      if (tDateEl && date) tDateEl.textContent = `${date} (09h00 – 18h00)`;
+      const tItemsEl = document.getElementById('ticketItems');
+      if (tItemsEl) tItemsEl.textContent = itemsSummary;
+
       const refEl = document.getElementById('waBubbleRef');
       if (refEl) refEl.textContent = ref;
 
       const delivTitle = document.getElementById('waDeliveryTitle');
       if (delivTitle) delivTitle.textContent = `E-Billet QR Actif : ${ref} (${total})`;
+
+      const stickyTot = document.getElementById('stickyBarTotalFcfa');
+      const stickyPax = document.getElementById('stickyBarPaxText');
+      if (stickyTot) stickyTot.textContent = total;
+      if (stickyPax) stickyPax.textContent = `${counts.adults} Adulte(s), ${counts.children} Enfant(s) • Pass QR`;
 
       const bodyEl = document.getElementById('waBubbleBodyText');
       if (bodyEl && (!window._activeWaIntent || window._activeWaIntent === 'PASS_QR')) {
@@ -5694,7 +6228,7 @@
       }
     }
 
-    // Pilier 1 : Routage par Intention (4 Quick Replies du Guichet Unique)
+    // Pilier 1 : Orientation Directe (4 Quick Replies du Guichet Unique)
     function selectWhatsAppIntent(intentCode, btnEl) {
       window._activeWaIntent = intentCode || 'PASS_QR';
       document.querySelectorAll('#waQuickReplyGrid .wa-quick-reply-btn').forEach(b => {
@@ -5727,13 +6261,13 @@
         if (refEl) refEl.textContent = (db.quotes && db.quotes[0]) ? db.quotes[0].reference : 'DEV-2026-3104';
         if (bodyEl) {
           bodyEl.innerHTML = `
-            <div>• <strong>Excursions Scolaires (20+ élèves) :</strong> Entrée enfant strictement protégée à <strong>500 FCFA</strong> (Encadrants : 700 FCFA)</div>
+            <div>• <strong>Excursions Scolaires (20+ élèves) :</strong> Entrée enfant strictement garantie à <strong>500 FCFA</strong> (Encadrants : 700 FCFA)</div>
             <div>• <strong>Séminaires &amp; Galas :</strong> Salle Polyvalente <strong>Menkii Essomba Anton</strong> + Esplanade Plein Air</div>
             <div>• <strong>Logistique Transport :</strong> Navettes ECOPARK sur demande (Bus 32 places, 18 places ou VIP 5 places)</div>
             <div>• <strong>Action rapide :</strong> <a href="javascript:void(0)" onclick="openQuoteModalSprint1()" style="color:var(--color-brand-deep);font-weight:700;text-decoration:underline;">Ouvrir le générateur de Proforma PDF officielle</a></div>
           `;
         }
-        showToastSprint1('• Routage B2B & Écoles : Proforma Salle Menkii Essomba Anton + Navettes (5/18/32 places) prête.');
+        showToastSprint1('• Service Groupes, Écoles & Séminaires : Proforma Salle Menkii Essomba Anton + Navettes (5/18/32 places) prête.');
       } else if (intentCode === 'CFP_GPS') {
         if (badgeEl) badgeEl.textContent = '4. Campus CFP (50k F) & GPS Tradex';
         if (refEl) refEl.textContent = 'CFP-MINEFOP';
@@ -5749,7 +6283,7 @@
       }
     }
 
-    // Pilier 4A : Closer Conversationnel — Upsell 1 clic Poisson Braisé + Pergola 13h (+5 000 FCFA)
+    // Pilier 4A : Option Gourmande 1 clic — Poisson Braisé + Pergola 13h (+5 000 FCFA)
     function triggerWhatsAppUpsellPergola() {
       window._activeWaIntent = 'PASS_QR';
       const repasChk = document.getElementById('chkRepas');
@@ -5759,11 +6293,11 @@
       recalcSimulator();
       syncWhatsAppConciergeView();
       const badgeEl = document.getElementById('waConciergeStatusBadge');
-      if (badgeEl) badgeEl.textContent = 'Upsell Poisson Braisé & Pergola 13h actif';
-      showToastSprint1('• Closer WhatsApp : Poisson Braisé d\'Ahala + Pergola Privée 13h (+5 000 FCFA) ajoutés à votre Billet QR sans attente !');
+      if (badgeEl) badgeEl.textContent = 'Option Poisson Braisé & Pergola 13h active';
+      showToastSprint1('• Conciergerie WhatsApp : Poisson Braisé d\'Ahala + Pergola Privée 13h (+5 000 FCFA) ajoutés à votre Billet QR sans attente !');
     }
 
-    // Pilier 4B : Sauvetage des Paniers Abandonnés (Solde MoMo insuffisant -> Code Pré-réservation Guichet valable 11h)
+    // Pilier 4B : Garantie Tarif Guichet (Règlement sur place -> Code Pré-réservation Guichet valable 11h)
     function triggerWhatsAppGuichetRescue() {
       window._activeWaIntent = 'PASS_QR';
       const guichetRadio = document.querySelector('input[name="payMethod"][value="GUICHET"]');
@@ -5773,16 +6307,16 @@
       const box = document.getElementById('momoStateFeedback');
       if (box) {
         box.className = 'status-badge status-info';
-        box.textContent = `• Sauvetage Panier Actif — Code Pré-réservation Guichet ${ref} garanti jusqu'à 11h00`;
+        box.textContent = `• Réservation Guichet Active — Code Pré-réservation ${ref} garanti jusqu'à 11h00`;
       }
       const badgeEl = document.getElementById('waConciergeStatusBadge');
       if (badgeEl) badgeEl.textContent = `Pré-réservation Guichet 11h (${ref})`;
       const delivSub = document.getElementById('waDeliverySubtext');
       if (delivSub) {
-        delivSub.innerHTML = `<strong>Sauvetage Solde MoMo Actif :</strong> Votre tarif et vos options sont bloqués sous le code <strong>${ref}</strong> jusqu'à 11h00 au Guichet d'Ahala (règlement Espèces ou Mobile Money sur place).`;
+        delivSub.innerHTML = `<strong>Garantie Tarif Guichet Active :</strong> Votre tarif et vos options sont bloqués sous le code <strong>${ref}</strong> jusqu'à 11h00 au Guichet d'Ahala (règlement Espèces ou Mobile Money sur place).`;
       }
       syncWhatsAppConciergeView();
-      showToastSprint1(`• Sauvetage Panier WhatsApp : Code de Pré-réservation Guichet ${ref} généré et garanti jusqu'à 11h00 !`);
+      showToastSprint1(`• Conciergerie WhatsApp : Code de Pré-réservation Guichet ${ref} généré et garanti jusqu'à 11h00 !`);
     }
 
     // Pilier 5 : Console de « Closing WhatsApp en 1 Clic » côté Exploitation (EXP-07)
@@ -5954,9 +6488,26 @@
 
     const _origCreateBookingForWaView = createLiveBookingSprint1;
     createLiveBookingSprint1 = function() {
-      _origCreateBookingForWaView();
-      syncWhatsAppConciergeView();
+      const ok = _origCreateBookingForWaView();
+      if (ok !== false) syncWhatsAppConciergeView();
+      return ok;
     };
+
+    // Initialisation dynamique des dates par défaut (prochain week-end / prochains jours)
+    (function initUpcomingDates() {
+      const toIso = (offsetDays) => {
+        const d = new Date();
+        d.setDate(d.getDate() + offsetDays);
+        const pad = n => String(n).padStart(2, '0');
+        return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+      };
+      const vDate = document.getElementById('visitDate');
+      const qDate = document.getElementById('quoteDate');
+      const rDate = document.getElementById('rdvDate');
+      if (vDate) vDate.value = toIso(4);
+      if (qDate) qDate.value = toIso(14);
+      if (rDate) rDate.value = toIso(3);
+    })();
 
     ['visitorName', 'visitorPhone', 'visitDate'].forEach(id => {
       const el = document.getElementById(id);
