@@ -2066,6 +2066,111 @@
       border-color: var(--color-brand-deep);
     }
 
+
+    /* --- BAROMÈTRE DISPONIBILITÉS TEMPS RÉEL (LIBRE / PRÉ-RÉSERVÉ 11H / OCCUPÉ) & POLITIQUE ANNULATION / REMBOURSEMENT --- */
+    .availability-barometer-card {
+      background: linear-gradient(180deg, #FBFDF9 0%, #F1F6ED 100%);
+      border: 1.5px solid rgba(29, 73, 13, 0.24);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 6px 0 8px 0;
+      display: grid;
+      gap: 10px;
+    }
+    .availability-legend-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed rgba(29, 73, 13, 0.2);
+    }
+    .availability-legend-pills {
+      display: inline-flex;
+      gap: 6px;
+      flex-wrap: wrap;
+      font-size: 11.5px;
+      font-weight: 700;
+    }
+    .avail-dot-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      padding: 3px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--color-border);
+      background: #FFFFFF;
+    }
+    .avail-dot-free { color: #165B0A; border-color: rgba(31, 136, 11, 0.35); background: #EDF7EA; }
+    .avail-dot-held { color: #8E5617; border-color: rgba(196, 125, 43, 0.42); background: #FBF5EC; }
+    .avail-dot-full { color: #B42318; border-color: rgba(180, 35, 24, 0.35); background: #FEF3F2; }
+    .availability-grid-5 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+      gap: 8px;
+    }
+    .availability-slot-item {
+      background: #FFFFFF;
+      border: 1px solid var(--color-border);
+      border-radius: 9px;
+      padding: 9px 11px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 4px;
+      font-size: 12.5px;
+    }
+    .availability-slot-item strong {
+      color: var(--color-brand-deep);
+      font-size: 13px;
+      display: block;
+    }
+    .policy-guarantee-card {
+      background: #FBF5EC;
+      border: 1px solid rgba(196, 125, 43, 0.4);
+      border-radius: 12px;
+      padding: 14px 16px;
+      display: grid;
+      gap: 8px;
+      font-size: 13.2px;
+      line-height: 1.48;
+    }
+    .modal-tab-switch {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      background: var(--color-surface-soft);
+      padding: 5px;
+      border-radius: 10px;
+      border: 1px solid var(--color-border);
+      margin-top: 8px;
+    }
+    .modal-tab-btn {
+      padding: 9px 12px;
+      border-radius: 8px;
+      border: 1px solid transparent;
+      background: transparent;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+      color: var(--color-text-muted);
+      transition: all 0.18s ease;
+    }
+    .modal-tab-btn.active {
+      background: #FFFFFF;
+      color: var(--color-brand-deep);
+      border-color: var(--color-brand-deep);
+      box-shadow: 0 2px 6px rgba(20, 34, 17, 0.08);
+    }
+    .rdv-slot-pill[disabled] {
+      opacity: 0.52;
+      cursor: not-allowed !important;
+      background: #FEF3F2 !important;
+      border-color: rgba(180, 35, 24, 0.35) !important;
+      color: #B42318 !important;
+    }
+
   </style>
 </head>
 <body>
@@ -2984,7 +3089,7 @@
                 <div class="testimonial-author">
                   <div>
                     <strong style="color:var(--color-brand-deep);display:block;">DRH — ONG &amp; Partenaires</strong>
-                    <span style="color:var(--color-text-muted);">Séminaire B2B &amp; Suites Cité Ewondo VIP</span>
+                    <span style="color:var(--color-text-muted);">Séminaire Corporate &amp; Suites Cité Ewondo VIP</span>
                   </div>
                   <span class="status-badge badge-qr-prestige">Client Corporate</span>
                 </div>
@@ -3057,7 +3162,58 @@
                     <select id="poolRatePeriod" class="form-control" onchange="recalcSimulator()">
                       <option value="SEMAINE_PROMO" selected>Prévente En Ligne / Semaine (Enfant 1 500 FCFA)</option>
                       <option value="WEEKEND_PLEIN">Guichet Week-end &amp; Fériés (Enfant 2 500 FCFA)</option>
-                    </select>
+                    </select>                  </div>
+                </div>
+
+                <!-- VOLET A : BAROMÈTRE TEMPS RÉEL DES DISPONIBILITÉS (LIBRE / PRÉ-RÉSERVÉ 11H / OCCUPÉ-COMPLET) -->
+                <div class="availability-barometer-card" id="liveAvailabilityBarometer" aria-live="polite">
+                  <div class="availability-legend-row">
+                    <div>
+                      <strong style="color:var(--color-brand-deep);font-size:14px;">État du Stock &amp; des Disponibilités en Direct (<span id="barometerDateLabel">Date sélectionnée</span>)</strong>
+                      <span style="display:block;font-size:12px;color:var(--color-text-muted);">Protection anti-surréservation active • Mise à jour instantanée selon la date et les réservations</span>
+                    </div>
+                    <div class="availability-legend-pills">
+                      <span class="avail-dot-pill avail-dot-free">● Libre (Réservable)</span>
+                      <span class="avail-dot-pill avail-dot-held">◐ Pré-réservé (Garanti 11h00)</span>
+                      <span class="avail-dot-pill avail-dot-full">■ Occupé / Complet</span>
+                    </div>
+                  </div>
+                  <div class="availability-grid-5" id="barometerGrid">
+                    <div class="availability-slot-item" id="baromCardEwondo">
+                      <div>
+                        <strong>1. Cité Ewondo (VIP Clim.)</strong>
+                        <span style="color:var(--color-text-muted);font-size:11.5px;">25 000 – 30 000 FCFA / nuit</span>
+                      </div>
+                      <span class="avail-dot-pill avail-dot-free" id="baromEwondoStatus">2 / 8 libres • 1 pré-réservée 11h</span>
+                    </div>
+                    <div class="availability-slot-item" id="baromCardChanthel">
+                      <div>
+                        <strong>2. Cité Chanthel (Confort)</strong>
+                        <span style="color:var(--color-text-muted);font-size:11.5px;">15 000 – 25 000 FCFA / nuit</span>
+                      </div>
+                      <span class="avail-dot-pill avail-dot-free" id="baromChanthelStatus">3 / 12 libres • 9 occupées</span>
+                    </div>
+                    <div class="availability-slot-item" id="baromCardBene">
+                      <div>
+                        <strong>3. Cité Bene (Standard)</strong>
+                        <span style="color:var(--color-text-muted);font-size:11.5px;">10 000 – 15 000 FCFA / nuit</span>
+                      </div>
+                      <span class="avail-dot-pill avail-dot-full" id="baromBeneStatus">Complet (0 / 10 libre)</span>
+                    </div>
+                    <div class="availability-slot-item" id="baromCardPergola">
+                      <div>
+                        <strong>4. Pergolas Bord du Lac 13h</strong>
+                        <span style="color:var(--color-text-muted);font-size:11.5px;">Château des Saveurs (+5 000 F)</span>
+                      </div>
+                      <span class="avail-dot-pill avail-dot-free" id="baromPergolaStatus">4 / 10 libres à 13h00</span>
+                    </div>
+                    <div class="availability-slot-item" id="baromCardHallShuttle">
+                      <div>
+                        <strong>5. Salle Menkii &amp; Navettes</strong>
+                        <span style="color:var(--color-text-muted);font-size:11.5px;">Séminaires &amp; Bus 5/18/32 pl.</span>
+                      </div>
+                      <span class="avail-dot-pill avail-dot-free" id="baromHallShuttleStatus">Salle Libre • Navettes dispo.</span>
+                    </div>
                   </div>
                 </div>
 
@@ -3174,7 +3330,7 @@
                     <label style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FFFFFF;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
                       <span style="font-size:14px;">
                         <input type="checkbox" id="chkBumpPergola" onchange="recalcSimulator()" />
-                        <strong style="margin-left:6px;">Pergola Privée Bord du Lac & Service Prioritaire 13h</strong> (+5 000 FCFA forfait)
+                        <strong style="margin-left:6px;">Pergola Privée Bord du Lac & Service Prioritaire 13h</strong> (+5 000 FCFA forfait) <span class="avail-dot-pill avail-dot-free" id="simPergolaRemainingBadge" style="font-size:11px;padding:1px 7px;margin-left:4px;">4/10 libres</span>
                       </span>
                       <span class="price-pill" id="subBumpPergola">0 FCFA</span>
                     </label>
@@ -3321,6 +3477,28 @@
                   <div style="display:flex;gap:10px;flex-wrap:wrap;">
                     <button type="button" class="btn btn-primary" style="flex:1;" onclick="sendWhatsAppBooking()"><svg class="svg-mono" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Confirmer via WhatsApp ECOPARK (+237 697 13 62 03)</button>
                     <button type="button" class="btn btn-secondary" onclick="createLiveBookingSprint1()"><svg class="svg-mono" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg> Générer & Enregistrer mon Billet QR<span class="tech-code-tag"> (RES-09)</span></button>
+                  </div>
+
+                  <!-- VOLET B : CHARTE OFFICIELLE REPORT GRATUIT (90J), ANNULATION & REMBOURSEMENT MOBILE MONEY -->
+                  <div class="policy-guarantee-card" id="resCancellationPolicyCard">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
+                      <strong style="color:var(--color-brand-deep);font-size:13.8px;">Garantie Météo, Report Gratuit (90j) &amp; Remboursement Mobile Money</strong>
+                      <span class="avail-dot-pill avail-dot-free" style="font-size:11px;">Zéro perte</span>
+                    </div>
+                    <div style="display:grid;gap:4px;color:var(--color-text-main);">
+                      <div>• <strong>1. Report de Date 100 % Gratuit :</strong> Tant que votre Billet QR n'a pas été scanné au tourniquet d'Ahala, vous pouvez changer votre date sans frais (pluie ou imprévu, validité <strong>90 jours</strong>).</div>
+                      <div>• <strong>2. Annulation ≥ 48h avant visite :</strong> Remboursement intégral (<strong>100 %</strong>) sur votre numéro <strong>Orange Money / MTN MoMo</strong> ou émission d'un <strong>Avoir QR 100 %</strong>.</div>
+                      <div>• <strong>3. Annulation &lt; 48h (Loge / Pergola bloquée) :</strong> <strong>Avoir QR de 100 %</strong> sans perte, ou remboursement Mobile Money à <strong>80 %</strong> (retenue d'immobilisation de 20 %).</div>
+                      <div>• <strong>4. Pré-réservation Guichet (11h00) :</strong> Libération automatique du stock à 11h00 sans aucune pénalité si non réglée.</div>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:2px;">
+                      <button type="button" class="btn btn-secondary btn-sm" style="flex:1;font-size:12px;" onclick="openRescheduleModal(getActiveTicketRef(), 'BOOKING', 'REPORT')">
+                        Reporter gratuitement ma date
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" style="flex:1;font-size:12px;" onclick="openRescheduleModal(getActiveTicketRef(), 'BOOKING', 'CANCEL_REFUND')">
+                        Annuler / Demander un remboursement
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -3510,7 +3688,7 @@
                 
                 <!-- OMISSION #1 : RECHERCHE DE DOSSIER PAR RÉFÉRENCE OU TÉLÉPHONE +237 (RES-12 / ACC-01) -->
                 <div style="margin-top:8px;padding:12px;background:#FBF5EC;border:1px solid rgba(196,125,43,0.38);border-radius:10px;">
-                  <label class="form-label" for="accSearchInput" style="font-size:13px;color:var(--color-brand-deep);margin-bottom:4px;">Retrouver un Billet QR, Devis, RDV ou Dossier CFP (`RES-12`) :</label>
+                  <label class="form-label" for="accSearchInput" style="font-size:13px;color:var(--color-brand-deep);margin-bottom:4px;">Retrouver un Billet QR, Devis, RDV ou Dossier CFP<span class="tech-code-tag"> (`RES-12`)</span> :</label>
                   <div style="display:flex;gap:6px;">
                     <input type="text" id="accSearchInput" class="form-control" style="min-height:36px;padding:6px 10px;font-size:13.5px;" placeholder="Réf. (ECP-..., DEV-..., RDV-..., CFP-) ou Tél +237" oninput="filterAccDossiers()" />
                     <button type="button" class="btn btn-primary btn-sm" onclick="filterAccDossiers()">Chercher</button>
@@ -3524,6 +3702,12 @@
                   </div>
                 </div>
 
+                <div style="margin-top:8px;padding:10px 12px;background:var(--color-surface-soft);border:1px solid var(--color-border);border-radius:8px;font-size:12.5px;display:grid;gap:4px;">
+                  <strong style="color:var(--color-brand-deep);">Politique Report &amp; Remboursement :</strong>
+                  <span>• <strong>Report date :</strong> 100 % gratuit (valable 90j si QR non scanné).</span>
+                  <span>• <strong>Annulation ≥ 48h :</strong> 100 % remboursé (OM / MoMo) ou Avoir QR.</span>
+                  <span>• <strong>Annulation &lt; 48h :</strong> Avoir QR 100 % ou remboursement 80 %.</span>
+                </div>
                 <button class="btn btn-secondary btn-sm" onclick="navigateFamily('RES', 'RES-03')">Créer une nouvelle réservation<span class="tech-code-tag"> (ACC-06)</span></button>
               </div>
 
@@ -4269,6 +4453,10 @@
             </span>
           </label>
         </div>
+        <div class="col-12" id="quoteLiveAvailabilityBanner" style="padding:9px 12px;background:#EDF7EA;border:1px solid rgba(31,136,11,0.35);border-radius:8px;font-size:12.8px;color:#165B0A;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:6px;">
+          <span id="quoteLiveAvailabilityText">● <strong>Disponibilité vérifiée :</strong> Salle Polyvalente « Menkii Essomba Anton » &amp; Esplanade <strong>Libres</strong> • Flotte Navettes (32, 18 et 5 places) <strong>Disponible</strong>.</span>
+          <span class="avail-dot-pill avail-dot-free" id="quoteLiveAvailabilityBadge">Créneau Libre</span>
+        </div>
         <div class="col-12" id="quoteProformaPreview" style="padding:12px;background:#FBF5EC;border:1px solid rgba(196,125,43,0.4);border-radius:10px;font-size:13.5px;">
           <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;">
             <strong style="color:var(--color-brand-deep);">Aperçu Facture Proforma Officielle (Simulation temps réel)</strong>
@@ -4439,37 +4627,98 @@
       </div>
     </div>
 
-    <!-- OMISSION #3 : MODALE DE REPORT DE DATE SANS FRAIS — GARANTIE MÉTÉO YAOUNDÉ (ACC-05) -->
-    <div id="modalRescheduleBox" class="card" style="display:none;max-width:520px;width:100%;background:#FFFFFF;padding:28px;">
+    <!-- VOLET B & OMISSION #3 : MODALE INTERACTIVE DE REPORT GRATUIT (90J) OU ANNULATION & REMBOURSEMENT MOBILE MONEY -->
+    <div id="modalRescheduleBox" class="card" style="display:none;max-width:600px;width:100%;background:#FFFFFF;padding:26px 28px;max-height:94vh;overflow-y:auto;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
-        <span class="eyebrow eyebrow-hospitality" style="margin:0;">Garantie Météo &amp; Flexibilité Ahala (ACC-05)</span>
+        <span class="eyebrow eyebrow-hospitality" style="margin:0;">Garantie Météo, Report Gratuit (90j) &amp; Remboursement Mobile Money<span class="tech-code-tag"> (ACC-05)</span></span>
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeSprint1Modals()">Fermer</button>
       </div>
-      <h3 style="margin-top:6px;">Reporter la date de mon dossier sans frais</h3>
-      <p style="font-size:14px;color:var(--color-text-muted);">
-        En cas d'averse tropicale à Yaoundé ou d'imprévu, votre billet QR ou votre rendez-vous ECOPARK est reportable gratuitement sur simple sélection d'une nouvelle date.
-      </p>
+      <h3 style="margin-top:6px;" id="modalRescheduleMainTitle">Gérer ma réservation : Report Gratuit ou Remboursement</h3>
+
       <input type="hidden" id="rescheduleTargetRef" value="ECP-2026-84920" />
       <input type="hidden" id="rescheduleTargetKind" value="BOOKING" />
-      <div class="grid-12" style="gap:12px;margin-top:8px;">
-        <div class="col-12" style="padding:10px 12px;background:var(--color-surface-soft);border-radius:8px;font-size:13.5px;">
-          <strong>Dossier sélectionné :</strong> <span id="rescheduleRefLabel" style="color:var(--color-brand-deep);font-weight:700;">ECP-2026-84920</span>
+      <input type="hidden" id="rescheduleActiveTabMode" value="REPORT" />
+
+      <div style="padding:10px 12px;background:var(--color-surface-soft);border-radius:8px;font-size:13.5px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+        <div><strong>Dossier sélectionné :</strong> <span id="rescheduleRefLabel" style="color:var(--color-brand-deep);font-weight:700;">ECP-2026-84920</span></div>
+        <span class="price-pill" id="rescheduleAmountBadge" style="font-size:12.5px;padding:2px 10px;">14 000 FCFA</span>
+      </div>
+
+      <div class="modal-tab-switch" role="tablist">
+        <button type="button" class="modal-tab-btn active" id="tabBtnReportMode" onclick="switchRescheduleModalTab('REPORT')">
+          1. Reporter ma date (0 FCFA — Garantie 90j)
+        </button>
+        <button type="button" class="modal-tab-btn" id="tabBtnCancelRefundMode" onclick="switchRescheduleModalTab('CANCEL_REFUND')">
+          2. Annuler &amp; Rembourser (Avoir QR / MoMo)
+        </button>
+      </div>
+
+      <!-- ONGLET 1 : REPORT DE DATE 100 % GRATUIT -->
+      <div id="rescheduleTabPanelReport" style="display:grid;gap:12px;margin-top:8px;">
+        <p style="font-size:13.5px;color:var(--color-text-muted);margin:0;">
+          En cas d'averse tropicale à Yaoundé ou d'imprévu, tout billet QR non scanné ou rendez-vous est reportable gratuitement (valable 90 jours). Votre ancien créneau est immédiatement libéré.
+        </p>
+        <div class="grid-12" style="gap:12px;">
+          <div class="col-6 form-group" style="margin:0;">
+            <label class="form-label" for="rescheduleNewDate">Nouvelle date souhaitée <span style="color:#B42318;">*</span></label>
+            <input type="date" id="rescheduleNewDate" class="form-control" value="2026-11-22" required />
+          </div>
+          <div class="col-6 form-group" style="margin:0;">
+            <label class="form-label" for="rescheduleReason">Motif du report</label>
+            <select id="rescheduleReason" class="form-control">
+              <option value="Garantie Pluie / Météo Yaoundé (Sans frais)" selected>Pluie / Météo Yaoundé (Garantie Gratuite)</option>
+              <option value="Imprévu familial ou professionnel">Imprévu familial ou professionnel</option>
+              <option value="Ajustement calendrier École / Entreprise">Ajustement calendrier École / Entreprise</option>
+            </select>
+          </div>
         </div>
-        <div class="col-6 form-group" style="margin:0;">
-          <label class="form-label" for="rescheduleNewDate">Nouvelle date souhaitée <span style="color:#B42318;">*</span></label>
-          <input type="date" id="rescheduleNewDate" class="form-control" value="2026-11-22" required />
-        </div>
-        <div class="col-6 form-group" style="margin:0;">
-          <label class="form-label" for="rescheduleReason">Motif du report</label>
-          <select id="rescheduleReason" class="form-control">
-            <option value="Garantie Pluie / Météo Yaoundé (Sans frais)" selected>Pluie / Météo Yaoundé (Garantie Gratuite)</option>
-            <option value="Imprévu familial ou professionnel">Imprévu familial ou professionnel</option>
-            <option value="Ajustement calendrier École / Entreprise">Ajustement calendrier École / Entreprise</option>
-          </select>
+        <div style="display:flex;gap:10px;margin-top:4px;">
+          <button type="button" class="btn btn-primary" style="flex:1;" onclick="confirmRescheduleSprint1()">Valider ma nouvelle date sans frais (0 FCFA)</button>
         </div>
       </div>
-      <div style="display:flex;gap:10px;margin-top:16px;">
-        <button type="button" class="btn btn-primary" style="flex:1;" onclick="confirmRescheduleSprint1()">Valider ma nouvelle date sans frais</button>
+
+      <!-- ONGLET 2 : ANNULATION, LIBÉRATION DU STOCK & REMBOURSEMENT MOBILE MONEY / AVOIR QR -->
+      <div id="rescheduleTabPanelCancel" style="display:none;gap:12px;margin-top:8px;">
+        <div class="grid-12" style="gap:10px;">
+          <div class="col-12 form-group" style="margin:0;">
+            <label class="form-label" for="cancelRefundPolicyMode">Modalité de remboursement ou d'avoir selon le délai</label>
+            <select id="cancelRefundPolicyMode" class="form-control" onchange="recalcCancelRefundPreview()">
+              <option value="AVOIR_QR_90J" selected>1. Avoir QR Code 100 % valable 90 jours (Zéro retenue, même à moins de 48h)</option>
+              <option value="MOMO_FULL_48H">2. Remboursement Mobile Money 100 % (Annulation ≥ 48h avant la visite)</option>
+              <option value="MOMO_LATE_80">3. Remboursement Mobile Money 80 % (Annulation &lt; 48h sur Loge/Pergola — 20 % retenue)</option>
+            </select>
+          </div>
+          <div class="col-6 form-group" style="margin:0;">
+            <label class="form-label" for="cancelRefundOperator">Canal de reversement</label>
+            <select id="cancelRefundOperator" class="form-control" onchange="recalcCancelRefundPreview()">
+              <option value="Orange Money Cameroun" selected>Orange Money Cameroun</option>
+              <option value="MTN Mobile Money">MTN Mobile Money (MoMo)</option>
+              <option value="Portefeuille Avoir QR ECOPARK">Portefeuille Avoir QR ECOPARK (90 jours)</option>
+            </select>
+          </div>
+          <div class="col-6 form-group" style="margin:0;">
+            <label class="form-label" for="cancelRefundPhone">Numéro bénéficiaire (+237)</label>
+            <input type="tel" id="cancelRefundPhone" class="form-control" placeholder="Ex : +237 6XX XX XX XX" />
+          </div>
+        </div>
+
+        <div id="cancelRefundCalcBox" style="padding:12px;background:#FBF5EC;border:1px solid rgba(196,125,43,0.42);border-radius:10px;font-size:13px;display:grid;gap:4px;">
+          <div style="display:flex;justify-content:space-between;"><span>Montant initial du dossier :</span><strong id="cancelInitialAmtText">14 000 FCFA</strong></div>
+          <div style="display:flex;justify-content:space-between;"><span>Retenue d'immobilisation :</span><strong id="cancelRetentionAmtText">0 FCFA (0 %)</strong></div>
+          <div style="display:flex;justify-content:space-between;font-size:14.5px;color:var(--color-brand-deep);border-top:1px dashed rgba(196,125,43,0.4);padding-top:4px;">
+            <strong>Montant net remboursé / crédité :</strong>
+            <strong id="cancelNetRefundAmtText">14 000 FCFA (100 %)</strong>
+          </div>
+          <div style="font-size:12px;color:var(--color-text-muted);margin-top:2px;">
+            • <strong>Effet immédiat sur le stock :</strong> Toute loge hôtelière (Ewondo, Chanthel, Bene), pergola 13h ou créneau RDV lié à ce dossier est immédiatement remis en état <strong>« Libre »</strong> et le QR Code initial est désactivé au tourniquet.
+          </div>
+        </div>
+
+        <div style="display:flex;gap:10px;margin-top:4px;">
+          <button type="button" class="btn btn-primary" style="flex:1;background:#B42318;border-color:#B42318;" onclick="confirmCancelAndRefundSprint1()">
+            Confirmer l'annulation, libérer le stock &amp; rembourser
+          </button>
+        </div>
       </div>
     </div>
 
@@ -5375,11 +5624,13 @@
       if (document.getElementById('chkBumpNavette') && document.getElementById('chkBumpNavette').checked) acts.push('Navette A/R');
       if (document.getElementById('chkBumpPeche') && document.getElementById('chkBumpPeche').checked) acts.push('Pêche & Musée');
 
-      db.opsMetrics = db.opsMetrics || { kitchenPreorders: 18, pergolasReserved: 6, fishPacks: 34, ewondoFree: 2 };
+      db.opsMetrics = Object.assign({ kitchenPreorders: 18, pergolasReserved: 6, fishPacks: 34, ewondoFree: 2, chanthelFree: 3, beneFree: 0, ewondoHeld: 1 }, db.opsMetrics || {});
+      const hasPergolaBooked = !!(document.getElementById('chkBumpPergola') && document.getElementById('chkBumpPergola').checked);
+      let bookedLodgeCity = null;
       if (document.getElementById('chkRepas') && document.getElementById('chkRepas').checked) {
         db.opsMetrics.kitchenPreorders += (counts.adults + counts.children);
       }
-      if (document.getElementById('chkBumpPergola') && document.getElementById('chkBumpPergola').checked) {
+      if (hasPergolaBooked) {
         db.opsMetrics.pergolasReserved = Math.min(10, db.opsMetrics.pergolasReserved + 1);
       }
       if (document.getElementById('chkBumpNutrition') && document.getElementById('chkBumpNutrition').checked) {
@@ -5387,11 +5638,18 @@
       }
       if (document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked) {
         const ld = typeof getSelectedLodgeDetails === 'function' ? getSelectedLodgeDetails() : { city: 'EWONDO' };
-        if (ld.city === 'EWONDO') {
+        bookedLodgeCity = ld.city || 'EWONDO';
+        if (bookedLodgeCity === 'EWONDO') {
           db.opsMetrics.ewondoFree = Math.max(0, db.opsMetrics.ewondoFree - 1);
+        } else if (bookedLodgeCity === 'CHANTHEL') {
+          db.opsMetrics.chanthelFree = Math.max(0, db.opsMetrics.chanthelFree - 1);
+        } else if (bookedLodgeCity === 'BENE') {
+          db.opsMetrics.beneFree = Math.max(0, db.opsMetrics.beneFree - 1);
         }
       }
 
+      const checkedPay = document.querySelector('input[name="payMethod"]:checked');
+      const payVal = checkedPay ? checkedPay.value : 'OM';
       const ref = 'ECP-2026-' + Math.floor(10000 + Math.random() * 89999);
       const paxSummary = `${counts.adults} Adulte(s), ${counts.children} Enfant(s) • ${acts.join(' + ') || 'Visite'}`;
 
@@ -5402,7 +5660,10 @@
         date: rawDate,
         paxSummary: paxSummary,
         totalFcfa: totalNum,
-        status: 'CONFIRMED',
+        payMethod: payVal,
+        lodgeCity: bookedLodgeCity,
+        hasPergola: hasPergolaBooked,
+        status: payVal === 'GUICHET' ? 'HELD_11H' : 'CONFIRMED',
         scanned: false,
         scannedAt: null
       });
@@ -5636,6 +5897,13 @@
       const found = db.bookings.find(b => b.reference.toUpperCase() === code);
       if (!found) {
         _origTriggerScanVerdict('UNKNOWN');
+        return;
+      }
+      if (found.status === 'CANCELLED') {
+        _origTriggerScanVerdict('CANCELLED');
+        const rfdInfo = found.refundRef ? `Réf. remboursement ${found.refundRef} (${formatFCFA(found.refundAmountFcfa || found.totalFcfa)} — ${found.refundMethod || 'Mobile Money / Avoir QR'})` : 'Annulé par le client';
+        document.getElementById('scanResultDesc').textContent =
+          `ALERTE ANTI-FRAUDE : Ce billet (${found.reference} — ${found.holder}) a été ANNULÉ et REMBOURSÉ (${rfdInfo}). Le stock a été remis en vente : REFUSER L'ENTRÉE.`;
         return;
       }
       if (found.scanned) {
@@ -6910,7 +7178,349 @@
       showToastSprint1(`• Billet QR ${ref} chargé dans votre portefeuille électronique et prêt à être présenté au portail d'Ahala.`);
     }
 
-    function openRescheduleModal(ref, kind) {
+    // ========================================================================
+    // VOLET A & VOLET B : MOTEUR DE DISPONIBILITÉS TEMPS RÉEL (LIBRE / PRÉ-RÉSERVÉ 11H / OCCUPÉ),
+    // ANTI-SURRÉSERVATION, REPORT GRATUIT (90J), ANNULATION & REMBOURSEMENT MOBILE MONEY + LIBÉRATION DU STOCK
+    // ========================================================================
+    function getLiveInventoryForDate(dateStr) {
+      const db = ensureAppointmentsArray(loadDB());
+      const ops = Object.assign({
+        kitchenPreorders: 18,
+        pergolasReserved: 6,
+        fishPacks: 34,
+        ewondoFree: 2,
+        chanthelFree: 3,
+        beneFree: 0,
+        ewondoHeld: 1
+      }, db.opsMetrics || {});
+
+      // Si l'utilisateur choisit un jour de semaine (mardi/mercredi/jeudi), la Cité Bene a 2 loges libres ; le week-end elle est complète (0/10) sauf si stock libéré
+      let beneFree = ops.beneFree;
+      if (dateStr) {
+        const parsed = new Date(dateStr + 'T12:00:00');
+        if (!isNaN(parsed.getTime())) {
+          const dow = parsed.getDay(); // 0=Dim, 6=Sam
+          if (dow >= 2 && dow <= 4 && beneFree === 0) {
+            beneFree = 2;
+          }
+        }
+      }
+      const ewondoFree = Math.max(0, Math.min(8, ops.ewondoFree));
+      const chanthelFree = Math.max(0, Math.min(12, ops.chanthelFree));
+      const pergolasReserved = Math.max(0, Math.min(10, ops.pergolasReserved));
+      const pergolasFree = Math.max(0, 10 - pergolasReserved);
+
+      // Vérifier si un devis groupe occupe déjà la Salle Menkii Essomba Anton à cette date
+      const quotesOnDate = (db.quotes || []).filter(q => q.date === dateStr && q.status !== 'CANCELLED');
+      const hallBusy = quotesOnDate.some(q => String(q.type || '').includes('Menkii') || String(q.type || '').includes('Séminaire') || String(q.type || '').includes('Mariage'));
+
+      // Compter les pré-réservations Guichet 11h actives
+      const heldBookingsCount = (db.bookings || []).filter(b => b.status === 'HELD_11H').length + (ops.ewondoHeld || 0);
+
+      return {
+        ewondoFree,
+        ewondoTotal: 8,
+        chanthelFree,
+        chanthelTotal: 12,
+        beneFree,
+        beneTotal: 10,
+        pergolasReserved,
+        pergolasFree,
+        pergolasTotal: 10,
+        hallBusy,
+        heldBookingsCount
+      };
+    }
+
+    function syncLiveAvailabilityAndOverbooking() {
+      const vDate = ((document.getElementById('visitDate') || {}).value || '2026-11-15');
+      const inv = getLiveInventoryForDate(vDate);
+
+      const dateLbl = document.getElementById('barometerDateLabel');
+      if (dateLbl) dateLbl.textContent = vDate;
+
+      // 1. Mise à jour des 5 jauges du Baromètre (#liveAvailabilityBarometer)
+      const ewEl = document.getElementById('baromEwondoStatus');
+      if (ewEl) {
+        ewEl.className = inv.ewondoFree > 0 ? 'avail-dot-pill avail-dot-free' : 'avail-dot-pill avail-dot-full';
+        ewEl.textContent = inv.ewondoFree > 0
+          ? `${inv.ewondoFree} / 8 libre(s) • ${inv.heldBookingsCount} pré-réservée 11h`
+          : 'Complet (0 / 8 libre)';
+      }
+
+      const chEl = document.getElementById('baromChanthelStatus');
+      if (chEl) {
+        chEl.className = inv.chanthelFree > 0 ? 'avail-dot-pill avail-dot-free' : 'avail-dot-pill avail-dot-full';
+        chEl.textContent = inv.chanthelFree > 0
+          ? `${inv.chanthelFree} / 12 libre(s) • ${12 - inv.chanthelFree} occupées`
+          : 'Complet (0 / 12 libre)';
+      }
+
+      const beEl = document.getElementById('baromBeneStatus');
+      if (beEl) {
+        beEl.className = inv.beneFree > 0 ? 'avail-dot-pill avail-dot-free' : 'avail-dot-pill avail-dot-full';
+        beEl.textContent = inv.beneFree > 0
+          ? `${inv.beneFree} / 10 libre(s) • ${10 - inv.beneFree} occupées`
+          : 'Complet à cette date (0 / 10)';
+      }
+
+      const pgEl = document.getElementById('baromPergolaStatus');
+      if (pgEl) {
+        pgEl.className = inv.pergolasFree > 0 ? 'avail-dot-pill avail-dot-free' : 'avail-dot-pill avail-dot-full';
+        pgEl.textContent = inv.pergolasFree > 0
+          ? `${inv.pergolasFree} / 10 libre(s) à 13h • ${inv.pergolasReserved} réservées`
+          : 'Complet à 13h (10 / 10 réservées)';
+      }
+
+      const hsEl = document.getElementById('baromHallShuttleStatus');
+      if (hsEl) {
+        hsEl.className = inv.hallBusy ? 'avail-dot-pill avail-dot-held' : 'avail-dot-pill avail-dot-free';
+        hsEl.textContent = inv.hallBusy
+          ? 'Salle en option • Esplanade & Navettes Libres'
+          : 'Salle Libre • Navettes 32/18/5 pl. Libres';
+      }
+
+      // 2. Anti-surréservation sur le sélecteur des Cités Hôtelières (#lodgeCitySelect)
+      const citySel = document.getElementById('lodgeCitySelect');
+      if (citySel && citySel.options && citySel.options.length >= 3) {
+        const optEw = citySel.options[0];
+        const optCh = citySel.options[1];
+        const optBe = citySel.options[2];
+
+        optEw.textContent = inv.ewondoFree > 0
+          ? `Cité Ewondo VIP — 25 000 FCFA/nuit (${inv.ewondoFree}/8 libre${inv.ewondoFree > 1 ? 's' : ''})`
+          : 'Cité Ewondo VIP — Complet (0/8 libre)';
+        optEw.disabled = (inv.ewondoFree <= 0);
+
+        optCh.textContent = inv.chanthelFree > 0
+          ? `Cité Chanthel Confort — 15 000 FCFA/nuit (${inv.chanthelFree}/12 libre${inv.chanthelFree > 1 ? 's' : ''})`
+          : 'Cité Chanthel Confort — Complet (0/12 libre)';
+        optCh.disabled = (inv.chanthelFree <= 0);
+
+        optBe.textContent = inv.beneFree > 0
+          ? `Cité Bene Standard — 10 000 FCFA/nuit (${inv.beneFree}/10 libre${inv.beneFree > 1 ? 's' : ''})`
+          : 'Cité Bene Standard — Complet à cette date (0/10)';
+        optBe.disabled = (inv.beneFree <= 0);
+
+        // Si la cité sélectionnée est complète, basculer automatiquement sur une cité disponible
+        const currentOpt = citySel.options[citySel.selectedIndex];
+        if (currentOpt && currentOpt.disabled) {
+          const firstAvail = Array.from(citySel.options).find(o => !o.disabled);
+          if (firstAvail) {
+            citySel.value = firstAvail.value;
+          } else {
+            const chkLodge = document.getElementById('chkBumpLodgeEwondo');
+            if (chkLodge) chkLodge.checked = false;
+          }
+        }
+      }
+
+      const simEwondoTxt = document.getElementById('simEwondoRemainingText');
+      if (simEwondoTxt) {
+        const totalRoomsFree = inv.ewondoFree + inv.chanthelFree + inv.beneFree;
+        simEwondoTxt.textContent = totalRoomsFree > 0
+          ? `${inv.ewondoFree} Ewondo, ${inv.chanthelFree} Chanthel${inv.beneFree > 0 ? ', ' + inv.beneFree + ' Bene' : ''} dispo.`
+          : 'Toutes les loges sont complètes à cette date';
+      }
+
+      // 3. Anti-surréservation sur les Pergolas Bord du Lac 13h (#chkBumpPergola)
+      const pergBadge = document.getElementById('simPergolaRemainingBadge');
+      const pergChk = document.getElementById('chkBumpPergola');
+      if (pergBadge) {
+        pergBadge.className = inv.pergolasFree > 0 ? 'avail-dot-pill avail-dot-free' : 'avail-dot-pill avail-dot-full';
+        pergBadge.textContent = inv.pergolasFree > 0 ? `${inv.pergolasFree}/10 libres à 13h` : 'Complet à 13h (0/10)';
+      }
+      if (pergChk) {
+        if (inv.pergolasFree <= 0) {
+          pergChk.checked = false;
+          pergChk.disabled = true;
+        } else {
+          pergChk.disabled = false;
+        }
+      }
+
+      // 4. Synchroniser le tableau Back-Office EXP-04 (Disponibilités des 3 Cités Hôtelières)
+      const expTables = document.querySelectorAll('#view-EXP table tbody');
+      if (expTables.length >= 1) {
+        expTables[0].innerHTML = `
+          <tr>
+            <td><strong>Cité Ewondo (VIP Climatisée)</strong></td>
+            <td>25 000 – 30 000 FCFA</td>
+            <td>${8 - inv.ewondoFree} / 8 loges (${inv.heldBookingsCount} pré-rés. 11h)</td>
+            <td><span class="status-badge ${inv.ewondoFree > 0 ? 'status-success' : 'status-error'}">${inv.ewondoFree > 0 ? inv.ewondoFree + ' disponible(s)' : 'Complet'}</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cité Chanthel (Confort)</strong></td>
+            <td>15 000 – 25 000 FCFA</td>
+            <td>${12 - inv.chanthelFree} / 12 loges</td>
+            <td><span class="status-badge ${inv.chanthelFree > 0 ? 'status-success' : 'status-error'}">${inv.chanthelFree > 0 ? inv.chanthelFree + ' disponible(s)' : 'Complet'}</span></td>
+          </tr>
+          <tr>
+            <td><strong>Cité Bene (Standard)</strong></td>
+            <td>10 000 – 15 000 FCFA</td>
+            <td>${10 - inv.beneFree} / 10 loges</td>
+            <td><span class="status-badge ${inv.beneFree > 0 ? 'status-success' : 'status-warning'}">${inv.beneFree > 0 ? inv.beneFree + ' disponible(s)' : 'Complet ce soir'}</span></td>
+          </tr>
+        `;
+      }
+    }
+
+    // Synchroniser les créneaux horaires de Rendez-Vous (#rdvSlotGrid) selon la date choisie (#rdvDate)
+    function syncRdvSlotsAvailability() {
+      const rDate = ((document.getElementById('rdvDate') || {}).value || '');
+      const db = ensureAppointmentsArray(loadDB());
+      const takenSlots = new Set(
+        (db.appointments || [])
+          .filter(a => a.date === rDate && !String(a.status || '').toLowerCase().includes('annul'))
+          .map(a => a.slot)
+      );
+      const slotBtns = Array.from(document.querySelectorAll('#rdvSlotGrid .rdv-slot-pill'));
+      const defaultNotes = {
+        '09h30 – 10h30': 'Libre • Matinée fraîcheur',
+        '11h00 – 12h00': 'Libre • Recommandé',
+        '14h00 – 15h00': 'Libre • Après-midi',
+        '16h00 – 17h00': 'Libre • Fin de journée'
+      };
+      let activeStillFree = true;
+      slotBtns.forEach(btn => {
+        const slot = btn.getAttribute('data-slot');
+        const smallEl = btn.querySelector('small');
+        const isTaken = takenSlots.has(slot);
+        btn.disabled = isTaken;
+        if (smallEl) {
+          smallEl.textContent = isTaken ? 'Occupé / Déjà réservé' : (defaultNotes[slot] || 'Créneau Libre');
+        }
+        if (isTaken && btn.classList.contains('active')) {
+          btn.classList.remove('active');
+          activeStillFree = false;
+        }
+      });
+      if (!activeStillFree) {
+        const firstFree = slotBtns.find(b => !b.disabled);
+        if (firstFree) {
+          firstFree.classList.add('active');
+          const slotInput = document.getElementById('rdvTimeSlot');
+          if (slotInput) slotInput.value = firstFree.getAttribute('data-slot') || '11h00 – 12h00';
+        }
+      }
+    }
+
+    // Synchroniser la bannière de disponibilité dans la Modale Devis (#modalQuoteBox)
+    function syncQuoteModalAvailability() {
+      const qDate = ((document.getElementById('quoteDate') || {}).value || '2026-12-10');
+      const inv = getLiveInventoryForDate(qDate);
+      const txtEl = document.getElementById('quoteLiveAvailabilityText');
+      const bdgEl = document.getElementById('quoteLiveAvailabilityBadge');
+      if (txtEl && bdgEl) {
+        if (inv.hallBusy) {
+          txtEl.innerHTML = `◐ <strong>Date du ${qDate} :</strong> Une option est déjà posée sur la Salle « Menkii Essomba Anton » • <strong>Esplanade Plein Air &amp; Navettes (32/18/5 pl.) Libres</strong>.`;
+          bdgEl.className = 'avail-dot-pill avail-dot-held';
+          bdgEl.textContent = 'Esplanade & Navettes Libres';
+        } else {
+          txtEl.innerHTML = `● <strong>Disponibilité vérifiée (${qDate}) :</strong> Salle Polyvalente « Menkii Essomba Anton » &amp; Esplanade <strong>Libres</strong> • Flotte Navettes (32, 18 et 5 pl.) <strong>Disponible</strong>.`;
+          bdgEl.className = 'avail-dot-pill avail-dot-free';
+          bdgEl.textContent = 'Salle & Navettes Libres';
+        }
+      }
+    }
+
+    const _origRecalcQuotePrev = recalcQuoteProformaPreview;
+    recalcQuoteProformaPreview = function() {
+      _origRecalcQuotePrev();
+      syncQuoteModalAvailability();
+    };
+
+    const _origOpenRdvModalAvail = openRdvModalSprint1;
+    openRdvModalSprint1 = function(p) {
+      _origOpenRdvModalAvail(p);
+      syncRdvSlotsAvailability();
+    };
+
+    const rdvDateInputEl = document.getElementById('rdvDate');
+    if (rdvDateInputEl) {
+      rdvDateInputEl.addEventListener('change', syncRdvSlotsAvailability);
+    }
+    const visitDateInputEl = document.getElementById('visitDate');
+    if (visitDateInputEl) {
+      visitDateInputEl.addEventListener('change', () => {
+        syncLiveAvailabilityAndOverbooking();
+        recalcSimulator();
+      });
+    }
+
+    // --- VOLET B : MODALE REPORT DE DATE GRATUIT (90J) OU ANNULATION & REMBOURSEMENT MOBILE MONEY ---
+    function switchRescheduleModalTab(mode) {
+      const tabMode = (mode === 'CANCEL_REFUND') ? 'CANCEL_REFUND' : 'REPORT';
+      const modeInput = document.getElementById('rescheduleActiveTabMode');
+      if (modeInput) modeInput.value = tabMode;
+
+      const btnReport = document.getElementById('tabBtnReportMode');
+      const btnCancel = document.getElementById('tabBtnCancelRefundMode');
+      const panelReport = document.getElementById('rescheduleTabPanelReport');
+      const panelCancel = document.getElementById('rescheduleTabPanelCancel');
+
+      if (btnReport) btnReport.classList.toggle('active', tabMode === 'REPORT');
+      if (btnCancel) btnCancel.classList.toggle('active', tabMode === 'CANCEL_REFUND');
+      if (panelReport) panelReport.style.display = (tabMode === 'REPORT') ? 'grid' : 'none';
+      if (panelCancel) panelCancel.style.display = (tabMode === 'CANCEL_REFUND') ? 'grid' : 'none';
+
+      if (tabMode === 'CANCEL_REFUND') {
+        recalcCancelRefundPreview();
+      }
+    }
+
+    function getTargetDossierAmountAndPhone(ref, kind) {
+      const db = ensureAppointmentsArray(loadDB());
+      if (kind === 'RDV') {
+        const r = (db.appointments || []).find(x => x.reference === ref);
+        return { amount: 0, phone: (r && r.phone) || '', summary: (r && r.purposeLabel) || 'Rendez-vous Direction' };
+      }
+      const b = (db.bookings || []).find(x => x.reference === ref);
+      if (b) {
+        return { amount: Number(b.totalFcfa) || 14000, phone: b.phone || '', summary: b.paxSummary || '' };
+      }
+      return { amount: 14000, phone: '', summary: 'Pass Visite ECOPARK' };
+    }
+
+    function recalcCancelRefundPreview() {
+      const ref = (document.getElementById('rescheduleTargetRef') || {}).value || 'ECP-2026-84920';
+      const kind = (document.getElementById('rescheduleTargetKind') || {}).value || 'BOOKING';
+      const policy = (document.getElementById('cancelRefundPolicyMode') || {}).value || 'AVOIR_QR_90J';
+      const info = getTargetDossierAmountAndPhone(ref, kind);
+      const baseAmt = info.amount;
+
+      let retention = 0;
+      let netRefund = baseAmt;
+      let labelPct = '100 %';
+
+      if (kind === 'RDV') {
+        retention = 0;
+        netRefund = 0;
+        labelPct = 'Gratuit (Créneau libéré)';
+      } else if (policy === 'MOMO_LATE_80') {
+        retention = Math.round(baseAmt * 0.20);
+        netRefund = Math.max(0, baseAmt - retention);
+        labelPct = '80 % (Mobile Money)';
+      } else if (policy === 'MOMO_FULL_48H') {
+        retention = 0;
+        netRefund = baseAmt;
+        labelPct = '100 % (Mobile Money)';
+      } else {
+        retention = 0;
+        netRefund = baseAmt;
+        labelPct = '100 % (Avoir QR 90 jours)';
+      }
+
+      const initEl = document.getElementById('cancelInitialAmtText');
+      const retEl = document.getElementById('cancelRetentionAmtText');
+      const netEl = document.getElementById('cancelNetRefundAmtText');
+      if (initEl) initEl.textContent = formatFCFA(baseAmt);
+      if (retEl) retEl.textContent = retention > 0 ? `${formatFCFA(retention)} (20 % immobilisation < 48h)` : '0 FCFA (0 %)';
+      if (netEl) netEl.textContent = `${formatFCFA(netRefund)} — ${labelPct}`;
+      return { baseAmt, retention, netRefund, policy };
+    }
+
+    function openRescheduleModal(ref, kind, initialTab) {
       closeSprint1Modals();
       const overlay = document.getElementById('modalOverlaySprint1');
       const box = document.getElementById('modalRescheduleBox');
@@ -6919,10 +7529,20 @@
         const el = document.getElementById(id);
         if (el) el.style.display = 'none';
       });
-      document.getElementById('rescheduleTargetRef').value = ref || 'ECP-2026-84920';
-      document.getElementById('rescheduleTargetKind').value = kind || 'BOOKING';
+      const safeRef = ref || 'ECP-2026-84920';
+      const safeKind = kind || 'BOOKING';
+      document.getElementById('rescheduleTargetRef').value = safeRef;
+      document.getElementById('rescheduleTargetKind').value = safeKind;
+
+      const info = getTargetDossierAmountAndPhone(safeRef, safeKind);
       const lbl = document.getElementById('rescheduleRefLabel');
-      if (lbl) lbl.textContent = `${ref} (${kind === 'RDV' ? 'Rendez-Vous Direction' : 'Billet QR Visite'})`;
+      if (lbl) lbl.textContent = `${safeRef} (${safeKind === 'RDV' ? 'Rendez-Vous Direction' : 'Billet QR Visite'})`;
+      const amtBadge = document.getElementById('rescheduleAmountBadge');
+      if (amtBadge) amtBadge.textContent = safeKind === 'RDV' ? 'Accueil Gratuit' : formatFCFA(info.amount);
+      const phoneInput = document.getElementById('cancelRefundPhone');
+      if (phoneInput && info.phone && !phoneInput.value) phoneInput.value = info.phone;
+
+      switchRescheduleModalTab(initialTab || 'REPORT');
       overlay.style.display = 'flex';
       box.style.display = 'flex';
     }
@@ -6938,11 +7558,15 @@
         const r = (db.appointments || []).find(x => x.reference === ref);
         if (r) {
           r.date = newDate;
-          r.status = `Reporté au ${newDate}`;
+          r.status = `Reporté au ${newDate} (Sans frais)`;
         }
       } else {
         const b = (db.bookings || []).find(x => x.reference === ref);
         if (b) {
+          if (b.scanned) {
+            showToastSprint1(`• Action refusée : Le billet ${ref} a déjà été scanné au tourniquet (${b.scannedAt}).`);
+            return false;
+          }
           b.date = newDate;
           b.status = 'REPORTED';
         }
@@ -6952,12 +7576,94 @@
 
       db.auditLogs.unshift({
         time: nowStamp(),
-        actor: `Espace Client (ACC-05)`,
-        action: `Report de date sans frais du dossier ${ref} au ${newDate} (${reason}).`
+        actor: `Portail Visiteur (Report Gratuit 90j)`,
+        action: `Report de date sans frais du dossier ${ref} au ${newDate} (${reason}). Ancien créneau libéré.`
       });
       saveDB(db);
       closeSprint1Modals();
       showToastSprint1(`• Dossier ${ref} reporté avec succès au ${newDate} sans aucun frais (${reason}) !`);
+      return true;
+    }
+
+    function confirmCancelAndRefundSprint1() {
+      const ref = (document.getElementById('rescheduleTargetRef') || {}).value || 'ECP-2026-84920';
+      const kind = (document.getElementById('rescheduleTargetKind') || {}).value || 'BOOKING';
+      const operator = (document.getElementById('cancelRefundOperator') || {}).value || 'Orange Money Cameroun';
+      const calc = recalcCancelRefundPreview();
+      const rfdRef = 'RFD-2026-' + Math.floor(1000 + Math.random() * 8999);
+      const db = ensureAppointmentsArray(loadDB());
+      db.opsMetrics = Object.assign({
+        kitchenPreorders: 18,
+        pergolasReserved: 6,
+        fishPacks: 34,
+        ewondoFree: 2,
+        chanthelFree: 3,
+        beneFree: 0,
+        ewondoHeld: 1
+      }, db.opsMetrics || {});
+
+      if (kind === 'RDV') {
+        const r = (db.appointments || []).find(x => x.reference === ref);
+        if (r) {
+          r.status = `Annulé (Créneau ${r.slot} libéré)`;
+        }
+        db.auditLogs.unshift({
+          time: nowStamp(),
+          actor: 'Portail Visiteur (Annulation RDV)',
+          action: `Annulation du rendez-vous ${ref}. Créneau horaire immédiatement remis en disponibilité.`
+        });
+        saveDB(db);
+        closeSprint1Modals();
+        showToastSprint1(`• Rendez-vous ${ref} annulé : le créneau horaire a été immédiatement libéré dans l'agenda.`);
+        return rfdRef;
+      }
+
+      const b = (db.bookings || []).find(x => x.reference === ref);
+      if (b && b.scanned) {
+        showToastSprint1(`• Remboursement impossible : Le billet ${ref} a déjà été consommé au tourniquet (${b.scannedAt}).`);
+        return false;
+      }
+
+      let releasedItems = [];
+      if (b) {
+        const summaryUpper = String(b.paxSummary || '').toUpperCase();
+        if (b.lodgeCity === 'EWONDO' || summaryUpper.includes('EWONDO')) {
+          db.opsMetrics.ewondoFree = Math.min(8, db.opsMetrics.ewondoFree + 1);
+          releasedItems.push('+1 Suite Cité Ewondo');
+        } else if (b.lodgeCity === 'CHANTHEL' || summaryUpper.includes('CHANTHEL')) {
+          db.opsMetrics.chanthelFree = Math.min(12, db.opsMetrics.chanthelFree + 1);
+          releasedItems.push('+1 Loge Cité Chanthel');
+        } else if (b.lodgeCity === 'BENE' || summaryUpper.includes('BENE')) {
+          db.opsMetrics.beneFree = Math.min(10, db.opsMetrics.beneFree + 1);
+          releasedItems.push('+1 Loge Cité Bene');
+        }
+        if (b.hasPergola || summaryUpper.includes('PERGOLA')) {
+          db.opsMetrics.pergolasReserved = Math.max(0, db.opsMetrics.pergolasReserved - 1);
+          releasedItems.push('+1 Pergola Lac 13h');
+        }
+
+        b.status = 'CANCELLED';
+        b.refundRef = rfdRef;
+        b.refundAmountFcfa = calc.netRefund;
+        b.refundMethod = calc.policy === 'AVOIR_QR_90J' ? 'Avoir QR 90 jours (100 %)' : `${operator}`;
+
+        if (calc.policy !== 'AVOIR_QR_90J') {
+          db.dirStats.monthlyRevenueFcfa = Math.max(0, db.dirStats.monthlyRevenueFcfa - calc.netRefund);
+          db.dirStats.momoRevenueFcfa = Math.max(0, db.dirStats.momoRevenueFcfa - calc.netRefund);
+        }
+      }
+
+      const releaseNote = releasedItems.length > 0 ? ` Stock libéré : ${releasedItems.join(', ')}.` : ' Billet QR désactivé au tourniquet.';
+      db.auditLogs.unshift({
+        time: nowStamp(),
+        actor: 'Service Remboursement & Stock (ACC-05)',
+        action: `Annulation du billet ${ref} (${rfdRef}) : ${formatFCFA(calc.netRefund)} via ${calc.policy === 'AVOIR_QR_90J' ? 'Avoir QR 90j' : operator}.${releaseNote}`
+      });
+
+      saveDB(db);
+      closeSprint1Modals();
+      showToastSprint1(`• Annulation & Remboursement ${rfdRef} (${formatFCFA(calc.netRefund)}) validés !${releaseNote}`);
+      return rfdRef;
     }
 
     // Téléchargement d'une carte PNG Hors-Ligne haute définition du Billet QR (Zéro forfait data à Ahala)
@@ -6973,14 +7679,12 @@
       canvas.height = 460;
       const ctx = canvas.getContext('2d');
       if (ctx) {
-        // Fond parchemin / canopée
         ctx.fillStyle = '#FBF5EC';
         ctx.fillRect(0, 0, 920, 460);
         ctx.strokeStyle = '#1D490D';
         ctx.lineWidth = 6;
         ctx.strokeRect(12, 12, 896, 436);
 
-        // Bandeau supérieur Vert Canopée
         ctx.fillStyle = '#1D490D';
         ctx.fillRect(12, 12, 896, 86);
         ctx.fillStyle = '#FFFFFF';
@@ -6990,7 +7694,6 @@
         ctx.fillStyle = '#EDF4E7';
         ctx.fillText('Yaoundé – Ahala Barrière (RN3, Face Station Tradex Ahala) • Tél : +237 697 13 62 03', 34, 80);
 
-        // Détails du billet
         ctx.fillStyle = '#1D490D';
         ctx.font = 'bold 30px sans-serif';
         ctx.fillText('RÉFÉRENCE : ' + ref, 36, 150);
@@ -7009,7 +7712,6 @@
         ctx.font = '15px sans-serif';
         ctx.fillText("Billet valable même sans connexion Internet mobile • Contrôle unique au tourniquet d'Ahala.", 36, 395);
 
-        // Dessin du QR Code stylisé à droite
         ctx.fillStyle = '#FFFFFF';
         ctx.fillRect(680, 125, 190, 190);
         ctx.strokeStyle = '#1D490D';
@@ -7037,7 +7739,7 @@
       return ref;
     }
 
-    // Impression / Génération PDF Officielle (Billet QR, Facture Proforma École/B2B, PV Clôture de Caisse)
+    // Impression / Génération PDF Officielle (Billet QR, Facture Proforma École/Entreprise, PV Clôture de Caisse)
     function printOfficialDocument(docType) {
       const db = ensureAppointmentsArray(loadDB());
       const overlay = document.getElementById('modalOverlaySprint1');
@@ -7086,7 +7788,7 @@
             </tbody>
           </table>
           <div style="font-size:12.8px;color:var(--color-text-muted);">
-            <strong>Conditions :</strong> Tarif enfant (3–12 ans) garanti à 500 FCFA. Règlement par Mobile Money Marchand (Orange Money / MTN MoMo), virement ou espèces au Guichet Principal d'Ahala Barrière.
+            <strong>Conditions :</strong> Tarif enfant (3–12 ans) garanti à 500 FCFA. Report de date gratuit en cas de pluie. Règlement par Mobile Money Marchand (Orange Money / MTN MoMo), virement ou espèces au Guichet Principal d'Ahala Barrière.
           </div>
         `;
       } else if (docType === 'CLOSURE') {
@@ -7104,7 +7806,7 @@
             </div>
           </div>
           <div style="padding:10px;background:#FBF5EC;border-radius:8px;border:1px solid rgba(196,125,43,0.35);">
-            <strong>Consolidation Direction Générale (DIR-01) :</strong> Recettes mensuelles : <strong>${formatFCFA(db.dirStats.monthlyRevenueFcfa)}</strong> • Dossiers actifs : <strong>${db.bookings.length} billets QR</strong>, <strong>${db.quotes.length} devis groupes</strong>, <strong>${db.appointments.length} RDV</strong>, <strong>${db.cfpApplications.length} candidatures CFP</strong>.
+            <strong>Consolidation Direction Générale (DIR-01) :</strong> Recettes mensuelles nettes : <strong>${formatFCFA(db.dirStats.monthlyRevenueFcfa)}</strong> • Dossiers : <strong>${db.bookings.length} billets QR</strong>, <strong>${db.quotes.length} devis groupes</strong>, <strong>${db.appointments.length} RDV</strong>, <strong>${db.cfpApplications.length} candidatures CFP</strong>.
           </div>
         `;
       } else {
@@ -7118,7 +7820,7 @@
           <div style="padding:14px;background:var(--color-surface-soft);border:2px solid var(--color-brand-deep);border-radius:12px;">
             <div style="font-size:1.2rem;font-weight:700;color:var(--color-brand-deep);margin-bottom:6px;">Code Référence : ${ref} • Total TTC : ${totalStr}</div>
             <div><strong>Titulaire :</strong> ${holder}</div>
-            <div><strong>Date &amp; Validité :</strong> ${dateStr}</div>
+            <div><strong>Date &amp; Validité :</strong> ${dateStr} (Report gratuit 90 jours si non scanné)</div>
             <div><strong>Prestations &amp; Logistique :</strong> ${itemsStr}</div>
             <div><strong>Repère GPS :</strong> Route Nationale N°3, Ahala Barrière (En face de la Station Tradex Ahala, Yaoundé)</div>
           </div>
@@ -7184,10 +7886,12 @@
       };
     }
 
-    // Enrichir syncAllViewsFromDB pour gérer la recherche temps réel (RES-12 / ACC-01), les dossiers CFP et le bouton Reporter (ACC-05)
+    // Enrichir syncAllViewsFromDB pour gérer le Baromètre Temps Réel, la recherche (RES-12 / ACC-01), le Report et l'Annulation / Remboursement (ACC-05)
     const _prevSyncBefore7Omissions = syncAllViewsFromDB;
     syncAllViewsFromDB = function() {
       _prevSyncBefore7Omissions();
+      syncLiveAvailabilityAndOverbooking();
+
       const db = ensureAppointmentsArray(loadDB());
       const accTbody = document.querySelector('#view-ACC table tbody');
       if (!accTbody) return;
@@ -7202,16 +7906,20 @@
         (db.appointments || []).forEach(r => {
           const blob = `${r.reference} ${r.visitorName} ${r.org} ${r.phone || ''} ${r.purposeLabel} ${r.date}`;
           if (matchQuery(blob)) {
+            const isCancelledRdv = String(r.status || '').toLowerCase().includes('annul');
             htmlRows.push(`
               <tr data-dossier-kind="RDV">
                 <td><strong>${r.reference}</strong></td>
                 <td>${r.date} (${r.slot})</td>
                 <td>RDV : ${r.purposeLabel} (${r.visitorName} — ${r.org})</td>
                 <td><strong>Accueil Gratuit</strong></td>
-                <td><span class="status-badge status-success">${r.status}</span></td>
+                <td><span class="status-badge ${isCancelledRdv ? 'status-warning' : 'status-success'}">${r.status}</span></td>
                 <td style="display:flex;gap:4px;flex-wrap:wrap;">
                   <button class="btn btn-secondary btn-sm" onclick="openRdvModalSprint1('${r.purposeCode}')">Voir RDV</button>
-                  <button class="btn btn-secondary btn-sm btn-ochre-outline" onclick="openRescheduleModal('${r.reference}', 'RDV')">Reporter date</button>
+                  ${isCancelledRdv ? '' : `
+                    <button class="btn btn-secondary btn-sm btn-ochre-outline" onclick="openRescheduleModal('${r.reference}', 'RDV', 'REPORT')">Reporter</button>
+                    <button class="btn btn-secondary btn-sm" onclick="openRescheduleModal('${r.reference}', 'RDV', 'CANCEL_REFUND')">Annuler RDV</button>
+                  `}
                 </td>
               </tr>
             `);
@@ -7221,18 +7929,37 @@
 
       if (cat === 'ALL' || cat === 'BOOKING') {
         (db.bookings || []).forEach(b => {
-          const blob = `${b.reference} ${b.holder} ${b.phone || ''} ${b.paxSummary} ${b.date}`;
+          const blob = `${b.reference} ${b.holder} ${b.phone || ''} ${b.paxSummary} ${b.date} ${b.refundRef || ''}`;
           if (matchQuery(blob)) {
+            let statusCls = 'status-success';
+            let statusTxt = 'Confirmé (QR Actif)';
+            if (b.scanned) {
+              statusCls = 'status-info';
+              statusTxt = `Utilisé (${b.scannedAt})`;
+            } else if (b.status === 'CANCELLED') {
+              statusCls = 'status-error';
+              statusTxt = `Annulé & Remboursé (${b.refundRef || 'RFD-2026'} • ${formatFCFA(b.refundAmountFcfa || b.totalFcfa)})`;
+            } else if (b.status === 'HELD_11H') {
+              statusCls = 'status-warning';
+              statusTxt = 'Pré-réservé Guichet (Garanti 11h00)';
+            } else if (b.status === 'REPORTED') {
+              statusCls = 'status-success';
+              statusTxt = 'Date reportée sans frais (QR Actif)';
+            }
+
             htmlRows.push(`
               <tr data-dossier-kind="BOOKING">
                 <td><strong>${b.reference}</strong></td>
                 <td>${b.date}</td>
                 <td>${b.holder} • ${b.paxSummary}</td>
                 <td><strong>${formatFCFA(b.totalFcfa)}</strong></td>
-                <td><span class="status-badge ${b.scanned ? 'status-info' : 'status-success'}">${b.scanned ? 'Utilisé (' + b.scannedAt + ')' : (b.status === 'REPORTED' ? 'Date reportée (QR Actif)' : 'Confirmé (QR Actif)')}</span></td>
+                <td><span class="status-badge ${statusCls}">${statusTxt}</span></td>
                 <td style="display:flex;gap:4px;flex-wrap:wrap;">
                   <button class="btn btn-primary btn-sm" onclick="loadBookingIntoQrPass('${b.reference}')">Voir Billet QR</button>
-                  <button class="btn btn-secondary btn-sm btn-ochre-outline" onclick="openRescheduleModal('${b.reference}', 'BOOKING')">Reporter date</button>
+                  ${(b.scanned || b.status === 'CANCELLED') ? '' : `
+                    <button class="btn btn-secondary btn-sm btn-ochre-outline" onclick="openRescheduleModal('${b.reference}', 'BOOKING', 'REPORT')">Reporter date</button>
+                    <button class="btn btn-secondary btn-sm" onclick="openRescheduleModal('${b.reference}', 'BOOKING', 'CANCEL_REFUND')">Annuler / Rembourser</button>
+                  `}
                   <button class="btn btn-secondary btn-sm admin-only-control" onclick="document.getElementById('qrScanInput').value='${b.reference}'; navigateFamily('AGT', 'AGT-05')">Scanner</button>
                 </td>
               </tr>

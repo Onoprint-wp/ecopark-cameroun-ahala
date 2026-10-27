@@ -239,3 +239,18 @@ CREATE POLICY "Public read sales bundles" ON public.sales_bundles
 
 CREATE POLICY "Public read lodge cities" ON public.lodge_cities
   FOR SELECT USING (TRUE);
+
+-- ============================================================================
+-- 8. GESTION TEMPS RÉEL DES STOCKS (LIBRE / PRÉ-RÉSERVÉ 11H / OCCUPÉ),
+--    REPORTS DE DATE GRATUITS (90 JOURS) & REMBOURSEMENTS MOBILE MONEY (RFD-2026)
+-- ============================================================================
+ALTER TABLE public.bookings
+  ADD COLUMN IF NOT EXISTS lodge_city TEXT CHECK (lodge_city IN ('EWONDO', 'CHANTHEL', 'BENE')),
+  ADD COLUMN IF NOT EXISTS has_pergola BOOLEAN NOT NULL DEFAULT FALSE,
+  ADD COLUMN IF NOT EXISTS hold_expires_at TIMESTAMPTZ,
+  ADD COLUMN IF NOT EXISTS rescheduled_from_date DATE,
+  ADD COLUMN IF NOT EXISTS reschedule_reason TEXT,
+  ADD COLUMN IF NOT EXISTS refund_reference TEXT,
+  ADD COLUMN IF NOT EXISTS refund_amount_fcfa INTEGER CHECK (refund_amount_fcfa >= 0),
+  ADD COLUMN IF NOT EXISTS refund_method TEXT,
+  ADD COLUMN IF NOT EXISTS cancelled_at TIMESTAMPTZ;
