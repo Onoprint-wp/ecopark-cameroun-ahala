@@ -662,8 +662,7 @@ def inject_visual_appreciation(filepath: str) -> None:
                         </select>
                       </div>
                     </div>"""
-    kitchen_replace = kitchen_target[:-26] + """                      </div>
-                      <div id="kitchenVisualPreviewBox" style="grid-column:1 / -1;display:flex;align-items:center;gap:10px;padding:8px 10px;background:#FFFFFF;border-radius:8px;border:1px solid rgba(29,73,13,0.14);">
+    kitchen_replace = kitchen_target[:-26] + """                      <div id="kitchenVisualPreviewBox" style="grid-column:1 / -1;display:flex;align-items:center;gap:10px;padding:8px 10px;background:#FFFFFF;border-radius:8px;border:1px solid rgba(29,73,13,0.14);">
                         <img id="kitchenVisualPreviewImg" src="audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png" alt="Aperçu spécialité Château des Saveurs" class="sim-item-thumb" onclick="openEcoparkLightbox(2)" />
                         <div style="font-size:12px;">
                           <strong style="color:var(--color-brand-deep);display:block;" id="kitchenVisualPreviewTitle">Poisson Braisé d'Ahala (Étang frais) • Service 12h30</strong>
