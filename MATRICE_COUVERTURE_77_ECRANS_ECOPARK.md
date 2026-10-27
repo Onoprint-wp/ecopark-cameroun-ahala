@@ -133,3 +133,18 @@
 | `ADM-06` | Paramètres du site, coordonnées, horaires et textes légaux | Coordonnées officielles d'Ahala, liens réseaux sociaux et mentions légales. |
 | `ADM-07` | Paramètres d'intégration : paiement, messagerie, analytique, sans secrets exposés | État des passerelles Orange Money / MTN MoMo / SMTP avec clés masquées (`••••••••••••`) et mode Sandbox/Production. |
 | `ADM-08` | Journal d'audit et historique des actions sensibles | Traçabilité immuable des modifications de tarifs, annulations de billets et clôtures de caisse (Auteur, Rôle, Date/Heure, Action). |
+
+
+---
+
+## 9. Extensions Production Déployées (Prise de RDV, Écosystème WhatsApp 5 Piliers & Pack des 7 Compléments)
+
+| Module / Référence | Écrans Enrichis | Fonctionnalités Actives en Production (`https://ecopark-cameroun-ahala.vercel.app`) |
+| :--- | :--- | :--- |
+| **Module Prise de RDV (`/rdv`)** | `PUB-18`, `ACC-04`, `EXP-07`, `ADM-08` | Section dédiée `#sec-PUB-18` (4 motifs : *Mariages/Galas*, *Séminaires B2B/Ministères/ONG*, *Repérage Écoles*, *Orientation CFP*), modale `#modalRdvBox` avec 4 créneaux garantis (`09h30`, `11h00`, `14h00`, `16h00`), génération de référence `RDV-2026-XXXX` et table SQL `public.appointments`. |
+| **Guichet Unique & Closing WhatsApp** | `RES-04`, `RES-09`, `EXP-07` | Portefeuille WhatsApp client (`#whatsappConciergeCard`) avec 4 Quick Replies, bon de commande pré-calculé sans ressaisie, option gourmande 1 clic (*Poisson Braisé & Pergola 13h*), garantie tarif guichet 11h et Console de Closing Agent en 1 clic (`EXP-07`). |
+| **Recherche & Filtres Dossiers Client** | `RES-12`, `ACC-01` à `ACC-06` | Recherche instantanée `#accSearchInput` par référence (`ECP-`, `DEV-`, `RDV-`, `CFP-`) ou téléphone `+237`, filtres par catégorie incluant les candidatures CFP, et rechargement 3D direct d'un billet QR (`loadBookingIntoQrPass`). |
+| **Mode Hors-Ligne & Documents PDF** | `RES-09`, `RES-10`, `AGT-09`, `DIR-05` | Téléchargement du Billet QR en image PNG haute définition hors-ligne (`downloadOfflineQrTicketPng`) pour le portail d'Ahala sans forfait data, et impression/export PDF de la **Facture Proforma Officielle** et du **PV de Clôture de Caisse** (`printOfficialDocument`). |
+| **Garantie Pluie Tropicale Yaoundé** | `ACC-05` | Modale `#modalRescheduleBox` permettant le report de date sans frais en 1 clic sur tout billet QR ou rendez-vous. |
+| **Logistique Cuisine 13h & Navette** | `PUB-07`, `RES-03`, `EXP-05` | Sélecteurs contextuels `#kitchenPreorderSubpanel` (*Poisson Braisé, Poulet DG, Ndolé Royal* + créneau *12h30 / 13h30 / 15h00*) et `#shuttlePickupSubpanel` (*Poste Centrale, Carrefour Bastos, Carrefour Mvan, Nsimeyong* + flotte *18/32 pl. ou VIP 5 pl.*). |
+| **Météo Ahala, Avis Vérifiés & Export CSV** | `PUB-01`, `PUB-13`, `PUB-15`, `DIR-05` | Bandeau météo & trafic RN3 en direct (`#ahalaLiveWeatherBar`), 4 témoignages vérifiés (`#sec-PUB-15`), barre de raccourcis mobiles (`#mobileQuickNavPills`) et export comptable complet au format CSV compatible Microsoft Excel (`exportEcoparkDatabaseCSV`). |

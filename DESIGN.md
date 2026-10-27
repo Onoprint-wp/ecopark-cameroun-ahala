@@ -105,3 +105,31 @@
 - **Priorité 2 — Visuels de démonstration en contexte local camerounais (`audit-assets/stitch-canopee-vivante/`) :**
   - Familles camerounaises, élèves et enseignants camerounais en excursion, étudiants camerounais en formation pratique CFP, gastronomie locale (poisson braisé, plantains) sous les pergolas.
   - **Règle de transparence :** Tout visuel conceptuel ou temporaire porte explicitement le badge `Visuel de démonstration (Contexte local Cameroun)`.
+
+
+---
+
+## DS-04 à DS-08 — Évolutions Production « Apple-Grade », Ocre Bronze, SVG Monochromes & HyperFrames
+
+### 4.1 Règle Chromatique 60-30-10 & 3e Couleur d'Accent « Ocre Bronze / Terre Dorée »
+- **60 % — Surfaces Lumineuses :** `#FFFFFF` (`--color-white`) et `#FAFDF8` (Fond principal avec filigrane botanique SVG subtil).
+- **30 % — Structure Canopée & Sauge :** `#EDF4E7` (`--color-surface-soft`), `#1D490D` (`--color-brand-deep`) et `#1E281B` (`--color-text`).
+- **10 % — Accent Chaleureux Hospitalité & Prestige (« Ocre Bronze ») :**
+  - `--color-accent-ochre: #C47D2B` (Bordures d'accent, barres de progression HyperFrames, filets de prestige).
+  - `--color-accent-ochre-deep: #9A5B13` (Texte haute lisibilité sur fond parchemin — ratio WCAG AA `5.42:1`).
+  - `--color-accent-ochre-soft: #FBF5EC` (Fond teinté parchemin pour les badges `.price-pill`, les offres d'hébergement *Ewondo / Chanthel / Bene*, les boutons `.btn-ochre-outline` et le Pass QR).
+
+### 4.2 Iconographie 100 % Vectorielle SVG Linéaire Monochrome (`0` Emoji OS)
+- **Zéro emoji coloré d'OS** dans le DOM de production.
+- **68 icônes vectorielles inline** (`.svg-mono`, `viewBox="0 0 24 24"`, `fill="none"`, `stroke="currentColor"`, `stroke-width="1.75"`, `stroke-linecap="round"`, `stroke-linejoin="round"`) et **14 médaillons** `.icon-medallion` (`36px × 36px`, rayon `10px`, fond `#EDF4E7`).
+
+### 4.3 Mise en Exergue Photographique & Lightbox « Liquid Glass »
+- **Hero 50/50 (`#heroShowcaseFrame`) :** Hauteur `455px` avec sélecteur interactif de 4 scènes HD et badges `.photo-zoom-pill`.
+- **Grille Bento Asymétrique (`#sec-PUB-03`) :** Fenêtres photographiques de `340px` de hauteur (`col-7` / `col-5` / `col-4`).
+- **Mosaïque Cinéma (`PUB-14`) & Lightbox (`#ecoparkLightbox`) :** Visionneuse plein écran `backdrop-filter: saturate(180%) blur(24px)` avec navigation clavier (`←`, `→`, `Échap`) et CTA de réservation directe.
+
+### 4.4 Système d'Animation HyperFrames (`heygen-com/hyperframes` × `cubic-bezier(0.16, 1, 0.3, 1)`)
+1. **`window.__timelines["ecopark-hero-reel"]` :** Carrousel cinématique WAAPI sur le Hero 50/50 avec barre de lecture Ocre Bronze (`.hero-playhead-bar`) et synchronisation temps réel des 3 cartes KPI tarifaires (`#heroKpiCard0..2`).
+2. **`window.__timelines["ecopark-ahala-map"]` :** Révélation échelonnée (`80ms` stagger) des 12 cartes Bento/Mosaïque et tracé vectoriel SVG interactif (`#ahalaTrailSvg`) reliant `RN3 Tradex → Zone A → Zone B → Zone C → Zone D → Zone E`.
+3. **`window.__timelines["ecopark-qr-pass"]` :** Odomètre cinétique FCFA (`tabular-nums`) sur `#grandTotalFCFA` et déploiement 3D Apple Wallet avec reflet spéculaire (`#qrPassSheen`) sur `#demoTicketCard`.
+4. **`window.__timelines["ecopark-rdv-flow"]` :** Transition fluide d'ouverture du module de Prise de RDV (`#modalRdvBox`) et du Pass RDV confirmé (`#rdvConfirmPass`).
