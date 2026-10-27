@@ -54,8 +54,8 @@
 | `PUB-12` | Formation professionnelle : présentation, filières, conditions et candidature | **CFP ECOPARK** (Autorisation MINEFOP) : Aquaculture, Hôtellerie-Restauration, Agriculture/Élevage (`50 000 FCFA` inscription + `250 000 FCFA` scolarité). | `1786968889976.jpg` (Réelle) + `local_cameroon_cfp_students.png` |
 | `PUB-13` | Informations pratiques : horaires, accès, localisation, conseils de visite et météo indicative | Accès N3 Yaoundé–Douala (Ahala Barrière, après station Tradex), parking gratuit, météo locale Yaoundé. | — |
 | `PUB-14` | Galerie média | Photothèque filtrable distinguant explicitement les photos réelles d'ECOPARK et les visuels d'illustration temporaires. | Toutes les photos réelles + locales |
-| `PUB-15` | Actualités ou événements | Programmation culturelle, vacances scolaires, journées portes ouvertes CFP (sans aucun texte placeholder oublié). | `IMG-20260827-WA00031.jpg` (Réelle) |
-| `PUB-16` | Fiche détail d'une actualité ou d'un événement | Détail complet d'un événement au parc avec réservation directe et programme horaire. | `IMG-20260809-WA0009.jpg` (Réelle) |
+| `PUB-15` | Actualités, Agenda de la Semaine & Avis Vérifiés | **Agenda Hebdomadaire (Mardi–Dimanche)** avec 4 temps forts filtrables par jour (*Mercredi Pédagogique & CFP*, *Vendredi Afterwork*, *Samedi Famille*, *Grand Dimanche Royal*), bandeau de disponibilité des espaces vs privatisations (`#agendaSpaceStatusBanner`) et 4 avis vérifiés Cameroun (`#sec-PUB-15`). | `IMG-20260827-WA00031.jpg` (Réelle) |
+| `PUB-16` | Fiche détail d'une actualité ou d'un événement | Modale interactive `#modalEventDetailBox` (déroulé heure par heure, tarifs FCFA, jauge) + **Réservation d'Événement en 1 Clic (`bookWeeklyEventInOneClick`)** pré-remplissant la date, la formule et inscrivant l'événement sur le Billet QR Coupe-File. | `IMG-20260809-WA0009.jpg` (Réelle) |
 | `PUB-17` | Foire aux questions (FAQ) | Réponses claires sur les tarifs enfants (3-12 ans), moyens de paiement (MTN MoMo, Orange Money, espèces au guichet), repas et groupes. | — |
 | `PUB-18` | Contact et localisation | Coordonnées officielles ECOPARK (`+237 697 13 62 03` / `675 56 26 55`, `contact@ecopark-yaounde.com`), formulaire direct. | — |
 | `PUB-19` | Recherche globale et résultats | Recherche instantanée dans les activités, tarifs, hébergements et formations avec états plein et vide. | — |
@@ -86,7 +86,7 @@
 | `ACC-02` | Tableau de bord visiteur | Vue synthétique de la prochaine visite à ECOPARK Ahala, météo du jour et billets actifs. |
 | `ACC-03` | Mes réservations et billets | Liste des réservations passées et à venir avec accès en 1 clic au billet QR `ECP-2026-84920`. |
 | `ACC-04` | Mes demandes de devis et échanges | Suivi des devis scolaires ou entreprises (*En étude*, *Proposition envoyée*, *Validé*). |
-| `ACC-05` | Demande de modification, report ou annulation | Formulaire de report de date de visite selon les conditions d'ECOPARK. |
+| `ACC-05` | Demande de modification, report ou annulation | Modale à double onglet (`#modalRescheduleBox`) : **1) Report de date gratuit (90 jours, garantie pluie Yaoundé)** sans ré-émettre de billet QR ; **2) Annulation & Remboursement Mobile Money (`RFD-2026-XXXX`)** avec remise en stock automatique des loges hôtelières et pergolas. |
 | `ACC-06` | Profil, coordonnées et préférences | Mise à jour des informations du visiteur et préférences de notification (SMS / WhatsApp / Email). |
 
 ### Famille 5 — Guichet & Contrôle des Entrées (`AGT-01` à `AGT-09`)
