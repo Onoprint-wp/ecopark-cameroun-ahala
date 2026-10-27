@@ -4,7 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="icon" type="image/png" href="audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png" />
-  <title>ECOPARK CAMEROUN — Parc de Loisirs, Nature, Restauration, Hébergement & Formation à Yaoundé-Ahala</title>
+  <title>ECOPARK CAMEROUN — Parc de Loisirs, Nature, Restauration, Hébergement &amp; Formation à Yaoundé-Ahala</title>
+  <meta name="description" content="À 15 min du centre de Yaoundé (Ahala Barrière, face station Tradex) : Parc animalier (gorille ToTo), Pirogue sur le lac, Piscine surveillée, Château des Saveurs, Hôtels Ewondo/Chanthel/Bene (10 000 à 30 000 FCFA) et Formation CFP. Réservation &amp; Billet QR sur WhatsApp." />
+  <meta property="og:type" content="website" />
+  <meta property="og:locale" content="fr_CM" />
+  <meta property="og:site_name" content="ECOPARK CAMEROUN — Yaoundé-Ahala" />
+  <meta property="og:title" content="ECOPARK CAMEROUN (Yaoundé-Ahala) — Loisirs, Zoo, Piscine, Saveurs, Loges &amp; CFP dès 500 FCFA" />
+  <meta property="og:description" content="Prenez le frais à Ahala Barrière (face station Tradex). Entrée Parc &amp; Zoo 500 / 1 000 FCFA, Piscine 1 500 / 2 500 FCFA, Poisson braisé du lac, Hôtels 10 000–30 000 FCFA. Simulez votre budget et recevez votre Billet QR sur WhatsApp (+237 697 13 62 03)." />
+  <meta property="og:url" content="https://ecopark-cameroun-ahala.vercel.app/" />
+  <meta property="og:image" content="https://ecopark-cameroun-ahala.vercel.app/audit-assets/ecopark-real-media/balade_pirogue3.jpg" />
+  <meta property="og:image:secure_url" content="https://ecopark-cameroun-ahala.vercel.app/audit-assets/ecopark-real-media/balade_pirogue3.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Balade en pirogue sur le lac verdoyant d'ECOPARK à Yaoundé-Ahala (Cameroun)" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="ECOPARK CAMEROUN (Yaoundé-Ahala) — Nature, Loisirs, Saveurs &amp; Hôtels en FCFA" />
+  <meta name="twitter:description" content="Face station Tradex Ahala : Zoo, Pirogue, Piscine, Château des Saveurs, Hôtels Ewondo/Chanthel/Bene &amp; CFP. Billet QR immédiat via WhatsApp." />
+  <meta name="twitter:image" content="https://ecopark-cameroun-ahala.vercel.app/audit-assets/ecopark-real-media/balade_pirogue3.jpg" />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
@@ -458,6 +474,155 @@
     .col-5 { grid-column: span 5; }
     .col-4 { grid-column: span 4; }
     .col-3 { grid-column: span 3; }
+
+    body.viewport-mobile .col-8,
+    body.viewport-mobile .col-7,
+    body.viewport-mobile .col-6,
+    body.viewport-mobile .col-5,
+    body.viewport-mobile .col-4,
+    body.viewport-mobile .col-3 {
+      grid-column: span 12 !important;
+    }
+    body.viewport-mobile .site-header {
+      position: relative;
+      top: 0;
+    }
+    body.viewport-mobile .site-topbar {
+      font-size: 12px;
+      padding: 6px 12px;
+    }
+    body.viewport-mobile .main-nav {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      width: 100%;
+      padding-bottom: 4px;
+    }
+    @media (max-width: 768px) {
+      .site-header {
+        position: relative;
+        top: 0;
+      }
+      .site-topbar {
+        font-size: 12px;
+        padding: 6px 12px;
+      }
+      .site-header-inner {
+        padding: 10px 14px;
+        gap: 8px;
+      }
+      .main-nav {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        width: 100%;
+        padding-bottom: 4px;
+        -webkit-overflow-scrolling: touch;
+      }
+      .main-nav .nav-item {
+        white-space: nowrap;
+        font-size: 13.5px;
+        padding: 6px 10px;
+      }
+    }
+
+    /* ==========================================================================
+       VUE WHATSAPP LIQUID GLASS (5 PILIERS • CHARTE 60-30-10 • 100% SVG MONO)
+       ========================================================================== */
+    .wa-concierge-shell {
+      background: var(--color-surface-soft);
+      border: 1.5px solid var(--color-brand-deep);
+      border-radius: var(--radius-lg);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: var(--shadow-card);
+    }
+    .wa-header-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--color-border-strong);
+      flex-wrap: wrap;
+    }
+    .wa-quick-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 640px) {
+      .wa-quick-grid { grid-template-columns: 1fr; }
+    }
+    body.viewport-mobile .wa-quick-grid {
+      grid-template-columns: 1fr;
+    }
+    .wa-quick-reply-btn {
+      background: var(--color-white);
+      color: var(--color-brand-deep);
+      border: 1px solid var(--color-border-strong);
+      border-radius: 10px;
+      padding: 8px 11px;
+      font-size: 13px;
+      font-weight: 600;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      transition: all 0.18s ease;
+    }
+    .wa-quick-reply-btn:hover, .wa-quick-reply-btn.active {
+      background: var(--color-brand-deep);
+      color: var(--color-white);
+      border-color: var(--color-brand-deep);
+    }
+    .wa-bubble-order {
+      background: var(--color-white);
+      border: 1px solid var(--color-border-strong);
+      border-left: 4px solid var(--color-brand-deep);
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13.8px;
+      display: grid;
+      gap: 6px;
+    }
+    .wa-bubble-closer {
+      background: #FBF5EC;
+      border: 1px solid rgba(196, 125, 43, 0.45);
+      border-left: 4px solid #C47D2B;
+      border-radius: 12px;
+      padding: 12px 14px;
+      font-size: 13.5px;
+      display: grid;
+      gap: 8px;
+    }
+    .wa-qr-delivery-bubble {
+      background: var(--color-brand-deep);
+      color: var(--color-white);
+      border-radius: 12px;
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+    .wa-exp-thread-item {
+      background: var(--color-white);
+      border: 1px solid var(--color-border);
+      border-radius: 10px;
+      padding: 12px;
+      cursor: pointer;
+      text-align: left;
+      width: 100%;
+      display: grid;
+      gap: 4px;
+      transition: all 0.16s ease;
+    }
+    .wa-exp-thread-item:hover, .wa-exp-thread-item.active {
+      background: var(--color-surface-soft);
+      border-color: var(--color-brand-deep);
+      box-shadow: 0 4px 12px rgba(29, 73, 13, 0.08);
+    }
 
     @media (max-width: 960px) {
       .col-8, .col-7, .col-6, .col-5, .col-4, .col-3 {
@@ -1697,7 +1862,7 @@
       <div class="site-topbar">
         <div class="site-topbar-inner">
           <div><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> <strong>Yaoundé – Ahala Barrière</strong> (Face station Tradex Ahala, route 100 % goudronnée • Parking sécurisé) • Mardi au Dimanche : <strong>09h00 – 18h00</strong></div>
-          <div><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg> Visiteurs, Séminaires &amp; Navettes : <strong>+237 697 13 62 03 / +237 675 56 26 55</strong> • <svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> info@ecopark-yaounde.com</div>
+          <div><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.12.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.58 2.81.7A2 2 0 0 1 22 16.92z"/></svg> WhatsApp &amp; Navettes : <a href="https://wa.me/237697136203" target="_blank" rel="noopener noreferrer" style="color:#FFFFFF;font-weight:700;">+237 697 13 62 03</a> / <a href="tel:+237675562655" style="color:#FFFFFF;font-weight:700;">+237 675 56 26 55</a> • <svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> <a href="mailto:info@ecopark-yaounde.com" style="color:#FFFFFF;">info@ecopark-yaounde.com</a></div>
         </div>
       </div>
       <div class="site-header-inner">
@@ -2674,6 +2839,97 @@
                   </div>
                   <div style="display:flex;gap:8px;flex-wrap:wrap;">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="navigateFamily('AGT', 'AGT-05')">Tester ce billet au Scanner d'Entrée<span class="tech-code-tag"> (AGT-05)</span></button>
+                    <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" onclick="navigateFamily('EXP', 'EXP-07')">Voir Console Closing WhatsApp<span class="tech-code-tag"> (EXP-07)</span></button>
+                  </div>
+                </div>
+
+                <!-- ============================================================
+                     VUE WHATSAPP CLIENT (PILIERS 1 À 4 : GUICHET UNIQUE, BON DE COMMANDE PRÉ-CALCULÉ, CLOSER UPSELL/SAUVETAGE & E-BILLET QR + GPS)
+                     ============================================================ -->
+                <div class="wa-concierge-shell" id="whatsappConciergeCard">
+                  <div class="wa-header-bar">
+                    <div style="display:flex;align-items:center;gap:10px;">
+                      <span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span>
+                      <div>
+                        <strong style="font-family:var(--font-heading);font-size:1.15rem;color:var(--color-brand-deep);display:block;">Guichet Unique &amp; Portefeuille WhatsApp ECOPARK</strong>
+                        <span style="font-size:12.5px;color:var(--color-text-muted);">Ligne officielle vérifiée : <strong>+237 697 13 62 03</strong> • Zéro ressaisie</span>
+                      </div>
+                    </div>
+                    <span class="status-badge status-success" id="waConciergeStatusBadge">Synchronisé en direct</span>
+                  </div>
+
+                  <!-- Pilier 1 : 4 Quick Replies de Routage par Intention -->
+                  <div>
+                    <div style="font-size:12.5px;font-weight:700;color:var(--color-brand-deep);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.03em;">1. Routage rapide par intention (Guichet Unique) :</div>
+                    <div class="wa-quick-grid" id="waQuickReplyGrid">
+                      <button type="button" class="wa-quick-reply-btn active" onclick="selectWhatsAppIntent('PASS_QR', this)">
+                        <span>1. Pass Journée / Billet QR</span>
+                        <small style="opacity:0.8;">Dès 500 F</small>
+                      </button>
+                      <button type="button" class="wa-quick-reply-btn" onclick="selectWhatsAppIntent('LOGE_VIP', this)">
+                        <span>2. Bloquer Chambre / Suite</span>
+                        <small style="opacity:0.8;">10k–30k F</small>
+                      </button>
+                      <button type="button" class="wa-quick-reply-btn" onclick="selectWhatsAppIntent('PROFORMA_B2B', this)">
+                        <span>3. Proforma École / Séminaire</span>
+                        <small style="opacity:0.8;">En 2 min</small>
+                      </button>
+                      <button type="button" class="wa-quick-reply-btn" onclick="selectWhatsAppIntent('CFP_GPS', this)">
+                        <span>4. CFP (50k F) &amp; Point GPS</span>
+                        <small style="opacity:0.8;">Tradex Ahala</small>
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Pilier 2 : Bon de Commande Pré-calculé (Zéro Ressaisie) -->
+                  <div class="wa-bubble-order" id="waPrecalcOrderBubble">
+                    <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px dashed var(--color-border);padding-bottom:6px;">
+                      <strong style="color:var(--color-brand-deep);">Bon de Commande Pré-calculé (Prêt à envoyer)</strong>
+                      <span class="price-pill" style="font-size:0.95rem;padding:2px 8px;" id="waBubbleRef">ECP-2026-84920</span>
+                    </div>
+                    <div id="waBubbleBodyText" style="display:grid;gap:3px;color:var(--color-text);">
+                      <div>• <strong>Visiteur :</strong> M. Jean-Paul MBARGA (+237 694 12 34 56)</div>
+                      <div>• <strong>Formule :</strong> 2 Adultes, 2 Enfants (Tarif enfant protégé 500 FCFA)</div>
+                      <div>• <strong>Prestations :</strong> Entrée Parc &amp; Zoo, Piscine, Pirogue</div>
+                      <div>• <strong>Total TTC :</strong> <strong style="color:var(--color-brand-deep);">14 000 FCFA</strong> (Orange Money / MTN MoMo / Guichet)</div>
+                    </div>
+                  </div>
+
+                  <!-- Pilier 4 : Closer Conversationnel (Upsell 1-clic & Sauvetage Solde MoMo Insuffisant) -->
+                  <div class="wa-bubble-closer">
+                    <div style="display:flex;justify-content:space-between;align-items:center;">
+                      <strong style="color:#8E5617;font-size:13px;">Concierge Commercial WhatsApp — Actions en 1 clic :</strong>
+                      <span style="font-size:11.5px;color:#8E5617;font-weight:600;">Sans saisie PIN</span>
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                      <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" style="flex:1;font-size:12.5px;" onclick="triggerWhatsAppUpsellPergola()">
+                        + Ajouter Poisson Braisé &amp; Pergola 13h (+5 000 FCFA)
+                      </button>
+                      <button type="button" class="btn btn-secondary btn-sm" style="flex:1;font-size:12.5px;" onclick="triggerWhatsAppGuichetRescue()">
+                        Solde MoMo insuffisant ? Code Pré-réservation Guichet (11h)
+                      </button>
+                    </div>
+                  </div>
+
+                  <!-- Pilier 3 : Livraison du E-Billet QR Code + Point GPS Tradex Ahala dans la bulle -->
+                  <div class="wa-qr-delivery-bubble" id="waQrDeliveryBubble">
+                    <div style="display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;">
+                      <div>
+                        <span style="font-size:11.5px;text-transform:uppercase;letter-spacing:0.04em;opacity:0.85;">Portefeuille WhatsApp • Prêt pour scan AGT-05</span>
+                        <strong style="display:block;font-size:1.05rem;" id="waDeliveryTitle">E-Billet QR Actif : ECP-2026-84920</strong>
+                      </div>
+                      <a href="https://www.google.com/maps/search/?api=1&amp;query=Tradex+Ahala+Yaounde+Cameroun" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="text-decoration:none;font-size:12px;">
+                        <svg class="svg-mono" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg> Itinéraire GPS (Face Tradex Ahala)
+                      </a>
+                    </div>
+                    <div style="font-size:12.8px;opacity:0.92;" id="waDeliverySubtext">
+                      Présentez directement cette bulle WhatsApp au portail d'Ahala, à la Piscine ou au Château des Saveurs. (Anti-fraude actif : 1 seul passage autorisé).
+                    </div>
+                    <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                      <button type="button" class="btn btn-secondary btn-sm" style="flex:1;background:#FFFFFF;color:var(--color-brand-deep);border-color:#FFFFFF;font-weight:700;" onclick="sendWhatsAppBooking()">
+                        <svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Ouvrir dans mon WhatsApp (+237 697 13 62 03)
+                      </button>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -2930,6 +3186,88 @@
             </div>
 
             <div class="grid-12">
+              <div class="col-12 card">
+                <!-- PILIER 5 : CONSOLE DE CLOSING WHATSAPP EN 1 CLIC (EXP-07) -->
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;" id="sec-EXP-07">
+                  <div>
+                    <span class="eyebrow eyebrow-hospitality" style="margin:0;">Pilier 5 • Console Commerciale Exploitation (EXP-07)</span>
+                    <h3 style="margin-top:4px;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg></span> <span class="tech-code-tag">EXP-07 — </span>Console de « Closing WhatsApp en 1 Clic » (+237 697 13 62 03)</h3>
+                  </div>
+                  <span class="status-badge badge-qr-prestige" id="expWaPipelineBadge">Pipeline Actif : 136 500 FCFA (4 dossiers)</span>
+                </div>
+
+                <div class="grid-12" style="gap:16px;align-items:stretch;">
+                  <!-- File des conversations qualifiées par valeur en FCFA -->
+                  <div class="col-5" style="display:flex;flex-direction:column;gap:8px;" id="expWaThreadList">
+                    <button type="button" class="wa-exp-thread-item active" onclick="selectExpWhatsAppThread(0, this)">
+                      <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <strong style="color:var(--color-brand-deep);">École Bilingue Les Palmiers</strong>
+                        <span class="price-pill" style="font-size:0.88rem;padding:2px 8px;">67 500 FCFA</span>
+                      </div>
+                      <span style="font-size:12.5px;color:var(--color-text-muted);">DEV-2026-3104 • 50 participants (Zoo + Pirogue) • Enfant protégé 500 F</span>
+                    </button>
+
+                    <button type="button" class="wa-exp-thread-item" onclick="selectExpWhatsAppThread(1, this)">
+                      <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <strong style="color:var(--color-brand-deep);">M. Christian FOUDA (Séjour VIP)</strong>
+                        <span class="price-pill" style="font-size:0.88rem;padding:2px 8px;">30 000 FCFA</span>
+                      </div>
+                      <span style="font-size:12.5px;color:var(--color-text-muted);">Suite Cité Ewondo VIP + Poisson Braisé 13h • +237 699 11 22 33</span>
+                    </button>
+
+                    <button type="button" class="wa-exp-thread-item" onclick="selectExpWhatsAppThread(2, this)">
+                      <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <strong style="color:var(--color-brand-deep);">M. Jean-Paul MBARGA (Famille)</strong>
+                        <span class="price-pill" style="font-size:0.88rem;padding:2px 8px;">14 000 FCFA</span>
+                      </div>
+                      <span style="font-size:12.5px;color:var(--color-text-muted);">ECP-2026-84920 • 2 Adultes, 2 Enfants • Billet QR &amp; GPS Ahala</span>
+                    </button>
+
+                    <button type="button" class="wa-exp-thread-item" onclick="selectExpWhatsAppThread(3, this)">
+                      <div style="display:flex;justify-content:space-between;align-items:center;">
+                        <strong style="color:var(--color-brand-deep);">Mme Solange ETOUNDI (Mariage)</strong>
+                        <span class="price-pill" style="font-size:0.88rem;padding:2px 8px;">25 000 FCFA</span>
+                      </div>
+                      <span style="font-size:12.5px;color:var(--color-text-muted);">RDV-2026-4102 • Repérage Salle Menkii Essomba Anton &amp; Traiteur</span>
+                    </button>
+                  </div>
+
+                  <!-- Panneau de réponse & 3 Boutons de Closing en 1 Clic -->
+                  <div class="col-7 wa-concierge-shell" style="justify-content:space-between;">
+                    <div>
+                      <div class="wa-header-bar">
+                        <div>
+                          <strong id="expWaActiveClientName" style="color:var(--color-brand-deep);font-size:1.05rem;">École Bilingue Les Palmiers (DEV-2026-3104)</strong>
+                          <div id="expWaActiveClientMeta" style="font-size:12.5px;color:var(--color-text-muted);">Priorité Haute • Excursion 50 élèves • Tarif enfant verrouillé à 500 FCFA</div>
+                        </div>
+                        <span class="status-badge status-info" id="expWaActiveStatus">En attente Proforma</span>
+                      </div>
+
+                      <div class="wa-bubble-order" style="margin-top:10px;" id="expWaConversationPreview">
+                        <div><strong>Message entrant (WhatsApp) :</strong> « Bonjour ECOPARK, nous confirmons la sortie de 45 élèves + 5 encadrants le 05/12/2026. Pouvez-vous nous envoyer la Proforma officielle en FCFA et le lien de paiement MoMo ? »</div>
+                      </div>
+                    </div>
+
+                    <div>
+                      <div style="font-size:12.5px;font-weight:700;color:var(--color-brand-deep);margin-bottom:8px;text-transform:uppercase;">Actions de Closing Agent en 1 Clic (Synchronisées BDD &amp; Guichet) :</div>
+                      <div style="display:grid;gap:8px;">
+                        <button type="button" class="btn btn-primary btn-sm" onclick="expWhatsAppAction('EMIT_QR')">
+                          <svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/></svg> 1. Générer &amp; Envoyer le Billet QR + Point GPS Tradex dans le chat
+                        </button>
+                        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                          <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" style="flex:1;" onclick="expWhatsAppAction('SEND_PROFORMA')">
+                            2. Envoyer Proforma PDF (DEV-2026)
+                          </button>
+                          <button type="button" class="btn btn-secondary btn-sm" style="flex:1;" onclick="expWhatsAppAction('LOCK_EWONDO')">
+                            3. Bloquer Suite Ewondo (25–30k F) / Pergola 13h
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               <div class="col-6 card">
                 <h3><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></span> <span class="tech-code-tag">EXP-04 — </span>Disponibilités des 3 Cités Hôtelières</h3>
                 <div class="table-responsive">
@@ -3270,7 +3608,7 @@
             <p style="font-size:14.5px;color:var(--color-text-muted);display:grid;gap:4px;">
               <span><strong>Mardi – Dimanche :</strong> 09h00 – 18h00</span>
               <span><strong>Hébergement Loges :</strong> Réception 24h/24</span>
-              <span><strong>Tél :</strong> +237 697 13 62 03 / 675 56 26 55</span>
+              <span><strong>WhatsApp &amp; Tél :</strong> <a href="https://wa.me/237697136203" target="_blank" rel="noopener noreferrer">+237 697 13 62 03</a> / <a href="tel:+237675562655">675 56 26 55</a></span>
               <span><strong>Email :</strong> info@ecopark-yaounde.com</span>
             </p>
           </div>
@@ -3368,7 +3706,8 @@
         </div>
       </div>
       <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap;">
-        <button type="button" class="btn btn-primary" style="flex:1;" onclick="submitGroupQuoteSprint1()">Enregistrer & Obtenir mon N° de Suivi</button>
+        <button type="button" class="btn btn-primary" style="flex:1;" onclick="submitGroupQuoteSprint1()">Enregistrer &amp; Obtenir mon N° de Suivi</button>
+        <button type="button" class="btn btn-secondary btn-ochre-outline" style="flex:1;" onclick="sendWhatsAppQuoteSprint1()"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Envoyer sur WhatsApp (+237 697 13 62 03)</button>
       </div>
     </div>
 
@@ -4018,21 +4357,74 @@
       }
     }
 
+    function getActiveSimulatorItemsSummary() {
+      const acts = [];
+      if (window._activeBundleCode && window._activeBundleCode !== 'CUSTOM') {
+        const bNames = {
+          PASS_DECOUVERTE: 'Pass Découverte Nature',
+          PASS_ROYALE: 'Pass Journée Royale',
+          PACK_COUPLE_EWONDO: 'Pack Escapade Couple VIP Ewondo'
+        };
+        if (bNames[window._activeBundleCode]) acts.push(bNames[window._activeBundleCode]);
+      }
+      if (document.getElementById('chkZoo') && document.getElementById('chkZoo').checked) acts.push('Entrée Parc & Zoo');
+      if (document.getElementById('chkPiscine') && document.getElementById('chkPiscine').checked) acts.push('Piscine Semi-Olympique');
+      if (document.getElementById('chkPirogue') && document.getElementById('chkPirogue').checked) acts.push('Balade en Pirogue');
+      if (document.getElementById('chkCheval') && document.getElementById('chkCheval').checked) acts.push('Équitation / Manèges');
+      if (document.getElementById('chkRepas') && document.getElementById('chkRepas').checked) acts.push('Repas Château des Saveurs');
+      if (document.getElementById('chkBumpNutrition') && document.getElementById('chkBumpNutrition').checked) acts.push('Sachet Nutrition Poissons (+500 F)');
+      if (document.getElementById('chkBumpPergola') && document.getElementById('chkBumpPergola').checked) acts.push('Pergola Privée 13h (+5 000 F)');
+      if (document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked) acts.push('Suite VIP Cité Ewondo (+25 000 F)');
+      return acts.join(', ') || 'Accès Parc & Détente';
+    }
+
+    function getActivePayMethodLabel() {
+      const checked = document.querySelector('input[name="payMethod"]:checked');
+      const val = checked ? checked.value : 'OM';
+      if (val === 'MOMO') return 'MTN Mobile Money (*126# sans PIN sur site)';
+      if (val === 'GUICHET') return 'Guichet Ahala (Code Pré-réservation garanti 11h)';
+      return 'Orange Money Cameroun (#150# sans PIN sur site)';
+    }
+
     function sendWhatsAppBooking() {
       const name = (document.getElementById('visitorName') || {}).value || 'Visiteur ECOPARK';
-      const phone = (document.getElementById('visitorPhone') || {}).value || '';
-      const date = (document.getElementById('visitDate') || {}).value || '';
-      const total = (document.getElementById('grandTotalFCFA') || {}).textContent || '';
-      const pax = `${counts.adults} Adulte(s), ${counts.children} Enfant(s) (3-12 ans), ${counts.toddlers} Tout-petit(s)`;
+      const phone = (document.getElementById('visitorPhone') || {}).value || '+237 694 12 34 56';
+      const date = (document.getElementById('visitDate') || {}).value || '2026-11-15';
+      const total = (document.getElementById('grandTotalFCFA') || {}).textContent || '14 000 FCFA';
+      const pax = `${counts.adults} Adulte(s), ${counts.children} Enfant(s) (Tarif enfant protégé 500 FCFA), ${counts.toddlers} Tout-petit(s)`;
+      const itemsSummary = getActiveSimulatorItemsSummary();
+      const payLabel = getActivePayMethodLabel();
+
+      // Garde-fou 2 & 3 : S'assurer que la référence envoyée sur WhatsApp est bien enregistrée en BDD pour le scanner AGT-05
+      const codeEls = document.querySelectorAll('#demoTicketCard div[style*="font-size:1.3rem"]');
+      let ref = (codeEls.length > 0 && codeEls[0].textContent) ? codeEls[0].textContent.trim() : 'ECP-2026-84920';
+      const db = loadDB();
+      const existing = db.bookings.find(b => b.reference === ref);
+      if (!existing) {
+        createLiveBookingSprint1();
+        if (codeEls.length > 0 && codeEls[0].textContent) ref = codeEls[0].textContent.trim();
+      } else {
+        existing.holder = name;
+        existing.phone = phone;
+        existing.date = date;
+        existing.paxSummary = `${counts.adults} Adulte(s), ${counts.children} Enfant(s) • ${itemsSummary}`;
+        existing.totalFcfa = parseInt(total.replace(/[^0-9]/g, ''), 10) || existing.totalFcfa;
+        saveDB(db);
+      }
+      if (typeof syncWhatsAppConciergeView === 'function') syncWhatsAppConciergeView();
+
       const msg = [
         `Bonjour ECOPARK CAMEROUN (Yaoundé-Ahala),`,
-        `Je souhaite confirmer ma réservation / demande de visite :`,
-        `- Référence : ECP-2026-84920`,
-        `- Nom : ${name} (${phone})`,
+        `Voici mon Bon de Commande Pré-calculé (Guichet Unique WhatsApp) :`,
+        `- Référence Billet QR : ${ref}`,
+        `- Visiteur : ${name} (${phone})`,
         `- Date souhaitée : ${date}`,
         `- Participants : ${pax}`,
-        `- Budget estimé : ${total}`,
-        `Merci de m'indiquer la marche à suivre.`
+        `- Prestations & Options : ${itemsSummary}`,
+        `- Total Net TTC : ${total}`,
+        `- Mode de règlement : ${payLabel}`,
+        `- Point GPS : Nationale N°3, Ahala Barrière (Face Station Tradex Ahala)`,
+        `Merci de valider mon E-Billet Coupe-File QR dans cette discussion.`
       ].join('\n');
       const url = 'https://wa.me/237697136203?text=' + encodeURIComponent(msg);
       window.open(url, '_blank', 'noopener,noreferrer');
@@ -4061,13 +4453,20 @@
         '/pack-entreprise': ['PUB', 'PUB-11'],
         '/contact': ['PUB', 'PUB-13'],
         '/reserver': ['RES', 'RES-03'],
+        '/whatsapp': ['RES', 'RES-04'],
         '/guichet': ['AGT', 'AGT-03'],
         '/direction': ['DIR', 'DIR-01'],
         '/admin': ['ADM', 'ADM-01']
       };
       if (routeMap[path]) {
         const [fam, scr] = routeMap[path];
-        setTimeout(() => navigateFamily(fam, scr), 60);
+        setTimeout(() => {
+          navigateFamily(fam, scr);
+          if (path === '/whatsapp') {
+            const waCard = document.getElementById('whatsappConciergeCard');
+            if (waCard) waCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          }
+        }, 60);
       }
     }
 
@@ -5055,6 +5454,12 @@
     }
 
     function sendWhatsAppRdvSprint1() {
+      // Auto-sauvegarder le RDV dans la BDD si l'utilisateur clique directement sur WhatsApp
+      let ref = (document.getElementById('rdvConfirmRef') || {}).textContent || '';
+      if (!window._lastSavedRdvSessionRef) {
+        ref = submitRdvSprint1();
+        window._lastSavedRdvSessionRef = ref;
+      }
       const visitorName = (document.getElementById('rdvVisitorName') || {}).value || 'Visiteur ECOPARK';
       const org = (document.getElementById('rdvOrgName') || {}).value || '';
       const phone = (document.getElementById('rdvPhone') || {}).value || '';
@@ -5062,8 +5467,7 @@
       const purposeLabel = RDV_PURPOSE_LABELS[purposeCode] || RDV_PURPOSE_LABELS.reperage_mariage;
       const date = (document.getElementById('rdvDate') || {}).value || '2026-11-18';
       const slot = (document.getElementById('rdvTimeSlot') || {}).value || '11h00 – 12h00';
-      const mode = (document.getElementById('rdvMode') || {}).value || 'Sur place à Ahala Barrière';
-      const ref = (document.getElementById('rdvConfirmRef') || {}).textContent || 'RDV-2026';
+      const mode = (document.getElementById('rdvMode') || {}).value || 'Sur place à Ahala Barrière (Face Station Tradex Ahala)';
 
       const msg = [
         `Bonjour ECOPARK CAMEROUN (Yaoundé-Ahala),`,
@@ -5073,7 +5477,51 @@
         `- Date & Créneau : ${date} (${slot})`,
         `- Format : ${mode}`,
         `- Contact : ${visitorName} (${org}) — ${phone}`,
+        `- Point GPS : Nationale N°3, Ahala Barrière (Face Station Tradex Ahala)`,
         `Merci de me confirmer la disponibilité de l'équipe d'accueil.`
+      ].join('\n');
+      const url = 'https://wa.me/237697136203?text=' + encodeURIComponent(msg);
+      window.open(url, '_blank', 'noopener,noreferrer');
+    }
+
+    function sendWhatsAppQuoteSprint1() {
+      const db = loadDB();
+      const org = (document.getElementById('quoteOrgName') || {}).value || 'Groupe ECOPARK';
+      const type = (document.getElementById('quoteType') || {}).value || 'Excursion scolaire';
+      const pax = parseInt((document.getElementById('quotePax') || {}).value, 10) || 40;
+      const date = (document.getElementById('quoteDate') || {}).value || '2026-12-10';
+      const ref = 'DEV-2026-' + Math.floor(1000 + Math.random() * 8999);
+      const budget = pax * 1500;
+
+      db.quotes.unshift({
+        reference: ref,
+        org: org,
+        type: type,
+        pax: pax,
+        date: date,
+        budgetFcfa: budget,
+        status: 'Demande WhatsApp & Exploitation'
+      });
+      db.auditLogs.unshift({
+        time: nowStamp(),
+        actor: `${org} (Groupe B2B/École)`,
+        action: `Demande de proforma WhatsApp ${ref} (${pax} pers., ~${formatFCFA(budget)}) transmise au Guichet Unique.`
+      });
+      saveDB(db);
+      closeSprint1Modals();
+      showToastSprint1(`• Devis ${ref} enregistré et prêt dans WhatsApp ! Visible dans « Mon Espace » (ACC-04) et « Exploitation » (EXP-03 / EXP-07).`);
+
+      const msg = [
+        `Bonjour ECOPARK CAMEROUN (Yaoundé-Ahala),`,
+        `Je souhaite obtenir une Proforma Officielle en 2 minutes (Guichet Unique WhatsApp) :`,
+        `- Référence Dossier : ${ref}`,
+        `- Établissement / Organisation : ${org}`,
+        `- Type d'événement : ${type}`,
+        `- Effectif prévu : ${pax} participants (Tarif enfant protégé à 500 FCFA)`,
+        `- Date souhaitée : ${date}`,
+        `- Estimation de base : ${formatFCFA(budget)}`,
+        `- Options : Salle Polyvalente Menkii Essomba Anton & Navettes (5/18/32 places)`,
+        `Merci de m'envoyer la Proforma PDF officielle dans cette discussion.`
       ].join('\n');
       const url = 'https://wa.me/237697136203?text=' + encodeURIComponent(msg);
       window.open(url, '_blank', 'noopener,noreferrer');
@@ -5144,6 +5592,319 @@
         }, 90);
       }
     })();
+
+    // ========================================================================
+    // MOTEUR VUE WHATSAPP INTERACTIVE (5 PILIERS STRATÉGIQUES + 4 GARDE-FOUS)
+    // ========================================================================
+    window._activeWaIntent = 'PASS_QR';
+
+    function getActiveTicketRef() {
+      const codeEls = document.querySelectorAll('#demoTicketCard div[style*="font-size:1.3rem"]');
+      return (codeEls.length > 0 && codeEls[0].textContent) ? codeEls[0].textContent.trim() : 'ECP-2026-84920';
+    }
+
+    function syncWhatsAppConciergeView() {
+      const ref = getActiveTicketRef();
+      const name = (document.getElementById('visitorName') || {}).value || 'M. Jean-Paul MBARGA';
+      const phone = (document.getElementById('visitorPhone') || {}).value || '+237 694 12 34 56';
+      const date = (document.getElementById('visitDate') || {}).value || '2026-11-15';
+      const total = (document.getElementById('grandTotalFCFA') || {}).textContent || '14 000 FCFA';
+      const itemsSummary = typeof getActiveSimulatorItemsSummary === 'function'
+        ? getActiveSimulatorItemsSummary()
+        : 'Entrée Parc & Zoo, Piscine, Pirogue';
+      const payLabel = typeof getActivePayMethodLabel === 'function'
+        ? getActivePayMethodLabel()
+        : 'Orange Money / MTN MoMo / Guichet';
+
+      const refEl = document.getElementById('waBubbleRef');
+      if (refEl) refEl.textContent = ref;
+
+      const delivTitle = document.getElementById('waDeliveryTitle');
+      if (delivTitle) delivTitle.textContent = `E-Billet QR Actif : ${ref} (${total})`;
+
+      const bodyEl = document.getElementById('waBubbleBodyText');
+      if (bodyEl && (!window._activeWaIntent || window._activeWaIntent === 'PASS_QR')) {
+        bodyEl.innerHTML = `
+          <div>• <strong>Visiteur :</strong> ${name} (${phone}) • Date : ${date}</div>
+          <div>• <strong>Formule :</strong> ${counts.adults} Adulte(s), ${counts.children} Enfant(s) (Tarif enfant protégé 500 FCFA)</div>
+          <div>• <strong>Prestations :</strong> ${itemsSummary}</div>
+          <div>• <strong>Total TTC :</strong> <strong style="color:var(--color-brand-deep);">${total}</strong> (${payLabel})</div>
+        `;
+      }
+    }
+
+    // Pilier 1 : Routage par Intention (4 Quick Replies du Guichet Unique)
+    function selectWhatsAppIntent(intentCode, btnEl) {
+      window._activeWaIntent = intentCode || 'PASS_QR';
+      document.querySelectorAll('#waQuickReplyGrid .wa-quick-reply-btn').forEach(b => {
+        b.classList.toggle('active', b === btnEl);
+      });
+      const badgeEl = document.getElementById('waConciergeStatusBadge');
+      const bodyEl = document.getElementById('waBubbleBodyText');
+      const refEl = document.getElementById('waBubbleRef');
+      const db = loadDB();
+      const ops = db.opsMetrics || { kitchenPreorders: 18, pergolasReserved: 6, fishPacks: 34, ewondoFree: 2 };
+
+      if (intentCode === 'PASS_QR') {
+        if (badgeEl) badgeEl.textContent = '1. Pass Journée & Billet QR';
+        syncWhatsAppConciergeView();
+        showToastSprint1('• Guichet Unique WhatsApp : Bon de commande Pass Journée & Billet Coupe-File QR synchronisé en direct.');
+      } else if (intentCode === 'LOGE_VIP') {
+        if (badgeEl) badgeEl.textContent = '2. Jauge Loges Hôtelières en direct';
+        if (refEl) refEl.textContent = 'LOGES-AHALA';
+        if (bodyEl) {
+          bodyEl.innerHTML = `
+            <div>• <strong>Cité Ewondo (VIP Climatisée) :</strong> <strong style="color:var(--color-brand-deep);">25 000 – 30 000 FCFA</strong> (${ops.ewondoFree}/8 suites libres ce soir)</div>
+            <div>• <strong>Cité Chanthel (Confort) :</strong> <strong>15 000 – 25 000 FCFA</strong> (3/12 loges libres)</div>
+            <div>• <strong>Cité Bene (Standard Calme) :</strong> <strong>10 000 – 15 000 FCFA</strong> (Séjour nature)</div>
+            <div>• <strong>Privilège inclus :</strong> Accès Piscine, Jardin Zoologique &amp; Service en loge depuis Le Château des Saveurs</div>
+          `;
+        }
+        showToastSprint1('• Jauge Hôtelière WhatsApp : Cité Ewondo (25–30k FCFA), Chanthel (15–25k FCFA) et Bene (10–15k FCFA).');
+      } else if (intentCode === 'PROFORMA_B2B') {
+        if (badgeEl) badgeEl.textContent = '3. Proforma École / Séminaire 2 min';
+        if (refEl) refEl.textContent = (db.quotes && db.quotes[0]) ? db.quotes[0].reference : 'DEV-2026-3104';
+        if (bodyEl) {
+          bodyEl.innerHTML = `
+            <div>• <strong>Excursions Scolaires (20+ élèves) :</strong> Entrée enfant strictement protégée à <strong>500 FCFA</strong> (Encadrants : 700 FCFA)</div>
+            <div>• <strong>Séminaires &amp; Galas :</strong> Salle Polyvalente <strong>Menkii Essomba Anton</strong> + Esplanade Plein Air</div>
+            <div>• <strong>Logistique Transport :</strong> Navettes ECOPARK sur demande (Bus 32 places, 18 places ou VIP 5 places)</div>
+            <div>• <strong>Action rapide :</strong> <a href="javascript:void(0)" onclick="openQuoteModalSprint1()" style="color:var(--color-brand-deep);font-weight:700;text-decoration:underline;">Ouvrir le générateur de Proforma PDF officielle</a></div>
+          `;
+        }
+        showToastSprint1('• Routage B2B & Écoles : Proforma Salle Menkii Essomba Anton + Navettes (5/18/32 places) prête.');
+      } else if (intentCode === 'CFP_GPS') {
+        if (badgeEl) badgeEl.textContent = '4. Campus CFP (50k F) & GPS Tradex';
+        if (refEl) refEl.textContent = 'CFP-MINEFOP';
+        if (bodyEl) {
+          bodyEl.innerHTML = `
+            <div>• <strong>Campus CFP ECOPARK (Agréé MINEFOP) :</strong> Aquaculture, Hôtellerie, Cuisine, Élevage, Agriculture</div>
+            <div>• <strong>Frais Officiels :</strong> Inscription <strong>50 000 FCFA</strong> + Scolarité <strong>250 000 FCFA</strong> (payable en 4 tranches)</div>
+            <div>• <strong>Repère GPS Exact :</strong> Nationale N°3, Ahala Barrière — <strong>Face Station Tradex Ahala</strong> (Parking gratuit 150 places)</div>
+            <div>• <strong>Action rapide :</strong> <a href="javascript:void(0)" onclick="openCfpModalSprint1()" style="color:var(--color-brand-deep);font-weight:700;text-decoration:underline;">Déposer ma candidature CFP en ligne</a></div>
+          `;
+        }
+        showToastSprint1('• Campus CFP (Inscription 50 000 FCFA) & Point GPS Face Station Tradex Ahala affichés.');
+      }
+    }
+
+    // Pilier 4A : Closer Conversationnel — Upsell 1 clic Poisson Braisé + Pergola 13h (+5 000 FCFA)
+    function triggerWhatsAppUpsellPergola() {
+      window._activeWaIntent = 'PASS_QR';
+      const repasChk = document.getElementById('chkRepas');
+      const pergChk = document.getElementById('chkBumpPergola');
+      if (repasChk) repasChk.checked = true;
+      if (pergChk) pergChk.checked = true;
+      recalcSimulator();
+      syncWhatsAppConciergeView();
+      const badgeEl = document.getElementById('waConciergeStatusBadge');
+      if (badgeEl) badgeEl.textContent = 'Upsell Poisson Braisé & Pergola 13h actif';
+      showToastSprint1('• Closer WhatsApp : Poisson Braisé d\'Ahala + Pergola Privée 13h (+5 000 FCFA) ajoutés à votre Billet QR sans attente !');
+    }
+
+    // Pilier 4B : Sauvetage des Paniers Abandonnés (Solde MoMo insuffisant -> Code Pré-réservation Guichet valable 11h)
+    function triggerWhatsAppGuichetRescue() {
+      window._activeWaIntent = 'PASS_QR';
+      const guichetRadio = document.querySelector('input[name="payMethod"][value="GUICHET"]');
+      if (guichetRadio) guichetRadio.checked = true;
+      createLiveBookingSprint1();
+      const ref = getActiveTicketRef();
+      const box = document.getElementById('momoStateFeedback');
+      if (box) {
+        box.className = 'status-badge status-info';
+        box.textContent = `• Sauvetage Panier Actif — Code Pré-réservation Guichet ${ref} garanti jusqu'à 11h00`;
+      }
+      const badgeEl = document.getElementById('waConciergeStatusBadge');
+      if (badgeEl) badgeEl.textContent = `Pré-réservation Guichet 11h (${ref})`;
+      const delivSub = document.getElementById('waDeliverySubtext');
+      if (delivSub) {
+        delivSub.innerHTML = `<strong>Sauvetage Solde MoMo Actif :</strong> Votre tarif et vos options sont bloqués sous le code <strong>${ref}</strong> jusqu'à 11h00 au Guichet d'Ahala (règlement Espèces ou Mobile Money sur place).`;
+      }
+      syncWhatsAppConciergeView();
+      showToastSprint1(`• Sauvetage Panier WhatsApp : Code de Pré-réservation Guichet ${ref} généré et garanti jusqu'à 11h00 !`);
+    }
+
+    // Pilier 5 : Console de « Closing WhatsApp en 1 Clic » côté Exploitation (EXP-07)
+    const EXP_WA_THREADS = [
+      {
+        name: 'École Bilingue Les Palmiers (DEV-2026-3104)',
+        meta: 'Priorité Haute • Excursion 50 élèves • Tarif enfant verrouillé à 500 FCFA',
+        status: 'En attente Proforma',
+        statusCls: 'status-badge status-info',
+        holder: 'École Bilingue Les Palmiers',
+        phone: '+237 677 88 99 00',
+        paxSummary: '45 Enfants (500 F), 5 Adultes (700 F) • Zoo + Pirogue + Navette 32 places',
+        totalFcfa: 67500,
+        incomingMsg: '« Bonjour ECOPARK, nous confirmons la sortie de 45 élèves + 5 encadrants le 05/12/2026. Pouvez-vous nous envoyer la Proforma officielle en FCFA et bloquer la navette 32 places ? »'
+      },
+      {
+        name: 'M. Christian FOUDA (Séjour VIP Cité Ewondo)',
+        meta: 'Priorité Haute • Suite Cité Ewondo Climatisée (30 000 FCFA) + Pergola 13h • +237 699 11 22 33',
+        status: 'Demande blocage loge',
+        statusCls: 'status-badge status-warning',
+        holder: 'M. Christian FOUDA',
+        phone: '+237 699 11 22 33',
+        paxSummary: '2 Adultes • Suite VIP Cité Ewondo + Poisson Braisé Pergola 13h',
+        totalFcfa: 30000,
+        incomingMsg: '« Bonsoir, je souhaite bloquer 1 Suite VIP à la Cité Ewondo (30 000 FCFA) pour ce samedi avec table en pergola au Château des Saveurs à 13h. »'
+      },
+      {
+        name: 'M. Jean-Paul MBARGA (Pass Famille ECP-2026-84920)',
+        meta: 'ECP-2026-84920 • 2 Adultes, 2 Enfants • Zoo + Piscine + Pirogue (14 000 FCFA)',
+        status: 'Billet QR prêt',
+        statusCls: 'status-badge status-success',
+        holder: 'M. Jean-Paul MBARGA',
+        phone: '+237 694 12 34 56',
+        paxSummary: '2 Adultes, 2 Enfants • Zoo + Piscine + Pirogue',
+        totalFcfa: 14000,
+        incomingMsg: '« Bonjour, j\'ai configuré mon Pass Famille à 14 000 FCFA sur le simulateur. Pouvez-vous m\'envoyer mon E-Billet QR Code et la localisation GPS exacte face à Tradex Ahala ? »'
+      },
+      {
+        name: 'Mme Solange ETOUNDI (Mariage & Gala — RDV-2026-4102)',
+        meta: 'RDV-2026-4102 • Repérage Salle Polyvalente Menkii Essomba Anton & Traiteur',
+        status: 'RDV programmé 11h00',
+        statusCls: 'status-badge status-info',
+        holder: 'Mme Solange ETOUNDI',
+        phone: '+237 697 13 62 03',
+        paxSummary: 'Comité Mariage 250 invités • Salle Menkii Essomba Anton',
+        totalFcfa: 25000,
+        incomingMsg: '« Bonjour, nous venons samedi à 11h00 pour visiter la Salle Polyvalente Menkii Essomba Anton (250 invités). Merci de nous envoyer le point GPS et l\'estimation traiteur. »'
+      }
+    ];
+    window._activeExpWaThreadIdx = 0;
+
+    function selectExpWhatsAppThread(idx, btnEl) {
+      window._activeExpWaThreadIdx = idx || 0;
+      const t = EXP_WA_THREADS[window._activeExpWaThreadIdx] || EXP_WA_THREADS[0];
+      document.querySelectorAll('#expWaThreadList .wa-exp-thread-item').forEach((b, i) => {
+        b.classList.toggle('active', b === btnEl || i === window._activeExpWaThreadIdx);
+      });
+      const nameEl = document.getElementById('expWaActiveClientName');
+      const metaEl = document.getElementById('expWaActiveClientMeta');
+      const statusEl = document.getElementById('expWaActiveStatus');
+      const prevEl = document.getElementById('expWaConversationPreview');
+      if (nameEl) nameEl.textContent = t.name;
+      if (metaEl) metaEl.textContent = t.meta;
+      if (statusEl) {
+        statusEl.className = t.statusCls;
+        statusEl.textContent = t.status;
+      }
+      if (prevEl) {
+        prevEl.innerHTML = `<div><strong>Message entrant (WhatsApp) :</strong> ${t.incomingMsg}</div>`;
+      }
+    }
+
+    function expWhatsAppAction(actionType) {
+      const db = loadDB();
+      const t = EXP_WA_THREADS[window._activeExpWaThreadIdx || 0] || EXP_WA_THREADS[0];
+      const statusEl = document.getElementById('expWaActiveStatus');
+      const prevEl = document.getElementById('expWaConversationPreview');
+
+      if (actionType === 'EMIT_QR') {
+        const ref = 'ECP-2026-' + Math.floor(10000 + Math.random() * 89999);
+        db.bookings.unshift({
+          reference: ref,
+          holder: t.holder,
+          phone: t.phone,
+          date: '15/11/2026',
+          paxSummary: t.paxSummary,
+          totalFcfa: t.totalFcfa,
+          status: 'CONFIRMED',
+          scanned: false,
+          scannedAt: null
+        });
+        db.auditLogs.unshift({
+          time: nowStamp(),
+          actor: 'Console Closing WhatsApp (EXP-07)',
+          action: `Émission en 1 clic du Billet QR ${ref} (${formatFCFA(t.totalFcfa)}) + Point GPS Tradex pour ${t.holder}.`
+        });
+        saveDB(db);
+        const scanInput = document.getElementById('qrScanInput');
+        if (scanInput) scanInput.value = ref;
+        if (statusEl) {
+          statusEl.className = 'status-badge status-success';
+          statusEl.textContent = `Billet QR ${ref} + GPS envoyés`;
+        }
+        if (prevEl) {
+          prevEl.innerHTML = `
+            <div><strong>Message entrant (WhatsApp) :</strong> ${t.incomingMsg}</div>
+            <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--color-border);color:var(--color-brand-deep);">
+              <strong>Réponse Agent envoyée (EXP-07) :</strong> « Votre E-Billet Coupe-File QR (<strong>${ref}</strong> — ${formatFCFA(t.totalFcfa)}) et l'itinéraire GPS (Face Station Tradex Ahala) sont actifs dans cette bulle. Présentez votre téléphone au portail (AGT-05). »
+            </div>
+          `;
+        }
+        showToastSprint1(`• Closing EXP-07 : Billet QR ${ref} émis dans WhatsApp et synchronisé avec le Scanner d'Entrée (AGT-05) !`);
+      } else if (actionType === 'SEND_PROFORMA') {
+        const qRef = (db.quotes && db.quotes[0]) ? db.quotes[0].reference : 'DEV-2026-3104';
+        if (db.quotes && db.quotes[0]) {
+          db.quotes[0].status = 'Proforma PDF WhatsApp envoyée';
+        }
+        db.auditLogs.unshift({
+          time: nowStamp(),
+          actor: 'Console Closing WhatsApp (EXP-07)',
+          action: `Envoi de la Proforma PDF officielle ${qRef} (Salle Menkii Essomba Anton + Navettes) à ${t.holder}.`
+        });
+        saveDB(db);
+        if (statusEl) {
+          statusEl.className = 'status-badge status-success';
+          statusEl.textContent = `Proforma ${qRef} envoyée`;
+        }
+        if (prevEl) {
+          prevEl.innerHTML = `
+            <div><strong>Message entrant (WhatsApp) :</strong> ${t.incomingMsg}</div>
+            <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--color-border);color:var(--color-brand-deep);">
+              <strong>Réponse Agent envoyée (EXP-07) :</strong> « Voici votre Proforma PDF officielle <strong>${qRef}</strong> (${formatFCFA(t.totalFcfa)} — Tarif enfant protégé à 500 FCFA, Salle Menkii Essomba Anton &amp; Navettes). Validation rapide par Mobile Money ou bon de commande. »
+            </div>
+          `;
+        }
+        showToastSprint1(`• Closing EXP-07 : Proforma PDF officielle (${qRef}) envoyée sur WhatsApp et dossier mis à jour dans EXP-03 !`);
+      } else if (actionType === 'LOCK_EWONDO') {
+        db.opsMetrics = db.opsMetrics || { kitchenPreorders: 18, pergolasReserved: 6, fishPacks: 34, ewondoFree: 2 };
+        db.opsMetrics.ewondoFree = Math.max(0, db.opsMetrics.ewondoFree - 1);
+        db.opsMetrics.pergolasReserved = Math.min(10, db.opsMetrics.pergolasReserved + 1);
+        db.auditLogs.unshift({
+          time: nowStamp(),
+          actor: 'Console Closing WhatsApp (EXP-07)',
+          action: `Blocage en 1 clic d'une Suite Cité Ewondo (25–30k FCFA) + Pergola 13h pour ${t.holder}.`
+        });
+        saveDB(db);
+        if (statusEl) {
+          statusEl.className = 'status-badge status-success';
+          statusEl.textContent = 'Suite Ewondo & Pergola bloquées';
+        }
+        if (prevEl) {
+          prevEl.innerHTML = `
+            <div><strong>Message entrant (WhatsApp) :</strong> ${t.incomingMsg}</div>
+            <div style="margin-top:8px;padding-top:8px;border-top:1px dashed var(--color-border);color:var(--color-brand-deep);">
+              <strong>Réponse Agent envoyée (EXP-07) :</strong> « Votre Suite VIP Cité Ewondo Climatisée (25 000 – 30 000 FCFA) et votre Pergola Privée 13h sont verrouillées à votre nom (${db.opsMetrics.ewondoFree} suite(s) restante(s) ce soir). »
+            </div>
+          `;
+        }
+        showToastSprint1(`• Closing EXP-07 : Suite Cité Ewondo + Pergola 13h bloquées ! Jauge hôtelière (EXP-04) mise à jour (${db.opsMetrics.ewondoFree} disponible(s)).`);
+      }
+    }
+
+    // Synchroniser automatiquement la Vue WhatsApp lors de tout recalcul du simulateur ou génération de billet
+    const _origRecalcForWaView = recalcSimulator;
+    recalcSimulator = function() {
+      _origRecalcForWaView();
+      syncWhatsAppConciergeView();
+    };
+
+    const _origCreateBookingForWaView = createLiveBookingSprint1;
+    createLiveBookingSprint1 = function() {
+      _origCreateBookingForWaView();
+      syncWhatsAppConciergeView();
+    };
+
+    ['visitorName', 'visitorPhone', 'visitDate'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('input', syncWhatsAppConciergeView);
+    });
+    document.querySelectorAll('input[name="payMethod"]').forEach(r => {
+      r.addEventListener('change', syncWhatsAppConciergeView);
+    });
+    syncWhatsAppConciergeView();
 
   </script>
 </body>

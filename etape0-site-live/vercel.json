@@ -21,6 +21,8 @@
     { "source": "/rendez-vous", "destination": "/index.html" },
     { "source": "/rendez-vous/", "destination": "/index.html" },
     { "source": "/reserver", "destination": "/index.html" },
+    { "source": "/whatsapp", "destination": "/index.html" },
+    { "source": "/whatsapp/", "destination": "/index.html" },
     { "source": "/guichet", "destination": "/index.html" },
     { "source": "/direction", "destination": "/index.html" },
     { "source": "/admin", "destination": "/index.html" }
