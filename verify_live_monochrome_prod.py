@@ -21,6 +21,7 @@ ROUTES = [
     "/restaurant",
     "/hotellerie",
     "/formation",
+    "/agenda",
     "/reserver",
     "/rdv",
     "/guichet",
@@ -468,11 +469,12 @@ def run_live_audit():
             const cfpRowsCount = document.querySelectorAll('#view-ACC table tbody tr[data-dossier-kind="CFP"]').length;
             window.setAccCategoryFilter('ALL', document.querySelectorAll('#accCategoryFilterBar .acc-filter-pill')[0]);
 
-            const firstBookingRef = window.loadDB().bookings[0].reference;
+            const unscannedBooking = window.loadDB().bookings.find(x => !x.scanned) || window.loadDB().bookings[1];
+            const firstBookingRef = unscannedBooking.reference;
             window.openRescheduleModal(firstBookingRef, 'BOOKING');
             document.getElementById('rescheduleNewDate').value = '2026-12-28';
             window.confirmRescheduleSprint1();
-            const updatedBookingDate = window.loadDB().bookings[0].date;
+            const updatedBookingDate = window.loadDB().bookings.find(x => x.reference === firstBookingRef).date;
 
             // 5. Navigation tactile mobile (#mobileQuickNavPills) & Export CSV Comptable (DIR-05 / AGT-09)
             const mobilePillsCount = document.querySelectorAll('#mobileQuickNavPills .mobile-quick-pill').length;
@@ -498,8 +500,55 @@ def run_live_audit():
         assert omissions_check["printTitleHasProforma"], "Echec generation Facture Proforma officielle imprimable"
         assert omissions_check["cfpRowsCount"] >= 1, "Les dossiers CFP ne s'affichent pas dans Mon Espace"
         assert omissions_check["updatedBookingDate"] == "2026-12-28", f"Le report de date ACC-05 n'a pas mis a jour la date: {omissions_check['updatedBookingDate']}"
-        assert omissions_check["mobilePillsCount"] == 7, f"Attendu 7 raccourcis mobiles, obtenu {omissions_check['mobilePillsCount']}"
+        assert omissions_check["mobilePillsCount"] == 8, f"Attendu 8 raccourcis mobiles, obtenu {omissions_check['mobilePillsCount']}"
         assert omissions_check["exportedCsvCount"] >= 4, "Echec export CSV comptable DIR-05 / AGT-09"
+
+        # I. Verification de l'Agenda de la Semaine & Reservation d'Evenement en 1 Clic (PUB-15 / PUB-16 -> RES-03)
+        agenda_check = page.evaluate("""() => {
+            navigateFamily('PUB', 'PUB-16');
+            const totalEvents = document.querySelectorAll('#weeklyAgendaGrid .agenda-event-card').length;
+            const hasSpaceBanner = !!document.getElementById('agendaSpaceStatusBanner');
+
+            // Filtrer sur Dimanche uniquement
+            window.filterWeeklyAgenda('DIMANCHE');
+            const visibleSundayCount = Array.from(document.querySelectorAll('#weeklyAgendaGrid .agenda-event-card'))
+                .filter(c => c.style.display !== 'none').length;
+            window.filterWeeklyAgenda('ALL');
+
+            // Ouvrir le detail d'un evenement
+            window.openWeeklyEventDetail('EVT_DIMANCHE_ROYAL');
+            const modalTitle = document.getElementById('evtModalTitle').textContent.trim();
+            window.closeSprint1Modals();
+
+            // Reserver en 1 clic l'evenement Dimanche Royal
+            const nextSundayIso = window.bookWeeklyEventInOneClick('EVT_DIMANCHE_ROYAL');
+            const bannerOpen = document.getElementById('activeEventBannerSimulator').classList.contains('open');
+            const summaryWithEvent = window.getActiveSimulatorItemsSummary();
+            window.clearWeeklyEventSelection();
+            const bannerClosedAfterClear = !document.getElementById('activeEventBannerSimulator').classList.contains('open');
+
+            return {
+                totalEvents,
+                hasSpaceBanner,
+                visibleSundayCount,
+                modalTitle,
+                nextSundayIso,
+                bannerOpen,
+                hasEventInSummary: summaryWithEvent.includes('[Événement : Grand Dimanche Royal'),
+                bannerClosedAfterClear
+            };
+        }""")
+        print(f"  [AGENDA SEMAINE PUB-16] Evenements={agenda_check['totalEvents']} | Dispo Espaces={agenda_check['hasSpaceBanner']} | Filtre Dimanche={agenda_check['visibleSundayCount']} | Modal='{agenda_check['modalTitle'][:38]}...' | Date Dimanche={agenda_check['nextSundayIso']} | Banner Sim={agenda_check['bannerOpen']} | In QR Summary={agenda_check['hasEventInSummary']}")
+        assert agenda_check["totalEvents"] == 4, f"Attendu 4 evenements a l'Agenda de la Semaine, obtenu {agenda_check['totalEvents']}"
+        assert agenda_check["hasSpaceBanner"], "Bandeau de disponibilite des espaces #agendaSpaceStatusBanner manquant"
+        assert agenda_check["visibleSundayCount"] == 1, f"Le filtre DIMANCHE doit afficher 1 carte, obtenu {agenda_check['visibleSundayCount']}"
+        assert "Grand Dimanche Royal" in agenda_check["modalTitle"], "Modal detail d'evenement incorrect"
+        assert agenda_check["bannerOpen"] and agenda_check["hasEventInSummary"] and agenda_check["bannerClosedAfterClear"], "Le flux de reservation d'evenement en 1 clic PUB-16 -> RES-03 a echoue"
+
+        page.evaluate("navigateFamily('PUB', 'PUB-16');")
+        page.locator("#sec-PUB-16").scroll_into_view_if_needed()
+        page.wait_for_timeout(450)
+        page.screenshot(path=art_dir + r"\prod_agenda_semaine_pub16.png")
 
         browser.close()
 
