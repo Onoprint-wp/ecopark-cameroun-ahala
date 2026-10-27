@@ -1,0 +1,1 @@
+{"name":"ecopark-db-tests","private":true,"type":"module","scripts":{"test":"node rls_governance.test.mjs"},"dependencies":{"@electric-sql/pglite":"^0.5.12"}}
