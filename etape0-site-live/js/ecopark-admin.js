@@ -454,9 +454,9 @@
       return '<tr><td class="adm-col-offer"><strong>' + esc(a.title) + '</strong></td><td>' + esc(a.daily_capacity) + '</td>' +
         '<td><input type="number" min="0" step="1" class="form-control adm-quota-input" data-activity="' + esc(a.id) + '" value="' + (q ? esc(q.capacity) : '') +
         '" placeholder="Standard" ' + (canEdit() ? '' : 'disabled') + ' /></td>' +
-        '<td>' + (av ? esc(av.booked) + ' réservées · <b>' + esc(av.remaining) + '</b> restantes' : esc(cap) + ' disponibles') + '</td>' +
-        '<td>' + btn('Enregistrer', 'quota-save', 'data-activity="' + esc(a.id) + '" ' + disabledAttr(canEdit(), 'Consultation seule')) +
-        (q ? btn('Revenir au standard', 'quota-reset', 'data-activity="' + esc(a.id) + '" ' + disabledAttr(canEdit(), 'Consultation seule')) : '') + '</td></tr>';
+        '<td>' + (av ? esc(av.booked) + ' réservées · <b>' + esc(av.remaining) + '</b> restantes' : esc(cap) + ' places') + '</td>' +
+        '<td><div class="adm-actions">' + btn('Enregistrer', 'quota-save', 'data-activity="' + esc(a.id) + '" ' + disabledAttr(canEdit(), 'Consultation seule')) +
+        (q ? btn('Standard', 'quota-reset', 'data-activity="' + esc(a.id) + '" title="Revenir à la capacité standard" ' + disabledAttr(canEdit(), 'Consultation seule')) : '') + '</div></td></tr>';
     }).join('');
 
     var wb = ED().setting('weather_banner') || { presets: {}, active_preset: '' };

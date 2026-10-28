@@ -13,6 +13,7 @@
     "snapshot": "node supabase/tests/build_content_snapshot.mjs",
     "build:data": "python build_data_layer.py",
     "test:admin": "python scripts/test_admin_console.py",
-    "build": "python build_data_layer.py && python build_admin_console.py && python build_escape_legacy.py"
+    "build": "python build_data_layer.py && python build_admin_console.py && python build_escape_legacy.py",
+    "test:responsive": "python scripts/test_admin_responsive.py"
   }
 }
