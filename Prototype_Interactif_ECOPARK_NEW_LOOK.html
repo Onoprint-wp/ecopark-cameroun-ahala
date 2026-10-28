@@ -6027,7 +6027,7 @@
         <button type="button" class="btn btn-primary btn-sm" onclick="closeSprint1Modals()">J'ai compris et j'accepte</button>
       </div>
     </div>
-    <!-- ECOPARK_CGV_MODAL:END -->
+<!-- ECOPARK_CGV_MODAL:END -->
   </div>
 
   <!-- LEVIER 3 : BARRE D'ACTION RAPIDE MOBILE (ZONE DU POUCE) -->
@@ -6750,7 +6750,12 @@ var self = this;
 self.store.patch(function (s) { self._audit(s, code, entity || '-', description); }, { source: 'local', op: 'logEvent' });
 return Promise.resolve({ ok: true });
 };
-LocalDemoDriver.prototype.subscribe = function () { return noop; };
+LocalDemoDriver.prototype.subscribe = function (entity, cb) {
+if (typeof cb !== 'function') return noop;
+return this.store.subscribe(function (meta) {
+if (!entity || !meta || !meta.entity || meta.entity === entity) cb(meta);
+});
+};
 LocalDemoDriver.prototype.session = function () {
 return Promise.resolve({ ok: true, data: { role: this.role, full_name: 'Mode démonstration', mfa_satisfied: true, demo: true } });
 };
@@ -6981,7 +6986,36 @@ defaults.content = clone((legacy.snapshot && legacy.snapshot.content) || {});
 var store;
 if (name === 'local') {
 store = new Store({ storage: storage, persistKey: legacy.storageKey, defaults: defaults });
-if (!store.state.content || !Object.keys(store.state.content).length) store.state.content = clone(defaults.content);
+if (!store.state.content || !Object.keys(store.state.content).length) {
+store.state.content = clone(defaults.content);
+} else if (defaults.content) {
+var healed = false;
+Object.keys(defaults.content).forEach(function (tbl) {
+var defRows = defaults.content[tbl];
+if (!Array.isArray(defRows)) return;
+if (!Array.isArray(store.state.content[tbl]) || !store.state.content[tbl].length) {
+store.state.content[tbl] = clone(defRows);
+healed = true;
+return;
+}
+store.state.content[tbl].forEach(function (r) {
+if (!r || r.image_src) return;
+var match = defRows.filter(function (d) {
+return (r.id && d.id === r.id) ||
+(r.slug && d.slug === r.slug) ||
+(r.bundle_code && d.bundle_code === r.bundle_code) ||
+(r.code && d.code === r.code) ||
+(r.sku && d.sku === r.sku);
+})[0];
+if (match && match.image_src) {
+r.image_src = match.image_src;
+if (!r.image_alt && match.image_alt) r.image_alt = match.image_alt;
+healed = true;
+}
+});
+});
+if (healed) store.persist();
+}
 EcoparkData.driver = new LocalDemoDriver(store, { demoRole: opts.demoRole });
 } else {
 store = new Store({
@@ -7000,9 +7034,22 @@ EcoparkData.driver = new SupabaseDriver(store, {
 client: client, pollMs: opts.pollMs, debounceMs: opts.debounceMs, onStatus: opts.onStatus
 });
 }
+if (EcoparkData.store && Array.isArray(EcoparkData.store.listeners) && EcoparkData.store.listeners.length) {
+store.listeners = EcoparkData.store.listeners.slice();
+}
 EcoparkData.config = cfg;
 EcoparkData.store = store;
 EcoparkData.driverName = name;
+if (root && typeof root.addEventListener === 'function' && !EcoparkData._storageBound) {
+EcoparkData._storageBound = true;
+root.addEventListener('storage', function (ev) {
+if (!EcoparkData.store || EcoparkData.driverName !== 'local') return;
+if (!ev || !ev.key || ev.key === EcoparkData.store.persistKey) {
+EcoparkData.store.reload();
+EcoparkData.store.emit({ source: 'storage', op: 'reload' });
+}
+});
+}
 EcoparkData._ready = EcoparkData.driver.init();
 return EcoparkData._ready;
 };
@@ -7097,7 +7144,7 @@ window.ecoparkOpenAdmin = function () {
   if (location.protocol === 'file:') base = /etape0-site-live\/index\.html$/.test(location.pathname) ? 'js/' : 'etape0-site-live/js/';
   window._ecoparkAdminLoading = new Promise(function (resolve, reject) {
     var s = document.createElement('script');
-    s.src = base + 'ecopark-admin.js?v=ece6321409';
+    s.src = base + 'ecopark-admin.js?v=9fad54b232';
     s.onload = resolve; s.onerror = reject;
     document.head.appendChild(s);
   }).then(function () { return EcoparkAdmin.open(); }, function () {
@@ -7458,6 +7505,14 @@ window.ecoparkOpenAdmin = function () {
         CHANTHEL: { label: 'Loge Cité Chanthel Confort', unit: 15000 },
         BENE: { label: 'Pavillon Cité Bene Calme', unit: 10000 }
       };
+      if (window.EcoparkData && typeof EcoparkData.content === 'function') {
+        const dynLodges = EcoparkData.content('lodge_cities') || [];
+        dynLodges.forEach(l => {
+          if (l && l.code && map[l.code] && l.status === 'PUBLISHED' && typeof l.min_price_fcfa === 'number' && l.min_price_fcfa > 0) {
+            map[l.code].unit = l.min_price_fcfa;
+          }
+        });
+      }
       const cfg = map[city] || map.EWONDO;
       return {
         city,
@@ -7481,7 +7536,9 @@ window.ecoparkOpenAdmin = function () {
       // Tarif Piscine Enfant : 1 500 FCFA (Prévente En Ligne / Semaine) vs 2 500 FCFA (Guichet Week-end & Jours Fériés)
       const poolPeriodEl = document.getElementById('poolRatePeriod');
       const isWeekendFullRate = poolPeriodEl && poolPeriodEl.value === 'WEEKEND_PLEIN';
-      const piscineChildUnit = isWeekendFullRate ? 2500 : 1500;
+      const piscineChildUnit = isWeekendFullRate
+        ? (typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('piscine', false, false) : 2500)
+        : (typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('piscine', isGroup20Plus, true) : 1500);
       const lblPiscineInfo = document.getElementById('lblPiscineRateInfo');
       if (lblPiscineInfo) {
         lblPiscineInfo.textContent = isWeekendFullRate
@@ -7515,11 +7572,15 @@ window.ecoparkOpenAdmin = function () {
       const bumpPecheChecked = document.getElementById('chkBumpPeche') && document.getElementById('chkBumpPeche').checked;
 
       const nutritionPacksCount = bumpNutritionChecked ? Math.max(1, counts.children) : 0;
-      const nutritionCost = nutritionPacksCount * 500;
-      const pergolaCost = bumpPergolaChecked ? 5000 : 0;
+      const nutritionUnitDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('nutrition_poissons', isGroup20Plus, true) : 500;
+      const nutritionCost = nutritionPacksCount * nutritionUnitDyn;
+      const pergolaUnitDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('pergola_lac', isGroup20Plus, false) : 5000;
+      const pergolaCost = bumpPergolaChecked ? pergolaUnitDyn : 0;
       const lodgeDetails = getSelectedLodgeDetails();
       const lodgeCost = bumpLodgeChecked ? lodgeDetails.total : 0;
-      const navetteCost = bumpNavetteChecked ? (counts.adults * 1500 + counts.children * 1000) : 0;
+      const navetteAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('navette_yaounde', isGroup20Plus, false) : 1500;
+      const navetteChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('navette_yaounde', isGroup20Plus, true) : 1000;
+      const navetteCost = bumpNavetteChecked ? (counts.adults * navetteAdultDyn + counts.children * navetteChildDyn) : 0;
       const pecheCost = bumpPecheChecked ? 2000 : 0;
 
       document.getElementById('subZoo').textContent = formatFCFA(zooCost);
@@ -7536,14 +7597,32 @@ window.ecoparkOpenAdmin = function () {
       let bundleDiscount = 0;
       let bundleLabel = '';
       if (window._activeBundleCode === 'PASS_DECOUVERTE' && !isGroup20Plus) {
-        bundleDiscount = counts.adults * 500;
+        const bDec = typeof getSalesBundleDynamic === 'function' ? getSalesBundleDynamic('PASS_DECOUVERTE') : null;
+        if (bDec && document.getElementById('chkZoo').checked && document.getElementById('chkPirogue').checked && document.getElementById('chkCheval').checked) {
+          const targetDec = (counts.adults * (bDec.adult_bundle_price_fcfa || 2500)) + (counts.children * (bDec.child_bundle_price_fcfa || 1500));
+          bundleDiscount = Math.max(0, (zooCost + pirogueCost + chevalCost) - targetDec);
+        } else {
+          bundleDiscount = counts.adults * 500;
+        }
         bundleLabel = 'Remise Pass Découverte Nature (-500 FCFA/adulte)';
       } else if (window._activeBundleCode === 'PASS_ROYALE' && !isGroup20Plus) {
-        bundleDiscount = (counts.adults * 1000) + (counts.children * 500);
+        const bRoy = typeof getSalesBundleDynamic === 'function' ? getSalesBundleDynamic('PASS_ROYALE') : null;
+        if (bRoy && document.getElementById('chkZoo').checked && document.getElementById('chkPiscine').checked && document.getElementById('chkPirogue').checked && document.getElementById('chkRepas').checked) {
+          const targetRoy = (counts.adults * (bRoy.adult_bundle_price_fcfa || 8500)) + (counts.children * (bRoy.child_bundle_price_fcfa || 4500));
+          bundleDiscount = Math.max(0, (zooCost + piscineCost + pirogueCost + repasCost) - targetRoy);
+        } else {
+          bundleDiscount = (counts.adults * 1000) + (counts.children * 500);
+        }
         bundleLabel = 'Remise Pass Journée Royale (-1 000 FCFA/adulte, -500 FCFA/enfant)';
       } else if (window._activeBundleCode === 'PACK_COUPLE_EWONDO') {
-        bundleDiscount = 4000;
-        bundleLabel = 'Remise Forfait Escapade Couple VIP Ewondo (-4 000 FCFA)';
+        const bCpl = typeof getSalesBundleDynamic === 'function' ? getSalesBundleDynamic('PACK_COUPLE_EWONDO') : null;
+        if (bCpl && bumpLodgeChecked) {
+          const baseCouple = zooCost + piscineCost + pirogueCost + repasCost + pergolaCost + lodgeCost;
+          bundleDiscount = Math.max(0, baseCouple - (bCpl.adult_bundle_price_fcfa || 45000));
+        } else {
+          bundleDiscount = 4000;
+        }
+        bundleLabel = 'Remise Forfait Escapade Couple VIP Ewondo (-' + formatFCFA(bundleDiscount) + ')';
       }
 
       const rawSubtotal = zooCost + piscineCost + pirogueCost + chevalCost + repasCost + nutritionCost + pergolaCost + lodgeCost + navetteCost + pecheCost;
@@ -7908,7 +7987,14 @@ window.ecoparkOpenAdmin = function () {
       document.documentElement.setAttribute('data-ecopark-driver', EcoparkData.driverName);
       EcoparkData.onChange(function (meta) {
         if (!meta) return;
-        if (meta.source === 'rollback' || meta.source === 'realtime') {
+        if (meta.source === 'local' && typeof syncChannel !== 'undefined' && syncChannel) {
+          try { syncChannel.postMessage({ type: 'DB_UPDATED', entity: meta.entity || null }); } catch (e) {}
+        }
+        if (meta.source === 'rollback' || meta.source === 'realtime' || meta.source === 'local' || meta.source === 'optimistic' || meta.source === 'storage' || meta.op === 'refreshContent') {
+          if (typeof renderWeatherBannerFromData === 'function') renderWeatherBannerFromData();
+          if (typeof renderPubCatalogFromData === 'function') renderPubCatalogFromData();
+          if (typeof syncDynamicContentFromEcoparkData === 'function') syncDynamicContentFromEcoparkData();
+          if (typeof recalcSimulator === 'function') recalcSimulator();
           if (typeof syncAllViewsFromDB === 'function') syncAllViewsFromDB();
         }
         if (meta.op === 'refreshContent' || meta.source === 'rollback' || meta.entity === 'site_settings') {
@@ -7955,7 +8041,16 @@ window.ecoparkOpenAdmin = function () {
     // ECOPARK_DATA_BRIDGE:END
 
     if (syncChannel) {
-      syncChannel.onmessage = () => syncAllViewsFromDB();
+      syncChannel.onmessage = () => {
+        if (window.EcoparkData && EcoparkData.driverName === 'local' && EcoparkData.store && typeof EcoparkData.store.load === 'function') {
+          EcoparkData.store.state = EcoparkData.store.load();
+        }
+        if (typeof renderWeatherBannerFromData === 'function') renderWeatherBannerFromData();
+        if (typeof renderPubCatalogFromData === 'function') renderPubCatalogFromData();
+        if (typeof syncDynamicContentFromEcoparkData === 'function') syncDynamicContentFromEcoparkData();
+        if (typeof recalcSimulator === 'function') recalcSimulator();
+        syncAllViewsFromDB();
+      };
     }
 
     function showToastSprint1(msg) {
@@ -8186,6 +8281,7 @@ window.ecoparkOpenAdmin = function () {
       db.quotes.unshift({
         reference: ref,
         org: org,
+        phone: phone,
         type: `${type} (${calc.optionsSummary})`,
         pax: calc.pax,
         date: date,
@@ -8296,7 +8392,7 @@ window.ecoparkOpenAdmin = function () {
         sum += i.price * i.qty;
         paxCount += i.qty;
       });
-      if (method.includes('Espèces')) db.posStats.cashFcfa += sum;
+      if (method.includes('Espèces') || method.includes('Especes')) db.posStats.cashFcfa += sum;
       else db.posStats.momoFcfa += sum;
       db.posStats.validatedEntries += paxCount;
       db.dirStats.monthlyRevenueFcfa += sum;
@@ -8331,6 +8427,13 @@ window.ecoparkOpenAdmin = function () {
           `ALERTE ANTI-FRAUDE : Ce billet (${found.reference} — ${found.holder}) a été ANNULÉ et REMBOURSÉ (${rfdInfo}). Le stock a été remis en vente : REFUSER L'ENTRÉE.`;
         return;
       }
+      if (found.scanned) {
+        _origTriggerScanVerdict('USED');
+        document.getElementById('scanResultDesc').textContent =
+          `Ce billet (${found.reference} — ${found.holder}) a déjà été scanné le ${found.scannedAt} au Tourniquet Principal.`;
+        return;
+      }
+
       // Phase 6 : Gestion du mode Hors-ligne si liaison RN3 indisponible
       var isOffline = !navigator.onLine;
       if (isOffline) {
@@ -8345,13 +8448,8 @@ window.ecoparkOpenAdmin = function () {
         if (typeof updateScannerNetworkStatus === 'function') updateScannerNetworkStatus();
       }
 
-      if (found.scanned) {
-        _origTriggerScanVerdict('USED');
-        document.getElementById('scanResultDesc').textContent =
-          `Ce billet (${found.reference} — ${found.holder}) a déjà été scanné le ${found.scannedAt} au Tourniquet Principal.`;
-        return;
-      }
       found.scanned = true;
+      found.leadStatus = 'PROCESSED';
       found.scannedAt = nowStamp();
       db.posStats.validatedEntries += 1;
       db.auditLogs.unshift({
@@ -8408,26 +8506,31 @@ window.ecoparkOpenAdmin = function () {
         agtCards[1].textContent = formatFCFA(db.posStats.momoFcfa);
         agtCards[2].textContent = `${db.posStats.validatedEntries} entrées validées`;
       }
+      if (typeof recalcPhysicalCashCount === 'function') {
+        recalcPhysicalCashCount();
+      }
 
-      // 3. Mettre à jour Exploitation (EXP-03 / EXP-06)
+      // 3. Mettre à jour Exploitation (EXP-03 / EXP-06 / EXP-07) avec l'ensemble des derniers dossiers
       const expTables = document.querySelectorAll('#view-EXP table tbody');
       if (expTables.length >= 2) {
-        const latestQ = db.quotes[0];
-        const latestC = db.cfpApplications[0];
-        expTables[1].innerHTML = `
+        const expQRows = (db.quotes || []).slice(0, 3).map(qItem => `
           <tr>
             <td><code>EXP-03</code> Devis</td>
-            <td>${escHtml(latestQ.org)} (${escHtml(latestQ.reference)})</td>
-            <td>${escHtml(latestQ.pax)} participants • ${escHtml(latestQ.type)} (${escHtml(latestQ.date)})</td>
-            <td><span class="status-badge status-info">${formatFCFA(latestQ.budgetFcfa)} • ${escHtml(latestQ.status)}</span></td>
+            <td>${escHtml(qItem.org)} (${escHtml(qItem.reference)})</td>
+            <td>${escHtml(qItem.pax)} participants • ${escHtml(qItem.type)} (${escHtml(qItem.date)})</td>
+            <td><span class="status-badge status-info">${formatFCFA(qItem.budgetFcfa)} • ${escHtml(qItem.status)}</span></td>
           </tr>
+        `).join('');
+        const expCRows = (db.cfpApplications || []).slice(0, 2).map(cItem => `
           <tr>
             <td><code>EXP-06</code> CFP</td>
-            <td>${escHtml(latestC.name)} (${escHtml(latestC.reference)})</td>
-            <td>Filière : ${escHtml(latestC.track)} (${escHtml(latestC.phone)})</td>
-            <td><span class="status-badge status-success">${escHtml(latestC.status)}</span></td>
+            <td>${escHtml(cItem.name)} (${escHtml(cItem.reference)})</td>
+            <td>Filière : ${escHtml(cItem.track)} (${escHtml(cItem.phone)})</td>
+            <td><span class="status-badge status-success">${escHtml(cItem.status)}</span></td>
           </tr>
-          <tr>
+        `).join('');
+        expTables[1].innerHTML = expQRows + expCRows + `
+          <tr data-exp-rdv-row="1">
             <td><code>EXP-07</code> Support</td>
             <td>Mme Charlotte Manuella</td>
             <td>Demande de grille tarifaire famille pour dimanche</td>
@@ -9100,6 +9203,7 @@ window.ecoparkOpenAdmin = function () {
       db.quotes.unshift({
         reference: ref,
         org: org,
+        phone: phone,
         type: `${type} (${calc.optionsSummary})`,
         pax: calc.pax,
         date: date,
@@ -9157,17 +9261,23 @@ window.ecoparkOpenAdmin = function () {
         accTbody.insertAdjacentHTML('afterbegin', rdvRow);
       }
 
-      // Mettre à jour la ligne EXP-07 dans Exploitation avec le dernier RDV
+      // Mettre à jour les lignes EXP-07 dans Exploitation avec les derniers RDV
       const expTables = document.querySelectorAll('#view-EXP table tbody');
       if (expTables.length >= 2 && latestRdv) {
-        const rows = expTables[1].querySelectorAll('tr');
-        if (rows.length >= 3) {
-          rows[2].innerHTML = `
+        const rdvHtml = (db.appointments || []).slice(0, 2).map(rItem => `
+          <tr data-exp-rdv-row="1">
             <td><code>EXP-07</code> Agenda RDV</td>
-            <td>${escHtml(latestRdv.visitorName)} — ${escHtml(latestRdv.org)} (${escHtml(latestRdv.reference)})</td>
-            <td>${escHtml(latestRdv.purposeLabel)} • ${escHtml(latestRdv.date)} (${escHtml(latestRdv.slot)})</td>
-            <td><span class="status-badge status-success">${escHtml(latestRdv.status)}</span></td>
-          `;
+            <td>${escHtml(rItem.visitorName)} — ${escHtml(rItem.org)} (${escHtml(rItem.reference)})</td>
+            <td>${escHtml(rItem.purposeLabel)} • ${escHtml(rItem.date)} (${escHtml(rItem.slot)})</td>
+            <td><span class="status-badge status-success">${escHtml(rItem.status)}</span></td>
+          </tr>
+        `).join('');
+        const placeholderRow = expTables[1].querySelector('tr[data-exp-rdv-row]');
+        if (placeholderRow) {
+          placeholderRow.outerHTML = rdvHtml;
+        } else {
+          const rows = expTables[1].querySelectorAll('tr');
+          if (rows.length > 0) rows[rows.length - 1].outerHTML = rdvHtml;
         }
       }
     }
@@ -9719,18 +9829,27 @@ window.ecoparkOpenAdmin = function () {
         const optCh = citySel.options[1];
         const optBe = citySel.options[2];
 
+        let ewUnit = 25000, chUnit = 15000, beUnit = 10000;
+        if (window.EcoparkData && typeof EcoparkData.content === 'function') {
+          (EcoparkData.content('lodge_cities') || []).forEach(l => {
+            if (!l || l.status !== 'PUBLISHED') return;
+            if (l.code === 'EWONDO' && l.min_price_fcfa) ewUnit = l.min_price_fcfa;
+            if (l.code === 'CHANTHEL' && l.min_price_fcfa) chUnit = l.min_price_fcfa;
+            if (l.code === 'BENE' && l.min_price_fcfa) beUnit = l.min_price_fcfa;
+          });
+        }
         optEw.textContent = inv.ewondoFree > 0
-          ? `Cité Ewondo VIP — 25 000 FCFA/nuit (${inv.ewondoFree}/8 libre${inv.ewondoFree > 1 ? 's' : ''})`
+          ? `Cité Ewondo VIP — ${formatFCFA(ewUnit)}/nuit (${inv.ewondoFree}/8 libre${inv.ewondoFree > 1 ? 's' : ''})`
           : 'Cité Ewondo VIP — Complet (0/8 libre)';
         optEw.disabled = (inv.ewondoFree <= 0);
 
         optCh.textContent = inv.chanthelFree > 0
-          ? `Cité Chanthel Confort — 15 000 FCFA/nuit (${inv.chanthelFree}/12 libre${inv.chanthelFree > 1 ? 's' : ''})`
+          ? `Cité Chanthel Confort — ${formatFCFA(chUnit)}/nuit (${inv.chanthelFree}/12 libre${inv.chanthelFree > 1 ? 's' : ''})`
           : 'Cité Chanthel Confort — Complet (0/12 libre)';
         optCh.disabled = (inv.chanthelFree <= 0);
 
         optBe.textContent = inv.beneFree > 0
-          ? `Cité Bene Standard — 10 000 FCFA/nuit (${inv.beneFree}/10 libre${inv.beneFree > 1 ? 's' : ''})`
+          ? `Cité Bene Standard — ${formatFCFA(beUnit)}/nuit (${inv.beneFree}/10 libre${inv.beneFree > 1 ? 's' : ''})`
           : 'Cité Bene Standard — Complet à cette date (0/10)';
         optBe.disabled = (inv.beneFree <= 0);
 
@@ -11272,8 +11391,6 @@ window.ecoparkOpenAdmin = function () {
     closeSprint1Modals();
     var overlay = document.getElementById('modalOverlaySprint1');
     var box = document.getElementById('modalCgvBox');
-    var siblings = ['modalQuoteBox', 'modalCfpBox', 'modalRdvBox', 'modalWeeklyEventBox', 'modalOfficialPrintBox'];
-    siblings.forEach(function (id) { var el = document.getElementById(id); if (el) el.style.display = 'none'; });
     if (overlay) overlay.style.display = 'flex';
     if (box) box.style.display = 'block';
   };
@@ -11378,9 +11495,10 @@ window.ecoparkOpenAdmin = function () {
 
   // --- 6. PRIX DYNAMIQUES POUR LE SIMULATEUR /reserver (RES-01..12) ---
   window.getCatalogPriceDynamic = function (slug, isGroup, isChild) {
-    if (window.EcoparkData && typeof EcoparkData.get === 'function') {
-      var act = EcoparkData.get('catalog_activities', function (a) { return a.slug === slug; });
-      if (act && act.status === 'PUBLISHED') {
+    if (window.EcoparkData && typeof EcoparkData.content === 'function') {
+      var acts = EcoparkData.content('catalog_activities') || [];
+      var act = acts.filter(function (a) { return a && a.slug === slug && a.status === 'PUBLISHED'; })[0];
+      if (act) {
         if (isChild) {
           return (isGroup && act.group_child_price_fcfa != null) ? act.group_child_price_fcfa : (act.child_price_fcfa || 0);
         } else {
@@ -11470,24 +11588,180 @@ window.ecoparkOpenAdmin = function () {
     if (btn) btn.innerHTML = '<svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Caméra';
   };
 
+  window.getSalesBundleDynamic = function (bundleCode) {
+    if (window.EcoparkData && typeof EcoparkData.content === 'function') {
+      var list = EcoparkData.content('sales_bundles') || [];
+      return list.filter(function (b) { return b && b.bundle_code === bundleCode && b.status === 'PUBLISHED'; })[0] || null;
+    }
+    return null;
+  };
+
+  window.syncDynamicContentFromEcoparkData = function () {
+    if (!window.EcoparkData || typeof EcoparkData.content !== 'function') return;
+
+    // A. Synchroniser les Pass & Bundles (ADM-01 -> boutons #btnBundle*)
+    var bundles = EcoparkData.content('sales_bundles') || [];
+    bundles.forEach(function (b) {
+      if (!b || b.status !== 'PUBLISHED') return;
+      if (b.bundle_code === 'PASS_DECOUVERTE') {
+        var btnD = document.getElementById('btnBundleDecouverte');
+        if (btnD) {
+          var pillD = btnD.querySelector('.price-pill');
+          if (pillD) pillD.textContent = (b.adult_bundle_price_fcfa || 2500).toLocaleString('fr-FR') + ' / ' + (b.child_bundle_price_fcfa || 1500).toLocaleString('fr-FR') + ' FCFA';
+        }
+      } else if (b.bundle_code === 'PASS_ROYALE') {
+        var btnR = document.getElementById('btnBundleRoyale');
+        if (btnR) {
+          var pillR = btnR.querySelector('.price-pill');
+          if (pillR) pillR.textContent = (b.adult_bundle_price_fcfa || 8500).toLocaleString('fr-FR') + ' / ' + (b.child_bundle_price_fcfa || 4500).toLocaleString('fr-FR') + ' FCFA';
+        }
+      } else if (b.bundle_code === 'PACK_COUPLE_EWONDO') {
+        var btnC = document.getElementById('btnBundleCouple');
+        if (btnC) {
+          var pillC = btnC.querySelector('.price-pill');
+          if (pillC) pillC.textContent = (b.adult_bundle_price_fcfa || 45000).toLocaleString('fr-FR') + ' FCFA (Duo)';
+        }
+      }
+    });
+
+    // B. Synchroniser les Cites Hotelieres (ADM-02 -> VISUAL_APPRECIATION_CATALOG.LODGES & disponibilites)
+    var lodges = EcoparkData.content('lodge_cities') || [];
+    if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.LODGES) {
+      lodges.forEach(function (l) {
+        if (!l || l.status !== 'PUBLISHED' || !l.code) return;
+        var meta = VISUAL_APPRECIATION_CATALOG.LODGES[l.code];
+        if (meta) {
+          var minP = typeof l.min_price_fcfa === 'number' ? l.min_price_fcfa : 10000;
+          var maxP = typeof l.max_price_fcfa === 'number' ? l.max_price_fcfa : minP;
+          meta.rate = minP.toLocaleString('fr-FR') + ' – ' + maxP.toLocaleString('fr-FR') + ' FCFA / nuit';
+          if (l.image_src) meta.src = l.image_src;
+        }
+      });
+    }
+    if (typeof syncLiveAvailabilityAndOverbooking === 'function') {
+      syncLiveAvailabilityAndOverbooking();
+    }
+
+    // C. Synchroniser l'Agenda de la Semaine (ADM-04 -> WEEKLY_AGENDA_CATALOG & #weeklyAgendaGrid)
+    var events = EcoparkData.content('agenda_events') || [];
+    if (typeof WEEKLY_AGENDA_CATALOG !== 'undefined' && events.length > 0) {
+      var pubEvents = events.filter(function (ev) { return ev && ev.status === 'PUBLISHED' && ev.code; });
+      pubEvents.forEach(function (ev) {
+        var existing = WEEKLY_AGENDA_CATALOG[ev.code] || {};
+        WEEKLY_AGENDA_CATALOG[ev.code] = {
+          code: ev.code,
+          dayFilter: ev.day_filter || existing.dayFilter || 'SAMEDI',
+          targetWeekday: ev.target_weekday != null ? ev.target_weekday : (existing.targetWeekday != null ? existing.targetWeekday : 6),
+          badge: ev.badge || existing.badge || 'Cette semaine',
+          title: ev.title || existing.title || ev.code,
+          shortLabel: ev.short_label || existing.shortLabel || ev.title || ev.code,
+          priceText: ev.price_text || existing.priceText || (ev.from_price_fcfa ? ('Des ' + formatFCFA(ev.from_price_fcfa)) : 'Tarif standard'),
+          spotsText: ev.spots_text || existing.spotsText || 'Sur reservation QR',
+          desc: ev.description || existing.desc || '',
+          schedule: Array.isArray(ev.schedule) && ev.schedule.length ? ev.schedule : (existing.schedule || ['09h00 - 18h00 : Programme ECOPARK Ahala']),
+          bundle: ev.bundle_code || existing.bundle || 'PASS_DECOUVERTE',
+          dish: ev.dish || ev.default_dish || existing.dish || "Poisson Braise d'Ahala (Etang frais)",
+          mealSlot: ev.meal_slot || existing.mealSlot || 'Service 12h30',
+          pergola: ev.pergola != null ? !!ev.pergola : !!ev.pergola_included,
+          nutrition: ev.nutrition != null ? !!ev.nutrition : !!ev.nutrition_included
+        };
+        if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.EVENTS) {
+          VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code] = {
+            src: ev.image_src || (VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code] && VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code].src) || 'audit-assets/ecopark-real-media/balade_pirogue3.jpg',
+            lbIdx: (VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code] && VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code].lbIdx) || 0
+          };
+        }
+      });
+
+      var grid = document.getElementById('weeklyAgendaGrid');
+      if (grid && pubEvents.length > 0) {
+        pubEvents.forEach(function (ev) {
+          var card = grid.querySelector('[data-event-code="' + ev.code + '"]');
+          if (!card) {
+            // Chercher par bouton onclick contenant ev.code
+            var btns = grid.querySelectorAll('button[onclick*="' + ev.code + '"]');
+            if (btns.length > 0) card = btns[0].closest('.agenda-event-card');
+          }
+          if (card) {
+            card.setAttribute('data-event-code', ev.code);
+            if (ev.day_filter) card.setAttribute('data-agenda-day', ev.day_filter);
+            var h3 = card.querySelector('h3');
+            if (h3 && ev.title) h3.textContent = ev.title;
+            var p = card.querySelector('p');
+            if (p && ev.description) p.textContent = ev.description;
+            var bdg = card.querySelector('.agenda-day-badge');
+            if (bdg && ev.badge) bdg.textContent = ev.badge;
+            var pill = card.querySelector('.price-pill');
+            if (pill && ev.from_price_fcfa) pill.textContent = 'Des ' + formatFCFA(ev.from_price_fcfa);
+            var img = card.querySelector('img');
+            if (img && ev.image_src) img.src = ev.image_src;
+          } else {
+            var newCard = document.createElement('div');
+            newCard.className = 'col-3 agenda-event-card';
+            newCard.setAttribute('data-agenda-day', ev.day_filter || 'SAMEDI');
+            newCard.setAttribute('data-event-code', ev.code);
+            var imgSrc = ev.image_src || 'audit-assets/ecopark-real-media/balade_pirogue3.jpg';
+            var pillTxt = ev.from_price_fcfa ? ('Des ' + formatFCFA(ev.from_price_fcfa)) : 'Acces QR';
+            newCard.innerHTML =
+              '<div>' +
+                '<div class="agenda-card-media" onclick="openEcoparkLightbox(0)">' +
+                  '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(ev.image_alt || ev.title || ev.code) + '" />' +
+                  '<span class="agenda-card-zoom-tag">Apercu HD</span>' +
+                '</div>' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">' +
+                  '<span class="agenda-day-badge">' + escHtml(ev.badge || 'Cette semaine') + '</span>' +
+                  '<span class="price-pill" style="font-size:11.5px;padding:2px 8px;">' + escHtml(pillTxt) + '</span>' +
+                '</div>' +
+                '<h3 style="font-size:1.15rem;margin-bottom:6px;">' + escHtml(ev.title || ev.code) + '</h3>' +
+                '<p style="font-size:13.8px;color:var(--color-text-muted);margin-bottom:10px;">' + escHtml(ev.description || '') + '</p>' +
+                '<div class="agenda-meta-Highlight">• ' + escHtml(ev.spots_text || 'Reservation QR Coupe-File') + '</div>' +
+              '</div>' +
+              '<div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;border-top:1px dashed var(--color-border);">' +
+                '<button type="button" class="btn btn-secondary btn-sm" style="flex:1;padding:6px 10px;font-size:12.5px;" onclick="openWeeklyEventDetail(\'' + escHtml(ev.code) + '\')">Programme</button>' +
+                '<button type="button" class="btn btn-primary btn-sm" style="flex:1;padding:6px 10px;font-size:12.5px;" onclick="bookWeeklyEventInOneClick(\'' + escHtml(ev.code) + '\')">Reserver QR</button>' +
+              '</div>';
+            grid.appendChild(newCard);
+          }
+        });
+      }
+    }
+
+    // D. Synchroniser la Carte du Chateau des Saveurs (ADM-05 -> #simDishSelect rupture de stock)
+    var dishes = EcoparkData.content('menu_items') || [];
+    var dishSel = document.getElementById('simDishSelect');
+    if (dishSel && dishes.length > 0) {
+      Array.prototype.forEach.call(dishSel.options, function (opt) {
+        var matched = dishes.filter(function (d) { return d && d.name === opt.value; })[0];
+        if (matched) {
+          var avail = matched.status === 'PUBLISHED' && matched.in_stock !== false && matched.preorder_enabled !== false;
+          opt.disabled = !avail;
+          var baseLabel = opt.getAttribute('data-base-label') || opt.textContent.replace(/\s*\(Indisponible\)$/i, '');
+          opt.setAttribute('data-base-label', baseLabel);
+          opt.textContent = avail ? baseLabel : (baseLabel + ' (Indisponible)');
+        }
+      });
+      var selOpt = dishSel.options[dishSel.selectedIndex];
+      if (selOpt && selOpt.disabled) {
+        var firstEnabled = Array.prototype.filter.call(dishSel.options, function (o) { return !o.disabled; })[0];
+        if (firstEnabled) dishSel.value = firstEnabled.value;
+      }
+    }
+  };
+
   // --- 8. INITIALISATION AUTOMATIQUE & ABONNEMENTS TEMPS RÉEL ---
   document.addEventListener('DOMContentLoaded', function () {
     initDateConstraints();
     renderPubCatalogFromData();
+    syncDynamicContentFromEcoparkData();
     renderEcoparkQrSvg('ECP-2026-84920', 'demoTicketQrWrapper');
 
     if (window.EcoparkData && typeof EcoparkData.subscribe === 'function') {
-      EcoparkData.subscribe('catalog_activities', function () {
-        renderPubCatalogFromData();
-        if (typeof recalcSimulator === 'function') recalcSimulator();
-      });
-      EcoparkData.subscribe('sales_bundles', function () {
-        renderPubCatalogFromData();
-        if (typeof recalcSimulator === 'function') recalcSimulator();
-      });
-      EcoparkData.subscribe('lodge_cities', function () {
-        renderPubCatalogFromData();
-        if (typeof recalcSimulator === 'function') recalcSimulator();
+      ['catalog_activities', 'sales_bundles', 'lodge_cities', 'agenda_events', 'menu_items', 'daily_quotas'].forEach(function (ent) {
+        EcoparkData.subscribe(ent, function () {
+          renderPubCatalogFromData();
+          syncDynamicContentFromEcoparkData();
+          if (typeof recalcSimulator === 'function') recalcSimulator();
+        });
       });
     }
   });
@@ -11670,12 +11944,28 @@ window.ecoparkOpenAdmin = function () {
     var db = typeof loadDB === 'function' ? loadDB() : null;
     var count = window._ecoparkOfflineScansQueue.length;
 
-    if (db && Array.isArray(db.auditLogs)) {
-      db.auditLogs.unshift({
-        time: nowStamp(),
-        actor: 'Passerelle Synchronisation Guichet RN3',
-        action: 'Reconciliation automatique de ' + count + ' scan(s) enregistre(s) hors-ligne.'
-      });
+    if (db) {
+      if (Array.isArray(db.bookings)) {
+        window._ecoparkOfflineScansQueue.forEach(function (qItem) {
+          if (!qItem || !qItem.reference) return;
+          var bk = db.bookings.find(function (b) { return b && b.reference === qItem.reference; });
+          if (bk && !bk.scanned) {
+            bk.scanned = true;
+            bk.scannedAt = qItem.scannedAt || nowStamp();
+            bk.leadStatus = 'PROCESSED';
+            if (db.posStats && typeof db.posStats.validatedEntries === 'number') {
+              db.posStats.validatedEntries += 1;
+            }
+          }
+        });
+      }
+      if (Array.isArray(db.auditLogs)) {
+        db.auditLogs.unshift({
+          time: nowStamp(),
+          actor: 'Passerelle Synchronisation Guichet RN3',
+          action: 'Reconciliation automatique de ' + count + ' scan(s) enregistre(s) hors-ligne.'
+        });
+      }
       if (typeof saveDB === 'function') saveDB(db);
     }
 
@@ -11837,9 +12127,9 @@ window.ecoparkOpenAdmin = function () {
 
     (db.bookings || []).forEach(function (b) {
       var normStatus = 'CONFIRMED';
-      if (b.scanned || b.leadStatus === 'PROCESSED') normStatus = 'PROCESSED';
-      else if (b.status === 'HELD_11H' || b.leadStatus === 'NEW') normStatus = 'NEW';
-      else if (b.leadStatus) normStatus = b.leadStatus;
+      if (b.leadStatus === 'NEW' || b.leadStatus === 'CONFIRMED' || b.leadStatus === 'PROCESSED') normStatus = b.leadStatus;
+      else if (b.scanned) normStatus = 'PROCESSED';
+      else if (b.status === 'HELD_11H') normStatus = 'NEW';
       items.push({
         channel: 'BOOKING',
         channelLabel: 'Billet QR',
@@ -11930,8 +12220,19 @@ window.ecoparkOpenAdmin = function () {
           b.leadStatus = newStatus;
           b.status = newStatus === 'NEW' ? 'HELD_11H' : 'CONFIRMED';
           if (newStatus === 'PROCESSED') {
-            b.scanned = true;
-            b.scannedAt = b.scannedAt || nowStamp();
+            if (!b.scanned) {
+              b.scanned = true;
+              b.scannedAt = b.scannedAt || nowStamp();
+              if (db.posStats && typeof db.posStats.validatedEntries === 'number') {
+                db.posStats.validatedEntries += 1;
+              }
+            }
+          } else if (b.scanned) {
+            b.scanned = false;
+            b.scannedAt = null;
+            if (db.posStats && typeof db.posStats.validatedEntries === 'number') {
+              db.posStats.validatedEntries = Math.max(0, db.posStats.validatedEntries - 1);
+            }
           }
           updated = true;
         }
@@ -12111,6 +12412,7 @@ window.ecoparkOpenAdmin = function () {
           var latest = db.quotes && db.quotes[0];
           if (latest) {
             latest.org = sanitizeEcoparkInput(latest.org);
+            latest.phone = sanitizeEcoparkInput(latest.phone || '+237 697 13 62 03');
             saveDB(db);
             triggerDopamineRelief('QUOTE', {
               reference: latest.reference,
@@ -12124,6 +12426,30 @@ window.ecoparkOpenAdmin = function () {
         return ref;
       };
       window.submitGroupQuoteSprint1._phase7Wrapped = true;
+    }
+
+    var _origWaQuote = window.sendWhatsAppQuoteSprint1;
+    if (typeof _origWaQuote === 'function' && !_origWaQuote._phase7Wrapped) {
+      window.sendWhatsAppQuoteSprint1 = function () {
+        sanitizeActiveFormFields();
+        var res = _origWaQuote.apply(this, arguments);
+        var db = loadDB();
+        var latest = db.quotes && db.quotes[0];
+        if (latest) {
+          latest.org = sanitizeEcoparkInput(latest.org);
+          latest.phone = sanitizeEcoparkInput(latest.phone || '+237 697 13 62 03');
+          saveDB(db);
+          triggerDopamineRelief('QUOTE', {
+            reference: latest.reference,
+            name: latest.org,
+            summary: latest.type,
+            amountFcfa: latest.budgetFcfa
+          });
+        }
+        renderAdmLeadsInbox();
+        return res;
+      };
+      window.sendWhatsAppQuoteSprint1._phase7Wrapped = true;
     }
 
     var _origCfp = window.submitCfpApplicationSprint1;

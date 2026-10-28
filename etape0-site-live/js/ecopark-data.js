@@ -749,7 +749,12 @@
     self.store.patch(function (s) { self._audit(s, code, entity || '-', description); }, { source: 'local', op: 'logEvent' });
     return Promise.resolve({ ok: true });
   };
-  LocalDemoDriver.prototype.subscribe = function () { return noop; };
+  LocalDemoDriver.prototype.subscribe = function (entity, cb) {
+    if (typeof cb !== 'function') return noop;
+    return this.store.subscribe(function (meta) {
+      if (!entity || !meta || !meta.entity || meta.entity === entity) cb(meta);
+    });
+  };
   LocalDemoDriver.prototype.session = function () {
     return Promise.resolve({ ok: true, data: { role: this.role, full_name: 'Mode démonstration', mfa_satisfied: true, demo: true } });
   };
@@ -1009,7 +1014,36 @@
     var store;
     if (name === 'local') {
       store = new Store({ storage: storage, persistKey: legacy.storageKey, defaults: defaults });
-      if (!store.state.content || !Object.keys(store.state.content).length) store.state.content = clone(defaults.content);
+      if (!store.state.content || !Object.keys(store.state.content).length) {
+        store.state.content = clone(defaults.content);
+      } else if (defaults.content) {
+        var healed = false;
+        Object.keys(defaults.content).forEach(function (tbl) {
+          var defRows = defaults.content[tbl];
+          if (!Array.isArray(defRows)) return;
+          if (!Array.isArray(store.state.content[tbl]) || !store.state.content[tbl].length) {
+            store.state.content[tbl] = clone(defRows);
+            healed = true;
+            return;
+          }
+          store.state.content[tbl].forEach(function (r) {
+            if (!r || r.image_src) return;
+            var match = defRows.filter(function (d) {
+              return (r.id && d.id === r.id) ||
+                     (r.slug && d.slug === r.slug) ||
+                     (r.bundle_code && d.bundle_code === r.bundle_code) ||
+                     (r.code && d.code === r.code) ||
+                     (r.sku && d.sku === r.sku);
+            })[0];
+            if (match && match.image_src) {
+              r.image_src = match.image_src;
+              if (!r.image_alt && match.image_alt) r.image_alt = match.image_alt;
+              healed = true;
+            }
+          });
+        });
+        if (healed) store.persist();
+      }
       EcoparkData.driver = new LocalDemoDriver(store, { demoRole: opts.demoRole });
     } else {
       // Production : seul le contenu PUBLIC est persisté en cache (jamais les données d'équipe)
@@ -1029,9 +1063,22 @@
         client: client, pollMs: opts.pollMs, debounceMs: opts.debounceMs, onStatus: opts.onStatus
       });
     }
+    if (EcoparkData.store && Array.isArray(EcoparkData.store.listeners) && EcoparkData.store.listeners.length) {
+      store.listeners = EcoparkData.store.listeners.slice();
+    }
     EcoparkData.config = cfg;
     EcoparkData.store = store;
     EcoparkData.driverName = name;
+    if (root && typeof root.addEventListener === 'function' && !EcoparkData._storageBound) {
+      EcoparkData._storageBound = true;
+      root.addEventListener('storage', function (ev) {
+        if (!EcoparkData.store || EcoparkData.driverName !== 'local') return;
+        if (!ev || !ev.key || ev.key === EcoparkData.store.persistKey) {
+          EcoparkData.store.reload();
+          EcoparkData.store.emit({ source: 'storage', op: 'reload' });
+        }
+      });
+    }
     EcoparkData._ready = EcoparkData.driver.init();
     return EcoparkData._ready;
   };

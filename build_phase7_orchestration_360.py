@@ -368,9 +368,9 @@ PHASE7_JS = PHASE7_JS_START + r"""
 
     (db.bookings || []).forEach(function (b) {
       var normStatus = 'CONFIRMED';
-      if (b.scanned || b.leadStatus === 'PROCESSED') normStatus = 'PROCESSED';
-      else if (b.status === 'HELD_11H' || b.leadStatus === 'NEW') normStatus = 'NEW';
-      else if (b.leadStatus) normStatus = b.leadStatus;
+      if (b.leadStatus === 'NEW' || b.leadStatus === 'CONFIRMED' || b.leadStatus === 'PROCESSED') normStatus = b.leadStatus;
+      else if (b.scanned) normStatus = 'PROCESSED';
+      else if (b.status === 'HELD_11H') normStatus = 'NEW';
       items.push({
         channel: 'BOOKING',
         channelLabel: 'Billet QR',
@@ -461,8 +461,19 @@ PHASE7_JS = PHASE7_JS_START + r"""
           b.leadStatus = newStatus;
           b.status = newStatus === 'NEW' ? 'HELD_11H' : 'CONFIRMED';
           if (newStatus === 'PROCESSED') {
-            b.scanned = true;
-            b.scannedAt = b.scannedAt || nowStamp();
+            if (!b.scanned) {
+              b.scanned = true;
+              b.scannedAt = b.scannedAt || nowStamp();
+              if (db.posStats && typeof db.posStats.validatedEntries === 'number') {
+                db.posStats.validatedEntries += 1;
+              }
+            }
+          } else if (b.scanned) {
+            b.scanned = false;
+            b.scannedAt = null;
+            if (db.posStats && typeof db.posStats.validatedEntries === 'number') {
+              db.posStats.validatedEntries = Math.max(0, db.posStats.validatedEntries - 1);
+            }
           }
           updated = true;
         }
@@ -642,6 +653,7 @@ PHASE7_JS = PHASE7_JS_START + r"""
           var latest = db.quotes && db.quotes[0];
           if (latest) {
             latest.org = sanitizeEcoparkInput(latest.org);
+            latest.phone = sanitizeEcoparkInput(latest.phone || '+237 697 13 62 03');
             saveDB(db);
             triggerDopamineRelief('QUOTE', {
               reference: latest.reference,
@@ -655,6 +667,30 @@ PHASE7_JS = PHASE7_JS_START + r"""
         return ref;
       };
       window.submitGroupQuoteSprint1._phase7Wrapped = true;
+    }
+
+    var _origWaQuote = window.sendWhatsAppQuoteSprint1;
+    if (typeof _origWaQuote === 'function' && !_origWaQuote._phase7Wrapped) {
+      window.sendWhatsAppQuoteSprint1 = function () {
+        sanitizeActiveFormFields();
+        var res = _origWaQuote.apply(this, arguments);
+        var db = loadDB();
+        var latest = db.quotes && db.quotes[0];
+        if (latest) {
+          latest.org = sanitizeEcoparkInput(latest.org);
+          latest.phone = sanitizeEcoparkInput(latest.phone || '+237 697 13 62 03');
+          saveDB(db);
+          triggerDopamineRelief('QUOTE', {
+            reference: latest.reference,
+            name: latest.org,
+            summary: latest.type,
+            amountFcfa: latest.budgetFcfa
+          });
+        }
+        renderAdmLeadsInbox();
+        return res;
+      };
+      window.sendWhatsAppQuoteSprint1._phase7Wrapped = true;
     }
 
     var _origCfp = window.submitCfpApplicationSprint1;

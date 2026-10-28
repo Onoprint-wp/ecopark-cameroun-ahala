@@ -394,12 +394,28 @@ def main():
     var db = typeof loadDB === 'function' ? loadDB() : null;
     var count = window._ecoparkOfflineScansQueue.length;
 
-    if (db && Array.isArray(db.auditLogs)) {
-      db.auditLogs.unshift({
-        time: nowStamp(),
-        actor: 'Passerelle Synchronisation Guichet RN3',
-        action: 'Reconciliation automatique de ' + count + ' scan(s) enregistre(s) hors-ligne.'
-      });
+    if (db) {
+      if (Array.isArray(db.bookings)) {
+        window._ecoparkOfflineScansQueue.forEach(function (qItem) {
+          if (!qItem || !qItem.reference) return;
+          var bk = db.bookings.find(function (b) { return b && b.reference === qItem.reference; });
+          if (bk && !bk.scanned) {
+            bk.scanned = true;
+            bk.scannedAt = qItem.scannedAt || nowStamp();
+            bk.leadStatus = 'PROCESSED';
+            if (db.posStats && typeof db.posStats.validatedEntries === 'number') {
+              db.posStats.validatedEntries += 1;
+            }
+          }
+        });
+      }
+      if (Array.isArray(db.auditLogs)) {
+        db.auditLogs.unshift({
+          time: nowStamp(),
+          actor: 'Passerelle Synchronisation Guichet RN3',
+          action: 'Reconciliation automatique de ' + count + ' scan(s) enregistre(s) hors-ligne.'
+        });
+      }
       if (typeof saveDB === 'function') saveDB(db);
     }
 
@@ -521,7 +537,7 @@ def main():
     # -------------------------------------------------------------------------
     # 5. Injection de la logique hors-ligne dans verifyLiveQrCode
     # -------------------------------------------------------------------------
-    target_scan_check = "if (found.scanned) {"
+    target_scan_check = "found.scanned = true;"
     replacement_scan_check = """// Phase 6 : Gestion du mode Hors-ligne si liaison RN3 indisponible
       var isOffline = !navigator.onLine;
       if (isOffline) {
@@ -536,7 +552,8 @@ def main():
         if (typeof updateScannerNetworkStatus === 'function') updateScannerNetworkStatus();
       }
 
-      if (found.scanned) {"""
+      found.scanned = true;
+      found.leadStatus = 'PROCESSED';"""
 
     content = content.replace(target_scan_check, replacement_scan_check, 1)
     print("  [OK] Prise en charge hors-ligne injectee dans verifyLiveQrCode")

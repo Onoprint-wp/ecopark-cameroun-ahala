@@ -106,7 +106,14 @@ BRIDGE_JS = r"""
       document.documentElement.setAttribute('data-ecopark-driver', EcoparkData.driverName);
       EcoparkData.onChange(function (meta) {
         if (!meta) return;
-        if (meta.source === 'rollback' || meta.source === 'realtime') {
+        if (meta.source === 'local' && typeof syncChannel !== 'undefined' && syncChannel) {
+          try { syncChannel.postMessage({ type: 'DB_UPDATED', entity: meta.entity || null }); } catch (e) {}
+        }
+        if (meta.source === 'rollback' || meta.source === 'realtime' || meta.source === 'local' || meta.source === 'optimistic' || meta.source === 'storage' || meta.op === 'refreshContent') {
+          if (typeof renderWeatherBannerFromData === 'function') renderWeatherBannerFromData();
+          if (typeof renderPubCatalogFromData === 'function') renderPubCatalogFromData();
+          if (typeof syncDynamicContentFromEcoparkData === 'function') syncDynamicContentFromEcoparkData();
+          if (typeof recalcSimulator === 'function') recalcSimulator();
           if (typeof syncAllViewsFromDB === 'function') syncAllViewsFromDB();
         }
         if (meta.op === 'refreshContent' || meta.source === 'rollback' || meta.entity === 'site_settings') {

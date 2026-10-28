@@ -281,9 +281,10 @@ PHASE5_JS = PHASE5_JS_START + r"""
 
   // --- 6. PRIX DYNAMIQUES POUR LE SIMULATEUR /reserver (RES-01..12) ---
   window.getCatalogPriceDynamic = function (slug, isGroup, isChild) {
-    if (window.EcoparkData && typeof EcoparkData.get === 'function') {
-      var act = EcoparkData.get('catalog_activities', function (a) { return a.slug === slug; });
-      if (act && act.status === 'PUBLISHED') {
+    if (window.EcoparkData && typeof EcoparkData.content === 'function') {
+      var acts = EcoparkData.content('catalog_activities') || [];
+      var act = acts.filter(function (a) { return a && a.slug === slug && a.status === 'PUBLISHED'; })[0];
+      if (act) {
         if (isChild) {
           return (isGroup && act.group_child_price_fcfa != null) ? act.group_child_price_fcfa : (act.child_price_fcfa || 0);
         } else {
@@ -373,24 +374,180 @@ PHASE5_JS = PHASE5_JS_START + r"""
     if (btn) btn.innerHTML = '<svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Caméra';
   };
 
+  window.getSalesBundleDynamic = function (bundleCode) {
+    if (window.EcoparkData && typeof EcoparkData.content === 'function') {
+      var list = EcoparkData.content('sales_bundles') || [];
+      return list.filter(function (b) { return b && b.bundle_code === bundleCode && b.status === 'PUBLISHED'; })[0] || null;
+    }
+    return null;
+  };
+
+  window.syncDynamicContentFromEcoparkData = function () {
+    if (!window.EcoparkData || typeof EcoparkData.content !== 'function') return;
+
+    // A. Synchroniser les Pass & Bundles (ADM-01 -> boutons #btnBundle*)
+    var bundles = EcoparkData.content('sales_bundles') || [];
+    bundles.forEach(function (b) {
+      if (!b || b.status !== 'PUBLISHED') return;
+      if (b.bundle_code === 'PASS_DECOUVERTE') {
+        var btnD = document.getElementById('btnBundleDecouverte');
+        if (btnD) {
+          var pillD = btnD.querySelector('.price-pill');
+          if (pillD) pillD.textContent = (b.adult_bundle_price_fcfa || 2500).toLocaleString('fr-FR') + ' / ' + (b.child_bundle_price_fcfa || 1500).toLocaleString('fr-FR') + ' FCFA';
+        }
+      } else if (b.bundle_code === 'PASS_ROYALE') {
+        var btnR = document.getElementById('btnBundleRoyale');
+        if (btnR) {
+          var pillR = btnR.querySelector('.price-pill');
+          if (pillR) pillR.textContent = (b.adult_bundle_price_fcfa || 8500).toLocaleString('fr-FR') + ' / ' + (b.child_bundle_price_fcfa || 4500).toLocaleString('fr-FR') + ' FCFA';
+        }
+      } else if (b.bundle_code === 'PACK_COUPLE_EWONDO') {
+        var btnC = document.getElementById('btnBundleCouple');
+        if (btnC) {
+          var pillC = btnC.querySelector('.price-pill');
+          if (pillC) pillC.textContent = (b.adult_bundle_price_fcfa || 45000).toLocaleString('fr-FR') + ' FCFA (Duo)';
+        }
+      }
+    });
+
+    // B. Synchroniser les Cites Hotelieres (ADM-02 -> VISUAL_APPRECIATION_CATALOG.LODGES & disponibilites)
+    var lodges = EcoparkData.content('lodge_cities') || [];
+    if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.LODGES) {
+      lodges.forEach(function (l) {
+        if (!l || l.status !== 'PUBLISHED' || !l.code) return;
+        var meta = VISUAL_APPRECIATION_CATALOG.LODGES[l.code];
+        if (meta) {
+          var minP = typeof l.min_price_fcfa === 'number' ? l.min_price_fcfa : 10000;
+          var maxP = typeof l.max_price_fcfa === 'number' ? l.max_price_fcfa : minP;
+          meta.rate = minP.toLocaleString('fr-FR') + ' – ' + maxP.toLocaleString('fr-FR') + ' FCFA / nuit';
+          if (l.image_src) meta.src = l.image_src;
+        }
+      });
+    }
+    if (typeof syncLiveAvailabilityAndOverbooking === 'function') {
+      syncLiveAvailabilityAndOverbooking();
+    }
+
+    // C. Synchroniser l'Agenda de la Semaine (ADM-04 -> WEEKLY_AGENDA_CATALOG & #weeklyAgendaGrid)
+    var events = EcoparkData.content('agenda_events') || [];
+    if (typeof WEEKLY_AGENDA_CATALOG !== 'undefined' && events.length > 0) {
+      var pubEvents = events.filter(function (ev) { return ev && ev.status === 'PUBLISHED' && ev.code; });
+      pubEvents.forEach(function (ev) {
+        var existing = WEEKLY_AGENDA_CATALOG[ev.code] || {};
+        WEEKLY_AGENDA_CATALOG[ev.code] = {
+          code: ev.code,
+          dayFilter: ev.day_filter || existing.dayFilter || 'SAMEDI',
+          targetWeekday: ev.target_weekday != null ? ev.target_weekday : (existing.targetWeekday != null ? existing.targetWeekday : 6),
+          badge: ev.badge || existing.badge || 'Cette semaine',
+          title: ev.title || existing.title || ev.code,
+          shortLabel: ev.short_label || existing.shortLabel || ev.title || ev.code,
+          priceText: ev.price_text || existing.priceText || (ev.from_price_fcfa ? ('Des ' + formatFCFA(ev.from_price_fcfa)) : 'Tarif standard'),
+          spotsText: ev.spots_text || existing.spotsText || 'Sur reservation QR',
+          desc: ev.description || existing.desc || '',
+          schedule: Array.isArray(ev.schedule) && ev.schedule.length ? ev.schedule : (existing.schedule || ['09h00 - 18h00 : Programme ECOPARK Ahala']),
+          bundle: ev.bundle_code || existing.bundle || 'PASS_DECOUVERTE',
+          dish: ev.dish || ev.default_dish || existing.dish || "Poisson Braise d'Ahala (Etang frais)",
+          mealSlot: ev.meal_slot || existing.mealSlot || 'Service 12h30',
+          pergola: ev.pergola != null ? !!ev.pergola : !!ev.pergola_included,
+          nutrition: ev.nutrition != null ? !!ev.nutrition : !!ev.nutrition_included
+        };
+        if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.EVENTS) {
+          VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code] = {
+            src: ev.image_src || (VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code] && VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code].src) || 'audit-assets/ecopark-real-media/balade_pirogue3.jpg',
+            lbIdx: (VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code] && VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code].lbIdx) || 0
+          };
+        }
+      });
+
+      var grid = document.getElementById('weeklyAgendaGrid');
+      if (grid && pubEvents.length > 0) {
+        pubEvents.forEach(function (ev) {
+          var card = grid.querySelector('[data-event-code="' + ev.code + '"]');
+          if (!card) {
+            // Chercher par bouton onclick contenant ev.code
+            var btns = grid.querySelectorAll('button[onclick*="' + ev.code + '"]');
+            if (btns.length > 0) card = btns[0].closest('.agenda-event-card');
+          }
+          if (card) {
+            card.setAttribute('data-event-code', ev.code);
+            if (ev.day_filter) card.setAttribute('data-agenda-day', ev.day_filter);
+            var h3 = card.querySelector('h3');
+            if (h3 && ev.title) h3.textContent = ev.title;
+            var p = card.querySelector('p');
+            if (p && ev.description) p.textContent = ev.description;
+            var bdg = card.querySelector('.agenda-day-badge');
+            if (bdg && ev.badge) bdg.textContent = ev.badge;
+            var pill = card.querySelector('.price-pill');
+            if (pill && ev.from_price_fcfa) pill.textContent = 'Des ' + formatFCFA(ev.from_price_fcfa);
+            var img = card.querySelector('img');
+            if (img && ev.image_src) img.src = ev.image_src;
+          } else {
+            var newCard = document.createElement('div');
+            newCard.className = 'col-3 agenda-event-card';
+            newCard.setAttribute('data-agenda-day', ev.day_filter || 'SAMEDI');
+            newCard.setAttribute('data-event-code', ev.code);
+            var imgSrc = ev.image_src || 'audit-assets/ecopark-real-media/balade_pirogue3.jpg';
+            var pillTxt = ev.from_price_fcfa ? ('Des ' + formatFCFA(ev.from_price_fcfa)) : 'Acces QR';
+            newCard.innerHTML =
+              '<div>' +
+                '<div class="agenda-card-media" onclick="openEcoparkLightbox(0)">' +
+                  '<img src="' + escHtml(imgSrc) + '" alt="' + escHtml(ev.image_alt || ev.title || ev.code) + '" />' +
+                  '<span class="agenda-card-zoom-tag">Apercu HD</span>' +
+                '</div>' +
+                '<div style="display:flex;justify-content:space-between;align-items:center;gap:6px;margin-bottom:8px;flex-wrap:wrap;">' +
+                  '<span class="agenda-day-badge">' + escHtml(ev.badge || 'Cette semaine') + '</span>' +
+                  '<span class="price-pill" style="font-size:11.5px;padding:2px 8px;">' + escHtml(pillTxt) + '</span>' +
+                '</div>' +
+                '<h3 style="font-size:1.15rem;margin-bottom:6px;">' + escHtml(ev.title || ev.code) + '</h3>' +
+                '<p style="font-size:13.8px;color:var(--color-text-muted);margin-bottom:10px;">' + escHtml(ev.description || '') + '</p>' +
+                '<div class="agenda-meta-Highlight">• ' + escHtml(ev.spots_text || 'Reservation QR Coupe-File') + '</div>' +
+              '</div>' +
+              '<div style="display:flex;gap:6px;flex-wrap:wrap;padding-top:10px;border-top:1px dashed var(--color-border);">' +
+                '<button type="button" class="btn btn-secondary btn-sm" style="flex:1;padding:6px 10px;font-size:12.5px;" onclick="openWeeklyEventDetail(\'' + escHtml(ev.code) + '\')">Programme</button>' +
+                '<button type="button" class="btn btn-primary btn-sm" style="flex:1;padding:6px 10px;font-size:12.5px;" onclick="bookWeeklyEventInOneClick(\'' + escHtml(ev.code) + '\')">Reserver QR</button>' +
+              '</div>';
+            grid.appendChild(newCard);
+          }
+        });
+      }
+    }
+
+    // D. Synchroniser la Carte du Chateau des Saveurs (ADM-05 -> #simDishSelect rupture de stock)
+    var dishes = EcoparkData.content('menu_items') || [];
+    var dishSel = document.getElementById('simDishSelect');
+    if (dishSel && dishes.length > 0) {
+      Array.prototype.forEach.call(dishSel.options, function (opt) {
+        var matched = dishes.filter(function (d) { return d && d.name === opt.value; })[0];
+        if (matched) {
+          var avail = matched.status === 'PUBLISHED' && matched.in_stock !== false && matched.preorder_enabled !== false;
+          opt.disabled = !avail;
+          var baseLabel = opt.getAttribute('data-base-label') || opt.textContent.replace(/\s*\(Indisponible\)$/i, '');
+          opt.setAttribute('data-base-label', baseLabel);
+          opt.textContent = avail ? baseLabel : (baseLabel + ' (Indisponible)');
+        }
+      });
+      var selOpt = dishSel.options[dishSel.selectedIndex];
+      if (selOpt && selOpt.disabled) {
+        var firstEnabled = Array.prototype.filter.call(dishSel.options, function (o) { return !o.disabled; })[0];
+        if (firstEnabled) dishSel.value = firstEnabled.value;
+      }
+    }
+  };
+
   // --- 8. INITIALISATION AUTOMATIQUE & ABONNEMENTS TEMPS RÉEL ---
   document.addEventListener('DOMContentLoaded', function () {
     initDateConstraints();
     renderPubCatalogFromData();
+    syncDynamicContentFromEcoparkData();
     renderEcoparkQrSvg('ECP-2026-84920', 'demoTicketQrWrapper');
 
     if (window.EcoparkData && typeof EcoparkData.subscribe === 'function') {
-      EcoparkData.subscribe('catalog_activities', function () {
-        renderPubCatalogFromData();
-        if (typeof recalcSimulator === 'function') recalcSimulator();
-      });
-      EcoparkData.subscribe('sales_bundles', function () {
-        renderPubCatalogFromData();
-        if (typeof recalcSimulator === 'function') recalcSimulator();
-      });
-      EcoparkData.subscribe('lodge_cities', function () {
-        renderPubCatalogFromData();
-        if (typeof recalcSimulator === 'function') recalcSimulator();
+      ['catalog_activities', 'sales_bundles', 'lodge_cities', 'agenda_events', 'menu_items', 'daily_quotas'].forEach(function (ent) {
+        EcoparkData.subscribe(ent, function () {
+          renderPubCatalogFromData();
+          syncDynamicContentFromEcoparkData();
+          if (typeof recalcSimulator === 'function') recalcSimulator();
+        });
       });
     }
   });
@@ -575,7 +732,7 @@ def apply_phase5_upgrades(content: str) -> str:
         "        return false;\n"
         "      }"
     )
-    if target_bk_block in content:
+    if target_bk_block in content and "const cgvEl = document.getElementById('agreeTermsBooking');" not in content:
         content = content.replace(target_bk_block, replacement_bk_block)
 
     create_qr_refresh = (
