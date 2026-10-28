@@ -15,6 +15,7 @@
     "test:admin": "python scripts/test_admin_console.py",
     "test:responsive": "python scripts/test_admin_responsive.py",
     "test:phase5": "python scripts/test_phase5_integration.py",
+    "test:phase6": "python scripts/test_phase6_caisse_horsligne.py",
     "build": "python build_data_layer.py && python build_admin_console.py && python build_escape_legacy.py && python build_phase5_public_and_viability.py"
   }
 }
