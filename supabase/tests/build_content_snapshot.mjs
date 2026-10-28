@@ -31,6 +31,8 @@ async function fromMigrations() {
   await db.exec(sql('_supabase_stub.sql'));
   await db.exec(sql('../migrations/20261026000001_ecopark_schema_rls.sql'));
   await db.exec(sql('../migrations/20261028000001_admin_crud_governance.sql'));
+  await db.exec(sql('../migrations/20261028000002_realtime_publication.sql'));
+  await db.exec(sql('../migrations/20261028000003_publication_images.sql'));
   const content = {};
   for (const t of TABLES) {
     const where = t === 'site_settings' ? 'WHERE is_public' : `WHERE status = 'PUBLISHED'`;

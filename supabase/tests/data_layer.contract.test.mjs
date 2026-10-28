@@ -56,6 +56,8 @@ async function setupSupabase() {
   await db.exec(sql('_supabase_stub.sql'));
   await db.exec(sql('../migrations/20261026000001_ecopark_schema_rls.sql'));
   await db.exec(sql('../migrations/20261028000001_admin_crud_governance.sql'));
+  await db.exec(sql('../migrations/20261028000002_realtime_publication.sql'));
+  await db.exec(sql('../migrations/20261028000003_publication_images.sql'));
   for (const u of Object.values(U)) {
     await db.query('INSERT INTO auth.users (id, email) VALUES ($1, $2)', [u.id, `${u.id}@t.local`]);
     await db.query('INSERT INTO public.staff_profiles (user_id, full_name, role) VALUES ($1, $2, $3)', [u.id, u.name, u.role]);
@@ -160,6 +162,37 @@ async function contract(env) {
     const reread = await ED.list('group_quotes');
     ok(reread.ok && reread.data.length === 0, 'Le visiteur ne peut relire aucun devis (RLS)');
   }
+
+  // Une image pour chaque publication
+  await env.as(U.exp);
+  const sansImg = await ED.create('catalog_activities', {
+    slug: 'accrobranche', sku: 'CAT-ACCRO', title: 'Accrobranche', pole: 'EAU_PLEIN_AIR', description: 'Parcours',
+    child_price_fcfa: 500, adult_price_fcfa: 1500, group_adult_price_fcfa: 1200, group_child_price_fcfa: 500, status: 'DRAFT'
+  });
+  ok(sansImg.ok, 'Brouillon sans image accepté', sansImg.ok ? '' : sansImg.error.message);
+  await env.as(U.dir);
+  const pubSans = await ED.setStatus('catalog_activities', sansImg.data.id, 'PUBLISHED');
+  ok(!pubSans.ok && pubSans.error.code === 'IMAGE_REQUIRED', 'Publication sans image refusée (message dédié)', pubSans.ok ? '' : pubSans.error.message);
+  const PNG = Uint8Array.from(Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==', 'base64'));
+  await env.as(U.exp);
+  const upImg = await ED.uploadImage(new Blob([PNG], { type: 'image/png' }), { entity: 'catalog_activities' });
+  const expectedPrefix = ED.driverName === 'supabase' ? 'https://test-project.supabase.co/storage/v1/object/public/ecopark-media/catalog_activities/' : 'data:image/png;base64,';
+  ok(upImg.ok && upImg.data.url.startsWith(expectedPrefix), 'Téléversement d\'une photo', upImg.ok ? upImg.data.url.slice(0, 70) : upImg.error.message);
+  if (env.client) {
+    const last = env.client._uploads[env.client._uploads.length - 1];
+    ok(last && last.bucket === 'ecopark-media' && last.contentType === 'image/png' && last.upsert === false, 'Dépôt dans l\'espace « ecopark-media », sans écrasement');
+  }
+  const badType = await ED.uploadImage(new Blob(['<svg onload=alert(1)>'], { type: 'image/svg+xml' }), { entity: 'catalog_activities' });
+  ok(!badType.ok && badType.error.code === 'IMAGE_TYPE', 'Format SVG refusé (risque d\'injection)');
+  const cur = ED.content('catalog_activities', { includeDrafts: true }).find((r) => r.slug === 'accrobranche');
+  const setImg = await ED.update('catalog_activities', cur.id, { image_src: upImg.data.url }, cur.version);
+  ok(setImg.ok, 'Image associée au brouillon', setImg.ok ? '' : setImg.error.message);
+  const badSrc = await ED.update('catalog_activities', cur.id, { image_src: 'javascript:alert(1)' }, setImg.ok ? setImg.data.version : cur.version);
+  ok(!badSrc.ok && badSrc.error.code === 'IMAGE_SOURCE', 'Source d\'image dangereuse refusée', badSrc.ok ? '' : badSrc.error.code);
+  await env.as(U.dir);
+  const pubAvec = await ED.setStatus('catalog_activities', cur.id, 'PUBLISHED');
+  const live = ED.content('catalog_activities').find((r) => r.slug === 'accrobranche');
+  ok(pubAvec.ok && live && live.image_src === upImg.data.url && live.image_alt === 'Accrobranche', 'Avec une image : publiée, texte alternatif rempli', pubAvec.ok ? '' : pubAvec.error.message);
 
   // Réglages du site et dérogations de jauge (console ADM-03)
   await env.as(U.exp);

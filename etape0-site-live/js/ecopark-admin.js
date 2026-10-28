@@ -61,6 +61,23 @@
     INSERT: 'Ajout', UPDATE: 'Modification', DUPLICATE: 'Duplication', PUBLISH: 'Publication', ARCHIVE: 'Archivage',
     DELETE: 'Suppression', RESTORE: 'Restauration', GUARD_REJECT: 'Garde-fou', EXPORT_CSV: 'Export CSV', GATEWAY_TEST: 'Test passerelle'
   };
+  // Photothèque : photos déjà présentes sur le site (complétée par les images des fiches existantes)
+  var PHOTO_LIBRARY = [
+    ['audit-assets/ecopark-real-media/chimpanze.jpeg', 'Chimpanzé du jardin zoologique'],
+    ['audit-assets/ecopark-real-media/balade_pirogue3.jpg', 'Balade en pirogue sur le lac'],
+    ['audit-assets/ecopark-real-media/chambre.jpeg', 'Chambre des cités hôtelières'],
+    ['audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg', 'Grand dimanche au bord du lac'],
+    ['audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg', 'Groupe et événement en plein air'],
+    ['audit-assets/ecopark-real-media/IMG_20260829_172016-1-scaled.jpg', 'Événement avec du public à ECOPARK'],
+    ['audit-assets/stitch-canopee-vivante/local_cameroon_pool_pirogue.png', 'Piscine et lac (illustration)'],
+    ['audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png', 'Repas sous pergola (illustration)'],
+    ['audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png', 'Famille sous la canopée (illustration)'],
+    ['audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png', 'Apprenants du CFP (illustration)']
+  ];
+  var IMAGE_FIELDS = [
+    { k: 'image_src', l: 'Image de la publication', t: 'image', wide: true },
+    { k: 'image_alt', l: "Description de l'image (lue par les lecteurs d'écran)", t: 'text', wide: true, max: 180 }
+  ];
 
   // Schémas de formulaire (modale universelle)
   var SCHEMAS = {
@@ -75,7 +92,7 @@
       { k: 'adult_price_fcfa', l: 'Adulte (individuel)', t: 'fcfa', req: true, price: true },
       { k: 'group_adult_price_fcfa', l: 'Adulte (groupe dès 10)', t: 'fcfa', req: true, price: true },
       { k: 'group_child_price_fcfa', l: 'Enfant (groupe dès 10)', t: 'fcfa', req: true, price: true }
-    ],
+    ].concat(IMAGE_FIELDS),
     sales_bundles: [
       { k: 'title', l: 'Nom de la formule', t: 'text', req: true, wide: true },
       { k: 'subtitle', l: 'Contenu (sous-titre)', t: 'text', req: true, wide: true },
@@ -86,7 +103,7 @@
       { k: 'child_bundle_price_fcfa', l: 'Prix enfant', t: 'fcfa', req: true, price: true },
       { k: 'savings_label', l: 'Argument affiché', t: 'text', req: true, wide: true },
       { k: 'is_featured', l: 'Mise en avant', t: 'check' }
-    ],
+    ].concat(IMAGE_FIELDS),
     lodge_cities: [
       { k: 'name', l: 'Nom de la cité', t: 'text', req: true, wide: true },
       { k: 'category', l: 'Catégorie', t: 'text', req: true },
@@ -96,7 +113,7 @@
       { k: 'total_rooms', l: 'Nombre de chambres', t: 'int', req: true },
       { k: 'available_rooms', l: 'Chambres disponibles', t: 'int', req: true },
       { k: 'amenities', l: 'Équipements (séparés par des virgules)', t: 'list', wide: true }
-    ],
+    ].concat(IMAGE_FIELDS),
     agenda_events: [
       { k: 'title', l: 'Titre', t: 'text', req: true, wide: true },
       { k: 'short_label', l: 'Libellé court', t: 'text', req: true },
@@ -113,9 +130,8 @@
       { k: 'dish', l: 'Plat mis en avant', t: 'text' },
       { k: 'meal_slot', l: 'Service', t: 'select', opts: [['Service 12h30', '12h30'], ['Service 13h30', '13h30'], ['Service 15h00', '15h00']] },
       { k: 'pergola', l: 'Pergola proposée', t: 'check' },
-      { k: 'nutrition', l: 'Sachet nutrition proposé', t: 'check' },
-      { k: 'image_src', l: 'Image (chemin)', t: 'text', wide: true }
-    ],
+      { k: 'nutrition', l: 'Sachet nutrition proposé', t: 'check' }
+    ].concat(IMAGE_FIELDS),
     menu_items: [
       { k: 'name', l: 'Nom du plat', t: 'text', req: true, wide: true },
       { k: 'sku', l: 'Code interne (SKU)', t: 'text', req: true },
@@ -124,9 +140,8 @@
       { k: 'description', l: 'Description', t: 'textarea', wide: true },
       { k: 'is_signature', l: 'Spécialité maison', t: 'check' },
       { k: 'in_stock', l: 'Disponible aujourd\'hui', t: 'check' },
-      { k: 'preorder_enabled', l: 'Proposé en précommande', t: 'check' },
-      { k: 'image_src', l: 'Image (chemin)', t: 'text', wide: true }
-    ],
+      { k: 'preorder_enabled', l: 'Proposé en précommande', t: 'check' }
+    ].concat(IMAGE_FIELDS),
     staff_profiles: [
       { k: 'full_name', l: 'Nom et prénom', t: 'text', req: true, wide: true },
       { k: 'post_label', l: 'Poste', t: 'text', wide: true },
@@ -306,6 +321,16 @@
     var s = STATUS[status] || { label: status || '?', cls: 'adm-badge-archived' };
     return '<span class="adm-badge ' + s.cls + '">' + esc(s.label) + '</span>';
   }
+  function thumb(r) {
+    return r && r.image_src
+      ? '<img class="adm-thumb" src="' + esc(r.image_src) + '" alt="' + esc(r.image_alt || '') + '" loading="lazy" />'
+      : '<span class="adm-thumb adm-thumb-missing">Sans image</span>';
+  }
+  function publishBlock(entity, r) {
+    if (rules().needsImage(entity) && !rules().hasImage(r)) return 'Ajoutez une image avant de publier';
+    if (!canPublish(entity)) return rules().isPriceEntity(entity) ? 'Publication des tarifs réservée à la Direction' : 'Rôle insuffisant';
+    return '';
+  }
   function btn(label, action, attrs, cls) {
     return '<button type="button" class="adm-act ' + (cls || '') + '" data-act="' + action + '" ' + (attrs || '') + '>' + esc(label) + '</button>';
   }
@@ -366,8 +391,8 @@
     var a = [btn('Modifier', 'edit', 'data-entity="' + entity + '" data-id="' + id + '"' + (canEdit() ? '' : ' disabled title="Consultation seule"'))];
     if (opts.duplicable !== false) a.push(btn('Dupliquer', 'duplicate', 'data-entity="' + entity + '" data-id="' + id + '" ' + disabledAttr(canEdit(), 'Consultation seule'), 'adm-act-dup'));
     if (r.status !== 'PUBLISHED') {
-      a.push(btn('Publier', 'publish', 'data-entity="' + entity + '" data-id="' + id + '" ' +
-        disabledAttr(canPublish(entity), rules().isPriceEntity(entity) ? 'Publication des tarifs réservée à la Direction' : 'Rôle insuffisant'), 'adm-act-pub'));
+      var why = publishBlock(entity, r);
+      a.push(btn('Publier', 'publish', 'data-entity="' + entity + '" data-id="' + id + '" ' + disabledAttr(!why, why), 'adm-act-pub'));
     }
     if (r.status === 'ARCHIVED') {
       a.push(btn('Remettre en brouillon', 'restore', 'data-entity="' + entity + '" data-id="' + id + '" ' + disabledAttr(canEdit(), 'Consultation seule')));
@@ -393,9 +418,11 @@
       return [r.title, r.name, r.sku, r.slug, r.code, r.bundle_code, r.description, r.subtitle].join(' ').toLowerCase().indexOf(q) >= 0;
     });
     var count = function (st) { return all.filter(function (r) { return r.status === st; }).length; };
+    var noImg = all.filter(function (r) { return r.status !== 'ARCHIVED' && !rules().hasImage(r); }).length;
     $('admCatalogKpis').innerHTML =
       '<span class="adm-kpi"><b>' + count('PUBLISHED') + '</b> en ligne</span><span class="adm-kpi"><b>' + count('DRAFT') +
-      '</b> brouillon(s)</span><span class="adm-kpi"><b>' + count('ARCHIVED') + '</b> archivée(s)</span>';
+      '</b> brouillon(s)</span><span class="adm-kpi"><b>' + count('ARCHIVED') + '</b> archivée(s)</span>' +
+      (noImg ? '<span class="adm-kpi adm-kpi-warn"><b>' + noImg + '</b> sans image (publication bloquée)</span>' : '');
     $('admPoleFilter').style.display = entity === 'catalog_activities' ? '' : 'none';
     $('admAddOffer').disabled = !canEdit() || entity === 'lodge_cities';
     $('admAddOffer').title = entity === 'lodge_cities' ? 'Les cités hôtelières ne se créent pas depuis la console (codes figés)' : '';
@@ -410,9 +437,9 @@
       var t = r[TITLE_FIELD[entity]];
       var origin = r.duplicated_from ? findRow(entity, r.duplicated_from) : null;
       return '<tr class="' + (S.highlight === r.id ? 'adm-row-new' : '') + (r.status === 'ARCHIVED' ? ' adm-row-archived' : '') + '" data-row-id="' + esc(r.id) + '">' +
-        '<td class="adm-col-offer"><strong>' + esc(t) + '</strong><div class="adm-sub">' + esc(r.sku || r.code || '') +
+        '<td class="adm-col-offer"><div class="adm-offer-cell">' + thumb(r) + '<div><strong>' + esc(t) + '</strong><div class="adm-sub">' + esc(r.sku || r.code || '') +
         (entity === 'catalog_activities' ? ' · ' + esc(POLES[r.pole] || r.pole) : '') + '</div>' +
-        (origin ? '<div class="adm-sub adm-origin">Version de travail de « ' + esc(origin[TITLE_FIELD[entity]]) + ' »</div>' : '') + '</td>' +
+        (origin ? '<div class="adm-sub adm-origin">Version de travail de « ' + esc(origin[TITLE_FIELD[entity]]) + ' »</div>' : '') + '</div></div></td>' +
         '<td>' + priceCell(entity, r) + '</td><td>' + capacityCell(entity, r) + '</td><td>' + badge(r.status) + '</td>' +
         '<td>' + lifecycleActions(entity, r, { duplicable: entity !== 'lodge_cities' }) + '</td></tr>';
     }).join('');
@@ -433,7 +460,7 @@
           ? btn(r.in_stock ? 'Marquer en rupture' : 'Remettre en stock', 'stock', 'data-id="' + esc(r.id) + '" ' + disabledAttr(canEdit(), 'Consultation seule'))
           : '';
         return '<div class="adm-cms-row' + (S.highlight === r.id ? ' adm-row-new' : '') + '">' +
-          '<div class="adm-cms-main"><strong>' + esc(t) + '</strong> ' + badge(r.status) + '<div class="adm-sub">' + meta + '</div></div>' +
+          '<div class="adm-cms-main adm-offer-cell">' + thumb(r) + '<div><strong>' + esc(t) + '</strong> ' + badge(r.status) + '<div class="adm-sub">' + meta + '</div></div></div>' +
           '<div class="adm-actions">' +
           btn('Monter', 'move', 'data-entity="' + entity + '" data-id="' + esc(r.id) + '" data-dir="-1" ' + disabledAttr(canEdit() && i > 0, 'Déjà en tête')) +
           btn('Descendre', 'move', 'data-entity="' + entity + '" data-id="' + esc(r.id) + '" data-dir="1" ' + disabledAttr(canEdit() && i < rows.length - 1, 'Déjà en dernier')) +
@@ -566,6 +593,7 @@
   // ==========================================================================
   function fieldValue(f, el) {
     if (f.t === 'check') return !!el.checked;
+    if (f.t === 'image') return el.value.trim() || null;
     var v = el.value;
     if (f.t === 'fcfa' || f.t === 'int') {
       if (String(v).trim() === '') return null;
@@ -577,6 +605,7 @@
     return v.trim();
   }
   function displayValue(f, v) {
+    if (f.t === 'image') return v ? (String(v).indexOf('data:') === 0 ? 'photo téléversée' : String(v).split('/').pop()) : '(aucune)';
     if (f.t === 'check') return v ? 'oui' : 'non';
     if (f.t === 'fcfa') return fcfa(v);
     if (f.t === 'select') {
@@ -606,6 +635,17 @@
         }).join('') + '</select>';
       } else if (f.t === 'check') {
         input = '<label class="adm-check"><input type="checkbox" id="' + id + '"' + (v ? ' checked' : '') + dis + ' /> <span>' + esc(f.l) + '</span></label>';
+      } else if (f.t === 'image') {
+        input = '<div class="adm-image-field">' +
+          '<input type="hidden" id="' + id + '" value="' + esc(v || '') + '" />' +
+          '<div class="adm-image-preview" id="admImgPreview">' + imagePreview(v) + '</div>' +
+          '<div class="adm-image-actions">' +
+          '<button type="button" class="adm-act" id="admImgLibBtn"' + dis + '>Choisir dans la photothèque</button>' +
+          '<label class="adm-act adm-act-dup adm-upload' + (dis ? ' adm-disabled' : '') + '">Téléverser une photo' +
+          '<input type="file" id="admImgFile" accept="image/jpeg,image/png,image/webp"' + dis + ' /></label>' +
+          '<button type="button" class="adm-act adm-act-del" id="admImgRemove"' + dis + '>Retirer</button></div>' +
+          '<div class="adm-sub">JPEG, PNG ou WebP. La photo est optimisée automatiquement (1 600 px maximum). <b>Obligatoire pour publier.</b></div>' +
+          '<div class="adm-image-library" id="admImgLibrary" hidden></div></div>';
       } else {
         var type = f.t === 'fcfa' || f.t === 'int' ? 'number' : 'text';
         input = '<input type="' + type + '" class="form-control" id="' + id + '"' + (type === 'number' ? ' min="0" step="1"' : '') +
@@ -620,7 +660,8 @@
     var footerLeft = '';
     if (row && entity !== 'staff_profiles') {
       footerLeft = (entity !== 'lodge_cities' ? '<button type="button" class="btn btn-secondary btn-sm" id="admEdDup"' + (canEdit() ? '' : ' disabled') + '>Dupliquer cette fiche</button>' : '') +
-        (row.status !== 'PUBLISHED' ? '<button type="button" class="btn btn-secondary btn-sm" id="admEdPub"' + (canPublish(entity) ? '' : ' disabled title="Publication des tarifs réservée à la Direction"') + '>Publier</button>' : '');
+        (row.status !== 'PUBLISHED' ? '<button type="button" class="btn btn-secondary btn-sm" id="admEdPub"' +
+          (publishBlock(entity, row) ? ' disabled title="' + esc(publishBlock(entity, row)) + '"' : '') + '>Publier</button>' : '');
     }
     $('admEditorCard').innerHTML =
       '<div class="adm-modal-head"><div><span class="adm-eyebrow">' + esc(ENTITY_LABEL[entity]) + '</span><h4>' + esc(title) + '</h4></div>' +
@@ -639,12 +680,121 @@
     });
     $('admEdCancel').onclick = closeEditor;
     $('admEdSave').onclick = saveEditor;
+    if ($('admImgLibBtn')) bindImageField(entity);
     if ($('admEdDup')) $('admEdDup').onclick = function () { closeEditor(); duplicate(entity, row.id); };
     if ($('admEdPub')) $('admEdPub').onclick = function () { closeEditor(); publish(entity, row.id); };
     validateEditor();
     var first = $('admEditorCard').querySelector('input:not([disabled]),textarea:not([disabled]),select:not([disabled])');
     if (first) first.focus();
   }
+  // --- Champ image : aperçu, photothèque, téléversement optimisé -------------
+  function imagePreview(src) {
+    return src
+      ? '<img src="' + esc(src) + '" alt="Aperçu de l\'image de la publication" />'
+      : '<span class="adm-image-empty">Aucune image : la fiche peut être enregistrée en brouillon, mais pas publiée.</span>';
+  }
+  function setImage(src, altSuggestion) {
+    var input = $('admF_image_src');
+    if (!input) return;
+    input.value = src || '';
+    $('admImgPreview').innerHTML = imagePreview(src);
+    var alt = $('admF_image_alt');
+    if (alt && src && !alt.value.trim() && altSuggestion) alt.value = altSuggestion.slice(0, 180);
+    if (alt && !src) alt.value = '';
+    validateEditor();
+  }
+  function libraryImages() {
+    var seen = {};
+    var out = [];
+    PHOTO_LIBRARY.forEach(function (p) { if (!seen[p[0]]) { seen[p[0]] = 1; out.push(p); } });
+    ['catalog_activities', 'sales_bundles', 'lodge_cities', 'agenda_events', 'menu_items'].forEach(function (e) {
+      rowsOf(e).forEach(function (r) {
+        if (r.image_src && !seen[r.image_src]) { seen[r.image_src] = 1; out.push([r.image_src, r.image_alt || r[TITLE_FIELD[e]] || '']); }
+      });
+    });
+    return out;
+  }
+  function canvasToBlob(canvas, type, quality) {
+    return new Promise(function (resolve) { canvas.toBlob(resolve, type, quality); });
+  }
+  /** Redimensionne (1600 px max) et recompresse ; réduit encore si la limite de poids n'est pas tenue */
+  function compressImage(file, maxBytes) {
+    return new Promise(function (resolve, reject) {
+      var url = URL.createObjectURL(file);
+      var img = new Image();
+      img.onload = function () { resolve(img); };
+      img.onerror = function () { URL.revokeObjectURL(url); reject(new Error('Image illisible : le fichier est peut-être endommagé.')); };
+      img.src = url;
+    }).then(function (img) {
+      var probe = doc.createElement('canvas');
+      var type = probe.toDataURL('image/webp').indexOf('data:image/webp') === 0 ? 'image/webp' : 'image/jpeg';
+      var steps = [[1600, 0.82], [1280, 0.78], [1024, 0.72], [800, 0.68], [640, 0.62]];
+      var attempt = function (i) {
+        var s = steps[i];
+        var ratio = Math.min(1, s[0] / Math.max(img.naturalWidth, img.naturalHeight));
+        var c = doc.createElement('canvas');
+        c.width = Math.max(1, Math.round(img.naturalWidth * ratio));
+        c.height = Math.max(1, Math.round(img.naturalHeight * ratio));
+        var ctx = c.getContext('2d');
+        if (type === 'image/jpeg') { ctx.fillStyle = '#FFFFFF'; ctx.fillRect(0, 0, c.width, c.height); }
+        ctx.drawImage(img, 0, 0, c.width, c.height);
+        return canvasToBlob(c, type, s[1]).then(function (blob) {
+          if (!blob) throw new Error('Optimisation impossible dans ce navigateur.');
+          if (blob.size <= maxBytes || i === steps.length - 1) return blob;
+          return attempt(i + 1);
+        });
+      };
+      return attempt(0).then(function (blob) { URL.revokeObjectURL(img.src); return blob; });
+    });
+  }
+  function processImageFile(file, entity) {
+    var err = $('admF_image_src_err');
+    err.textContent = '';
+    if (!file) return;
+    if (['image/jpeg', 'image/png', 'image/webp'].indexOf(file.type) < 0) {
+      err.textContent = 'Format non accepté : choisissez une photo JPEG, PNG ou WebP.';
+      return;
+    }
+    if (file.size > 15 * 1024 * 1024) {
+      err.textContent = 'Fichier trop volumineux (15 Mo maximum avant optimisation).';
+      return;
+    }
+    $('admImgPreview').innerHTML = '<span class="adm-image-empty">Optimisation et envoi de la photo…</span>';
+    $('admEdSave').disabled = true;
+    var limit = isDemo() ? 420 * 1024 : 1500 * 1024;
+    compressImage(file, limit).then(function (blob) {
+      return ED().uploadImage(blob, { entity: entity });
+    }).then(function (res) {
+      if (!res.ok) { err.textContent = res.error.message; setImage($('admF_image_src').value); return; }
+      var titleEl = $('admF_title') || $('admF_name');
+      setImage(res.data.url, titleEl ? titleEl.value.trim() : '');
+      toast(isDemo() ? 'Photo ajoutée (mode démonstration : conservée dans ce navigateur).' : 'Photo téléversée.');
+    }).catch(function (e) {
+      err.textContent = e.message || 'La photo n\'a pas pu être traitée.';
+      setImage($('admF_image_src').value);
+    });
+  }
+  function bindImageField(entity) {
+    $('admImgLibBtn').onclick = function () {
+      var lib = $('admImgLibrary');
+      if (!lib.hidden) { lib.hidden = true; return; }
+      lib.innerHTML = libraryImages().map(function (p, i) {
+        return '<button type="button" class="adm-lib-item" data-lib="' + i + '"><img src="' + esc(p[0]) + '" alt="" loading="lazy" /><span>' + esc(p[1]) + '</span></button>';
+      }).join('');
+      var items = libraryImages();
+      lib.querySelectorAll('[data-lib]').forEach(function (b) {
+        b.onclick = function () {
+          var p = items[Number(b.getAttribute('data-lib'))];
+          setImage(p[0], p[1]);
+          lib.hidden = true;
+        };
+      });
+      lib.hidden = false;
+    };
+    $('admImgFile').onchange = function (e) { processImageFile(e.target.files && e.target.files[0], entity); e.target.value = ''; };
+    $('admImgRemove').onclick = function () { setImage(''); };
+  }
+
   function closeEditor() { $('admEditor').classList.remove('open'); S.editor = null; }
   function collectEditor() {
     var ed = S.editor;
@@ -658,7 +808,12 @@
       if (f.req && (v === null || v === '' || (Array.isArray(v) && !v.length && f.t !== 'list'))) errors[f.k] = 'Champ obligatoire';
       else if ((f.t === 'fcfa' || f.t === 'int') && v !== null && (!isFinite(v) || v < 0 || Math.floor(v) !== v)) errors[f.k] = 'Nombre entier positif (FCFA sans centimes)';
       else if (f.pattern && v && !f.pattern.test(v)) errors[f.k] = 'Format attendu : ' + f.hint;
+      else if (f.max && v && String(v).length > f.max) errors[f.k] = f.max + ' caractères maximum';
+      else if (f.t === 'image' && v && !rules().safeImageSrc(v)) errors[f.k] = 'Source d\'image non autorisée';
     });
+    if (ed.row && ed.row.status === 'PUBLISHED' && rules().needsImage(ed.entity) && 'image_src' in values && !values.image_src) {
+      errors.image_src = 'Une fiche en ligne doit garder une image (remplacez-la plutôt que de la retirer).';
+    }
     if (ed.entity === 'catalog_activities' && values.group_child_price_fcfa != null && values.child_price_fcfa != null &&
         values.group_child_price_fcfa > values.child_price_fcfa) {
       errors.group_child_price_fcfa = 'Garde-fou : ne peut pas dépasser le tarif enfant individuel (' + fcfa(values.child_price_fcfa) + ')';

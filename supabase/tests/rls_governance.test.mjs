@@ -15,6 +15,8 @@ const sql = (p) => readFileSync(join(here, p), 'utf8');
 const STUB = sql('_supabase_stub.sql');
 const M1 = sql('../migrations/20261026000001_ecopark_schema_rls.sql');
 const M2 = sql('../migrations/20261028000001_admin_crud_governance.sql');
+const M3 = sql('../migrations/20261028000002_realtime_publication.sql');
+const M4 = sql('../migrations/20261028000003_publication_images.sql');
 
 const U = {
   dir:    { id: '00000000-0000-0000-0000-0000000000d1', name: 'Dr Christophe FOE NDI', role: 'direction' },
@@ -62,9 +64,12 @@ async function main() {
   await db.exec(STUB);
   await db.exec(M1);
   await db.exec(M2);
-  ok(true, 'Migration Sprint 1 + migration Gouvernance CRUD appliquées');
+  await db.exec(M3);
+  await db.exec(M4);
+  ok(true, 'Migrations Sprint 1, Gouvernance CRUD, temps réel et images appliquées');
   await db.exec(M2);
-  ok(true, 'Migration Gouvernance CRUD ré-exécutable (idempotente)');
+  await db.exec(M4);
+  ok(true, 'Migrations Gouvernance CRUD et images ré-exécutables (idempotentes)');
 
   // Comptes de test
   for (const u of Object.values(U)) {
@@ -236,6 +241,42 @@ async function main() {
     const a = await tx.query('SELECT count(*)::int AS n FROM public.audit_logs');
     ok(a.rows[0].n === 0, 'Ne lit pas le journal d\'audit');
   });
+
+  console.log('\n7 bis. Une image pour chaque publication');
+  const imgCount = (await db.query(`SELECT count(*)::int AS n FROM public.catalog_activities WHERE status = 'PUBLISHED' AND image_src IS NULL`)).rows[0].n;
+  ok(imgCount === 0, 'Toutes les offres déjà en ligne ont reçu une image par défaut');
+  let noImg;
+  await as(db, U.exp, async (tx) => {
+    noImg = (await tx.query(
+      `INSERT INTO public.catalog_activities (slug, sku, title, pole, description, child_price_fcfa, adult_price_fcfa,
+         group_adult_price_fcfa, group_child_price_fcfa, status)
+       VALUES ('accrobranche', 'CAT-ACCRO', 'Accrobranche', 'EAU_PLEIN_AIR', 'Parcours', 500, 1500, 1200, 500, 'DRAFT') RETURNING id`)).rows[0].id;
+  });
+  ok(true, 'Un brouillon peut être enregistré sans image');
+  await expectError(asMfa(db, U.dir, (tx) => tx.query(`SELECT public.admin_set_status('catalog_activities', $1, 'PUBLISHED')`, [noImg])),
+    'ECOPARK_IMAGE_REQUIRED', 'Publication refusée tant que la fiche n\'a pas d\'image');
+  await expectError(as(db, U.exp, (tx) => tx.query(
+    `UPDATE public.catalog_activities SET image_src = 'javascript:alert(1)' WHERE id = $1`, [noImg])),
+    'image_src_safe', 'Source d\'image dangereuse (javascript:) refusée');
+  await expectError(as(db, U.exp, (tx) => tx.query(
+    `UPDATE public.catalog_activities SET image_src = 'https://cdn.exemple.com/a.jpg" onerror="x' WHERE id = $1`, [noImg])),
+    'image_src_safe', 'Source d\'image contenant des guillemets refusée');
+  await as(db, U.exp, (tx) => tx.query(
+    `UPDATE public.catalog_activities SET image_src = 'https://abc.supabase.co/storage/v1/object/public/ecopark-media/catalog_activities/2026-10/x.webp' WHERE id = $1`, [noImg]));
+  const alt = (await db.query('SELECT image_alt FROM public.catalog_activities WHERE id = $1', [noImg])).rows[0].image_alt;
+  ok(alt === 'Accrobranche', 'Texte alternatif rempli automatiquement avec le titre', alt);
+  await asMfa(db, U.dir, (tx) => tx.query(`SELECT public.admin_set_status('catalog_activities', $1, 'PUBLISHED')`, [noImg]));
+  ok(true, 'Avec une image téléversée (stockage Supabase), la publication passe');
+  let imgDup;
+  await as(db, U.exp, async (tx) => { imgDup = (await tx.query(`SELECT public.admin_duplicate('catalog_activities', $1) AS id`, [noImg])).rows[0].id; });
+  const dupImg = (await db.query('SELECT image_src FROM public.catalog_activities WHERE id = $1', [imgDup])).rows[0].image_src;
+  ok(dupImg && dupImg.endsWith('x.webp'), 'La copie reprend l\'image de l\'original');
+  await as(db, U.exp, (tx) => tx.query(`UPDATE public.catalog_activities SET image_src = 'audit-assets/ecopark-real-media/balade_pirogue3.jpg', image_alt = 'Nouvelle photo' WHERE id = $1`, [imgDup]));
+  await asMfa(db, U.dir, (tx) => tx.query(`SELECT public.admin_set_status('catalog_activities', $1, 'PUBLISHED', TRUE)`, [imgDup]));
+  const replaced = (await db.query('SELECT image_src, image_alt FROM public.catalog_activities WHERE id = $1', [noImg])).rows[0];
+  ok(replaced.image_src.endsWith('balade_pirogue3.jpg') && replaced.image_alt === 'Nouvelle photo', 'Publier la version de travail remplace aussi l\'image en ligne');
+  await expectError(asMfa(db, U.dir, (tx) => tx.query(`UPDATE public.catalog_activities SET image_src = NULL WHERE id = $1`, [noImg])),
+    'ECOPARK_IMAGE_REQUIRED', 'Impossible de retirer l\'image d\'une offre en ligne');
 
   console.log('\n8. Journal d\'audit immuable (ADM-08)');
   const ops = (await db.query(`SELECT DISTINCT operation FROM public.audit_logs`)).rows.map((r) => r.operation);

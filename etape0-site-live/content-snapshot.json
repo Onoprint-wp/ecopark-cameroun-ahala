@@ -3,7 +3,7 @@
   "content": {
     "catalog_activities": [
       {
-        "id": "fbc062da-4de3-4542-9714-1606d04c2447",
+        "id": "68f65430-02bd-430b-8d82-83668cdde2b2",
         "slug": "cheval",
         "title": "Équitation (Tour à Cheval) & Manèges",
         "pole": "EAU_PLEIN_AIR",
@@ -14,16 +14,18 @@
         "group_child_price_fcfa": 500,
         "daily_capacity": 200,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-CHEVAL",
         "status": "PUBLISHED",
         "sort_order": 10,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png",
+        "image_alt": "Famille en promenade sous la canopée du parc"
       },
       {
-        "id": "dcaf3892-dcd1-45d9-a373-92a9476a59e2",
+        "id": "47d1f7f4-bd20-49ad-b4ae-903a9f2b4681",
         "slug": "navette_yaounde",
         "title": "Navette Climatisée A/R Yaoundé — Ahala",
         "pole": "GROUPES_B2B",
@@ -34,16 +36,18 @@
         "group_child_price_fcfa": 1000,
         "daily_capacity": 180,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-NAVETTE-YAOUNDE",
         "status": "PUBLISHED",
         "sort_order": 20,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg",
+        "image_alt": "Groupe accueilli à ECOPARK Ahala"
       },
       {
-        "id": "f09b37ab-d0aa-4ea8-b23f-c06432dcd798",
+        "id": "51b4ab1a-e560-4631-a4c1-50941dd71a23",
         "slug": "nutrition_poissons",
         "title": "Sachet Nutrition Poissons & Tortues (Order Bump)",
         "pole": "NATURE_FAUNE",
@@ -54,16 +58,18 @@
         "group_child_price_fcfa": 500,
         "daily_capacity": 800,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-NUTRITION-POISSONS",
         "status": "PUBLISHED",
         "sort_order": 30,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/ecopark-real-media/balade_pirogue3.jpg",
+        "image_alt": "Lac et étangs d'Ahala"
       },
       {
-        "id": "5a9bf208-d6eb-4cb5-a898-e31172c6232a",
+        "id": "1382feb2-9255-4a21-ad43-d92b44107e79",
         "slug": "pergola_lac",
         "title": "Pergola Privée Bord du Lac & Service Prioritaire 13h",
         "pole": "RESTAURATION",
@@ -74,16 +80,18 @@
         "group_child_price_fcfa": 0,
         "daily_capacity": 25,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-PERGOLA-LAC",
         "status": "PUBLISHED",
         "sort_order": 40,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png",
+        "image_alt": "Pergola au bord du lac"
       },
       {
-        "id": "385d6a41-154b-4c7b-a519-b3238740dc25",
+        "id": "da35e604-e8aa-4221-9ea1-507a6859558a",
         "slug": "pirogue",
         "title": "Balade en Pirogue / Pédalo sur le Lac",
         "pole": "EAU_PLEIN_AIR",
@@ -94,16 +102,18 @@
         "group_child_price_fcfa": 500,
         "daily_capacity": 250,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-PIROGUE",
         "status": "PUBLISHED",
         "sort_order": 50,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/ecopark-real-media/balade_pirogue3.jpg",
+        "image_alt": "Balade en pirogue sur le lac d'Ahala"
       },
       {
-        "id": "42163e55-985d-4306-b0dc-0e14e0c54d09",
+        "id": "8cf784a5-0cbf-41d6-8b55-81a94c75179a",
         "slug": "piscine",
         "title": "Piscine Semi-Olympique",
         "pole": "EAU_PLEIN_AIR",
@@ -114,16 +124,18 @@
         "group_child_price_fcfa": 1500,
         "daily_capacity": 300,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-PISCINE",
         "status": "PUBLISHED",
         "sort_order": 60,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_pool_pirogue.png",
+        "image_alt": "Piscine semi-olympique et lac d'Ahala"
       },
       {
-        "id": "d8d94032-f80f-4d82-b3f6-23df226c506c",
+        "id": "20ee91d4-7e08-4010-8341-dababdca354c",
         "slug": "saveurs",
         "title": "Repas — Le Château des Saveurs",
         "pole": "RESTAURATION",
@@ -134,16 +146,18 @@
         "group_child_price_fcfa": 2500,
         "daily_capacity": 400,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-SAVEURS",
         "status": "PUBLISHED",
         "sort_order": 70,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png",
+        "image_alt": "Repas camerounais sous les pergolas du Château des Saveurs"
       },
       {
-        "id": "0f38484f-461f-4dd4-a467-08c4ae849729",
+        "id": "3d8d2947-3fec-46de-9105-79afe2dafe20",
         "slug": "zoo",
         "title": "Entrée Parc & Jardin Zoologique",
         "pole": "NATURE_FAUNE",
@@ -154,18 +168,20 @@
         "group_child_price_fcfa": 500,
         "daily_capacity": 1200,
         "is_active": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "CAT-ZOO",
         "status": "PUBLISHED",
         "sort_order": 80,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/ecopark-real-media/chimpanze.jpeg",
+        "image_alt": "Chimpanzé du jardin zoologique d'ECOPARK Ahala"
       }
     ],
     "sales_bundles": [
       {
-        "id": "9c9eb12f-7b82-4553-b067-71a47742c254",
+        "id": "e0c84191-099b-4151-8e38-db38c719e8bc",
         "bundle_code": "PACK_COUPLE_EWONDO",
         "title": "Pack Escapade Couple / VIP Week-end",
         "subtitle": "Suite Cité Ewondo Climatisée + 2 Repas Saveurs + Piscine + Pirogue + Pergola",
@@ -180,16 +196,18 @@
         "child_bundle_price_fcfa": 0,
         "savings_label": "Forfait Duo VIP tout compris avec nuitée/day-use",
         "is_featured": false,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "PCK-PACK-COUPLE-EWONDO",
         "status": "PUBLISHED",
         "sort_order": 10,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/ecopark-real-media/chambre.jpeg",
+        "image_alt": "Chambre de la Cité Ewondo"
       },
       {
-        "id": "8ae88f30-5c99-4e7b-956a-fe90a4168857",
+        "id": "d855261f-d4e6-4f62-9913-dcca493c2fdd",
         "bundle_code": "PASS_DECOUVERTE",
         "title": "Pass Découverte Nature",
         "subtitle": "Zoo + Balade en Pirogue + Tour à Cheval + Coupe-File QR",
@@ -202,16 +220,18 @@
         "child_bundle_price_fcfa": 1500,
         "savings_label": "3 activités combinées en 1 seul QR Code",
         "is_featured": false,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "PCK-PASS-DECOUVERTE",
         "status": "PUBLISHED",
         "sort_order": 20,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/ecopark-real-media/chimpanze.jpeg",
+        "image_alt": "Rencontre avec les animaux du jardin zoologique"
       },
       {
-        "id": "ff8ef6d1-2e09-4e34-a5a0-8d29bf576b0b",
+        "id": "077edeff-6526-43f1-bae2-0638f0dd3c66",
         "bundle_code": "PASS_ROYALE",
         "title": "Pass Journée Royale Tout-Inclus",
         "subtitle": "Zoo + Piscine Semi-Olympique + Pirogue + Repas Chaud Château des Saveurs",
@@ -225,18 +245,20 @@
         "child_bundle_price_fcfa": 4500,
         "savings_label": "Le Plus Choisi • Repas & Coupe-File inclus",
         "is_featured": true,
-        "created_at": "2026-10-27T10:54:22.718Z",
+        "created_at": "2026-10-28T04:50:05.272Z",
         "sku": "PCK-PASS-ROYALE",
         "status": "PUBLISHED",
         "sort_order": 30,
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.718Z"
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.272Z",
+        "image_src": "audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg",
+        "image_alt": "Grand dimanche au bord du lac d'Ahala"
       }
     ],
     "lodge_cities": [
       {
-        "id": "d34f380c-0f2e-426b-b43b-c5e39992209a",
+        "id": "de51e076-236d-40ac-905e-a86de1c91e2f",
         "code": "BENE",
         "name": "Cité Bene (Standard)",
         "category": "Pavillon Détente",
@@ -252,13 +274,15 @@
         "sku": "LOD-BENE",
         "status": "PUBLISHED",
         "sort_order": 10,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_src": "audit-assets/ecopark-real-media/chambre.jpeg",
+        "image_alt": "Chambre de la Cité Bene (Standard)"
       },
       {
-        "id": "15e66052-c100-4839-b8bc-002303a606bf",
+        "id": "83133192-caea-449a-882e-d43dbf5f8795",
         "code": "CHANTHEL",
         "name": "Cité Chanthel (Confort)",
         "category": "Pavillon Nature Confort",
@@ -274,13 +298,15 @@
         "sku": "LOD-CHANTHEL",
         "status": "PUBLISHED",
         "sort_order": 20,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_src": "audit-assets/ecopark-real-media/chambre.jpeg",
+        "image_alt": "Chambre de la Cité Chanthel (Confort)"
       },
       {
-        "id": "ee84dda0-b4b3-482a-8ddd-dc383daa0b34",
+        "id": "3984bad8-0ef8-443c-8079-83a599185435",
         "code": "EWONDO",
         "name": "Cité Ewondo (VIP)",
         "category": "Haut Standing Climatisé",
@@ -297,15 +323,17 @@
         "sku": "LOD-EWONDO",
         "status": "PUBLISHED",
         "sort_order": 30,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_src": "audit-assets/ecopark-real-media/chambre.jpeg",
+        "image_alt": "Chambre de la Cité Ewondo (VIP)"
       }
     ],
     "agenda_events": [
       {
-        "id": "4ab3bf48-d5a2-4e52-a189-e9904af130ef",
+        "id": "ec391956-c7aa-48a3-86db-4ffbd066882e",
         "code": "EVT_MERCREDI_CFP",
         "day_filter": "MER_JEU",
         "target_weekday": 3,
@@ -329,13 +357,14 @@
         "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png",
         "status": "PUBLISHED",
         "sort_order": 10,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Mercredi Pédagogique & Portes Ouvertes CFP"
       },
       {
-        "id": "1363e57d-effd-483e-b08c-52287be35fa4",
+        "id": "e48dbeec-745f-4f04-9686-cf3b6ef1bf14",
         "code": "EVT_VENDREDI_AFTERWORK",
         "day_filter": "VENDREDI",
         "target_weekday": 5,
@@ -359,13 +388,14 @@
         "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png",
         "status": "PUBLISHED",
         "sort_order": 20,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Vendredi Afterwork Brise du Lac & Grillades"
       },
       {
-        "id": "8315e300-f30f-43e7-8613-c2a861cd514d",
+        "id": "aa805feb-81e1-43df-96d8-2dd2f090f5ff",
         "code": "EVT_SAMEDI_FAMILLE",
         "day_filter": "SAMEDI",
         "target_weekday": 6,
@@ -389,13 +419,14 @@
         "image_src": "audit-assets/ecopark-real-media/balade_pirogue3.jpg",
         "status": "PUBLISHED",
         "sort_order": 30,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Samedi Famille • Gorille ToTo & Pirogues"
       },
       {
-        "id": "8f17ea5a-5725-4c04-9f43-4e0662c0f676",
+        "id": "42ecd1df-9b7a-48d5-a672-5c91bd59464f",
         "code": "EVT_DIMANCHE_ROYAL",
         "day_filter": "DIMANCHE",
         "target_weekday": 0,
@@ -419,15 +450,16 @@
         "image_src": "audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg",
         "status": "PUBLISHED",
         "sort_order": 40,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Grand Dimanche Royal • Buffet & Live"
       }
     ],
     "menu_items": [
       {
-        "id": "26c4e2f9-f401-4531-98b6-f3eb5ed76119",
+        "id": "95fd646e-216b-4960-9934-431442c2b28f",
         "sku": "MNU-POISSON-BRAISE",
         "category": "GRILLADE",
         "name": "Poisson Braisé d'Ahala (Étang frais)",
@@ -439,13 +471,14 @@
         "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png",
         "status": "PUBLISHED",
         "sort_order": 10,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Poisson Braisé d'Ahala (Étang frais)"
       },
       {
-        "id": "15e3548f-499b-427c-982d-88ccf3f028e6",
+        "id": "5fb873ea-6d4b-4389-8fc1-9676d858defc",
         "sku": "MNU-POULET-DG",
         "category": "PLAT",
         "name": "Poulet DG Royal Plantain Mûr",
@@ -457,13 +490,14 @@
         "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png",
         "status": "PUBLISHED",
         "sort_order": 20,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Poulet DG Royal Plantain Mûr"
       },
       {
-        "id": "010606f1-bb9d-4ba8-833f-9bdc18d76993",
+        "id": "74048564-ce6d-460c-b9c1-b7de44573dd8",
         "sku": "MNU-NDOLE-ROYAL",
         "category": "PLAT",
         "name": "Ndolé Royal Crevettes & Miondo",
@@ -475,13 +509,14 @@
         "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png",
         "status": "PUBLISHED",
         "sort_order": 30,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Ndolé Royal Crevettes & Miondo"
       },
       {
-        "id": "13076b26-1cba-4cc1-ae14-f3f211dba4db",
+        "id": "a165a6bf-0006-4013-a1a1-7ee7961c1dc5",
         "sku": "MNU-MENU-ENFANT",
         "category": "MENU_ENFANT",
         "name": "Menu Enfant & Grillades Douces",
@@ -493,10 +528,11 @@
         "image_src": "audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png",
         "status": "PUBLISHED",
         "sort_order": 40,
-        "created_at": "2026-10-27T10:54:22.803Z",
-        "updated_at": "2026-10-27T10:54:22.803Z",
-        "version": 1,
-        "first_published_at": "2026-10-27T10:54:22.803Z"
+        "created_at": "2026-10-28T04:50:05.357Z",
+        "updated_at": "2026-10-28T04:50:05.422Z",
+        "version": 2,
+        "first_published_at": "2026-10-28T04:50:05.357Z",
+        "image_alt": "Menu Enfant & Grillades Douces"
       }
     ],
     "site_settings": {
@@ -517,5 +553,5 @@
       }
     }
   },
-  "generatedAt": "2026-10-27T10:54:22.874Z"
+  "generatedAt": "2026-10-28T04:50:05.447Z"
 }

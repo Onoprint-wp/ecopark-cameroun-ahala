@@ -306,6 +306,18 @@
     if (/JWT expired|invalid JWT|PGRST301|PGRST303/i.test(full)) {
       return Errors.make('SESSION_EXPIRED', 'Votre session a expiré. Reconnectez-vous pour continuer.', '', err);
     }
+    if (/ECOPARK_IMAGE_REQUIRED/.test(full)) {
+      return Errors.make('IMAGE_REQUIRED', 'Ajoutez une image à cette fiche avant de la publier.', '', err);
+    }
+    if (/mime type|invalid_mime_type/i.test(full)) {
+      return Errors.make('IMAGE_TYPE', 'Format non accepté : choisissez une photo JPEG, PNG ou WebP.', '', err);
+    }
+    if (/too large|exceeded the maximum allowed size|Payload too large/i.test(full)) {
+      return Errors.make('IMAGE_TOO_LARGE', 'Image trop lourde (5 Mo maximum).', '', err);
+    }
+    if (/_image_src_safe/.test(full)) {
+      return Errors.make('IMAGE_SOURCE', 'Cette image ne provient pas d\'une source autorisée (photothèque du site ou téléversement).', '', err);
+    }
     if (/ECOPARK_PUBLISH_REQUIRES_DIRECTION/.test(full)) {
       return Errors.make('PUBLISH_REQUIRES_DIRECTION', 'Seule la Direction peut publier ou retirer un tarif en ligne. Votre brouillon est enregistré.', '', err);
     }
@@ -436,6 +448,13 @@
   var TITLE_COL = { catalog_activities: 'title', sales_bundles: 'title', agenda_events: 'title', menu_items: 'name' };
   var Rules = {
     isPriceEntity: function (e) { return has(PRICE_COLS, e); },
+    /** Toute fiche publiée doit avoir une image (règle appliquée aussi par la base) */
+    needsImage: function (e) { return has(TITLE_COL, e) || e === 'lodge_cities'; },
+    hasImage: function (row) { return !!(row && row.image_src && String(row.image_src).trim()); },
+    /** Sources acceptées : photothèque du site, stockage https, ou image locale en mode démo */
+    safeImageSrc: function (src) {
+      return !src || /^(https:\/\/[A-Za-z0-9.-]+\/|audit-assets\/)[^"'<>\s]*$/.test(src) || /^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+/=]+$/.test(src);
+    },
     canPublish: function (entity, role) {
       if (Rules.isPriceEntity(entity)) return role === 'direction';
       return ['responsable_exploitation', 'direction', 'administrateur_plateforme'].indexOf(role) >= 0;
@@ -464,6 +483,31 @@
       return candidate;
     }
   };
+
+  // ==========================================================================
+  // 5 bis. IMAGES DES PUBLICATIONS
+  // ==========================================================================
+  var IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
+  var IMAGE_MAX_BYTES = 5 * 1024 * 1024;
+  var IMAGE_DEMO_MAX_CHARS = 600000; // ~450 Ko : au-delà, le stockage du navigateur risque de saturer
+  function blobToDataUrl(blob) {
+    return blob.arrayBuffer().then(function (buf) {
+      var bytes = new Uint8Array(buf);
+      var bin = '';
+      for (var i = 0; i < bytes.length; i += 0x8000) bin += String.fromCharCode.apply(null, bytes.subarray(i, i + 0x8000));
+      var b64 = typeof btoa === 'function' ? btoa(bin) : Buffer.from(bin, 'binary').toString('base64');
+      return 'data:' + (blob.type || 'image/jpeg') + ';base64,' + b64;
+    });
+  }
+  function checkImageBlob(blob) {
+    if (!blob || IMAGE_TYPES.indexOf(blob.type) < 0) {
+      return Errors.make('IMAGE_TYPE', 'Format non accepté : choisissez une photo JPEG, PNG ou WebP.');
+    }
+    if (blob.size > IMAGE_MAX_BYTES) {
+      return Errors.make('IMAGE_TOO_LARGE', 'Image trop lourde (5 Mo maximum après optimisation).');
+    }
+    return null;
+  }
 
   // ==========================================================================
   // 6. PILOTE DÉMO (localStorage) — reproduit les règles de la base
@@ -526,6 +570,11 @@
       if (Rules.isPriceEntity(entity) && row.status !== 'DRAFT' && self.role !== 'direction') {
         return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
       }
+      if (!Rules.safeImageSrc(row.image_src)) return self._fail({ message: 'chk_x_image_src_safe' });
+      if (row.status === 'PUBLISHED' && Rules.needsImage(entity) && !Rules.hasImage(row)) {
+        return self._fail({ message: 'ECOPARK_IMAGE_REQUIRED' });
+      }
+      if (Rules.hasImage(row) && !row.image_alt) row.image_alt = row[TITLE_COL[entity]] || row.name || '';
       var guard = Rules.childGuard(entity, row);
       if (guard) return self._fail(guard, { row: row });
       row.version = 1;
@@ -561,6 +610,11 @@
       }
       var guard = Rules.childGuard(entity, next);
       if (guard) return self._fail(guard, { row: next });
+      if (!Rules.safeImageSrc(next.image_src)) return self._fail({ message: 'chk_x_image_src_safe' });
+      if (next.status === 'PUBLISHED' && Rules.needsImage(entity) && !Rules.hasImage(next)) {
+        return self._fail({ message: 'ECOPARK_IMAGE_REQUIRED' });
+      }
+      if (Rules.hasImage(next) && !next.image_alt) patch = Object.assign({}, patch, { image_alt: next[TITLE_COL[entity]] || next.name || '' });
     }
     var saved;
     self.store.patch(function (s) {
@@ -610,6 +664,7 @@
     var needsPublishRight = status === 'PUBLISHED' || (row.status === 'PUBLISHED' && status === 'DRAFT');
     if (needsPublishRight && !Rules.canPublish(entity, self.role)) return self._fail({ message: 'ECOPARK_PUBLISH_REQUIRES_DIRECTION' });
     if (status === 'ARCHIVED' && !Rules.canDelete(entity, self.role)) return self._fail({ message: 'ECOPARK_FORBIDDEN' });
+    if (status === 'PUBLISHED' && Rules.needsImage(entity) && !Rules.hasImage(row)) return self._fail({ message: 'ECOPARK_IMAGE_REQUIRED' });
     var origin = row.duplicated_from ? rows.filter(function (r) { return r.id === row.duplicated_from; })[0] : null;
     var target = id;
     self.store.patch(function (s) {
@@ -652,6 +707,18 @@
   };
   LocalDemoDriver.prototype.rpc = function (name) {
     return Promise.resolve({ ok: false, error: Errors.make('NOT_AVAILABLE_IN_DEMO', 'Fonction serveur « ' + name + ' » indisponible en mode démonstration.') });
+  };
+  /** Démo : l'image est conservée dans le navigateur (format data:image), sans serveur */
+  LocalDemoDriver.prototype.uploadImage = function (blob) {
+    if (!Rules.canEdit(this.role)) return this._fail({ code: '42501' });
+    var bad = checkImageBlob(blob);
+    if (bad) return Promise.resolve({ ok: false, error: bad });
+    return blobToDataUrl(blob).then(function (url) {
+      if (url.length > IMAGE_DEMO_MAX_CHARS) {
+        return { ok: false, error: Errors.make('IMAGE_TOO_HEAVY_DEMO', 'Image trop lourde pour le mode démonstration (450 Ko maximum après optimisation).') };
+      }
+      return { ok: true, data: { url: url, storage: 'demo' } };
+    });
   };
   /** Suppression directe d'une ligne sans cycle de vie (ex. dérogation de quota) */
   LocalDemoDriver.prototype.removeRow = function (entity, id) {
@@ -841,6 +908,25 @@
   SupabaseDriver.prototype.rpc = function (name, args) {
     return this._res(this.client.rpc(name, args || {}));
   };
+  /** Production : dépôt dans le stockage Supabase « ecopark-media » (lecture publique, dépôt réservé à l'équipe) */
+  SupabaseDriver.prototype.uploadImage = function (blob, opts) {
+    var self = this;
+    opts = opts || {};
+    var bad = checkImageBlob(blob);
+    if (bad) return Promise.resolve({ ok: false, error: bad });
+    if (!self.client.storage) return Promise.resolve({ ok: false, error: Errors.make('NOT_AVAILABLE', 'Stockage des images indisponible.') });
+    var ext = { 'image/jpeg': 'jpg', 'image/png': 'png', 'image/webp': 'webp' }[blob.type];
+    var month = new Date().toISOString().slice(0, 7);
+    var rand = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+    var folder = String(opts.entity || 'divers').replace(/[^a-z_]/g, '');
+    var path = folder + '/' + month + '/' + rand + '.' + ext;
+    var bucket = self.client.storage.from('ecopark-media');
+    return Promise.resolve(bucket.upload(path, blob, { contentType: blob.type, cacheControl: '31536000', upsert: false })).then(function (r) {
+      if (r && r.error) return { ok: false, error: Errors.translate(r.error) };
+      var pub = bucket.getPublicUrl(path);
+      return { ok: true, data: { url: pub && pub.data ? pub.data.publicUrl : null, path: path, storage: 'supabase' } };
+    }, function (e) { return { ok: false, error: Errors.translate(e, { kind: 'NETWORK' }) }; });
+  };
   SupabaseDriver.prototype.removeRow = function (entity, id) {
     var key = Registry[entity].key;
     return this._res(this.client.from(entity).delete().eq(key, id).select(key), { entity: entity }).then(function (r) {
@@ -1020,6 +1106,8 @@
     };
   });
   EcoparkData.subscribe = function (entity, cb) { return EcoparkData.driver.subscribe(entity, cb); };
+  /** Téléverse une image (Blob JPEG/PNG/WebP) ; renvoie { ok, data: { url } } */
+  EcoparkData.uploadImage = function (blob, opts) { return EcoparkData.driver.uploadImage(blob, opts || {}); };
   EcoparkData.onChange = function (cb) { return EcoparkData.store.subscribe(cb); };
   /**
    * Annule un ajout fait par l'ancien code AVANT l'appel à la base (affichage anticipé) :

@@ -49,6 +49,8 @@ async function setup() {
   await db.exec(sql('_supabase_stub.sql'));
   await db.exec(sql('../migrations/20261026000001_ecopark_schema_rls.sql'));
   await db.exec(sql('../migrations/20261028000001_admin_crud_governance.sql'));
+  await db.exec(sql('../migrations/20261028000002_realtime_publication.sql'));
+  await db.exec(sql('../migrations/20261028000003_publication_images.sql'));
   for (const u of Object.values(U)) {
     await db.query('INSERT INTO auth.users (id, email) VALUES ($1, $2)', [u.id, `${u.id}@ecopark.test`]);
     await db.query('INSERT INTO public.staff_profiles (user_id, full_name, role) VALUES ($1, $2, $3)', [u.id, u.name, u.role]);

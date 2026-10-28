@@ -83,7 +83,23 @@ export function createPgliteSupabaseClient(db) {
     then(resolve, reject) { return run((tx) => this._exec(tx)).then(resolve, reject); }
   }
 
+  const uploads = [];
   return {
+    /** Faux stockage Supabase : enregistre les dépôts et renvoie une URL publique au format réel */
+    storage: {
+      from(bucket) {
+        return {
+          upload(path, blob, opts = {}) {
+            uploads.push({ bucket, path, contentType: opts.contentType, size: blob.size, upsert: opts.upsert });
+            return Promise.resolve({ data: { path }, error: null });
+          },
+          getPublicUrl(path) {
+            return { data: { publicUrl: 'https://test-project.supabase.co/storage/v1/object/public/' + bucket + '/' + path } };
+          }
+        };
+      }
+    },
+    _uploads: uploads,
     /** Simule une connexion : { id, aal } ou null pour un visiteur anonyme */
     setUser(user, aal = 'aal1') { session = user ? { anon: false, id: user.id, aal } : { anon: true, aal: 'aal1' }; },
     from(table) { return new Builder(table); },
