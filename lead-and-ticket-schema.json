@@ -1,0 +1,572 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://ecopark-yaounde.com/schemas/lead-and-ticket-schema.json",
+  "title": "Contrat d'Interface EcoparkData — Billetterie QR & Flux de Leads Unifiés (ECOPARK CAMEROUN — Yaoundé-Ahala)",
+  "description": "Schéma contractuel JSON Schema (Draft 2020-12) définissant rigoureusement les 5 objets métiers échangés entre le Frontend (index.html) et le Back-Office / API (EcoparkData & Supabase PostgreSQL) : BookingTicket, GroupQuoteLead, AppointmentLead, CfpApplicationLead et UnifiedLeadInboxItem. Devise unique : Franc CFA (FCFA / XAF).",
+  "type": "object",
+  "properties": {
+    "bookingTicket": {
+      "$ref": "#/$defs/BookingTicket"
+    },
+    "groupQuoteLead": {
+      "$ref": "#/$defs/GroupQuoteLead"
+    },
+    "appointmentLead": {
+      "$ref": "#/$defs/AppointmentLead"
+    },
+    "cfpApplicationLead": {
+      "$ref": "#/$defs/CfpApplicationLead"
+    },
+    "unifiedLeadInboxItem": {
+      "$ref": "#/$defs/UnifiedLeadInboxItem"
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "CameroonPhone": {
+      "type": "string",
+      "title": "Numéro de téléphone République du Cameroun (+237)",
+      "description": "Numéro mobile (MTN, Orange, Camtel Mobile : 9 chiffres commençant par 62, 65, 66, 67, 68, 69) ou fixe Camtel (9 chiffres commençant par 2), avec préfixe international +237 ou 237 optionnel, sans espaces.",
+      "pattern": "^(\\+?237)?(6[25-9][0-9]{7}|2[0-9]{8})$",
+      "examples": [
+        "+237697136203",
+        "+237675562655",
+        "237690123456",
+        "677889900",
+        "+237222234567"
+      ]
+    },
+    "IsoDate": {
+      "type": "string",
+      "title": "Date calendaire ISO-8601 (YYYY-MM-DD)",
+      "format": "date",
+      "pattern": "^202[6-9]-[0-1][0-9]-[0-3][0-9]$",
+      "examples": [
+        "2026-11-15"
+      ]
+    },
+    "IsoDateTime": {
+      "type": "string",
+      "title": "Horodatage ISO-8601 UTC / Fuseau Cameroun (UTC+1)",
+      "format": "date-time",
+      "examples": [
+        "2026-10-28T09:30:00Z",
+        "2026-11-15T13:15:00+01:00"
+      ]
+    },
+    "BookingTicket": {
+      "type": "object",
+      "title": "BookingTicket — Billet QR de Réservation Individuelle ou Famille (RES-09, ACC-03, AGT-05)",
+      "description": "Objet représentant une réservation et son billet QR matriciel autonome généré en Francs CFA (FCFA). Inclut la protection du tarif enfant (500 FCFA au Parc/Zoo) et la traçabilité anti-fraude du scan.",
+      "required": [
+        "reference",
+        "holder",
+        "phone",
+        "date",
+        "paxSummary",
+        "totalFcfa",
+        "payMethod",
+        "status",
+        "scanned",
+        "scannedAt"
+      ],
+      "properties": {
+        "reference": {
+          "type": "string",
+          "description": "Référence unique du billet QR au format ECP-2026-XXXXX.",
+          "pattern": "^ECP-2026-[0-9]{5}$",
+          "examples": [
+            "ECP-2026-84920"
+          ]
+        },
+        "holder": {
+          "type": "string",
+          "description": "Nom complet du titulaire du billet ou chef de famille (assaini anti-XSS).",
+          "minLength": 2,
+          "maxLength": 120,
+          "examples": [
+            "M. Jean-Paul Nkoa"
+          ]
+        },
+        "phone": {
+          "$ref": "#/$defs/CameroonPhone"
+        },
+        "date": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "paxSummary": {
+          "type": "string",
+          "description": "Résumé lisible de la composition des visiteurs et des prestations réservées.",
+          "minLength": 3,
+          "maxLength": 250,
+          "examples": [
+            "2 Adultes, 2 Enfants (3-12 ans) • Pass Journée Royale + Pirogue"
+          ]
+        },
+        "totalFcfa": {
+          "type": "integer",
+          "description": "Montant total net en Francs CFA (XAF), strictement >= 500 FCFA (minimum 1 entrée enfant Parc/Zoo à 500 FCFA).",
+          "minimum": 500,
+          "maximum": 50000000,
+          "examples": [
+            3000,
+            26000,
+            45000
+          ]
+        },
+        "payMethod": {
+          "type": "string",
+          "description": "Canal de règlement choisi par le visiteur ou encaissé au guichet d'Ahala.",
+          "enum": [
+            "OM",
+            "MOMO",
+            "GUICHET",
+            "ORANGE_MONEY",
+            "MTN_MOMO",
+            "ESPECES_GUICHET"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "État du paiement Mobile Money ou du cycle de vie du billet.",
+          "enum": [
+            "PENDING",
+            "CONFIRMED",
+            "FAILED",
+            "EXPIRED",
+            "CANCELLED"
+          ]
+        },
+        "scanned": {
+          "type": "boolean",
+          "description": "Indicateur booléen de franchissement au contrôle d'entrée d'Ahala (false = non utilisé, true = déjà scanné)."
+        },
+        "scannedAt": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/IsoDateTime"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Horodatage ISO-8601 exact du premier scan valide (null tant que scanned === false)."
+        },
+        "qrVerdict": {
+          "type": "string",
+          "description": "Verdict courant parmi les 7 états réglementaires du scanner anti-fraude (AGT-06).",
+          "enum": [
+            "VALID",
+            "USED",
+            "WRONG_DATE",
+            "EXPIRED",
+            "CANCELLED",
+            "WRONG_ZONE",
+            "UNKNOWN"
+          ],
+          "default": "VALID"
+        },
+        "adultsCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Nombre de visiteurs adultes (13 ans et plus)."
+        },
+        "childrenCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Nombre d'enfants (3 à 12 ans inclus — tarif sanctuarisé <= 500 FCFA au Parc/Zoo)."
+        },
+        "toddlersCount": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Nombre de tout-petits (< 3 ans — gratuit 0 FCFA)."
+        },
+        "lodgeCity": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "EWONDO",
+                "CHANTHEL",
+                "BENE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "description": "Cité hôtelière éventuellement réservée (Ewondo, Chanthel ou Bene)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "GroupQuoteLead": {
+      "type": "object",
+      "title": "GroupQuoteLead — Demande de Devis Groupe, École, Entreprise ou Événement (RES-06, EXP-03)",
+      "description": "Objet représentant une demande de devis structurée dès 10 participants (excursions scolaires, séminaires B2B à la Salle Menkii Essomba Anton, mariages et réceptions).",
+      "required": [
+        "reference",
+        "org",
+        "phone",
+        "type",
+        "pax",
+        "date",
+        "budgetFcfa",
+        "status"
+      ],
+      "properties": {
+        "reference": {
+          "type": "string",
+          "description": "Référence unique du dossier de devis au format DEV-2026-XXXX.",
+          "pattern": "^DEV-2026-[0-9]{4}$",
+          "examples": [
+            "DEV-2026-3104"
+          ]
+        },
+        "org": {
+          "type": "string",
+          "description": "Nom de l'établissement scolaire, de l'entreprise, du ministère, de l'ONG ou de la famille organisatrice.",
+          "minLength": 2,
+          "maxLength": 160,
+          "examples": [
+            "Complexe Scolaire Bilingue Les Lauréats — Yaoundé",
+            "Direction Générale CAMTEL — Séminaire Annuel"
+          ]
+        },
+        "contactName": {
+          "type": "string",
+          "description": "Nom du responsable du groupe ou point focal commercial.",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "phone": {
+          "$ref": "#/$defs/CameroonPhone"
+        },
+        "type": {
+          "type": "string",
+          "description": "Catégorie du groupe ou de l'événement.",
+          "enum": [
+            "ecole",
+            "entreprise",
+            "mariage_evenement",
+            "association_administration"
+          ]
+        },
+        "pax": {
+          "type": "integer",
+          "description": "Effectif total prévu pour le groupe (seuil contractuel minimum : 10 personnes).",
+          "minimum": 10,
+          "maximum": 5000,
+          "examples": [
+            45,
+            120
+          ]
+        },
+        "date": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "budgetFcfa": {
+          "type": "integer",
+          "description": "Budget estimatif ou montant proforma calculé en Francs CFA (XAF).",
+          "minimum": 5000,
+          "maximum": 100000000,
+          "examples": [
+            350000,
+            1450000
+          ]
+        },
+        "hallMenkiiIncluded": {
+          "type": "boolean",
+          "description": "Indique si la location de la Salle de conférence Menkii Essomba Anton est incluse."
+        },
+        "shuttleIncluded": {
+          "type": "boolean",
+          "description": "Indique si une navette climatisée A/R Yaoundé-Ahala (5, 18 ou 32 places) est demandée."
+        },
+        "status": {
+          "type": "string",
+          "description": "Statut d'instruction commerciale du devis dans EXP-03.",
+          "enum": [
+            "EN_ETUDE",
+            "PROFORMA_ENVOYEE",
+            "VALIDE",
+            "ANNULE",
+            "NEW",
+            "CONFIRMED",
+            "PROCESSED"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "AppointmentLead": {
+      "type": "object",
+      "title": "AppointmentLead — Prise de Rendez-Vous Commercial, Repérage ou Orientation CFP (PUB-18, ACC-04, EXP-07)",
+      "description": "Objet représentant un rendez-vous planifié sur l'un des 4 créneaux horaires garantis d'ECOPARK Ahala ou par appel WhatsApp Business.",
+      "required": [
+        "reference",
+        "visitorName",
+        "org",
+        "phone",
+        "purposeCode",
+        "purposeLabel",
+        "date",
+        "slot",
+        "mode",
+        "status"
+      ],
+      "properties": {
+        "reference": {
+          "type": "string",
+          "description": "Référence unique du rendez-vous au format RDV-2026-XXXX.",
+          "pattern": "^RDV-2026-[0-9]{4}$",
+          "examples": [
+            "RDV-2026-4820"
+          ]
+        },
+        "visitorName": {
+          "type": "string",
+          "description": "Nom et prénom du visiteur ou responsable demandant le rendez-vous.",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "org": {
+          "type": "string",
+          "description": "Organisation, école, entreprise ou mention 'Particulier / Famille'.",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "phone": {
+          "$ref": "#/$defs/CameroonPhone"
+        },
+        "purposeCode": {
+          "type": "string",
+          "description": "Code normalisé parmi les 4 motifs officiels de rendez-vous.",
+          "enum": [
+            "reperage_mariage",
+            "seminaire_b2b",
+            "visite_ecole",
+            "orientation_cfp"
+          ]
+        },
+        "purposeLabel": {
+          "type": "string",
+          "description": "Libellé explicite du motif de rendez-vous.",
+          "minLength": 5,
+          "maxLength": 180,
+          "examples": [
+            "Repérage Mariage / Gala & Visite des Espaces",
+            "Séminaire B2B / Ministère / ONG (Salle Menkii Essomba Anton)",
+            "Visite Préparatoire Excursion Scolaire",
+            "Entretien d'Orientation CFP ECOPARK (MINEFOP)"
+          ]
+        },
+        "date": {
+          "$ref": "#/$defs/IsoDate"
+        },
+        "slot": {
+          "type": "string",
+          "description": "Créneau horaire garanti parmi les 4 plages officielles.",
+          "enum": [
+            "09h30",
+            "11h00",
+            "14h00",
+            "16h00"
+          ]
+        },
+        "mode": {
+          "type": "string",
+          "description": "Modalité de tenue du rendez-vous.",
+          "enum": [
+            "SUR_SITE",
+            "WHATSAPP_APPEL"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "description": "État d'avancement du rendez-vous.",
+          "enum": [
+            "CONFIRME",
+            "HONORE",
+            "REPORTE",
+            "ANNULE",
+            "NEW",
+            "CONFIRMED",
+            "PROCESSED"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "CfpApplicationLead": {
+      "type": "object",
+      "title": "CfpApplicationLead — Dossier de Candidature au CFP ECOPARK Agréé MINEFOP (PUB-12, EXP-06)",
+      "description": "Objet représentant une préinscription au Centre de Formation Professionnelle d'ECOPARK (DQP/CQP en 12 mois, 70 % pratique, inscription 50 000 FCFA, scolarité 250 000 FCFA).",
+      "required": [
+        "reference",
+        "name",
+        "age",
+        "track",
+        "phone",
+        "status"
+      ],
+      "properties": {
+        "reference": {
+          "type": "string",
+          "description": "Référence unique du dossier de candidature CFP au format CFP-2026-XXXX.",
+          "pattern": "^CFP-2026-[0-9]{4}$",
+          "examples": [
+            "CFP-2026-0412"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "description": "Nom et prénom complets du candidat.",
+          "minLength": 2,
+          "maxLength": 120
+        },
+        "age": {
+          "type": "integer",
+          "description": "Âge révolu du candidat en années (contrainte réglementaire stricte : >= 16 ans).",
+          "minimum": 16,
+          "maximum": 65,
+          "examples": [
+            19,
+            24
+          ]
+        },
+        "track": {
+          "type": "string",
+          "description": "Filière officielle DQP/CQP choisie parmi les 5 spécialités agréées MINEFOP.",
+          "enum": [
+            "Hôtellerie",
+            "Restauration",
+            "Décoration",
+            "Production Agropastorale",
+            "Agropastorale",
+            "Pisciculture"
+          ]
+        },
+        "phone": {
+          "$ref": "#/$defs/CameroonPhone"
+        },
+        "registrationFeeFcfa": {
+          "type": "integer",
+          "const": 50000,
+          "default": 50000,
+          "description": "Frais d'inscription officiels fixés à 50 000 FCFA."
+        },
+        "tuitionFeeFcfa": {
+          "type": "integer",
+          "const": 250000,
+          "default": 250000,
+          "description": "Frais de scolarité annuelle fixés à 250 000 FCFA (payables en 4 tranches : 100 000 + 3 x 50 000 FCFA)."
+        },
+        "paymentPlan": {
+          "type": "string",
+          "enum": [
+            "4_TRANCHES",
+            "INTEGRAL"
+          ],
+          "default": "4_TRANCHES"
+        },
+        "status": {
+          "type": "string",
+          "description": "Statut d'admission du candidat dans EXP-06.",
+          "enum": [
+            "DOSSIER_RECU",
+            "INSCRIPTION_REGLEE",
+            "ADMIS",
+            "NEW",
+            "CONFIRMED",
+            "PROCESSED"
+          ]
+        }
+      },
+      "additionalProperties": false
+    },
+    "UnifiedLeadInboxItem": {
+      "type": "object",
+      "title": "UnifiedLeadInboxItem — Élément Unifié de la Boîte de Réception & Console de Closing (EXP-07, DIR-01)",
+      "description": "Objet normalisé agrégeant en temps réel les 4 canaux d'acquisition (Billetterie QR, Devis B2B/Écoles, Prise de RDV, Candidatures CFP) dans le Guichet Unique d'Exploitation EXP-07.",
+      "required": [
+        "id",
+        "reference",
+        "channel",
+        "contactName",
+        "phone",
+        "summary",
+        "amountFcfa",
+        "status",
+        "createdAt"
+      ],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identifiant unique interne (UUID v4 ou clé composite de synchronisation).",
+          "minLength": 4,
+          "maxLength": 64,
+          "examples": [
+            "lead-ecp-2026-84920",
+            "550e8400-e29b-41d4-a716-446655440000"
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "description": "Référence métier normalisée issue de l'un des 4 canaux (ECP-2026-XXXXX, DEV-2026-XXXX, RDV-2026-XXXX ou CFP-2026-XXXX).",
+          "pattern": "^(ECP-2026-[0-9]{5}|(DEV|RDV|CFP)-2026-[0-9]{4})$",
+          "examples": [
+            "ECP-2026-84920",
+            "DEV-2026-3104",
+            "RDV-2026-4820",
+            "CFP-2026-0412"
+          ]
+        },
+        "channel": {
+          "type": "string",
+          "description": "Canal d'origine du dossier dans la Console Unifiée EXP-07.",
+          "enum": [
+            "BOOKING",
+            "QUOTE",
+            "RDV",
+            "CFP"
+          ]
+        },
+        "contactName": {
+          "type": "string",
+          "description": "Nom du visiteur, responsable d'organisation ou candidat CFP.",
+          "minLength": 2,
+          "maxLength": 160
+        },
+        "phone": {
+          "$ref": "#/$defs/CameroonPhone"
+        },
+        "summary": {
+          "type": "string",
+          "description": "Synthèse opérationnelle affichée à l'agent pour le closing WhatsApp en 1 clic.",
+          "minLength": 3,
+          "maxLength": 300
+        },
+        "amountFcfa": {
+          "type": "integer",
+          "description": "Montant financier associé en Francs CFA (0 FCFA autorisé uniquement pour un rendez-vous de repérage gratuit RDV).",
+          "minimum": 0,
+          "maximum": 100000000
+        },
+        "status": {
+          "type": "string",
+          "description": "Statut unifié du cycle de traitement dans la boîte de réception EXP-07.",
+          "enum": [
+            "NEW",
+            "CONFIRMED",
+            "PROCESSED"
+          ]
+        },
+        "createdAt": {
+          "$ref": "#/$defs/IsoDateTime"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

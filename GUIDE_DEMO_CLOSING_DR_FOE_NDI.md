@@ -29,13 +29,15 @@ Ne pas présenter une « liste technique d'écrans », mais prouver en direct su
 2. Dans les options à la carte, sélectionner :
    - **Spécialité Château des Saveurs** : `Poulet DG Royal & Plantain Mûr` • `Service 13h30` (zéro attente en cuisine).
    - **Navette Climatisée Yaoundé** : `Carrefour Bastos (Départ 09h15)`.
-3. Cliquer sur **`Générer & Enregistrer mon Billet QR`** : le Pass 3D façon Apple Wallet se déplie avec son code unique (`ECP-2026-XXXXX`).
+3. Cliquer sur **`Générer & Enregistrer mon Billet QR`** : le Pass 3D façon Apple Wallet se déplie avec son code unique (`ECP-2026-XXXXX`) accompagné de la **Carte de Soulagement Dopaminergique Post-Formulaire** (`#dopamineReliefCard`) et du bouton **Pont Direct WhatsApp 1-Clic** (`+237 697 13 62 03`).
 4. Cliquer sur **`Télécharger Pass QR Hors-Ligne (Image PNG)`** : montrer que le visiteur repart avec son billet enregistré en image dans son téléphone, utilisable même s'il n'a plus de forfait Internet en arrivant à Ahala Barrière.
-5. **Le Moment de Vérité (Anti-Coulage) :**
+5. **Le Moment de Vérité (Anti-Coulage, Mode Hors-Ligne RN3 & Billetage FCFA) :**
    - Cliquer sur le bouton flottant en bas à droite **`Mode Démo & Back-Office (77 Écrans)`** $\rightarrow$ aller sur **`Guichet / Contrôle (AGT-05)`** (ou ouvrir `/guichet`).
    - Cliquer une **1re fois** sur **`Vérifier dans la BDD`** : l'écran affiche en vert **`1/7 • BILLET VALIDE — AUTORISER L'ENTRÉE`**.
    - Cliquer une **2e fois** sur le même bouton 2 secondes plus tard : l'écran vire au rouge **`2/7 • BILLET DÉJÀ UTILISÉ — REFUSER L'ENTRÉE`** avec l'heure exacte du 1er passage.
-- **Phrase clé au Promoteur :** *« Aucun billet papier ne peut plus être revendu deux fois à l'entrée. Chaque franc encaissé en ligne ou au guichet est tracé. »*
+   - Basculer le commutateur **`Mode Hors-Ligne RN3`** : prouver que même en cas de coupure 3G/4G à Ahala Barrière, le tourniquet continue de scanner les billets en cache local et synchronise la file d'attente au retour du réseau.
+   - Montrer la **Grille de Billetage Contradictoire en coupures FCFA (`AGT-08`)** (`10 000`, `5 000`, `2 000`, `1 000`, `500 FCFA`) qui calcule l'écart en temps réel et déclenche une alerte d'audit dès `2 000 FCFA` d'écart.
+- **Phrase clé au Promoteur :** *« Aucun billet papier ne peut plus être revendu deux fois à l'entrée, même si la connexion Internet coupe sur la RN3, et chaque coupure FCFA en caisse est comptée contradictoirement. »*
 
 ---
 
@@ -57,8 +59,9 @@ Ne pas présenter une « liste technique d'écrans », mais prouver en direct su
 ---
 
 ### ACTE 5 — Le Poste de Commandement du Promoteur à 18h00 (05:45 → 07:00)
-**Action à l'écran :** Basculer sur **`Exploitation (EXP-07)`** puis **`Direction (DIR-01 / DIR-05)`** (`/direction`).
+**Action à l'écran :** Basculer sur **`Exploitation (EXP-07)`**, **`Direction (DIR-01 / DIR-05)`** (`/direction`) puis **`Admin / CMS (ADM-09)`** (`/admin`).
 1. Dans **`EXP-07`**, montrer la **Console de Closing WhatsApp en 1 Clic** (`+237 697 13 62 03`) qui permet à l'équipe d'envoyer un billet QR, une Proforma PDF ou de bloquer une Suite VIP à la **Cité Ewondo (`25 000 – 30 000 FCFA`)**.
-2. Dans **`DIR-01`**, cliquer sur **`Rapport Exécutif Imprimable (DIR-05)`** pour afficher le **Procès-Verbal de Clôture de Caisse Contradictoire**.
-3. Cliquer sur **`Exporter Base Complète CSV (Excel)`** : ouvrir le fichier `.csv` téléchargé dans Microsoft Excel devant le Promoteur.
-- **Conclusion de Closing :** *« Docteur, tout ce que vous venez de voir tourne déjà en direct sur `ecopark-cameroun-ahala.vercel.app`. Dès votre validation, nous branchons vos comptes marchands Orange Money / MTN MoMo et nous basculons sur votre domaine `ecopark-yaounde.com`. »*
+2. Dans **`ADM-09 (Inbox Unifiée des Leads & Billets en 1 Clic)`**, montrer que tous les flux entrants (`Billets QR`, `Devis B2B`, `RDV`, `Candidatures CFP`) arrivent dans une boîte unique filtrable où le Gérant change le statut (`Nouveau` $\rightarrow$ `Confirmé` $\rightarrow$ `Traité`) en 1 clic avec traçabilité dans le journal d'audit SHA-256 (`ADM-08`).
+3. Dans **`DIR-01`**, cliquer sur **`Rapport Exécutif Imprimable (DIR-05)`** pour afficher le **Procès-Verbal de Clôture de Caisse Contradictoire**.
+4. Cliquer sur **`Exporter Base Complète CSV (Excel)`** : ouvrir le fichier `.csv` téléchargé dans Microsoft Excel devant le Promoteur.
+- **Conclusion de Closing :** *« Docteur, tout ce que vous venez de voir tourne déjà en direct sur `ecopark-cameroun-ahala.vercel.app`, accompagné des 6 Cahiers des Charges contractuels, des Design Tokens W3C et du cahier d'impression Onoprint pour vos panneaux RN3 et vos menus. Dès votre validation, nous branchons vos comptes marchands Orange Money / MTN MoMo et nous basculons sur votre domaine `ecopark-yaounde.com`. »*
