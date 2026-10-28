@@ -265,7 +265,8 @@ PHASE7_JS = PHASE7_JS_START + r"""
     } else if (channel === 'CFP') {
       if (!/^CFP-2026-\d{4}$/.test(ref)) errors.push('Format reference CFP invalide');
     }
-    if (phone && !isValidCameroonPhone(phone)) {
+    if (channel === 'CFP' && payload.age !== undefined && (Number(payload.age) < 16 || Number(payload.age) > 65)) { errors.push('Age candidat CFP hors plage reglementaire MINEFOP (16-65 ans)'); }
+    if (!phone || !isValidCameroonPhone(phone)) {
       errors.push('Numero Cameroun (+237) non conforme');
     }
     return { valid: errors.length === 0, errors: errors };
@@ -593,7 +594,7 @@ PHASE7_JS = PHASE7_JS_START + r"""
       'visitorName', 'visitorPhone',
       'quoteOrgName', 'quotePhone',
       'cfpCandidateName', 'cfpPhone',
-      'rdvVisitorName', 'rdvOrgName', 'rdvPhone'
+      'rdvVisitorName', 'rdvOrgName', 'rdvPhone', 'rescheduleReason', 'closureIncidentJustification'
     ];
 
     function sanitizeActiveFormFields() {
@@ -706,6 +707,21 @@ PHASE7_JS = PHASE7_JS_START + r"""
         return ref;
       };
       window.submitRdvSprint1._phase7Wrapped = true;
+    }
+
+    var _origReschedule = window.confirmRescheduleSprint1;
+    if (typeof _origReschedule === 'function' && !_origReschedule._phase7Wrapped) {
+      window.confirmRescheduleSprint1 = function () {
+        sanitizeActiveFormFields();
+        var dateEl = document.getElementById('rescheduleNewDate');
+        if (dateEl && typeof window.validateDateChoice === 'function') {
+          window.validateDateChoice(dateEl);
+        }
+        var r = _origReschedule.apply(this, arguments);
+        if (typeof renderAdmLeadsInbox === 'function') renderAdmLeadsInbox();
+        return r;
+      };
+      window.confirmRescheduleSprint1._phase7Wrapped = true;
     }
 
     var _origSync = window.syncAllViewsFromDB;
