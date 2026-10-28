@@ -8,6 +8,11 @@ import json
 import shutil
 import sys
 from pathlib import Path
+
+if hasattr(sys.stdout, "reconfigure"):
+    sys.stdout.reconfigure(encoding="utf-8")
+if hasattr(sys.stderr, "reconfigure"):
+    sys.stderr.reconfigure(encoding="utf-8")
 from playwright.sync_api import sync_playwright
 
 ROOT = Path(__file__).resolve().parent.parent

@@ -285,6 +285,8 @@ def run_live_audit():
 
             // 2. Generation Billet QR
             navigateFamily('RES', 'RES-03');
+            const cgvChk = document.getElementById('agreeTermsBooking');
+            if (cgvChk) cgvChk.checked = true;
             const refBefore = document.getElementById('qrScanInput').value.trim();
             window.createLiveBookingSprint1();
             const refAfter = document.getElementById('qrScanInput').value.trim();

@@ -2582,7 +2582,72 @@
       display: none !important;
     }
 
-      /* ECOPARK_ADMIN_CSS:START */
+      /* ECOPARK_PRINT_CSS:START */
+    /* ========================================================================
+       IMPRESSION OFFICIELLE (@media print) — Billets, Proformas & PV de Caisse
+       ======================================================================== */
+    @media print {
+      body {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      body > *:not(#modalOverlaySprint1),
+      .floating-demo-pill,
+      #mobileStickyConversionBar,
+      .header-outer,
+      .footer-outer,
+      .subnav-bar,
+      .btnFloatingAdminToggle,
+      #admRoleBar {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      #modalOverlaySprint1 {
+        position: static !important;
+        display: block !important;
+        background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        border: none !important;
+        box-shadow: none !important;
+        width: 100% !important;
+        max-width: 100% !important;
+      }
+      #modalOfficialPrintBox {
+        position: static !important;
+        display: block !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        margin: 0 !important;
+        padding: 8mm !important;
+        border: 1px solid #CCCCCC !important;
+        box-shadow: none !important;
+        background: #FFFFFF !important;
+        color: #000000 !important;
+      }
+      #modalOfficialPrintBox .modal-actions,
+      #modalOfficialPrintBox button,
+      #modalOfficialPrintBox .btn {
+        display: none !important;
+        visibility: hidden !important;
+      }
+      #modalOfficialPrintBox table {
+        width: 100% !important;
+        border-collapse: collapse !important;
+      }
+      #modalOfficialPrintBox th,
+      #modalOfficialPrintBox td {
+        border: 1px solid #333333 !important;
+        color: #000000 !important;
+      }
+      @page {
+        size: A4 portrait;
+        margin: 10mm;
+      }
+    }
+/* ECOPARK_PRINT_CSS:END */
+
+    /* ECOPARK_ADMIN_CSS:START */
     #view-ADM .adm-console { display: grid; gap: 22px; grid-template-columns: minmax(0, 1fr); }
     #view-ADM .adm-console > * { min-width: 0; }
     #view-ADM .adm-rolebar { display: flex; justify-content: space-between; align-items: center; gap: 14px; flex-wrap: wrap;
@@ -3288,7 +3353,7 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="pubCatalogTableBody">
                   <tr>
                     <td><strong>Entrée Parc & Jardin Zoologique</strong></td>
                     <td><span class="price-pill">500 FCFA</span></td>
@@ -4202,6 +4267,10 @@
                   </div>
 
                   <div style="display:flex;gap:10px;flex-wrap:wrap;">
+                                        <label style="display:flex;align-items:flex-start;gap:8px;font-size:13px;cursor:pointer;margin:12px 0 8px 0;line-height:1.4;">
+                      <input type="checkbox" id="agreeTermsBooking" style="margin-top:2px;" required />
+                      <span>J'accepte les <a href="#modalCgvBox" onclick="openOfficialCgvModal();return false;" style="text-decoration:underline;font-weight:600;color:var(--color-brand-deep);">Conditions Générales de Vente (CGV)</a> et la politique de report gratuit 90 jours (Garantie Météo RN3).</span>
+                    </label>
                     <button type="button" class="btn btn-primary" style="flex:1;" onclick="sendWhatsAppBooking()"><svg class="svg-mono" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Confirmer via WhatsApp ECOPARK (+237 697 13 62 03)</button>
                     <button type="button" class="btn btn-secondary" onclick="createLiveBookingSprint1()"><svg class="svg-mono" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="5" height="5" x="3" y="3" rx="1"/><rect width="5" height="5" x="16" y="3" rx="1"/><rect width="5" height="5" x="3" y="16" rx="1"/><path d="M21 16h-3a2 2 0 0 0-2 2v3"/><path d="M21 21v.01"/><path d="M12 7v3a2 2 0 0 1-2 2H7"/><path d="M3 12h.01"/><path d="M12 3h.01"/><path d="M12 16v.01"/><path d="M16 12h1"/><path d="M21 12v.01"/><path d="M12 21v-1"/></svg> Générer & Enregistrer mon Billet QR<span class="tech-code-tag"> (RES-09)</span></button>
                   </div>
@@ -4251,20 +4320,16 @@
                   </div>
                   <div style="display:flex;gap:16px;align-items:center;flex-wrap:wrap;">
                     <!-- QR Code SVG -->
-                    <svg width="108" height="108" viewBox="0 0 100 100" style="border:2px solid var(--color-brand-deep);border-radius:8px;padding:6px;background:#FFF;flex-shrink:0;" aria-label="Billet QR Code ECOPARK ECP-2026-84920">
-                      <rect x="6" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
-                      <rect x="13" y="13" width="12" height="12" fill="#1D490D"/>
-                      <rect x="68" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
-                      <rect x="75" y="13" width="12" height="12" fill="#1D490D"/>
-                      <rect x="6" y="68" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
-                      <rect x="13" y="75" width="12" height="12" fill="#1D490D"/>
-                      <rect x="42" y="12" width="8" height="8" fill="#1D490D"/>
-                      <rect x="42" y="28" width="16" height="8" fill="#1F880B"/>
-                      <rect x="42" y="44" width="12" height="12" fill="#1D490D"/>
-                      <rect x="62" y="44" width="8" height="18" fill="#1D490D"/>
-                      <rect x="42" y="68" width="18" height="8" fill="#1D490D"/>
-                      <rect x="68" y="68" width="22" height="22" fill="#1F880B"/>
-                    </svg>
+                    <div id="demoTicketQrWrapper" style="display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+                      <svg width="108" height="108" viewBox="0 0 100 100" style="border:2px solid var(--color-brand-deep);border-radius:8px;padding:6px;background:#FFF;flex-shrink:0;" aria-label="Billet QR Code ECOPARK">
+                        <rect x="6" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
+                        <rect x="13" y="13" width="12" height="12" fill="#1D490D"/>
+                        <rect x="68" y="6" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
+                        <rect x="75" y="13" width="12" height="12" fill="#1D490D"/>
+                        <rect x="6" y="68" width="26" height="26" fill="none" stroke="#1D490D" stroke-width="6"/>
+                        <rect x="13" y="75" width="12" height="12" fill="#1D490D"/>
+                      </svg>
+                    </div>
                     <div style="font-size:14.5px;display:grid;gap:4px;">
                       <div><strong>Titulaire :</strong> <span id="ticketHolder">Visiteur ECOPARK (Pass Coupe-File)</span></div>
                       <div><strong>Date & Créneau :</strong> <span id="ticketDate">Valable à la date choisie (09h00 – 18h00)</span></div>
@@ -4564,7 +4629,15 @@
                   <div style="display:flex;gap:8px;">
                     <input type="text" id="qrScanInput" class="form-control" value="ECP-2026-84920" style="flex:1;" />
                     <button class="btn btn-primary" onclick="verifyLiveQrCode()">Vérifier dans la BDD</button>
+                    <button type="button" class="btn btn-secondary btn-ochre-outline" id="btnToggleCameraScan" onclick="toggleQrCameraScan()"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Caméra</button>
                   </div>
+                <div id="qrCameraScanContainer" style="display:none;margin:8px 0 12px 0;background:#111;border-radius:8px;overflow:hidden;position:relative;border:1px solid var(--color-border);">
+                  <video id="qrScannerVideo" playsinline autoplay muted style="width:100%;max-height:220px;object-fit:cover;display:block;"></video>
+                  <div style="position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:140px;height:140px;border:2px dashed #FFD180;border-radius:10px;pointer-events:none;box-shadow:0 0 0 9999px rgba(0,0,0,0.45);"></div>
+                  <div style="position:absolute;bottom:6px;left:0;right:0;text-align:center;color:#FFF;font-size:12px;background:rgba(0,0,0,0.65);padding:4px 8px;">
+                    Visez le QR Code du billet • <button type="button" onclick="stopQrCameraScan()" style="background:none;border:none;color:#FFD180;cursor:pointer;text-decoration:underline;">Fermer la caméra</button>
+                  </div>
+                </div>
                 </div>
 
                 <div style="font-size:13.5px;font-weight:600;margin-bottom:4px;">Simuler chacun des 7 états réglementaires du contrôle d'entrée<span class="tech-code-tag"> (`AGT-06`)</span> :</div>
@@ -5666,12 +5739,37 @@
   </div>
 
   <!-- Notification Toast Apple-Grade -->
-  <div id="sprint1Toast" style="display:none;position:fixed;bottom:72px;right:18px;z-index:3500;max-width:420px;background:#1D490D;color:#FFFFFF;padding:14px 20px;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,0.25);font-size:14.5px;font-weight:600;"></div>
+  <div id="sprint1Toast" style="display:none;position:fixed;bottom:72px;right:18px;z-index:3500;max-width:420px;background:#1D490D;color:#FFFFFF;padding:14px 20px;border-radius:18px;box-shadow:0 16px 40px rgba(0,0,0,0.25);font-size:14.5px;font-weight:600;"><!-- ECOPARK_CGV_MODAL:START -->
+    <!-- MODALE CGV OFFICIELLES & MENTIONS LÉGALES CAMEROUN -->
+    <div class="card modal-box" id="modalCgvBox" style="display:none;max-width:680px;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--color-border);padding-bottom:12px;margin-bottom:12px;">
+        <h3 style="margin:0;">Conditions Générales de Vente & Mentions Légales</h3>
+        <button type="button" class="btn btn-secondary btn-sm" onclick="closeSprint1Modals()">Fermer</button>
+      </div>
+      <div style="font-size:13.5px;color:var(--color-text-main);display:grid;gap:12px;line-height:1.55;">
+        <div><strong>1. Identité & Exploitation :</strong> Le site officiel ECOPARK Cameroun est exploité par ECOPARK Yaoundé-Ahala (Route Nationale N°3, Face Station Tradex Ahala Barrière, Yaoundé). Contact officiel : +237 697 13 62 03 / +237 670 00 00 00.</div>
+        <div><strong>2. Horaires & Jours d'Ouverture :</strong> Le parc est ouvert du Mardi au Dimanche de 09h00 à 18h00. Le parc est fermé au public tous les Lundis pour repos animalier et entretien des installations.</div>
+        <div><strong>3. Garantie Météo & Report 90 jours :</strong> Tout billet QR non consommé au tourniquet bénéficie d'un report gratuit sans frais dans un délai de 90 jours calendaires à compter de la date initiale, en cas d'intempérie sur la RN3 ou d'imprévu.</div>
+        <div><strong>4. Annulation & Remboursements :</strong> L'annulation à plus de 48 heures ouvre droit à un remboursement intégral (100 %) sur le numéro Mobile Money (Orange Money / MTN MoMo) émetteur ou à un Avoir QR 100 %. Moins de 48h avant la visite avec hébergement ou pergola privative immobilisée : retenue de 20 % pour frais d'immobilisation, ou avoir 100 %.</div>
+        <div><strong>5. Règlements Mobile Money Sécurisés :</strong> Les règlements en ligne s'effectuent par débit direct Orange Money Cameroun ou MTN Mobile Money via invite officielle USSD sans jamais solliciter le code PIN du client sur le site web.</div>
+        <div><strong>6. Tarification Protégée :</strong> Le tarif enfant groupe au Zoo est strictement protégé à 500 FCFA. La gratuité d'accès au parc est totale pour les enfants de moins de 3 ans.</div>
+      </div>
+      <div style="margin-top:16px;text-align:right;">
+        <button type="button" class="btn btn-primary btn-sm" onclick="closeSprint1Modals()">J'ai compris et j'accepte</button>
+      </div>
+    </div>
+<!-- ECOPARK_CGV_MODAL:END -->
+  </div>
 
   <button type="button" class="floating-demo-pill" id="btnFloatingAdminToggle" onclick="toggleAdminMode()" title="Activer/Désactiver l'inspecteur des 77 écrans, des 7 rôles et du back-office (Raccourci : Alt+D)">
     <svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="4" x2="20" y1="21" y2="14"/><line x1="4" x2="20" y1="10" y2="3"/><line x1="12" x2="12" y1="21" y2="12"/><line x1="12" x2="12" y1="8" y2="3"/><circle cx="12" cy="10" r="2"/></svg> <span id="floatingAdminLabel">Mode Démo & Back-Office (77 Écrans)</span>
   </button>
 
+  <!-- ECOPARK_QR_LIB:START -->
+  <script id="ecoparkQrLib">
+var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],f={},c=function(t,r){o=function(t){for(var r=new Array(t),e=0;e<t;e+=1){r[e]=new Array(t);for(var n=0;n<t;n+=1)r[e][n]=null}return r}(i=4*e+17),l(0,0),l(i-7,0),l(0,i-7),s(),h(),d(t,r),e>=7&&v(t),null==a&&(a=p(e,n,u)),w(a,r)},l=function(t,r){for(var e=-1;e<=7;e+=1)if(!(t+e<=-1||i<=t+e))for(var n=-1;n<=7;n+=1)r+n<=-1||i<=r+n||(o[t+e][r+n]=0<=e&&e<=6&&(0==n||6==n)||0<=n&&n<=6&&(0==e||6==e)||2<=e&&e<=4&&2<=n&&n<=4)},h=function(){for(var t=8;t<i-8;t+=1)null==o[t][6]&&(o[t][6]=t%2==0);for(var r=8;r<i-8;r+=1)null==o[6][r]&&(o[6][r]=r%2==0)},s=function(){for(var t=B.getPatternPosition(e),r=0;r<t.length;r+=1)for(var n=0;n<t.length;n+=1){var i=t[r],a=t[n];if(null==o[i][a])for(var u=-2;u<=2;u+=1)for(var f=-2;f<=2;f+=1)o[i+u][a+f]=-2==u||2==u||-2==f||2==f||0==u&&0==f}},v=function(t){for(var r=B.getBCHTypeNumber(e),n=0;n<18;n+=1){var a=!t&&1==(r>>n&1);o[Math.floor(n/3)][n%3+i-8-3]=a}for(n=0;n<18;n+=1){a=!t&&1==(r>>n&1);o[n%3+i-8-3][Math.floor(n/3)]=a}},d=function(t,r){for(var e=n<<3|r,a=B.getBCHTypeInfo(e),u=0;u<15;u+=1){var f=!t&&1==(a>>u&1);u<6?o[u][8]=f:u<8?o[u+1][8]=f:o[i-15+u][8]=f}for(u=0;u<15;u+=1){f=!t&&1==(a>>u&1);u<8?o[8][i-u-1]=f:u<9?o[8][15-u-1+1]=f:o[8][15-u-1]=f}o[i-8][8]=!t},w=function(t,r){for(var e=-1,n=i-1,a=7,u=0,f=B.getMaskFunction(r),c=i-1;c>0;c-=2)for(6==c&&(c-=1);;){for(var g=0;g<2;g+=1)if(null==o[n][c-g]){var l=!1;u<t.length&&(l=1==(t[u]>>>a&1)),f(n,c-g)&&(l=!l),o[n][c-g]=l,-1==(a-=1)&&(u+=1,a=7)}if((n+=e)<0||i<=n){n-=e,e=-e;break}}},p=function(t,r,e){for(var n=A.getRSBlocks(t,r),o=b(),i=0;i<e.length;i+=1){var a=e[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var u=0;for(i=0;i<n.length;i+=1)u+=n[i].dataCount;if(o.getLengthInBits()>8*u)throw"code length overflow. ("+o.getLengthInBits()+">"+8*u+")";for(o.getLengthInBits()+4<=8*u&&o.put(0,4);o.getLengthInBits()%8!=0;)o.putBit(!1);for(;!(o.getLengthInBits()>=8*u||(o.put(236,8),o.getLengthInBits()>=8*u));)o.put(17,8);return function(t,r){for(var e=0,n=0,o=0,i=new Array(r.length),a=new Array(r.length),u=0;u<r.length;u+=1){var f=r[u].dataCount,c=r[u].totalCount-f;n=Math.max(n,f),o=Math.max(o,c),i[u]=new Array(f);for(var g=0;g<i[u].length;g+=1)i[u][g]=255&t.getBuffer()[g+e];e+=f;var l=B.getErrorCorrectPolynomial(c),h=k(i[u],l.getLength()-1).mod(l);for(a[u]=new Array(l.getLength()-1),g=0;g<a[u].length;g+=1){var s=g+h.getLength()-a[u].length;a[u][g]=s>=0?h.getAt(s):0}}var v=0;for(g=0;g<r.length;g+=1)v+=r[g].totalCount;var d=new Array(v),w=0;for(g=0;g<n;g+=1)for(u=0;u<r.length;u+=1)g<i[u].length&&(d[w]=i[u][g],w+=1);for(g=0;g<o;g+=1)for(u=0;u<r.length;u+=1)g<a[u].length&&(d[w]=a[u][g],w+=1);return d}(o,n)};f.addData=function(t,r){var e=null;switch(r=r||"Byte"){case"Numeric":e=M(t);break;case"Alphanumeric":e=x(t);break;case"Byte":e=m(t);break;case"Kanji":e=L(t);break;default:throw"mode:"+r}u.push(e),a=null},f.isDark=function(t,r){if(t<0||i<=t||r<0||i<=r)throw t+","+r;return o[t][r]},f.getModuleCount=function(){return i},f.make=function(){if(e<1){for(var t=1;t<40;t++){for(var r=A.getRSBlocks(t,n),o=b(),i=0;i<u.length;i++){var a=u[i];o.put(a.getMode(),4),o.put(a.getLength(),B.getLengthInBits(a.getMode(),t)),a.write(o)}var g=0;for(i=0;i<r.length;i++)g+=r[i].dataCount;if(o.getLengthInBits()<=8*g)break}e=t}c(!1,function(){for(var t=0,r=0,e=0;e<8;e+=1){c(!0,e);var n=B.getLostPoint(f);(0==e||t>n)&&(t=n,r=e)}return r}())},f.createTableTag=function(t,r){t=t||2;var e="";e+='<table style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: "+(r=void 0===r?4*t:r)+"px;",e+='">',e+="<tbody>";for(var n=0;n<f.getModuleCount();n+=1){e+="<tr>";for(var o=0;o<f.getModuleCount();o+=1)e+='<td style="',e+=" border-width: 0px; border-style: none;",e+=" border-collapse: collapse;",e+=" padding: 0px; margin: 0px;",e+=" width: "+t+"px;",e+=" height: "+t+"px;",e+=" background-color: ",e+=f.isDark(n,o)?"#000000":"#ffffff",e+=";",e+='"/>';e+="</tr>"}return e+="</tbody>",e+="</table>"},f.createSvgTag=function(t,r,e,n){var o={};"object"==typeof arguments[0]&&(t=(o=arguments[0]).cellSize,r=o.margin,e=o.alt,n=o.title),t=t||2,r=void 0===r?4*t:r,(e="string"==typeof e?{text:e}:e||{}).text=e.text||null,e.id=e.text?e.id||"qrcode-description":null,(n="string"==typeof n?{text:n}:n||{}).text=n.text||null,n.id=n.text?n.id||"qrcode-title":null;var i,a,u,c,g=f.getModuleCount()*t+2*r,l="";for(c="l"+t+",0 0,"+t+" -"+t+",0 0,-"+t+"z ",l+='<svg version="1.1" xmlns="http://www.w3.org/2000/svg"',l+=o.scalable?"":' width="'+g+'px" height="'+g+'px"',l+=' viewBox="0 0 '+g+" "+g+'" ',l+=' preserveAspectRatio="xMinYMin meet"',l+=n.text||e.text?' role="img" aria-labelledby="'+y([n.id,e.id].join(" ").trim())+'"':"",l+=">",l+=n.text?'<title id="'+y(n.id)+'">'+y(n.text)+"</title>":"",l+=e.text?'<description id="'+y(e.id)+'">'+y(e.text)+"</description>":"",l+='<rect width="100%" height="100%" fill="white" cx="0" cy="0"/>',l+='<path d="',a=0;a<f.getModuleCount();a+=1)for(u=a*t+r,i=0;i<f.getModuleCount();i+=1)f.isDark(a,i)&&(l+="M"+(i*t+r)+","+u+c);return l+='" stroke="transparent" fill="black"/>',l+="</svg>"},f.createDataURL=function(t,r){t=t||2,r=void 0===r?4*t:r;var e=f.getModuleCount()*t+2*r,n=r,o=e-r;return I(e,e,function(r,e){if(n<=r&&r<o&&n<=e&&e<o){var i=Math.floor((r-n)/t),a=Math.floor((e-n)/t);return f.isDark(a,i)?0:1}return 1})},f.createImgTag=function(t,r,e){t=t||2,r=void 0===r?4*t:r;var n=f.getModuleCount()*t+2*r,o="";return o+="<img",o+=' src="',o+=f.createDataURL(t,r),o+='"',o+=' width="',o+=n,o+='"',o+=' height="',o+=n,o+='"',e&&(o+=' alt="',o+=y(e),o+='"'),o+="/>"};var y=function(t){for(var r="",e=0;e<t.length;e+=1){var n=t.charAt(e);switch(n){case"<":r+="&lt;";break;case">":r+="&gt;";break;case"&":r+="&amp;";break;case'"':r+="&quot;";break;default:r+=n}}return r};return f.createASCII=function(t,r){if((t=t||1)<2)return function(t){t=void 0===t?2:t;var r,e,n,o,i,a=1*f.getModuleCount()+2*t,u=t,c=a-t,g={"██":"█","█ ":"▀"," █":"▄","  ":" "},l={"██":"▀","█ ":"▀"," █":" ","  ":" "},h="";for(r=0;r<a;r+=2){for(n=Math.floor((r-u)/1),o=Math.floor((r+1-u)/1),e=0;e<a;e+=1)i="█",u<=e&&e<c&&u<=r&&r<c&&f.isDark(n,Math.floor((e-u)/1))&&(i=" "),u<=e&&e<c&&u<=r+1&&r+1<c&&f.isDark(o,Math.floor((e-u)/1))?i+=" ":i+="█",h+=t<1&&r+1>=c?l[i]:g[i];h+="\n"}return a%2&&t>0?h.substring(0,h.length-a-1)+Array(a+1).join("▀"):h.substring(0,h.length-1)}(r);t-=1,r=void 0===r?2*t:r;var e,n,o,i,a=f.getModuleCount()*t+2*r,u=r,c=a-r,g=Array(t+1).join("██"),l=Array(t+1).join("  "),h="",s="";for(e=0;e<a;e+=1){for(o=Math.floor((e-u)/t),s="",n=0;n<a;n+=1)i=1,u<=n&&n<c&&u<=e&&e<c&&f.isDark(o,Math.floor((n-u)/t))&&(i=0),s+=i?g:l;for(o=0;o<t;o+=1)h+=s+"\n"}return h.substring(0,h.length-1)},f.renderTo2dContext=function(t,r){r=r||2;for(var e=f.getModuleCount(),n=0;n<e;n++)for(var o=0;o<e;o++)t.fillStyle=f.isDark(n,o)?"black":"white",t.fillRect(o*r,n*r,r,r)},f};t.stringToBytes=(t.stringToBytesFuncs={default:function(t){for(var r=[],e=0;e<t.length;e+=1){var n=t.charCodeAt(e);r.push(255&n)}return r}}).default,t.createStringToBytes=function(t,r){var e=function(){for(var e=S(t),n=function(){var t=e.read();if(-1==t)throw"eof";return t},o=0,i={};;){var a=e.read();if(-1==a)break;var u=n(),f=n()<<8|n();i[String.fromCharCode(a<<8|u)]=f,o+=1}if(o!=r)throw o+" != "+r;return i}(),n="?".charCodeAt(0);return function(t){for(var r=[],o=0;o<t.length;o+=1){var i=t.charCodeAt(o);if(i<128)r.push(i);else{var a=e[t.charAt(o)];"number"==typeof a?(255&a)==a?r.push(a):(r.push(a>>>8),r.push(255&a)):r.push(n)}}return r}};var r,e,n,o,i,a=1,u=2,f=4,c=8,g={L:1,M:0,Q:3,H:2},l=0,h=1,s=2,v=3,d=4,w=5,p=6,y=7,B=(r=[[],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]],e=1335,n=7973,i=function(t){for(var r=0;0!=t;)r+=1,t>>>=1;return r},(o={}).getBCHTypeInfo=function(t){for(var r=t<<10;i(r)-i(e)>=0;)r^=e<<i(r)-i(e);return 21522^(t<<10|r)},o.getBCHTypeNumber=function(t){for(var r=t<<12;i(r)-i(n)>=0;)r^=n<<i(r)-i(n);return t<<12|r},o.getPatternPosition=function(t){return r[t-1]},o.getMaskFunction=function(t){switch(t){case l:return function(t,r){return(t+r)%2==0};case h:return function(t,r){return t%2==0};case s:return function(t,r){return r%3==0};case v:return function(t,r){return(t+r)%3==0};case d:return function(t,r){return(Math.floor(t/2)+Math.floor(r/3))%2==0};case w:return function(t,r){return t*r%2+t*r%3==0};case p:return function(t,r){return(t*r%2+t*r%3)%2==0};case y:return function(t,r){return(t*r%3+(t+r)%2)%2==0};default:throw"bad maskPattern:"+t}},o.getErrorCorrectPolynomial=function(t){for(var r=k([1],0),e=0;e<t;e+=1)r=r.multiply(k([1,C.gexp(e)],0));return r},o.getLengthInBits=function(t,r){if(1<=r&&r<10)switch(t){case a:return 10;case u:return 9;case f:case c:return 8;default:throw"mode:"+t}else if(r<27)switch(t){case a:return 12;case u:return 11;case f:return 16;case c:return 10;default:throw"mode:"+t}else{if(!(r<41))throw"type:"+r;switch(t){case a:return 14;case u:return 13;case f:return 16;case c:return 12;default:throw"mode:"+t}}},o.getLostPoint=function(t){for(var r=t.getModuleCount(),e=0,n=0;n<r;n+=1)for(var o=0;o<r;o+=1){for(var i=0,a=t.isDark(n,o),u=-1;u<=1;u+=1)if(!(n+u<0||r<=n+u))for(var f=-1;f<=1;f+=1)o+f<0||r<=o+f||0==u&&0==f||a==t.isDark(n+u,o+f)&&(i+=1);i>5&&(e+=3+i-5)}for(n=0;n<r-1;n+=1)for(o=0;o<r-1;o+=1){var c=0;t.isDark(n,o)&&(c+=1),t.isDark(n+1,o)&&(c+=1),t.isDark(n,o+1)&&(c+=1),t.isDark(n+1,o+1)&&(c+=1),0!=c&&4!=c||(e+=3)}for(n=0;n<r;n+=1)for(o=0;o<r-6;o+=1)t.isDark(n,o)&&!t.isDark(n,o+1)&&t.isDark(n,o+2)&&t.isDark(n,o+3)&&t.isDark(n,o+4)&&!t.isDark(n,o+5)&&t.isDark(n,o+6)&&(e+=40);for(o=0;o<r;o+=1)for(n=0;n<r-6;n+=1)t.isDark(n,o)&&!t.isDark(n+1,o)&&t.isDark(n+2,o)&&t.isDark(n+3,o)&&t.isDark(n+4,o)&&!t.isDark(n+5,o)&&t.isDark(n+6,o)&&(e+=40);var g=0;for(o=0;o<r;o+=1)for(n=0;n<r;n+=1)t.isDark(n,o)&&(g+=1);return e+=Math.abs(100*g/r/r-50)/5*10},o),C=function(){for(var t=new Array(256),r=new Array(256),e=0;e<8;e+=1)t[e]=1<<e;for(e=8;e<256;e+=1)t[e]=t[e-4]^t[e-5]^t[e-6]^t[e-8];for(e=0;e<255;e+=1)r[t[e]]=e;var n={glog:function(t){if(t<1)throw"glog("+t+")";return r[t]},gexp:function(r){for(;r<0;)r+=255;for(;r>=256;)r-=255;return t[r]}};return n}();function k(t,r){if(void 0===t.length)throw t.length+"/"+r;var e=function(){for(var e=0;e<t.length&&0==t[e];)e+=1;for(var n=new Array(t.length-e+r),o=0;o<t.length-e;o+=1)n[o]=t[o+e];return n}(),n={getAt:function(t){return e[t]},getLength:function(){return e.length},multiply:function(t){for(var r=new Array(n.getLength()+t.getLength()-1),e=0;e<n.getLength();e+=1)for(var o=0;o<t.getLength();o+=1)r[e+o]^=C.gexp(C.glog(n.getAt(e))+C.glog(t.getAt(o)));return k(r,0)},mod:function(t){if(n.getLength()-t.getLength()<0)return n;for(var r=C.glog(n.getAt(0))-C.glog(t.getAt(0)),e=new Array(n.getLength()),o=0;o<n.getLength();o+=1)e[o]=n.getAt(o);for(o=0;o<t.getLength();o+=1)e[o]^=C.gexp(C.glog(t.getAt(o))+r);return k(e,0).mod(t)}};return n}var A=function(){var t=[[1,26,19],[1,26,16],[1,26,13],[1,26,9],[1,44,34],[1,44,28],[1,44,22],[1,44,16],[1,70,55],[1,70,44],[2,35,17],[2,35,13],[1,100,80],[2,50,32],[2,50,24],[4,25,9],[1,134,108],[2,67,43],[2,33,15,2,34,16],[2,33,11,2,34,12],[2,86,68],[4,43,27],[4,43,19],[4,43,15],[2,98,78],[4,49,31],[2,32,14,4,33,15],[4,39,13,1,40,14],[2,121,97],[2,60,38,2,61,39],[4,40,18,2,41,19],[4,40,14,2,41,15],[2,146,116],[3,58,36,2,59,37],[4,36,16,4,37,17],[4,36,12,4,37,13],[2,86,68,2,87,69],[4,69,43,1,70,44],[6,43,19,2,44,20],[6,43,15,2,44,16],[4,101,81],[1,80,50,4,81,51],[4,50,22,4,51,23],[3,36,12,8,37,13],[2,116,92,2,117,93],[6,58,36,2,59,37],[4,46,20,6,47,21],[7,42,14,4,43,15],[4,133,107],[8,59,37,1,60,38],[8,44,20,4,45,21],[12,33,11,4,34,12],[3,145,115,1,146,116],[4,64,40,5,65,41],[11,36,16,5,37,17],[11,36,12,5,37,13],[5,109,87,1,110,88],[5,65,41,5,66,42],[5,54,24,7,55,25],[11,36,12,7,37,13],[5,122,98,1,123,99],[7,73,45,3,74,46],[15,43,19,2,44,20],[3,45,15,13,46,16],[1,135,107,5,136,108],[10,74,46,1,75,47],[1,50,22,15,51,23],[2,42,14,17,43,15],[5,150,120,1,151,121],[9,69,43,4,70,44],[17,50,22,1,51,23],[2,42,14,19,43,15],[3,141,113,4,142,114],[3,70,44,11,71,45],[17,47,21,4,48,22],[9,39,13,16,40,14],[3,135,107,5,136,108],[3,67,41,13,68,42],[15,54,24,5,55,25],[15,43,15,10,44,16],[4,144,116,4,145,117],[17,68,42],[17,50,22,6,51,23],[19,46,16,6,47,17],[2,139,111,7,140,112],[17,74,46],[7,54,24,16,55,25],[34,37,13],[4,151,121,5,152,122],[4,75,47,14,76,48],[11,54,24,14,55,25],[16,45,15,14,46,16],[6,147,117,4,148,118],[6,73,45,14,74,46],[11,54,24,16,55,25],[30,46,16,2,47,17],[8,132,106,4,133,107],[8,75,47,13,76,48],[7,54,24,22,55,25],[22,45,15,13,46,16],[10,142,114,2,143,115],[19,74,46,4,75,47],[28,50,22,6,51,23],[33,46,16,4,47,17],[8,152,122,4,153,123],[22,73,45,3,74,46],[8,53,23,26,54,24],[12,45,15,28,46,16],[3,147,117,10,148,118],[3,73,45,23,74,46],[4,54,24,31,55,25],[11,45,15,31,46,16],[7,146,116,7,147,117],[21,73,45,7,74,46],[1,53,23,37,54,24],[19,45,15,26,46,16],[5,145,115,10,146,116],[19,75,47,10,76,48],[15,54,24,25,55,25],[23,45,15,25,46,16],[13,145,115,3,146,116],[2,74,46,29,75,47],[42,54,24,1,55,25],[23,45,15,28,46,16],[17,145,115],[10,74,46,23,75,47],[10,54,24,35,55,25],[19,45,15,35,46,16],[17,145,115,1,146,116],[14,74,46,21,75,47],[29,54,24,19,55,25],[11,45,15,46,46,16],[13,145,115,6,146,116],[14,74,46,23,75,47],[44,54,24,7,55,25],[59,46,16,1,47,17],[12,151,121,7,152,122],[12,75,47,26,76,48],[39,54,24,14,55,25],[22,45,15,41,46,16],[6,151,121,14,152,122],[6,75,47,34,76,48],[46,54,24,10,55,25],[2,45,15,64,46,16],[17,152,122,4,153,123],[29,74,46,14,75,47],[49,54,24,10,55,25],[24,45,15,46,46,16],[4,152,122,18,153,123],[13,74,46,32,75,47],[48,54,24,14,55,25],[42,45,15,32,46,16],[20,147,117,4,148,118],[40,75,47,7,76,48],[43,54,24,22,55,25],[10,45,15,67,46,16],[19,148,118,6,149,119],[18,75,47,31,76,48],[34,54,24,34,55,25],[20,45,15,61,46,16]],r=function(t,r){var e={};return e.totalCount=t,e.dataCount=r,e},e={};return e.getRSBlocks=function(e,n){var o=function(r,e){switch(e){case g.L:return t[4*(r-1)+0];case g.M:return t[4*(r-1)+1];case g.Q:return t[4*(r-1)+2];case g.H:return t[4*(r-1)+3];default:return}}(e,n);if(void 0===o)throw"bad rs block @ typeNumber:"+e+"/errorCorrectionLevel:"+n;for(var i=o.length/3,a=[],u=0;u<i;u+=1)for(var f=o[3*u+0],c=o[3*u+1],l=o[3*u+2],h=0;h<f;h+=1)a.push(r(c,l));return a},e}(),b=function(){var t=[],r=0,e={getBuffer:function(){return t},getAt:function(r){var e=Math.floor(r/8);return 1==(t[e]>>>7-r%8&1)},put:function(t,r){for(var n=0;n<r;n+=1)e.putBit(1==(t>>>r-n-1&1))},getLengthInBits:function(){return r},putBit:function(e){var n=Math.floor(r/8);t.length<=n&&t.push(0),e&&(t[n]|=128>>>r%8),r+=1}};return e},M=function(t){var r=a,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+2<r.length;)t.put(o(r.substring(n,n+3)),10),n+=3;n<r.length&&(r.length-n==1?t.put(o(r.substring(n,n+1)),4):r.length-n==2&&t.put(o(r.substring(n,n+2)),7))}},o=function(t){for(var r=0,e=0;e<t.length;e+=1)r=10*r+i(t.charAt(e));return r},i=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);throw"illegal char :"+t};return n},x=function(t){var r=u,e=t,n={getMode:function(){return r},getLength:function(t){return e.length},write:function(t){for(var r=e,n=0;n+1<r.length;)t.put(45*o(r.charAt(n))+o(r.charAt(n+1)),11),n+=2;n<r.length&&t.put(o(r.charAt(n)),6)}},o=function(t){if("0"<=t&&t<="9")return t.charCodeAt(0)-"0".charCodeAt(0);if("A"<=t&&t<="Z")return t.charCodeAt(0)-"A".charCodeAt(0)+10;switch(t){case" ":return 36;case"$":return 37;case"%":return 38;case"*":return 39;case"+":return 40;case"-":return 41;case".":return 42;case"/":return 43;case":":return 44;default:throw"illegal char :"+t}};return n},m=function(r){var e=f,n=t.stringToBytes(r),o={getMode:function(){return e},getLength:function(t){return n.length},write:function(t){for(var r=0;r<n.length;r+=1)t.put(n[r],8)}};return o},L=function(r){var e=c,n=t.stringToBytesFuncs.SJIS;if(!n)throw"sjis not supported.";!function(){var t=n("\u53cb");if(2!=t.length||38726!=(t[0]<<8|t[1]))throw"sjis not supported."}();var o=n(r),i={getMode:function(){return e},getLength:function(t){return~~(o.length/2)},write:function(t){for(var r=o,e=0;e+1<r.length;){var n=(255&r[e])<<8|255&r[e+1];if(33088<=n&&n<=40956)n-=33088;else{if(!(57408<=n&&n<=60351))throw"illegal char at "+(e+1)+"/"+n;n-=49472}n=192*(n>>>8&255)+(255&n),t.put(n,13),e+=2}if(e<r.length)throw"illegal char at "+(e+1)}};return i},D=function(){var t=[],r={writeByte:function(r){t.push(255&r)},writeShort:function(t){r.writeByte(t),r.writeByte(t>>>8)},writeBytes:function(t,e,n){e=e||0,n=n||t.length;for(var o=0;o<n;o+=1)r.writeByte(t[o+e])},writeString:function(t){for(var e=0;e<t.length;e+=1)r.writeByte(t.charCodeAt(e))},toByteArray:function(){return t},toString:function(){var r="";r+="[";for(var e=0;e<t.length;e+=1)e>0&&(r+=","),r+=t[e];return r+="]"}};return r},S=function(t){var r=t,e=0,n=0,o=0,i={read:function(){for(;o<8;){if(e>=r.length){if(0==o)return-1;throw"unexpected end of file./"+o}var t=r.charAt(e);if(e+=1,"="==t)return o=0,-1;t.match(/^\s$/)||(n=n<<6|a(t.charCodeAt(0)),o+=6)}var i=n>>>o-8&255;return o-=8,i}},a=function(t){if(65<=t&&t<=90)return t-65;if(97<=t&&t<=122)return t-97+26;if(48<=t&&t<=57)return t-48+52;if(43==t)return 62;if(47==t)return 63;throw"c:"+t};return i},I=function(t,r,e){for(var n=function(t,r){var e=t,n=r,o=new Array(t*r),i={setPixel:function(t,r,n){o[r*e+t]=n},write:function(t){t.writeString("GIF87a"),t.writeShort(e),t.writeShort(n),t.writeByte(128),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(0),t.writeByte(255),t.writeByte(255),t.writeByte(255),t.writeString(","),t.writeShort(0),t.writeShort(0),t.writeShort(e),t.writeShort(n),t.writeByte(0);var r=a(2);t.writeByte(2);for(var o=0;r.length-o>255;)t.writeByte(255),t.writeBytes(r,o,255),o+=255;t.writeByte(r.length-o),t.writeBytes(r,o,r.length-o),t.writeByte(0),t.writeString(";")}},a=function(t){for(var r=1<<t,e=1+(1<<t),n=t+1,i=u(),a=0;a<r;a+=1)i.add(String.fromCharCode(a));i.add(String.fromCharCode(r)),i.add(String.fromCharCode(e));var f,c,g,l=D(),h=(f=l,c=0,g=0,{write:function(t,r){if(t>>>r!=0)throw"length over";for(;c+r>=8;)f.writeByte(255&(t<<c|g)),r-=8-c,t>>>=8-c,g=0,c=0;g|=t<<c,c+=r},flush:function(){c>0&&f.writeByte(g)}});h.write(r,n);var s=0,v=String.fromCharCode(o[s]);for(s+=1;s<o.length;){var d=String.fromCharCode(o[s]);s+=1,i.contains(v+d)?v+=d:(h.write(i.indexOf(v),n),i.size()<4095&&(i.size()==1<<n&&(n+=1),i.add(v+d)),v=d)}return h.write(i.indexOf(v),n),h.write(e,n),h.flush(),l.toByteArray()},u=function(){var t={},r=0,e={add:function(n){if(e.contains(n))throw"dup key:"+n;t[n]=r,r+=1},size:function(){return r},indexOf:function(r){return t[r]},contains:function(r){return void 0!==t[r]}};return e};return i}(t,r),o=0;o<r;o+=1)for(var i=0;i<t;i+=1)n.setPixel(i,o,e(i,o));var a=D();n.write(a);for(var u=function(){var t=0,r=0,e=0,n="",o={},i=function(t){n+=String.fromCharCode(a(63&t))},a=function(t){if(t<0);else{if(t<26)return 65+t;if(t<52)return t-26+97;if(t<62)return t-52+48;if(62==t)return 43;if(63==t)return 47}throw"n:"+t};return o.writeByte=function(n){for(t=t<<8|255&n,r+=8,e+=1;r>=6;)i(t>>>r-6),r-=6},o.flush=function(){if(r>0&&(i(t<<6-r),t=0,r=0),e%3!=0)for(var o=3-e%3,a=0;a<o;a+=1)n+="="},o.toString=function(){return n},o}(),f=a.toByteArray(),c=0;c<f.length;c+=1)u.writeByte(f[c]);return u.flush(),"data:image/gif;base64,"+u};return t}();qrcode.stringToBytesFuncs["UTF-8"]=function(t){return function(t){for(var r=[],e=0;e<t.length;e++){var n=t.charCodeAt(e);n<128?r.push(n):n<2048?r.push(192|n>>6,128|63&n):n<55296||n>=57344?r.push(224|n>>12,128|n>>6&63,128|63&n):(e++,n=65536+((1023&n)<<10|1023&t.charCodeAt(e)),r.push(240|n>>18,128|n>>12&63,128|n>>6&63,128|63&n))}return r}(t)},function(t){"function"==typeof define&&define.amd?define([],t):"object"==typeof exports&&(module.exports=t())}(function(){return qrcode});
+  </script>
+<!-- ECOPARK_QR_LIB:END -->
   <!-- ECOPARK_DATA_LAYER:START -->
   <script id="ecoparkConfig">window.ECOPARK_CONFIG = {"env": "local", "dataDriver": "local", "snapshotVersion": "2026-10-28T04:50:05.447Z"};</script>
   <script type="application/json" id="ecoparkContentSnapshot">{"source":"migrations","content":{"catalog_activities":[{"id":"68f65430-02bd-430b-8d82-83668cdde2b2","slug":"cheval","title":"Équitation (Tour à Cheval) & Manèges","pole":"EAU_PLEIN_AIR","description":"Initiation équestre encadrée et manèges enfants.","child_price_fcfa":500,"adult_price_fcfa":1000,"group_adult_price_fcfa":800,"group_child_price_fcfa":500,"daily_capacity":200,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-CHEVAL","status":"PUBLISHED","sort_order":10,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png","image_alt":"Famille en promenade sous la canopée du parc"},{"id":"47d1f7f4-bd20-49ad-b4ae-903a9f2b4681","slug":"navette_yaounde","title":"Navette Climatisée A/R Yaoundé — Ahala","pole":"GROUPES_B2B","description":"Prise en charge aller-retour depuis le centre de Yaoundé (flotte 5, 18 et 32 places).","child_price_fcfa":1000,"adult_price_fcfa":1500,"group_adult_price_fcfa":1200,"group_child_price_fcfa":1000,"daily_capacity":180,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-NAVETTE-YAOUNDE","status":"PUBLISHED","sort_order":20,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg","image_alt":"Groupe accueilli à ECOPARK Ahala"},{"id":"51b4ab1a-e560-4631-a4c1-50941dd71a23","slug":"nutrition_poissons","title":"Sachet Nutrition Poissons & Tortues (Order Bump)","pole":"NATURE_FAUNE","description":"Sachet d'aliment piscicole pour nourrir les poissons des étangs d'Ahala avec les enfants.","child_price_fcfa":500,"adult_price_fcfa":500,"group_adult_price_fcfa":500,"group_child_price_fcfa":500,"daily_capacity":800,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-NUTRITION-POISSONS","status":"PUBLISHED","sort_order":30,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/ecopark-real-media/balade_pirogue3.jpg","image_alt":"Lac et étangs d'Ahala"},{"id":"1382feb2-9255-4a21-ad43-d92b44107e79","slug":"pergola_lac","title":"Pergola Privée Bord du Lac & Service Prioritaire 13h","pole":"RESTAURATION","description":"Réservation garantie d'une pergola ombragée au bord de l'eau avec précommande cuisine sans attente.","child_price_fcfa":0,"adult_price_fcfa":5000,"group_adult_price_fcfa":5000,"group_child_price_fcfa":0,"daily_capacity":25,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-PERGOLA-LAC","status":"PUBLISHED","sort_order":40,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","image_alt":"Pergola au bord du lac"},{"id":"da35e604-e8aa-4221-9ea1-507a6859558a","slug":"pirogue","title":"Balade en Pirogue / Pédalo sur le Lac","pole":"EAU_PLEIN_AIR","description":"Traversée commentée du lac d'Ahala avec gilet de sauvetage fourni.","child_price_fcfa":500,"adult_price_fcfa":1000,"group_adult_price_fcfa":800,"group_child_price_fcfa":500,"daily_capacity":250,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-PIROGUE","status":"PUBLISHED","sort_order":50,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/ecopark-real-media/balade_pirogue3.jpg","image_alt":"Balade en pirogue sur le lac d'Ahala"},{"id":"8cf784a5-0cbf-41d6-8b55-81a94c75179a","slug":"piscine","title":"Piscine Semi-Olympique","pole":"EAU_PLEIN_AIR","description":"Baignade surveillée avec maître-nageur sauveteur.","child_price_fcfa":1500,"adult_price_fcfa":2500,"group_adult_price_fcfa":2000,"group_child_price_fcfa":1500,"daily_capacity":300,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-PISCINE","status":"PUBLISHED","sort_order":60,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_pool_pirogue.png","image_alt":"Piscine semi-olympique et lac d'Ahala"},{"id":"20ee91d4-7e08-4010-8341-dababdca354c","slug":"saveurs","title":"Repas — Le Château des Saveurs","pole":"RESTAURATION","description":"Gastronomie camerounaise : poisson braisé d'Ahala, poulet DG, Ndolè, plantains mûrs.","child_price_fcfa":2500,"adult_price_fcfa":5000,"group_adult_price_fcfa":4500,"group_child_price_fcfa":2500,"daily_capacity":400,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-SAVEURS","status":"PUBLISHED","sort_order":70,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","image_alt":"Repas camerounais sous les pergolas du Château des Saveurs"},{"id":"3d8d2947-3fec-46de-9105-79afe2dafe20","slug":"zoo","title":"Entrée Parc & Jardin Zoologique","pole":"NATURE_FAUNE","description":"Observation des chimpanzés, tortues géantes, autruches, paons et allées botaniques.","child_price_fcfa":500,"adult_price_fcfa":1000,"group_adult_price_fcfa":700,"group_child_price_fcfa":500,"daily_capacity":1200,"is_active":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"CAT-ZOO","status":"PUBLISHED","sort_order":80,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/ecopark-real-media/chimpanze.jpeg","image_alt":"Chimpanzé du jardin zoologique d'ECOPARK Ahala"}],"sales_bundles":[{"id":"e0c84191-099b-4151-8e38-db38c719e8bc","bundle_code":"PACK_COUPLE_EWONDO","title":"Pack Escapade Couple / VIP Week-end","subtitle":"Suite Cité Ewondo Climatisée + 2 Repas Saveurs + Piscine + Pirogue + Pergola","included_slugs":["zoo","piscine","pirogue","saveurs","pergola_lac"],"adult_bundle_price_fcfa":45000,"child_bundle_price_fcfa":0,"savings_label":"Forfait Duo VIP tout compris avec nuitée/day-use","is_featured":false,"created_at":"2026-10-28T04:50:05.272Z","sku":"PCK-PACK-COUPLE-EWONDO","status":"PUBLISHED","sort_order":10,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/ecopark-real-media/chambre.jpeg","image_alt":"Chambre de la Cité Ewondo"},{"id":"d855261f-d4e6-4f62-9913-dcca493c2fdd","bundle_code":"PASS_DECOUVERTE","title":"Pass Découverte Nature","subtitle":"Zoo + Balade en Pirogue + Tour à Cheval + Coupe-File QR","included_slugs":["zoo","pirogue","cheval"],"adult_bundle_price_fcfa":2500,"child_bundle_price_fcfa":1500,"savings_label":"3 activités combinées en 1 seul QR Code","is_featured":false,"created_at":"2026-10-28T04:50:05.272Z","sku":"PCK-PASS-DECOUVERTE","status":"PUBLISHED","sort_order":20,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/ecopark-real-media/chimpanze.jpeg","image_alt":"Rencontre avec les animaux du jardin zoologique"},{"id":"077edeff-6526-43f1-bae2-0638f0dd3c66","bundle_code":"PASS_ROYALE","title":"Pass Journée Royale Tout-Inclus","subtitle":"Zoo + Piscine Semi-Olympique + Pirogue + Repas Chaud Château des Saveurs","included_slugs":["zoo","piscine","pirogue","saveurs"],"adult_bundle_price_fcfa":8500,"child_bundle_price_fcfa":4500,"savings_label":"Le Plus Choisi • Repas & Coupe-File inclus","is_featured":true,"created_at":"2026-10-28T04:50:05.272Z","sku":"PCK-PASS-ROYALE","status":"PUBLISHED","sort_order":30,"updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.272Z","image_src":"audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg","image_alt":"Grand dimanche au bord du lac d'Ahala"}],"lodge_cities":[{"id":"de51e076-236d-40ac-905e-a86de1c91e2f","code":"BENE","name":"Cité Bene (Standard)","category":"Pavillon Détente","min_price_fcfa":10000,"max_price_fcfa":15000,"total_rooms":10,"available_rooms":0,"amenities":["Lit double","Salle d'eau privée","Proximité lac"],"sku":"LOD-BENE","status":"PUBLISHED","sort_order":10,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_src":"audit-assets/ecopark-real-media/chambre.jpeg","image_alt":"Chambre de la Cité Bene (Standard)"},{"id":"83133192-caea-449a-882e-d43dbf5f8795","code":"CHANTHEL","name":"Cité Chanthel (Confort)","category":"Pavillon Nature Confort","min_price_fcfa":15000,"max_price_fcfa":25000,"total_rooms":12,"available_rooms":3,"amenities":["Ventilation/Clim","Salle d'eau privée","Calme forestier"],"sku":"LOD-CHANTHEL","status":"PUBLISHED","sort_order":20,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_src":"audit-assets/ecopark-real-media/chambre.jpeg","image_alt":"Chambre de la Cité Chanthel (Confort)"},{"id":"3984bad8-0ef8-443c-8079-83a599185435","code":"EWONDO","name":"Cité Ewondo (VIP)","category":"Haut Standing Climatisé","min_price_fcfa":25000,"max_price_fcfa":30000,"total_rooms":8,"available_rooms":2,"amenities":["Climatisation","Eau chaude","Petit-déjeuner","Accès Parc inclus"],"sku":"LOD-EWONDO","status":"PUBLISHED","sort_order":30,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_src":"audit-assets/ecopark-real-media/chambre.jpeg","image_alt":"Chambre de la Cité Ewondo (VIP)"}],"agenda_events":[{"id":"ec391956-c7aa-48a3-86db-4ffbd066882e","code":"EVT_MERCREDI_CFP","day_filter":"MER_JEU","target_weekday":3,"badge":"Mercredi & Jeudi • 10h00 – 16h00","title":"Journée Pédagogique Faune & Portes Ouvertes Campus CFP","short_label":"Mercredi Pédagogique & Portes Ouvertes CFP","price_text":"Entrée : 500 FCFA (Enfant) / 1 000 FCFA (Adulte) • Orientation CFP Gratuite","from_price_fcfa":500,"spots_text":"Accès libre & Groupes scolaires sur réservation","description":"Idéal pour les familles en semaine, les écoles maternelles/primaires et les futurs apprenants souhaitant visiter les ateliers pratiques du CFP ECOPARK agréé MINEFOP.","schedule":["10h00 – 11h30 : Visite guidée du Jardin Zoologique (gorille « ToTo », tortues géantes, paons) et des allées botaniques.","11h30 – 13h00 : Démonstration d'aquaculture sur les étangs d'Ahala & séance d'orientation CFP (5 filières, inscription 50 000 FCFA).","13h00 – 16h00 : Déjeuner au Château des Saveurs, balade en pirogue et baignade surveillée."],"bundle_code":"PASS_DECOUVERTE","dish":"Poisson Braisé d'Ahala (Étang frais)","meal_slot":"Service 12h30","pergola":false,"nutrition":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png","status":"PUBLISHED","sort_order":10,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Mercredi Pédagogique & Portes Ouvertes CFP"},{"id":"e48dbeec-745f-4f04-9686-cf3b6ef1bf14","code":"EVT_VENDREDI_AFTERWORK","day_filter":"VENDREDI","target_weekday":5,"badge":"Vendredi • 15h30 – 20h30","title":"Afterwork « Brise du Lac & Poisson Braisé d'Ahala »","short_label":"Vendredi Afterwork Brise du Lac & Grillades","price_text":"Plats dès 3 500 FCFA • Pergola Privée Bord du Lac : +5 000 FCFA","from_price_fcfa":3500,"spots_text":"Plus que 4 pergolas disponibles ce vendredi","description":"Évitez les embouteillages du vendredi soir à Yaoundé : rejoignez Ahala Barrière (face station Tradex) pour savourer le poisson frais des étangs braisé à la minute sous une pergola privée.","schedule":["15h30 – 17h30 : Accueil coupe-file, promenade au bord du lac d'Ahala et installation sous pergola privée.","17h30 – 20h30 : Service grillades & Poisson Braisé d'Ahala au Château des Saveurs, ambiance musicale douce.","Option Séjour : Possibilité de prolonger en nuitée dans les Cités Bene (10k), Chanthel (15k) ou Ewondo VIP (25k FCFA)."],"bundle_code":"CUSTOM","dish":"Poisson Braisé d'Ahala (Étang frais)","meal_slot":"Service 15h00","pergola":true,"nutrition":false,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":20,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Vendredi Afterwork Brise du Lac & Grillades"},{"id":"aa805feb-81e1-43df-96d8-2dd2f090f5ff","code":"EVT_SAMEDI_FAMILLE","day_filter":"SAMEDI","target_weekday":6,"badge":"Samedi • 10h30 & 15h00","title":"Samedi Famille : Rencontre Soigneurs « Gorille ToTo » & Régate Pirogues","short_label":"Samedi Famille • Gorille ToTo & Pirogues","price_text":"Pass Découverte : 1 500 FCFA (Enfant) • 2 500 FCFA (Adulte)","from_price_fcfa":1500,"spots_text":"Tarif enfant strictement garanti à 500 FCFA (entrée)","description":"La sortie préférée des enfants à Yaoundé : nourrissage commenté aux étangs, rencontre avec le gorille « ToTo », balade sécurisée en pirogue avec gilet et piscine semi-olympique.","schedule":["10h30 – 12h00 : Rencontre avec les soigneurs du Zoo (« ToTo ») & nourrissage des poissons et tortues aux étangs.","12h30 – 14h30 : Déjeuner familial au Château des Saveurs (Menu Enfant 2 500 FCFA & spécialités camerounaises).","14h30 – 17h30 : Traversée en pirogue sur le lac, initiation équestre encadrée et piscine surveillée par maître-nageur."],"bundle_code":"PASS_DECOUVERTE","dish":"Menu Enfant & Grillades Douces","meal_slot":"Service 12h30","pergola":false,"nutrition":true,"image_src":"audit-assets/ecopark-real-media/balade_pirogue3.jpg","status":"PUBLISHED","sort_order":30,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Samedi Famille • Gorille ToTo & Pirogues"},{"id":"42ecd1df-9b7a-48d5-a672-5c91bd59464f","code":"EVT_DIMANCHE_ROYAL","day_filter":"DIMANCHE","target_weekday":0,"badge":"Dimanche • 12h00 – 17h30","title":"Grand Dimanche Royal : Buffet Camerounais & Ambiance Acoustique Live","short_label":"Grand Dimanche Royal • Buffet & Live","price_text":"Pass Journée Royale Tout-Inclus : 4 500 FCFA (Enfant) • 8 500 FCFA (Adulte)","from_price_fcfa":4500,"spots_text":"Réservation QR fortement conseillée (Service 12h30 / 13h30 garanti)","description":"Le grand rendez-vous dominical d'ECOPARK Ahala : grands classiques du Château des Saveurs (Poulet DG Royal, Ndolé Crevettes, Poisson Braisé), ambiance acoustique au bord du lac et accès illimité Parc + Piscine + Pirogue.","schedule":["09h30 – 12h00 : Accès coupe-file au Portail d'Ahala (QR Code), visite du Zoo et balade matinale en pirogue.","12h30 – 15h00 : Grand Service Dominical au Château des Saveurs (zéro attente pour les détenteurs du Pass QR) & animation acoustique.","15h00 – 18h00 : Détente à la Piscine Semi-Olympique et sous les pergolas ombragées."],"bundle_code":"PASS_ROYALE","dish":"Poulet DG Royal Plantain Mûr","meal_slot":"Service 13h30","pergola":true,"nutrition":true,"image_src":"audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg","status":"PUBLISHED","sort_order":40,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Grand Dimanche Royal • Buffet & Live"}],"menu_items":[{"id":"95fd646e-216b-4960-9934-431442c2b28f","sku":"MNU-POISSON-BRAISE","category":"GRILLADE","name":"Poisson Braisé d'Ahala (Étang frais)","description":"Poisson frais pêché dans les étangs d'Ahala et braisé à la minute aux épices du terroir, servi avec plantains mûrs ou miondo.","price_fcfa":null,"is_signature":true,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":10,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Poisson Braisé d'Ahala (Étang frais)"},{"id":"5fb873ea-6d4b-4389-8fc1-9676d858defc","sku":"MNU-POULET-DG","category":"PLAT","name":"Poulet DG Royal Plantain Mûr","description":"Le grand classique camerounais du Château des Saveurs : volaille fermière, plantains mûrs dorés, légumes frais et sauce parfumée.","price_fcfa":null,"is_signature":true,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":20,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Poulet DG Royal Plantain Mûr"},{"id":"74048564-ce6d-460c-b9c1-b7de44573dd8","sku":"MNU-NDOLE-ROYAL","category":"PLAT","name":"Ndolé Royal Crevettes & Miondo","description":"Ndolé onctueux préparé selon la tradition avec crevettes, bœuf fondant et accompagnements chauds.","price_fcfa":null,"is_signature":true,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png","status":"PUBLISHED","sort_order":30,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Ndolé Royal Crevettes & Miondo"},{"id":"a165a6bf-0006-4013-a1a1-7ee7961c1dc5","sku":"MNU-MENU-ENFANT","category":"MENU_ENFANT","name":"Menu Enfant & Grillades Douces","description":"Portion adaptée aux enfants (3–12 ans) avec grillades tendres, frites de plantain et jus naturel (Bissap / Ananas).","price_fcfa":2500,"is_signature":false,"in_stock":true,"preorder_enabled":true,"image_src":"audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png","status":"PUBLISHED","sort_order":40,"created_at":"2026-10-28T04:50:05.357Z","updated_at":"2026-10-28T04:50:05.422Z","version":2,"first_published_at":"2026-10-28T04:50:05.357Z","image_alt":"Menu Enfant & Grillades Douces"}],"site_settings":{"opening_hours":{"label":"Mar–Dim : 09h00–18h00","closed_days":["LUNDI"]},"weather_banner":{"presets":{"SUNNY":"27 °C Ensoleillé • Accès RN3 fluide (15 min) • Tous les espaces ouverts","WEEKEND_PEAK":"Grand Dimanche Royal (29 °C ensoleillé) • Forte affluence : billet QR coupe-file recommandé","RAIN_GUARANTEE":"Averse tropicale passagère • Garantie Pluie active (report 90 j gratuit en 1 clic)"},"active_preset":"SUNNY","custom_message":null}}},"generatedAt":"2026-10-28T04:50:05.447Z"}</script>
@@ -7077,8 +7175,8 @@ window.ecoparkOpenAdmin = function () {
       // RÈGLE MÉTIER STRICTE :
       // En groupe (>=20), l'entrée adulte passe de 1 000 à 700 FCFA,
       // MAIS l'entrée enfant reste protégée à 500 FCFA (jamais majorée à 700 FCFA !).
-      const zooAdultUnit = isGroup20Plus ? 700 : 1000;
-      const zooChildUnit = 500;
+      const zooAdultUnit = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('zoo', isGroup20Plus, false) : (isGroup20Plus ? 700 : 1000);
+      const zooChildUnit = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('zoo', isGroup20Plus, true) : 500;
 
       // Tarif Piscine Enfant : 1 500 FCFA (Prévente En Ligne / Semaine) vs 2 500 FCFA (Guichet Week-end & Jours Fériés)
       const poolPeriodEl = document.getElementById('poolRatePeriod');
@@ -7093,14 +7191,21 @@ window.ecoparkOpenAdmin = function () {
 
       const zooCost = document.getElementById('chkZoo').checked
         ? (counts.adults * zooAdultUnit + counts.children * zooChildUnit) : 0;
+      const piscineAdultDynamic = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('piscine', isGroup20Plus, false) : 2500;
       const piscineCost = document.getElementById('chkPiscine').checked
-        ? (counts.adults * 2500 + counts.children * piscineChildUnit) : 0;
+        ? (counts.adults * piscineAdultDynamic + counts.children * piscineChildUnit) : 0;
+      const pirogueAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('pirogue', isGroup20Plus, false) : 1000;
+      const pirogueChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('pirogue', isGroup20Plus, true) : 500;
       const pirogueCost = document.getElementById('chkPirogue').checked
-        ? (counts.adults * 1000 + counts.children * 500) : 0;
+        ? (counts.adults * pirogueAdultDyn + counts.children * pirogueChildDyn) : 0;
+      const chevalAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('cheval', isGroup20Plus, false) : 1000;
+      const chevalChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('cheval', isGroup20Plus, true) : 500;
       const chevalCost = document.getElementById('chkCheval').checked
-        ? (counts.adults * 1000 + counts.children * 500) : 0;
+        ? (counts.adults * chevalAdultDyn + counts.children * chevalChildDyn) : 0;
+      const repasAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('saveurs', isGroup20Plus, false) : 5000;
+      const repasChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('saveurs', isGroup20Plus, true) : 2500;
       const repasCost = document.getElementById('chkRepas').checked
-        ? (counts.adults * 5000 + counts.children * 2500) : 0;
+        ? (counts.adults * repasAdultDyn + counts.children * repasChildDyn) : 0;
 
       // Options Order Bumps (en 1 clic)
       const bumpNutritionChecked = document.getElementById('chkBumpNutrition') && document.getElementById('chkBumpNutrition').checked;
@@ -7582,6 +7687,13 @@ window.ecoparkOpenAdmin = function () {
       const phone = (phoneEl && phoneEl.value.trim()) ? phoneEl.value.trim() : '+237 697 13 62 03';
       const rawDate = (dateEl && dateEl.value.trim()) ? dateEl.value.trim() : '2026-11-15';
 
+      const cgvEl = document.getElementById('agreeTermsBooking');
+      if (cgvEl && !cgvEl.checked) {
+        cgvEl.focus();
+        showToastSprint1('• Veuillez accepter les Conditions Générales de Vente (CGV) pour valider votre commande.');
+        return false;
+      }
+
       if (phoneEl && phoneEl.value.trim() && !isValidCameroonPhone(phone)) {
         phoneEl.focus();
         showToastSprint1('• Veuillez saisir un numéro WhatsApp / Mobile Money Cameroun valide (+237).');
@@ -7674,6 +7786,7 @@ window.ecoparkOpenAdmin = function () {
       document.getElementById('ticketItems').textContent = acts.join(', ') || 'Accès Parc';
       const scanInput = document.getElementById('qrScanInput');
       if (scanInput) scanInput.value = ref;
+      if (typeof renderEcoparkQrSvg === 'function') renderEcoparkQrSvg(ref, 'demoTicketQrWrapper');
 
       showToastSprint1(`• Réservation ${ref} enregistrée ! Billet disponible dans « Mon Espace » et prêt à être scanné au Guichet.`);
       return true;
@@ -9014,6 +9127,7 @@ window.ecoparkOpenAdmin = function () {
         saveDB(db);
         const scanInput = document.getElementById('qrScanInput');
         if (scanInput) scanInput.value = ref;
+      if (typeof renderEcoparkQrSvg === 'function') renderEcoparkQrSvg(ref, 'demoTicketQrWrapper');
         if (statusEl) {
           statusEl.className = 'status-badge status-success';
           statusEl.textContent = `Billet QR ${ref} + GPS envoyés`;
@@ -9173,6 +9287,7 @@ window.ecoparkOpenAdmin = function () {
         if (iEl) iEl.textContent = found.paxSummary;
         const scanInput = document.getElementById('qrScanInput');
         if (scanInput) scanInput.value = found.reference;
+        if (typeof renderEcoparkQrSvg === 'function') renderEcoparkQrSvg(found.reference, 'demoTicketQrWrapper');
       }
       navigateFamily('RES', 'RES-09');
       if (typeof triggerQrPass3DReveal === 'function') {
@@ -9709,7 +9824,7 @@ window.ecoparkOpenAdmin = function () {
         ctx.fillText('Prestations : ' + itemsStr.slice(0, 62), 36, 274);
         ctx.fillStyle = '#9A5B13';
         ctx.font = 'bold 24px sans-serif';
-        ctx.fillText('Montant TTC : ' + totalStr + ' (Tarif enfant protégé 500 FCFA)', 36, 326);
+        ctx.fillText('Montant TTC : ' + totalStr + ' • Billet officiel sécurisé (Garantie 90j)', 36, 326);
 
         ctx.fillStyle = '#1D490D';
         ctx.font = '15px sans-serif';
@@ -9721,12 +9836,26 @@ window.ecoparkOpenAdmin = function () {
         ctx.lineWidth = 4;
         ctx.strokeRect(680, 125, 190, 190);
         ctx.fillStyle = '#1D490D';
-        ctx.fillRect(700, 145, 44, 44);
-        ctx.fillRect(806, 145, 44, 44);
-        ctx.fillRect(700, 251, 44, 44);
-        ctx.fillRect(760, 195, 32, 32);
-        ctx.fillStyle = '#1F880B';
-        ctx.fillRect(800, 245, 48, 48);
+        if (typeof qrcode === 'function') {
+          try {
+            var qr = qrcode(0, 'M');
+            qr.addData(ref || 'ECP-DEMO');
+            qr.make();
+            var modCount = qr.getModuleCount();
+            var qrBoxInner = 170;
+            var qrLeft = 690;
+            var qrTop = 135;
+            var modSize = qrBoxInner / modCount;
+            ctx.fillStyle = '#1D490D';
+            for (var r = 0; r < modCount; r++) {
+              for (var c = 0; c < modCount; c++) {
+                if (qr.isDark(r, c)) {
+                  ctx.fillRect(Math.round(qrLeft + c * modSize), Math.round(qrTop + r * modSize), Math.ceil(modSize), Math.ceil(modSize));
+                }
+              }
+            }
+          } catch (eQr) { console.warn('Canvas QR render error:', eQr); }
+        }
       }
 
       try {
@@ -10722,6 +10851,273 @@ window.ecoparkOpenAdmin = function () {
 
     syncProgressiveDisclosureSimulator();
 
+  // ECOPARK_PHASE5_INTEGRATION:START
+  // ========================================================================
+  // PHASE 5 & VIABILITÉ TERRAIN : MOTEUR DYNAMIQUE ECOPARK & GARDE-FOUS
+  // ========================================================================
+
+  // --- 1. GÉNÉRATION DE VRAI QR CODE SCANNABLE (SVG & CANVAS) ---
+  window.renderEcoparkQrSvg = function (ref, targetContainer) {
+    var el = typeof targetContainer === 'string' ? document.getElementById(targetContainer) : targetContainer;
+    if (!el) return;
+    var codeStr = (ref || 'ECP-2026-84920').trim();
+    if (typeof qrcode === 'function') {
+      try {
+        var qr = qrcode(0, 'M');
+        qr.addData(codeStr);
+        qr.make();
+        var svgTag = qr.createSvgTag(4, 0);
+        el.innerHTML = svgTag;
+        var svgEl = el.querySelector('svg');
+        if (svgEl) {
+          svgEl.setAttribute('width', '108');
+          svgEl.setAttribute('height', '108');
+          svgEl.setAttribute('aria-label', 'Billet QR Code ECOPARK ' + codeStr);
+          svgEl.style.border = '2px solid var(--color-brand-deep)';
+          svgEl.style.borderRadius = '8px';
+          svgEl.style.padding = '4px';
+          svgEl.style.background = '#FFFFFF';
+          svgEl.style.flexShrink = '0';
+          svgEl.style.boxSizing = 'border-box';
+        }
+        return;
+      } catch (err) {
+        console.warn('QR SVG render error:', err);
+      }
+    }
+  };
+
+  // --- 2. VALIDATION STRICTE TÉLÉPHONE CAMEROUN (+237) ---
+  window.isValidCameroonPhone = function (phone) {
+    if (!phone) return false;
+    var clean = String(phone).replace(/[\s\-\(\)\.]/g, '');
+    // +2376XXXXXXXX, 2376XXXXXXXX, 6XXXXXXXX (9 chiffres commençant par 6) ou fixe 2XXXXXXXX
+    return /^(\+?237)?(6[25-9]\d{7}|2\d{8})$/.test(clean);
+  };
+
+  // --- 3. MODALE CGV OFFICIELLES ---
+  window.openOfficialCgvModal = function () {
+    closeSprint1Modals();
+    var overlay = document.getElementById('modalOverlaySprint1');
+    var box = document.getElementById('modalCgvBox');
+    if (overlay) overlay.style.display = 'flex';
+    if (box) box.style.display = 'block';
+  };
+
+  // --- 4. VERROUILLAGE LUNDIS ET DATES PASSÉES ---
+  window.validateDateChoice = function (inputEl) {
+    if (!inputEl || !inputEl.value) return true;
+    var d = new Date(inputEl.value + 'T12:00:00');
+    if (isNaN(d.getTime())) return true;
+    var now = new Date();
+    now.setHours(0, 0, 0, 0);
+    if (d < now) {
+      showToastSprint1('• Action refusée : Vous ne pouvez pas choisir une date antérieure à aujourd\'hui.');
+      var pad = function (n) { return String(n).padStart(2, '0'); };
+      inputEl.value = now.getFullYear() + '-' + pad(now.getMonth() + 1) + '-' + pad(now.getDate());
+      return false;
+    }
+    if (d.getDay() === 1) { // 1 = Lundi
+      showToastSprint1('• ECOPARK Ahala est fermé au public le Lundi (repos animalier & entretien). Veuillez choisir du Mardi au Dimanche.');
+      d.setDate(d.getDate() + 1); // Reporter automatiquement au Mardi
+      var pad = function (n) { return String(n).padStart(2, '0'); };
+      inputEl.value = d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate());
+      if (inputEl.id === 'visitDate' && typeof recalcSimulator === 'function') {
+        recalcSimulator();
+      }
+      return false;
+    }
+    return true;
+  };
+
+  window.initDateConstraints = function () {
+    var today = new Date();
+    var pad = function (n) { return String(n).padStart(2, '0'); };
+    var todayIso = today.getFullYear() + '-' + pad(today.getMonth() + 1) + '-' + pad(today.getDate());
+    ['visitDate', 'quoteDate', 'rdvDate', 'rescheduleNewDate'].forEach(function (id) {
+      var el = document.getElementById(id);
+      if (el) {
+        el.setAttribute('min', todayIso);
+        el.addEventListener('change', function () {
+          validateDateChoice(this);
+        });
+      }
+    });
+  };
+
+  // --- 5. RACCORDEMENT DYNAMIQUE DU CATALOGUE /nos-tarifs (PUB-10) ---
+  window.renderPubCatalogFromData = function () {
+    var tbody = document.getElementById('pubCatalogTableBody');
+    if (!tbody || !window.EcoparkData || typeof EcoparkData.content !== 'function') return;
+    var acts = EcoparkData.content('catalog_activities') || [];
+    if (acts.length === 0) return;
+    var html = '';
+    acts.forEach(function (a) {
+      if (a.status !== 'PUBLISHED') return;
+      var condText = '';
+      if (a.group_adult_price_fcfa && a.group_adult_price_fcfa < a.adult_price_fcfa) {
+        condText += 'Tarif groupe dès 20 pers : ' + formatFCFA(a.group_adult_price_fcfa) + '/adulte. ';
+      }
+      if (a.group_child_price_fcfa) {
+        condText += 'Tarif enfant protégé : ' + formatFCFA(a.group_child_price_fcfa) + '. ';
+      }
+      condText += (a.description || '');
+
+      var childPriceBadge = a.child_price_fcfa > 0
+        ? ('<span class="price-pill">' + formatFCFA(a.child_price_fcfa) + '</span>')
+        : '<span class="status-badge">Inclus / N/A</span>';
+      var adultPriceBadge = a.adult_price_fcfa > 0
+        ? ('<span class="price-pill">' + formatFCFA(a.adult_price_fcfa) + '</span>')
+        : '<span class="status-badge">Sur devis</span>';
+
+      html += '<tr>' +
+        '<td><strong>' + escHtml(a.title) + '</strong></td>' +
+        '<td>' + childPriceBadge + '</td>' +
+        '<td>' + adultPriceBadge + '</td>' +
+        '<td style="font-size:13.5px;color:var(--color-text-muted);">' + escHtml(condText) + '</td>' +
+        '<td><button class="btn btn-secondary btn-sm" onclick="addActivityAndGo(\'' + escHtml(a.slug) + '\')">Sélectionner</button></td>' +
+        '</tr>';
+    });
+
+    var lodges = EcoparkData.content('lodge_cities') || [];
+    if (lodges.length > 0) {
+      var lodgeParts = lodges.map(function (l) {
+        return escHtml(l.name.replace(/\(.*\)/, '').trim()) + ' (' + Math.round(l.min_price_fcfa / 1000) + 'k-' + Math.round(l.max_price_fcfa / 1000) + 'k)';
+      });
+      html += '<tr>' +
+        '<td><strong>Hébergement — Cités Bene, Chanthel & Ewondo</strong></td>' +
+        '<td colspan="2"><strong>' + lodgeParts.join(' • ') + ' FCFA</strong></td>' +
+        '<td style="font-size:13.5px;color:var(--color-text-muted);">Repos en journée (Day-use) ou nuitée complète avec accès parc.</td>' +
+        '<td><button class="btn btn-secondary btn-sm" onclick="navigateFamily(\'RES\', \'RES-01\')">Réserver</button></td>' +
+        '</tr>';
+    }
+
+    html += '<tr>' +
+      '<td><strong>Centre de Formation Professionnelle (CFP)</strong></td>' +
+      '<td colspan="2">Inscription : <strong>50 000 FCFA</strong> • Scolarité annuelle : <strong>250 000 FCFA</strong></td>' +
+      '<td style="font-size:13.5px;color:var(--color-text-muted);">Agrément MINEFOP • 5 filières métiers avec stages pratiques au sein d\'ECOPARK.</td>' +
+      '<td><button class="btn btn-secondary btn-sm" onclick="openCfpModalSprint1()">Candidater</button></td>' +
+      '</tr>';
+
+    tbody.innerHTML = html;
+  };
+
+  // --- 6. PRIX DYNAMIQUES POUR LE SIMULATEUR /reserver (RES-01..12) ---
+  window.getCatalogPriceDynamic = function (slug, isGroup, isChild) {
+    if (window.EcoparkData && typeof EcoparkData.get === 'function') {
+      var act = EcoparkData.get('catalog_activities', function (a) { return a.slug === slug; });
+      if (act && act.status === 'PUBLISHED') {
+        if (isChild) {
+          return (isGroup && act.group_child_price_fcfa != null) ? act.group_child_price_fcfa : (act.child_price_fcfa || 0);
+        } else {
+          return (isGroup && act.group_adult_price_fcfa != null) ? act.group_adult_price_fcfa : (act.adult_price_fcfa || 0);
+        }
+      }
+    }
+    var defs = {
+      zoo: { adult: 1000, child: 500, gAdult: 700, gChild: 500 },
+      piscine: { adult: 2500, child: 1500, gAdult: 2000, gChild: 1500 },
+      pirogue: { adult: 1000, child: 500, gAdult: 800, gChild: 500 },
+      cheval: { adult: 1000, child: 500, gAdult: 800, gChild: 500 },
+      saveurs: { adult: 5000, child: 2500, gAdult: 4500, gChild: 2500 },
+      nutrition_poissons: { adult: 500, child: 500, gAdult: 500, gChild: 500 },
+      pergola_lac: { adult: 5000, child: 0, gAdult: 5000, gChild: 0 },
+      navette_yaounde: { adult: 1500, child: 1000, gAdult: 1200, gChild: 1000 }
+    };
+    var d = defs[slug] || { adult: 1000, child: 500, gAdult: 800, gChild: 500 };
+    return isChild ? (isGroup ? d.gChild : d.child) : (isGroup ? d.gAdult : d.adult);
+  };
+
+  // --- 7. SCANNER CAMÉRA AGT-05 ---
+  var _qrVideoStream = null;
+  var _qrScanInterval = null;
+
+  window.toggleQrCameraScan = async function () {
+    if (_qrVideoStream) {
+      stopQrCameraScan();
+    } else {
+      startQrCameraScan();
+    }
+  };
+
+  window.startQrCameraScan = async function () {
+    var container = document.getElementById('qrCameraScanContainer');
+    var video = document.getElementById('qrScannerVideo');
+    var btn = document.getElementById('btnToggleCameraScan');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      showToastSprint1('• Accès caméra non supporté par ce navigateur.');
+      return;
+    }
+    try {
+      _qrVideoStream = await navigator.mediaDevices.getUserMedia({
+        video: { facingMode: { ideal: 'environment' } }
+      });
+      if (video) {
+        video.srcObject = _qrVideoStream;
+        await video.play();
+      }
+      if (container) container.style.display = 'block';
+      if (btn) btn.innerHTML = '<svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><line x1="9" x2="15" y1="9" y2="15"/><line x1="15" x2="9" y1="9" y2="15"/></svg> Couper Caméra';
+
+      if ('BarcodeDetector' in window) {
+        var detector = new BarcodeDetector({ formats: ['qr_code'] });
+        _qrScanInterval = setInterval(async function () {
+          if (!video || video.readyState < 2) return;
+          try {
+            var barcodes = await detector.detect(video);
+            if (barcodes && barcodes.length > 0) {
+              var raw = barcodes[0].rawValue;
+              stopQrCameraScan();
+              var input = document.getElementById('qrScanInput');
+              if (input) input.value = raw;
+              verifyLiveQrCode();
+            }
+          } catch (e) {}
+        }, 300);
+      }
+    } catch (err) {
+      showToastSprint1('• Caméra indisponible : ' + (err.message || 'accès refusé'));
+      stopQrCameraScan();
+    }
+  };
+
+  window.stopQrCameraScan = function () {
+    if (_qrScanInterval) {
+      clearInterval(_qrScanInterval);
+      _qrScanInterval = null;
+    }
+    if (_qrVideoStream) {
+      _qrVideoStream.getTracks().forEach(function (t) { t.stop(); });
+      _qrVideoStream = null;
+    }
+    var container = document.getElementById('qrCameraScanContainer');
+    var btn = document.getElementById('btnToggleCameraScan');
+    if (container) container.style.display = 'none';
+    if (btn) btn.innerHTML = '<svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg> Caméra';
+  };
+
+  // --- 8. INITIALISATION AUTOMATIQUE & ABONNEMENTS TEMPS RÉEL ---
+  document.addEventListener('DOMContentLoaded', function () {
+    initDateConstraints();
+    renderPubCatalogFromData();
+    renderEcoparkQrSvg('ECP-2026-84920', 'demoTicketQrWrapper');
+
+    if (window.EcoparkData && typeof EcoparkData.subscribe === 'function') {
+      EcoparkData.subscribe('catalog_activities', function () {
+        renderPubCatalogFromData();
+        if (typeof recalcSimulator === 'function') recalcSimulator();
+      });
+      EcoparkData.subscribe('sales_bundles', function () {
+        renderPubCatalogFromData();
+        if (typeof recalcSimulator === 'function') recalcSimulator();
+      });
+      EcoparkData.subscribe('lodge_cities', function () {
+        renderPubCatalogFromData();
+        if (typeof recalcSimulator === 'function') recalcSimulator();
+      });
+    }
+  });
+// ECOPARK_PHASE5_INTEGRATION:END
   </script>
 </body>
 </html>
