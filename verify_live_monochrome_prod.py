@@ -119,8 +119,10 @@ def run_live_audit():
             window.setHeroShowcase(2, document.querySelectorAll('.hero-thumb-btn')[2]);
             const switchedHeroSrc = document.getElementById('heroShowcaseImg').getAttribute('src');
 
+            navigateFamily('PUB', 'PUB-03');
             const bentoMedia = document.querySelector('.bento-card .card-media-wrapper');
             const bentoH = bentoMedia ? bentoMedia.offsetHeight : 0;
+            navigateFamily('PUB', 'PUB-01');
             const zoomPills = document.querySelectorAll('.photo-zoom-pill').length;
             const mosaicItems = document.querySelectorAll('.gallery-mosaic-item').length;
 
@@ -213,6 +215,7 @@ def run_live_audit():
         page.wait_for_timeout(450)
         page.screenshot(path=art_dir + r"\hf_live_1_hero_reel_sync.png")
 
+        page.evaluate("navigateFamily('PUB', 'PUB-13');")
         page.locator("#ahalaMapContainer").scroll_into_view_if_needed()
         page.evaluate("selectAhalaZone(3);")
         page.wait_for_timeout(450)

@@ -12,7 +12,7 @@ from playwright.sync_api import sync_playwright
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-BASE = "http://localhost:3000"
+BASE = "https://ecopark-cameroun-ahala.vercel.app" if "--prod" in sys.argv else "http://localhost:3000"
 results = []
 
 
@@ -115,6 +115,56 @@ def main():
         check(fixes_check["sig"].startswith("SIG-V4-"), "Anomalies A-007/A-008/A-023 corrigées : Signature d'intégrité QR active", fixes_check["sig"])
         check("2 03" in fixes_check["masked"] and "•" in fixes_check["masked"],
               "Anomalie A-020 corrigée : Masquage de confidentialité téléphone actif", fixes_check["masked"])
+
+        # 5b. Architecture Multi-Pages Publiques (6 Sous-Pages Dédiées dans #view-PUB)
+        subpage_check = page.evaluate("""() => {
+            navigateFamily('PUB', 'PUB-01');
+            const accueilH = document.documentElement.scrollHeight;
+            const accueilActive = window._activePubSubPage;
+            const pub04HiddenOnAccueil = getComputedStyle(document.getElementById('sec-PUB-04')).display === 'none';
+
+            navigateFamily('PUB', 'PUB-03');
+            const actH = document.documentElement.scrollHeight;
+            const actActive = window._activePubSubPage;
+            const pub03VisibleOnAct = getComputedStyle(document.getElementById('sec-PUB-03')).display !== 'none';
+
+            navigateFamily('PUB', 'PUB-04');
+            const ficheH = document.documentElement.scrollHeight;
+            const ficheActive = window._activePubSubPage;
+
+            navigateFamily('PUB', 'PUB-09');
+            const hotelH = document.documentElement.scrollHeight;
+            const hotelActive = window._activePubSubPage;
+
+            navigateFamily('PUB', 'PUB-10');
+            const tarifsH = document.documentElement.scrollHeight;
+            const tarifsActive = window._activePubSubPage;
+
+            navigateFamily('PUB', 'PUB-12');
+            const cfpH = document.documentElement.scrollHeight;
+            const cfpActive = window._activePubSubPage;
+
+            navigateFamily('PUB', 'PUB-01');
+            return {
+                accueilH, accueilActive, pub04HiddenOnAccueil,
+                actH, actActive, pub03VisibleOnAct,
+                ficheH, ficheActive,
+                hotelH, hotelActive,
+                tarifsH, tarifsActive,
+                cfpH, cfpActive
+            };
+        }""")
+        check(
+            subpage_check["accueilActive"] == "ACCUEIL"
+            and subpage_check["actActive"] == "ACTIVITES"
+            and subpage_check["ficheActive"] == "FICHE_ACTIVITE"
+            and subpage_check["hotelActive"] == "HOTELS_SAVEURS"
+            and subpage_check["tarifsActive"] == "TARIFS_AGENDA"
+            and subpage_check["cfpActive"] == "CFP_INFOS"
+            and subpage_check["accueilH"] < 5500,
+            "Architecture V4 à 6 Sous-Pages Publiques opérationnelle (Hauteur Accueil réduite de 15 296 px à ~3 800 px)",
+            str(subpage_check)
+        )
 
         # 6. Pilot 5 & 6 : Mobile 390x844 Bottom Nav & Cibles tactiles >= 44px (A-013, A-024)
         page.set_viewport_size({"width": 390, "height": 844})

@@ -668,6 +668,124 @@ V4_CSS_BLOCK = """    /* ECOPARK_V4_CANOPEE_CSS:START */
     body.viewport-mobile .v4-res-stepper {
       grid-template-columns: 1fr;
     }
+
+    /* V4 Architecture Multi-Pages Publiques (6 Sous-Vues Dediees dans #view-PUB) */
+    .v4-pub-subpages-nav {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1.5px solid rgba(29, 73, 13, 0.14);
+      padding: 10px 0;
+      position: sticky;
+      top: 68px;
+      z-index: 940;
+      box-shadow: 0 4px 16px rgba(20, 34, 17, 0.05);
+    }
+    .v4-pub-subpages-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .v4-pub-subpages-pills {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .v4-pub-subpage-pill {
+      padding: 7px 14px;
+      border-radius: 999px;
+      border: 1.5px solid rgba(29, 73, 13, 0.18);
+      background: #FFFFFF;
+      color: var(--color-text);
+      font-family: var(--font-body);
+      font-size: 13.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      min-height: 36px;
+    }
+    .v4-pub-subpage-pill:hover {
+      border-color: #1D490D;
+      background: #EDF4E7;
+      color: #1D490D;
+    }
+    .v4-pub-subpage-pill.active {
+      background: #1D490D;
+      color: #FFFFFF;
+      border-color: #1D490D;
+      box-shadow: 0 4px 12px rgba(29, 73, 13, 0.22);
+    }
+    .v4-pub-subpage-pill-all {
+      border-style: dashed;
+      border-color: #C47D2B;
+      color: #9A5B13;
+      background: #FBF5EC;
+    }
+    .v4-pub-subpage-pill-all.active {
+      background: #C47D2B;
+      border-color: #9A5B13;
+      color: #FFFFFF;
+    }
+    .v4-pub-hub-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-top: 18px;
+    }
+    .v4-pub-hub-card {
+      background: #FFFFFF;
+      border-radius: 18px;
+      border: 1.5px solid rgba(29, 73, 13, 0.14);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 12px;
+      box-shadow: var(--shadow-v4-card);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      cursor: pointer;
+      text-align: left;
+    }
+    .v4-pub-hub-card:hover {
+      transform: translateY(-3px);
+      border-color: #1D490D;
+    }
+    .v4-pub-footer-pager {
+      background: #EDF4E7;
+      border-top: 1.5px solid rgba(29, 73, 13, 0.16);
+      padding: 18px 0;
+      margin-top: 12px;
+    }
+    @media (max-width: 1024px) {
+      .v4-pub-hub-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+    @media (max-width: 768px) {
+      .v4-pub-hub-grid {
+        grid-template-columns: 1fr;
+      }
+      .v4-pub-subpages-nav {
+        top: 56px;
+        padding: 8px 0;
+      }
+      .v4-pub-subpages-pills {
+        overflow-x: auto;
+        flex-wrap: nowrap;
+        width: 100%;
+        padding-bottom: 4px;
+      }
+      .v4-pub-subpage-pill {
+        white-space: nowrap;
+        flex-shrink: 0;
+      }
+    }
     /* ECOPARK_V4_CANOPEE_CSS:END */"""
 
 
@@ -1394,6 +1512,133 @@ V4_RES_STEPPER_HTML = """            <!-- ECOPARK_V4_RES_STEPPER:START -->
             <!-- ECOPARK_V4_RES_STEPPER:END -->"""
 
 
+V4_PUB_SUBPAGES_NAV_HTML = """        <!-- ECOPARK_V4_PUB_SUBPAGES_NAV:START -->
+        <nav class="v4-pub-subpages-nav" id="v4PubSubPagesNav" aria-label="Sous-pages dédiées du Site Public ECOPARK V4">
+          <div class="container v4-pub-subpages-inner">
+            <div class="v4-pub-subpages-pills" role="tablist">
+              <button type="button" class="v4-pub-subpage-pill active" data-pub-subpage="ACCUEIL" onclick="navigateFamily('PUB', 'PUB-01')">
+                <span>1. Accueil &amp; Orientation</span>
+              </button>
+              <button type="button" class="v4-pub-subpage-pill" data-pub-subpage="ACTIVITES" onclick="navigateFamily('PUB', 'PUB-03')">
+                <span>2. Activités &amp; Lac (8)</span>
+              </button>
+              <button type="button" class="v4-pub-subpage-pill" data-pub-subpage="FICHE_ACTIVITE" onclick="navigateFamily('PUB', 'PUB-04')">
+                <span>3. Fiche Détail Activité</span>
+              </button>
+              <button type="button" class="v4-pub-subpage-pill" data-pub-subpage="HOTELS_SAVEURS" onclick="navigateFamily('PUB', 'PUB-09')">
+                <span>4. Hôtels &amp; Saveurs</span>
+              </button>
+              <button type="button" class="v4-pub-subpage-pill" data-pub-subpage="TARIFS_AGENDA" onclick="navigateFamily('PUB', 'PUB-10')">
+                <span>5. Tarifs FCFA &amp; Agenda</span>
+              </button>
+              <button type="button" class="v4-pub-subpage-pill" data-pub-subpage="CFP_INFOS" onclick="navigateFamily('PUB', 'PUB-12')">
+                <span>6. Formation CFP, Plan &amp; RDV</span>
+              </button>
+              <button type="button" class="v4-pub-subpage-pill v4-pub-subpage-pill-all" data-pub-subpage="ALL" onclick="switchPubSubPage('ALL', { scrollTop: true })" title="Déplier les 22 écrans publics sur une seule page pour audit">
+                <span>Vue Complète (22)</span>
+              </button>
+            </div>
+            <span class="price-pill" id="v4PubSubPageIndicator" style="font-size:12px;">Page 1/6 • Accueil &amp; Orientation</span>
+          </div>
+        </nav>
+        <!-- ECOPARK_V4_PUB_SUBPAGES_NAV:END -->"""
+
+
+V4_PUB_HUB_AND_FOOTER_HTML = """        <!-- ECOPARK_V4_PUB_HUB_AND_FOOTER:START -->
+        <div class="section section-soft" id="v4PubHubCardsBlock" style="padding-top:26px;padding-bottom:32px;">
+          <div class="container">
+            <div class="section-header" style="margin-bottom:14px;">
+              <span class="eyebrow">Navigation par Univers • Architecture V4 Multi-Pages</span>
+              <h2>Explorez chaque univers d'ECOPARK sur sa page dédiée</h2>
+              <p style="color:var(--color-text-muted);margin-top:6px;">
+                Pour une lecture fluide et aérée sur mobile comme sur ordinateur, nos offres sont organisées en <strong>6 pages thématiques dédiées</strong> avec tarifs officiels garantis en Francs CFA.
+              </p>
+            </div>
+            <div class="v4-pub-hub-grid">
+              <button type="button" class="v4-pub-hub-card" onclick="navigateFamily('PUB', 'PUB-03')">
+                <div>
+                  <span class="price-pill" style="margin-bottom:8px;display:inline-block;">Page 2/6 • Dès 500 FCFA Enfant</span>
+                  <h3 style="font-size:1.22rem;margin-bottom:6px;">Catalogue des 8 Activités &amp; Plein Air</h3>
+                  <p style="font-size:13.8px;color:var(--color-text-muted);margin:0;">
+                    Filtrez par envie : Balade en pirogue sur le lac, Parc animalier (« ToTo »), Piscine semi-olympique, Équitation, Pêche ludique, Musée et Bibliothèque.
+                  </p>
+                </div>
+                <strong style="color:#1D490D;font-size:13.8px;">Ouvrir la page Activités →</strong>
+              </button>
+
+              <button type="button" class="v4-pub-hub-card" onclick="navigateFamily('PUB', 'PUB-04')">
+                <div>
+                  <span class="price-pill" style="margin-bottom:8px;display:inline-block;">Page 3/6 • Fiche Expérience</span>
+                  <h3 style="font-size:1.22rem;margin-bottom:6px;">Fiche Détail Activité &amp; Devis Direct</h3>
+                  <p style="font-size:13.8px;color:var(--color-text-muted);margin:0;">
+                    Galerie photos HD, programme étape par étape, équipements de sécurité fournis (gilet homologué, maître-nageur) et calculateur FCFA instantané.
+                  </p>
+                </div>
+                <strong style="color:#1D490D;font-size:13.8px;">Consulter la fiche détail →</strong>
+              </button>
+
+              <button type="button" class="v4-pub-hub-card" onclick="navigateFamily('PUB', 'PUB-09')">
+                <div>
+                  <span class="price-pill" style="margin-bottom:8px;display:inline-block;">Page 4/6 • 10 000 à 45 000 FCFA</span>
+                  <h3 style="font-size:1.22rem;margin-bottom:6px;">4 Cités Hôtelières &amp; Château des Saveurs</h3>
+                  <p style="font-size:13.8px;color:var(--color-text-muted);margin:0;">
+                    Séjournez au calme (Cités Bene, Chanthel, Ewondo VIP &amp; Suites Privées) et savourez le Poisson braisé d'Ahala ou le Poulet DG Royal sous nos pergolas.
+                  </p>
+                </div>
+                <strong style="color:#1D490D;font-size:13.8px;">Ouvrir Hôtels &amp; Restauration →</strong>
+              </button>
+
+              <button type="button" class="v4-pub-hub-card" onclick="navigateFamily('PUB', 'PUB-10')">
+                <div>
+                  <span class="price-pill" style="margin-bottom:8px;display:inline-block;">Page 5/6 • Pass &amp; Grille FCFA</span>
+                  <h3 style="font-size:1.22rem;margin-bottom:6px;">Pass Tout-Inclus, Tarifs, Groupes &amp; Agenda</h3>
+                  <p style="font-size:13.8px;color:var(--color-text-muted);margin:0;">
+                    Comparez nos 3 Pass Coupe-File, la grille tarifaire complète en FCFA, les offres Écoles / Salle « Menkii Essomba Anton » et l'Agenda Mardi–Dimanche.
+                  </p>
+                </div>
+                <strong style="color:#1D490D;font-size:13.8px;">Ouvrir Tarifs &amp; Agenda →</strong>
+              </button>
+
+              <button type="button" class="v4-pub-hub-card" onclick="navigateFamily('PUB', 'PUB-12')">
+                <div>
+                  <span class="price-pill" style="margin-bottom:8px;display:inline-block;">Page 6/6 • MINEFOP &amp; Accès RN3</span>
+                  <h3 style="font-size:1.22rem;margin-bottom:6px;">Campus CFP, Plan Interactif RN3, RDV &amp; FAQ</h3>
+                  <p style="font-size:13.8px;color:var(--color-text-muted);margin:0;">
+                    Découvrez les 5 filières du CFP ECOPARK (dès 16 ans), le plan vectoriel d'Ahala Barrière (Face Tradex), la prise de RDV et la Galerie HD.
+                  </p>
+                </div>
+                <strong style="color:#1D490D;font-size:13.8px;">Ouvrir CFP, Plan &amp; Infos →</strong>
+              </button>
+
+              <button type="button" class="v4-pub-hub-card" style="background:linear-gradient(135deg, #EDF4E7 0%, #FBF5EC 100%);border-color:#1D490D;" onclick="navigateFamily('RES', 'RES-01')">
+                <div>
+                  <span class="status-badge status-success" style="margin-bottom:8px;display:inline-block;">Guichet En Ligne • Billet QR</span>
+                  <h3 style="font-size:1.22rem;margin-bottom:6px;">Simulateur FCFA &amp; Billet Coupe-File QR</h3>
+                  <p style="font-size:13.8px;color:var(--color-text-muted);margin:0;">
+                    Composez votre visite en 4 étapes simples (Tarif enfant 500 FCFA protégé), réglez via Orange Money / MTN MoMo sans PIN et recevez votre QR Code.
+                  </p>
+                </div>
+                <strong style="color:#1D490D;font-size:13.8px;">Préparer &amp; Réserver ma visite →</strong>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="v4-pub-footer-pager" id="v4PubSubPageFooterNav">
+          <div class="container" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary btn-sm" id="v4PubPagerHomeBtn" onclick="navigateFamily('PUB', 'PUB-01')">← Retour à l'Accueil</button>
+              <strong id="v4PubPagerCurrentLabel" style="font-size:14px;color:var(--color-brand-deep);">Page 1/6 : Accueil &amp; Orientation</strong>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+              <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" id="v4PubPagerNextBtn" onclick="navigateFamily('PUB', 'PUB-03')">Page suivante : Activités &amp; Lac →</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="navigateFamily('RES', 'RES-01')">Réserver mon Billet QR →</button>
+            </div>
+          </div>
+        </div>
+        <!-- ECOPARK_V4_PUB_HUB_AND_FOOTER:END -->"""
+
+
 V4_MOBILE_BOTTOM_NAV_HTML = """    <!-- ECOPARK_V4_MOBILE_NAV:START -->
     <nav class="v4-mobile-bottom-nav" id="v4MobileBottomNav" aria-label="Navigation mobile principale ECOPARK V4">
       <button type="button" class="v4-bottom-nav-btn active" id="v4MobNavAccueil" onclick="navigateV4MobileTab('ACCUEIL')">
@@ -1839,6 +2084,230 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
       if (s.length < 6) return s;
       return s.slice(0, -4).replace(/[0-9]/g, '•') + s.slice(-4);
     };
+
+    // =========================================================================
+    // ARCHITECTURE MULTI-PAGES PUBLIQUES (6 SOUS-VUES DÉDIÉES DANS #view-PUB)
+    // Découple les 22 sections PUB en 6 pages thématiques respirantes (~2 000 px)
+    // =========================================================================
+    var PUB_SCREEN_TO_SUBPAGE = {
+      'PUB-01': 'ACCUEIL',
+      'PUB-02': 'ACCUEIL',
+      'PUB-15': 'ACCUEIL',
+      'PUB-03': 'ACTIVITES',
+      'PUB-05': 'ACTIVITES',
+      'PUB-06': 'ACTIVITES',
+      'PUB-04': 'FICHE_ACTIVITE',
+      'PUB-07': 'HOTELS_SAVEURS',
+      'PUB-08': 'HOTELS_SAVEURS',
+      'PUB-09': 'HOTELS_SAVEURS',
+      'PUB-10': 'TARIFS_AGENDA',
+      'PUB-11': 'TARIFS_AGENDA',
+      'PUB-16': 'TARIFS_AGENDA',
+      'PUB-12': 'CFP_INFOS',
+      'PUB-13': 'CFP_INFOS',
+      'PUB-14': 'CFP_INFOS',
+      'PUB-17': 'CFP_INFOS',
+      'PUB-18': 'CFP_INFOS',
+      'PUB-19': 'CFP_INFOS',
+      'PUB-20': 'CFP_INFOS',
+      'PUB-21': 'CFP_INFOS',
+      'PUB-22': 'CFP_INFOS'
+    };
+
+    var PUB_SUBPAGE_META = {
+      ACCUEIL: {
+        label: 'Page 1/6 • Accueil & Orientation',
+        nextScreen: 'PUB-03',
+        nextLabel: 'Page suivante : Activités & Lac →',
+        navId: 'nav-ACCUEIL'
+      },
+      ACTIVITES: {
+        label: 'Page 2/6 • Catalogue des Activités & Lac (8)',
+        nextScreen: 'PUB-04',
+        nextLabel: 'Page suivante : Fiche Détail Activité →',
+        navId: 'nav-PUB'
+      },
+      FICHE_ACTIVITE: {
+        label: 'Page 3/6 • Fiche Détail Activité & Devis Direct',
+        nextScreen: 'PUB-09',
+        nextLabel: 'Page suivante : Hôtels & Saveurs →',
+        navId: 'nav-PUB'
+      },
+      HOTELS_SAVEURS: {
+        label: 'Page 4/6 • 4 Cités Hôtelières & Château des Saveurs',
+        nextScreen: 'PUB-10',
+        nextLabel: 'Page suivante : Tarifs FCFA & Agenda →',
+        navId: 'nav-HOTELS'
+      },
+      TARIFS_AGENDA: {
+        label: 'Page 5/6 • Pass Tout-Inclus, Tarifs FCFA & Agenda',
+        nextScreen: 'PUB-12',
+        nextLabel: 'Page suivante : Formation CFP & Plan RN3 →',
+        navId: 'nav-TARIFS'
+      },
+      CFP_INFOS: {
+        label: 'Page 6/6 • Formation CFP, Plan RN3 Ahala, RDV & FAQ',
+        nextScreen: 'PUB-01',
+        nextLabel: 'Retour : Page Accueil →',
+        navId: 'nav-CFP'
+      },
+      ALL: {
+        label: 'Vue Complète • 22 Écrans Publics Dépliés',
+        nextScreen: 'PUB-01',
+        nextLabel: 'Revenir au Mode 6 Pages (Accueil) →',
+        navId: 'nav-ACCUEIL'
+      }
+    };
+
+    window.PUB_SCREEN_TO_SUBPAGE = PUB_SCREEN_TO_SUBPAGE;
+    window._activePubSubPage = 'ACCUEIL';
+
+    function setElDisplay(idOrEl, show) {
+      var el = typeof idOrEl === 'string' ? document.getElementById(idOrEl) : idOrEl;
+      if (!el) return;
+      el.style.display = show ? '' : 'none';
+    }
+
+    window.switchPubSubPage = function (pageKey, opts) {
+      opts = opts || {};
+      var key = PUB_SUBPAGE_META[pageKey] ? pageKey : 'ACCUEIL';
+      window._activePubSubPage = key;
+      document.body.setAttribute('data-pub-subpage', key);
+
+      var isAll = (key === 'ALL');
+
+      // 1. Sections de premier niveau de #view-PUB
+      setElDisplay('sec-PUB-01', isAll || key === 'ACCUEIL');
+      setElDisplay('pubQuickIntentRouter', isAll || key === 'ACCUEIL');
+      setElDisplay('sec-totem-11-services', isAll || key === 'ACCUEIL');
+      setElDisplay('sec-PUB-15', isAll || key === 'ACCUEIL');
+      setElDisplay('v4PubHubCardsBlock', key === 'ACCUEIL');
+
+      setElDisplay('sec-PUB-04', isAll || key === 'FICHE_ACTIVITE');
+      setElDisplay('sec-PUB-09', isAll || key === 'HOTELS_SAVEURS');
+      setElDisplay('sec-PUB-10', isAll || key === 'TARIFS_AGENDA');
+      setElDisplay('sec-PUB-16', isAll || key === 'TARIFS_AGENDA');
+      setElDisplay('sec-PUB-13', isAll || key === 'CFP_INFOS');
+
+      // 2. Section composite #sec-PUB-03 (Catalogue V4 + 6 cartes Bento PUB-05, 06, 07, 08, 11, 12)
+      var sec03 = document.getElementById('sec-PUB-03');
+      var showSec03 = isAll || key === 'ACTIVITES' || key === 'HOTELS_SAVEURS' || key === 'TARIFS_AGENDA' || key === 'CFP_INFOS';
+      setElDisplay(sec03, showSec03);
+      if (sec03) {
+        var sec03Header = sec03.querySelector('.section-header');
+        setElDisplay(sec03Header, isAll || key === 'ACTIVITES');
+        setElDisplay('v4CatalogFilterHeader', isAll || key === 'ACTIVITES');
+        setElDisplay('v4ActivityCardsGrid', isAll || key === 'ACTIVITES');
+
+        setElDisplay('sec-PUB-05', isAll || key === 'ACTIVITES');
+        setElDisplay('sec-PUB-06', isAll || key === 'ACTIVITES');
+        setElDisplay('sec-PUB-07', isAll || key === 'HOTELS_SAVEURS');
+        setElDisplay('sec-PUB-08', isAll || key === 'HOTELS_SAVEURS');
+
+        var el11 = document.getElementById('sec-PUB-11');
+        var el12 = document.getElementById('sec-PUB-12');
+        setElDisplay(el11, isAll || key === 'TARIFS_AGENDA');
+        setElDisplay(el12, isAll || key === 'CFP_INFOS');
+        if (el11) el11.style.gridColumn = (key === 'TARIFS_AGENDA') ? 'span 12' : '';
+        if (el12) el12.style.gridColumn = (key === 'CFP_INFOS') ? 'span 12' : '';
+      }
+
+      // 3. Mise à jour des pastilles de #v4PubSubPagesNav
+      document.querySelectorAll('#v4PubSubPagesNav .v4-pub-subpage-pill').forEach(function (btn) {
+        btn.classList.toggle('active', btn.getAttribute('data-pub-subpage') === key);
+      });
+
+      var meta = PUB_SUBPAGE_META[key] || PUB_SUBPAGE_META.ACCUEIL;
+      var ind = document.getElementById('v4PubSubPageIndicator');
+      if (ind) ind.textContent = meta.label;
+
+      // 4. Mise à jour du pied de pagination #v4PubSubPageFooterNav
+      var curLbl = document.getElementById('v4PubPagerCurrentLabel');
+      var nextBtn = document.getElementById('v4PubPagerNextBtn');
+      var homeBtn = document.getElementById('v4PubPagerHomeBtn');
+      if (curLbl) curLbl.textContent = meta.label;
+      if (homeBtn) homeBtn.style.display = (key === 'ACCUEIL') ? 'none' : '';
+      if (nextBtn) {
+        nextBtn.textContent = meta.nextLabel;
+        nextBtn.onclick = function () {
+          navigateFamily('PUB', meta.nextScreen);
+        };
+      }
+
+      // 5. Synchronisation du menu principal (.main-nav) lorsque #view-PUB est actif
+      var pubView = document.getElementById('view-PUB');
+      if (pubView && pubView.classList.contains('active')) {
+        document.querySelectorAll('.main-nav .nav-item').forEach(function (n) { n.classList.remove('active'); });
+        var targetNavId = meta.navId;
+        if (opts.targetScreenId === 'PUB-07') targetNavId = 'nav-SAVEURS';
+        if (opts.targetScreenId === 'PUB-08' || opts.targetScreenId === 'PUB-09') targetNavId = 'nav-HOTELS';
+        var navEl = document.getElementById(targetNavId) || document.getElementById('nav-PUB');
+        if (navEl) navEl.classList.add('active');
+      }
+
+      if (opts.scrollTop) {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
+      return key;
+    };
+
+    // Envelopper inspectScreen et navigateFamily pour activer automatiquement la sous-page correspondante
+    var _origInspectScreenV4 = window.inspectScreen;
+    if (typeof _origInspectScreenV4 === 'function' && !_origInspectScreenV4._v4SubPageWrapped) {
+      window.inspectScreen = function (screenId) {
+        var code = String(screenId || 'PUB-01');
+        if (code.indexOf('PUB-') === 0 && window._activePubSubPage !== 'ALL') {
+          var subPage = PUB_SCREEN_TO_SUBPAGE[code] || 'ACCUEIL';
+          window.switchPubSubPage(subPage, { targetScreenId: code });
+        }
+        var res = _origInspectScreenV4.apply(this, arguments);
+        // Si l'écran demandé est la tête de l'une des 6 sous-pages, remonter en haut de page
+        var topScreens = { 'PUB-01': 1, 'PUB-03': 1, 'PUB-04': 1, 'PUB-09': 1, 'PUB-10': 1, 'PUB-12': 1 };
+        if (topScreens[code]) {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        return res;
+      };
+      window.inspectScreen._v4SubPageWrapped = true;
+    }
+
+    var _origNavigateFamilyV4 = window.navigateFamily;
+    if (typeof _origNavigateFamilyV4 === 'function' && !_origNavigateFamilyV4._v4SubPageWrapped) {
+      window.navigateFamily = function (family, screenId) {
+        var fam = String(family || 'PUB');
+        var code = String(screenId || (fam + '-01'));
+        if (fam === 'PUB') {
+          var subPage = PUB_SCREEN_TO_SUBPAGE[code] || 'ACCUEIL';
+          window.switchPubSubPage(subPage, { targetScreenId: code });
+        }
+        var res = _origNavigateFamilyV4.apply(this, arguments);
+        if (fam === 'PUB') {
+          var subPageAfter = PUB_SCREEN_TO_SUBPAGE[code] || 'ACCUEIL';
+          window.switchPubSubPage(subPageAfter, { targetScreenId: code });
+        }
+        return res;
+      };
+      window.navigateFamily._v4SubPageWrapped = true;
+    }
+
+    // Prise en charge des URLs dédiées (/activites, /fiche-activite, /agenda, /rdv, etc.)
+    var pathNow = (window.location.pathname || '/').replace(/\/+$/, '').toLowerCase();
+    var v4ExtraRoutes = {
+      '/activites': ['PUB', 'PUB-03'],
+      '/fiche-activite': ['PUB', 'PUB-04'],
+      '/agenda': ['PUB', 'PUB-16'],
+      '/evenements': ['PUB', 'PUB-16'],
+      '/rdv': ['PUB', 'PUB-18'],
+      '/rendez-vous': ['PUB', 'PUB-18']
+    };
+    if (v4ExtraRoutes[pathNow]) {
+      setTimeout(function () {
+        window.navigateFamily(v4ExtraRoutes[pathNow][0], v4ExtraRoutes[pathNow][1]);
+      }, 70);
+    } else {
+      // Initialiser par défaut sur la Page 1/6 (Accueil & Orientation)
+      window.switchPubSubPage('ACCUEIL', { targetScreenId: 'PUB-01' });
+    }
   })();
 // ECOPARK_PHASE9_V4_AND_RECETTE:END"""
 
@@ -1851,6 +2320,8 @@ def strip_block(html: str, start_marker: str, end_marker: str) -> str:
 def apply_phase9_v4(html: str) -> str:
     # 0. Nettoyage idempotent des blocs V4 précédents s'ils existent déjà
     html = strip_block(html, "    /* ECOPARK_V4_CANOPEE_CSS:START */", "    /* ECOPARK_V4_CANOPEE_CSS:END */")
+    html = strip_block(html, "        <!-- ECOPARK_V4_PUB_SUBPAGES_NAV:START -->", "        <!-- ECOPARK_V4_PUB_SUBPAGES_NAV:END -->")
+    html = strip_block(html, "        <!-- ECOPARK_V4_PUB_HUB_AND_FOOTER:START -->", "        <!-- ECOPARK_V4_PUB_HUB_AND_FOOTER:END -->")
     html = strip_block(html, "            <!-- ECOPARK_V4_HERO_STAGE:START -->", "            <!-- ECOPARK_V4_HERO_STAGE:END -->")
     html = strip_block(html, "            <!-- ECOPARK_V4_CATALOG_GRID:START -->", "            <!-- ECOPARK_V4_CATALOG_GRID:END -->")
     html = strip_block(html, "        <!-- ECOPARK_V4_PUB04_AND_PUB09:START -->", "        <!-- ECOPARK_V4_PUB04_AND_PUB09:END -->")
@@ -1862,6 +2333,36 @@ def apply_phase9_v4(html: str) -> str:
     # 1. Injecter V4 CSS juste avant </style>
     assert "</style>" in html, "Marker </style> introuvable"
     html = html.replace("  </style>", V4_CSS_BLOCK + "\n  </style>", 1)
+
+    # 1b. Mettre à jour le menu principal (.main-nav) pour dissocier Accueil (PUB-01) et Activités & Lac (PUB-03)
+    old_nav_pub = '<button type="button" class="nav-item active" id="nav-PUB" onclick="navigateFamily(\'PUB\', \'PUB-01\')">Découvrir & Activités</button>'
+    new_nav_pub = (
+        '<button type="button" class="nav-item active" id="nav-ACCUEIL" onclick="navigateFamily(\'PUB\', \'PUB-01\')">Accueil</button>\n'
+        '          <button type="button" class="nav-item" id="nav-PUB" onclick="navigateFamily(\'PUB\', \'PUB-03\')">Activités &amp; Lac</button>'
+    )
+    if old_nav_pub in html and 'id="nav-ACCUEIL"' not in html:
+        html = html.replace(old_nav_pub, new_nav_pub, 1)
+
+    # 1c. Injecter la barre des 6 sous-pages publiques (#v4PubSubPagesNav) en haut de #view-PUB
+    hero_comment_anchor = '        <!-- HERO ACCUEIL<span class="tech-code-tag"> (PUB-01)</span> -->'
+    assert hero_comment_anchor in html, "Marker hero_comment_anchor introuvable"
+    html = html.replace(
+        hero_comment_anchor,
+        V4_PUB_SUBPAGES_NAV_HTML + "\n\n" + hero_comment_anchor,
+        1
+    )
+
+    # 1d. Injecter le Hub des 6 Univers + Pied de pagination (#v4PubHubCardsBlock & #v4PubSubPageFooterNav) à la fin de #view-PUB
+    view_pub_close_anchor = """      </section>
+
+      <!-- ====================================================================
+           FAMILLE 3 : PRÉPARATION DE VISITE, DEVIS & RÉSERVATION (RES-01 à RES-12)"""
+    assert view_pub_close_anchor in html, "Marker view_pub_close_anchor introuvable"
+    html = html.replace(
+        view_pub_close_anchor,
+        V4_PUB_HUB_AND_FOOTER_HTML + "\n\n" + view_pub_close_anchor,
+        1
+    )
 
     # 2. A-009 : Remplacer le libellé météo trompeur "En direct d'Ahala :" par un bulletin horodaté honnête
     html = html.replace(
@@ -1998,6 +2499,25 @@ def main():
     PROTO_HTML_PATH.write_text(v4_html, encoding="utf-8")
     RELOOK_HTML_PATH.parent.mkdir(parents=True, exist_ok=True)
     RELOOK_HTML_PATH.write_text(v4_html, encoding="utf-8")
+
+    # Mettre à jour verify_live_monochrome_prod.py pour l'architecture 6 sous-pages publiques
+    verify_path = ROOT / "verify_live_monochrome_prod.py"
+    if verify_path.exists():
+        vt = verify_path.read_text(encoding="utf-8")
+        old_bento = "            const bentoMedia = document.querySelector('.bento-card .card-media-wrapper');"
+        new_bento = "            navigateFamily('PUB', 'PUB-03');\n            const bentoMedia = document.querySelector('.bento-card .card-media-wrapper');"
+        if old_bento in vt and "navigateFamily('PUB', 'PUB-03');\n            const bentoMedia" not in vt:
+            vt = vt.replace(old_bento, new_bento, 1)
+            vt = vt.replace(
+                "            const bentoH = bentoMedia ? bentoMedia.offsetHeight : 0;",
+                "            const bentoH = bentoMedia ? bentoMedia.offsetHeight : 0;\n            navigateFamily('PUB', 'PUB-01');",
+                1
+            )
+        old_map = '        page.locator("#ahalaMapContainer").scroll_into_view_if_needed()'
+        new_map = '        page.evaluate("navigateFamily(\'PUB\', \'PUB-13\');")\n        page.locator("#ahalaMapContainer").scroll_into_view_if_needed()'
+        if old_map in vt and 'navigateFamily(\'PUB\', \'PUB-13\')' not in vt:
+            vt = vt.replace(old_map, new_map, 1)
+        verify_path.write_text(vt, encoding="utf-8")
 
     # Vérification des 22 ancres sec-PUB-01 à sec-PUB-22
     pub_ids = sorted(set(re.findall(r'id="(sec-PUB-\d+)"', v4_html)))

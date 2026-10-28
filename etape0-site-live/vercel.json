@@ -1,6 +1,10 @@
 {
   "version": 2,
   "rewrites": [
+    { "source": "/activites", "destination": "/index.html" },
+    { "source": "/activites/", "destination": "/index.html" },
+    { "source": "/fiche-activite", "destination": "/index.html" },
+    { "source": "/fiche-activite/", "destination": "/index.html" },
     { "source": "/nos-tarifs", "destination": "/index.html" },
     { "source": "/nos-tarifs/", "destination": "/index.html" },
     { "source": "/tarifs", "destination": "/index.html" },
