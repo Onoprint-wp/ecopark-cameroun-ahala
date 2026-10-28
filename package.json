@@ -17,7 +17,8 @@
     "test:phase5": "python scripts/test_phase5_integration.py",
     "test:phase6": "python scripts/test_phase6_caisse_horsligne.py",
     "test:phase7": "python scripts/test_phase7_orchestration_360.py",
+    "test:phase9": "python scripts/test_phase9_v4_and_recette.py",
     "test:sim": "python scripts/run_progressive_simulations_360.py",
-    "build": "python build_data_layer.py && python build_admin_console.py && python build_escape_legacy.py && python build_phase5_public_and_viability.py && python build_phase6_caisse_and_offline.py && python build_phase7_orchestration_360.py"
+    "build": "python build_data_layer.py && python build_admin_console.py && python build_escape_legacy.py && python build_phase5_public_and_viability.py && python build_phase6_caisse_and_offline.py && python build_phase7_orchestration_360.py && python build_phase8_totem_11_services.py && python build_phase9_v4_canopee_immersive_and_recette.py"
   }
 }

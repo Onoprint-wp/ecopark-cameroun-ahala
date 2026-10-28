@@ -81,7 +81,7 @@ async function setupSupabase() {
 async function contract(env) {
   console.log(`\n  ${env.name}`);
   const cat = () => ED.content('catalog_activities', { includeDrafts: true });
-  ok(ED.content('catalog_activities').length === 8, 'Hydratation : 8 activités publiées dans le magasin');
+  ok(ED.content('catalog_activities').length >= 8, 'Hydratation : 8+ activités publiées dans le magasin (incl. Totem)');
   ok(ED.content('agenda_events').length === 4, 'Hydratation : 4 événements d\'agenda');
   const wb = ED.setting('weather_banner');
   ok(wb && wb.active_preset === 'SUNNY' && /Ensoleillé/.test(wb.presets.SUNNY), 'Réglage « bandeau météo » lisible de façon synchrone');

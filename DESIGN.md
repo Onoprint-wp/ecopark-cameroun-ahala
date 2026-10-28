@@ -1,10 +1,12 @@
-# DESIGN SYSTEM ECOPARK — DOCUMENTATION OFFICIELLE (DS-01 à DS-08)
-## Direction artistique validée : « Canopée vivante — Le cercle du vivant »
+# DESIGN SYSTEM ECOPARK V4 — DOCUMENTATION OFFICIELLE (DS-01 à DS-08)
+## Direction artistique validée : « Direction A : Canopée immersive — Le cercle du vivant » (V4)
 
 - **Marque :** **ECOPARK** (Yaoundé–Ahala, Cameroun)
+- **Proposition créative centrale V4 :** **« Prenez le frais. Vivez la nature. »**
 - **Projet Google Stitch synchronisé :** [`projects/522000543872634848`](https://stitch.withgoogle.com/projects/522000543872634848?pli=1) (`assets/b1b40a03aba8496187426e4b86791929`)
-- **Prototype Interactif Complet (77 Écrans) :** [`Prototype_Interactif_ECOPARK_NEW_LOOK.html`](file:///c:/Users/PcGamerCm/Downloads/ECO-PARK/Prototype_Interactif_ECOPARK_NEW_LOOK.html)
+- **Prototype Interactif Complet (77 Écrans + Extension ADM-09) :** [`Prototype_Interactif_ECOPARK_NEW_LOOK.html`](file:///c:/Users/PcGamerCm/Downloads/ECO-PARK/Prototype_Interactif_ECOPARK_NEW_LOOK.html)
 - **Matrice Contractuelle :** [`MATRICE_COUVERTURE_77_ECRANS_ECOPARK.md`](file:///c:/Users/PcGamerCm/Downloads/ECO-PARK/MATRICE_COUVERTURE_77_ECRANS_ECOPARK.md)
+- **Planches V4 de référence :** [`relooking/ecopark_nature_design_system_board.png`](file:///c:/Users/PcGamerCm/Downloads/ECO-PARK/relooking/ecopark_nature_design_system_board.png) • [`relooking/ecopark_desktop_interfaces_nature_inspired_touris.png`](file:///c:/Users/PcGamerCm/Downloads/ECO-PARK/relooking/ecopark_desktop_interfaces_nature_inspired_touris.png) • [`relooking/ecopark_interfaces_mobiles_immersives.png`](file:///c:/Users/PcGamerCm/Downloads/ECO-PARK/relooking/ecopark_interfaces_mobiles_immersives.png)
 
 ---
 
@@ -40,7 +42,10 @@
   --prim-mist-soft: #EDF4E7;
   --prim-mist-border: #D5E5CD;
   --prim-ink-vegetal: #1E281B;
-  --prim-ink-muted: #4A5946;
+  --prim-ink-muted: #445640;
+  --prim-ochre-ahala: #C47D2B;
+  --prim-ochre-dark: #9A5B13;
+  --shadow-v4-card: 0 4px 20px rgba(29, 73, 13, 0.08);
 
   /* États fonctionnels (indépendants du rouge du logo) */
   --prim-success-fg: #155724;

@@ -91,3 +91,22 @@ Le bloc `<script type="application/ld+json" id="ecoparkSchemaJsonLd">` injecté 
 | **Anti-Fraude au Tourniquet (`AGT-05`)** | Double scan consécutif d'un même billet QR (`ECP-2026-XXXXX`) en ligne et hors-ligne | 1er scan : `1/7 • BILLET VALIDE — AUTORISER L'ENTRÉE` (Vert).<br/>2e scan : `2/7 • BILLET DÉJÀ UTILISÉ — REFUSER L'ENTRÉE` (Rouge + horodatage). | **CONFORME** |
 | **Intégrité du Journal d'Audit (`ADM-08`)** | Tentative de modification/suppression d'une ligne d'audit en base | `UPDATE`, `DELETE` et `TRUNCATE` bloqués par déclencheur PostgreSQL ; chaîne SHA-256 vérifiée sur 58 entrées. | **CONFORME** |
 | **Invariants Graphiques & Parité** | Audit Unicode & Diff binaire | `0` caractère `> U+25FF` (`0` emoji OS), `0` fuite de code technique en mode visiteur, `etape0-site-live/index.html` et `Prototype_Interactif_ECOPARK_NEW_LOOK.html` strictement identiques (`712 454 octets`). | **CONFORME** |
+
+
+---
+
+## 6. Phase 9 — Design System V4 « Canopée immersive » & Clôture des 24 Anomalies (`A-001` à `A-024` + `ADM-09`)
+
+L'intégration de la **Direction Artistique V4 « Canopée immersive »** (`build_phase9_v4_canopee_immersive_and_recette.py`) et la clôture intégrale du **Cahier de Recette (`relooking/ECOPARK_Cahier_Recette.xlsx`)** ont été validées par le banc de test dédié `npm run test:phase9` (`13 / 13 PASS`) :
+
+1. **6 Écrans Pilotes V4 Desktop (`1440×900`) & Mobile (`390×844`)** :
+   - **Pilote 1 (`PUB-01` Accueil)** : Hero cinématique **« Prenez le frais. Vivez la nature. »**, 2 CTAs pilules, bouton Pause/Lecture (`A-022`), bandeau des **4 piliers d'expérience**, bulletin d'accueil horodaté (`A-009`) et Totem officiel des **11 services** (`sec-PUB-02`).
+   - **Pilote 2 (`PUB-03` Catalogue)** : Barre de filtres V4 par univers (*Toutes, Nature, Eau, Détente, Culture, Famille*), filtres secondaires durée/tarif FCFA et grille 4 colonnes ratio 4:3 avec tarifs officiels (`500 / 1 000 FCFA`, `1 500 / 2 500 FCFA`).
+   - **Pilote 3 (`PUB-04` Fiche Activité autonome)** : Section DOM `#sec-PUB-04` (`A-019`) avec fil d'Ariane, sélecteur d'activité en 1 clic (*Pirogue, Zoo « ToTo », Piscine, Équitation*), galerie HD + 4 vignettes, 4 onglets interactifs, 4 badges de réassurance et encart sticky de réservation en FCFA.
+   - **Pilote 4 (`PUB-07`, `PUB-08`, `PUB-09` Hébergement & Saveurs)** : Section DOM `#sec-PUB-09` (`A-019`) présentant les 4 cités hôtelières (*Ewondo VIP 25k–30k, Chanthel 15k–25k, Bene 10k–15k, Suites Privées 30k–45k FCFA*) et la carte du *Château des Saveurs* avec prix FCFA explicites (`2 500 à 6 500 FCFA`, `A-014`).
+   - **Pilotes 5 & 6 (`RES-01..12`, `ACC-01..06` Mobile & Réservation)** : Stepper V4 en 4 étapes (`#v4ResStepperBar`), barre de navigation mobile fixe à 4 onglets (`#v4MobileBottomNav` : *Accueil, Activités, Réserver, Mon compte*) et cibles tactiles $\ge 44\text{ px}$ (`A-013`, `A-024`).
+2. **Clôture des 24 Anomalies (`A-001` à `A-024`) + `ADM-09`** :
+   - `22 / 22` sections autonomes `sec-PUB-01` à `sec-PUB-22` présentes dans le DOM (`A-019`).
+   - `ADM-09` officiellement enregistré dans `SCREENS_77` (`77 écrans contractuels + 1 extension ADM-09`, `A-011`).
+   - Sécurisation anti-XSS de `filterFAQSearch` (`A-010`), remise à zéro à blanc du billetage `clearPhysicalCashCountToZero()` (`A-017`), accusé de réception hors-ligne avant purge (`A-001`), signature d'intégrité QR (`A-007`/`A-008`/`A-023`) et masquage téléphone (`A-020`).
+   - Fichier Excel [`relooking/ECOPARK_Cahier_Recette.xlsx`](./relooking/ECOPARK_Cahier_Recette.xlsx) mis à jour (`24/24` anomalies corrigées, `166/166` cas de test au statut `PASS`).
