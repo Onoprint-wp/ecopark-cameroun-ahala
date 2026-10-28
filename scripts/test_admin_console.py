@@ -67,7 +67,7 @@ def main():
 
         print("\n1. Ouverture & rôles")
         check(page.locator("#admRoleBar", has_text="Mode démonstration").count() == 1, "Bandeau « mode démonstration » visible")
-        check(page.locator("#admCatalogBody tr").count() == 8, "8 activités en ligne affichées", page.locator("#admCatalogBody tr").count())
+        check(page.locator("#admCatalogBody tr").count() == 12, "12 activités en ligne affichées (Totem 11 services)", page.locator("#admCatalogBody tr").count())
         size = page.evaluate("() => document.documentElement.outerHTML.length")
         check(page.evaluate("() => !!document.querySelector('script[src*=\"ecopark-admin.js\"]')"), "Module admin chargé à la demande (absent du site public)")
         shot(page, "phase4_1_console_catalogue.png", "#sec-ADM-01")

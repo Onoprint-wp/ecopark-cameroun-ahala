@@ -226,6 +226,54 @@ def main():
             f"Onglet 1='{res_multitab}' | Onglet 2='{banner_tab2}'"
         )
 
+        # 10. Phase 8 : Synchronisation des 11 Services Officiels du Totem EcoPark CAMEROUN
+        res_totem = page.evaluate("""async () => {
+          const totemCardCount = document.querySelectorAll('#totem11ServicesInteractiveGrid .totem-plate-btn').length;
+          const expZonesCount = document.querySelectorAll('#expTotem11ServicesGrid > div').length;
+          const catCount = EcoparkData.content('catalog_activities').length;
+          const lodgesCount = EcoparkData.content('lodge_cities').length;
+          const hasSuitesPrivees = EcoparkData.content('lodge_cities').some(l => l.code === 'SUITES_PRIVEES');
+          const hasMusee = EcoparkData.content('catalog_activities').some(a => a.slug === 'musee');
+          const hasBiblio = EcoparkData.content('catalog_activities').some(a => a.slug === 'bibliotheque');
+          const hasAireJeux = EcoparkData.content('catalog_activities').some(a => a.slug === 'aire_jeux');
+          const hasCreche = EcoparkData.content('catalog_activities').some(a => a.slug === 'creche_garderie');
+
+          // Modifier tarif Musée dans EcoparkData et vérifier la mise à jour temps réel du Totem, RES-01 et Tarifs
+          const museeRow = EcoparkData.content('catalog_activities').find(a => a.slug === 'musee');
+          const chkMusee = document.getElementById('chkMusee');
+          if (chkMusee) chkMusee.checked = true;
+          await EcoparkData.update('catalog_activities', museeRow.id, { adult_price_fcfa: 1500, child_price_fcfa: 800 });
+
+          const totemMuseeText = document.querySelector('[data-totem-price="musee"]')?.textContent || '';
+          const subMuseeText = document.getElementById('subMusee')?.textContent || '';
+          const pubHasMusee1500 = (document.getElementById('pubCatalogTableBody')?.innerHTML || '').includes('1 500');
+          await EcoparkData.update('catalog_activities', museeRow.id, { adult_price_fcfa: 1000, child_price_fcfa: 500 });
+          if (chkMusee) chkMusee.checked = false;
+          recalcSimulator();
+
+          return {
+            totemCardCount, expZonesCount, catCount, lodgesCount,
+            hasSuitesPrivees, hasMusee, hasBiblio, hasAireJeux, hasCreche,
+            totemMuseeText, subMuseeText, pubHasMusee1500
+          };
+        }""")
+        check(
+            "Sync #11 : Totem Officiel des 11 Services (Vitrine, Tarifs, RES-01, POS AGT-03, EXP-02 & Admin Catalogue)",
+            res_totem["totemCardCount"] == 11
+            and res_totem["expZonesCount"] == 11
+            and res_totem["catCount"] == 12
+            and res_totem["lodgesCount"] == 4
+            and res_totem["hasSuitesPrivees"]
+            and res_totem["hasMusee"]
+            and res_totem["hasBiblio"]
+            and res_totem["hasAireJeux"]
+            and res_totem["hasCreche"]
+            and "1 500" in res_totem["totemMuseeText"]
+            and res_totem["subMuseeText"] != "0 FCFA"
+            and res_totem["pubHasMusee1500"],
+            f"Totem={res_totem['totemCardCount']}/11, EXP={res_totem['expZonesCount']}/11, Cat={res_totem['catCount']}, Lodges={res_totem['lodgesCount']}, Musée={res_totem['totemMuseeText']}, Sub={res_totem['subMuseeText']}"
+        )
+
         check("Aucune erreur console / pageerror", len(console_errors) == 0, f"{len(console_errors)} erreur(s)")
 
         browser.close()

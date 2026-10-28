@@ -44,7 +44,7 @@
   var STAFF_ROLES = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
   var POLES = {
     NATURE_FAUNE: 'Nature & Faune', EAU_PLEIN_AIR: 'Eau & Plein air', RESTAURATION: 'Restauration',
-    HEBERGEMENT: 'Hébergement', GROUPES_B2B: 'Groupes & Navettes', FORMATION_CFP: 'Formation CFP'
+    HEBERGEMENT: 'Hébergement', GROUPES_B2B: 'Groupes & Navettes', FORMATION_CFP: 'Formation CFP', CULTURE_EDUCATION: 'Musée & Bibliothèque', FAMILLE_ENFANCE: 'Aire de Jeux & Crèche-Garderie'
   };
   var STATUS = {
     DRAFT: { label: 'Brouillon', cls: 'adm-badge-draft' },
@@ -66,6 +66,7 @@
     ['audit-assets/ecopark-real-media/chimpanze.jpeg', 'Chimpanzé du jardin zoologique'],
     ['audit-assets/ecopark-real-media/balade_pirogue3.jpg', 'Balade en pirogue sur le lac'],
     ['audit-assets/ecopark-real-media/chambre.jpeg', 'Chambre des cités hôtelières'],
+    ['audit-assets/ecopark-real-media/totem-services-ecopark.png', 'Totem officiel des 11 services ECOPARK'],
     ['audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg', 'Grand dimanche au bord du lac'],
     ['audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg', 'Groupe et événement en plein air'],
     ['audit-assets/ecopark-real-media/IMG_20260829_172016-1-scaled.jpg', 'Événement avec du public à ECOPARK'],

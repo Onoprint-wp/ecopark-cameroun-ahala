@@ -1026,6 +1026,22 @@
             healed = true;
             return;
           }
+          defRows.forEach(function (d) {
+            if (!d) return;
+            var exists = store.state.content[tbl].some(function (r) {
+              return r && (
+                (d.id && r.id === d.id) ||
+                (d.slug && r.slug === d.slug) ||
+                (d.bundle_code && r.bundle_code === d.bundle_code) ||
+                (d.code && r.code === d.code) ||
+                (d.sku && r.sku === d.sku)
+              );
+            });
+            if (!exists) {
+              store.state.content[tbl].push(clone(d));
+              healed = true;
+            }
+          });
           store.state.content[tbl].forEach(function (r) {
             if (!r || r.image_src) return;
             var match = defRows.filter(function (d) {

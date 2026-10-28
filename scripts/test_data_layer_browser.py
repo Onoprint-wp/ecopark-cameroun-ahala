@@ -73,7 +73,7 @@ def part_a(browser):
     check(p1.get_attribute("html", "data-ecopark-driver") == "local", "Pilote démo actif par défaut")
     check(p1.inner_text("#ahalaLiveWeatherText").strip() == SUNNY, "Bandeau météo identique au site actuel", p1.inner_text("#ahalaLiveWeatherText").strip())
     info = p1.evaluate("() => ({ v: EcoparkData.version, cat: EcoparkData.content('catalog_activities').length, hasBookings: Array.isArray(loadDB().bookings) })")
-    check(info["v"] == "3.0.0" and info["cat"] == 8 and info["hasBookings"], "Magasin hydraté depuis la copie de secours, loadDB() au format historique", info)
+    check(info["v"] == "3.0.0" and info["cat"] == 12 and info["hasBookings"], "Magasin hydraté depuis la copie de secours, loadDB() au format historique", info)
 
     p2 = ctx.new_page()
     p2.goto(BASE + "/guichet", wait_until="networkidle")
