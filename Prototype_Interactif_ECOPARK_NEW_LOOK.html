@@ -3513,7 +3513,313 @@
       grid-template-columns: 1fr;
     }
 
-    /* V4 Architecture Multi-Pages Publiques (6 Sous-Vues Dediees dans #view-PUB) */
+    /* V4 Architecture Multi-Pages Publiques & Mega-Menu a Sous-Menus Deroulants */
+    .main-nav {
+      position: relative;
+      overflow: visible !important;
+    }
+    .v4-nav-dropdown {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+    }
+    .v4-dropdown-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .v4-nav-caret {
+      font-size: 11px;
+      opacity: 0.78;
+      transition: transform 0.2s ease;
+      display: inline-block;
+    }
+    .v4-nav-dropdown:hover .v4-nav-caret,
+    .v4-nav-dropdown.open .v4-nav-caret {
+      transform: rotate(180deg);
+    }
+    .v4-dropdown-panel {
+      position: absolute;
+      top: calc(100% + 4px);
+      left: 0;
+      min-width: 340px;
+      max-width: 400px;
+      background: #FFFFFF;
+      border: 1.5px solid rgba(29, 73, 13, 0.18);
+      border-radius: 18px;
+      padding: 10px;
+      box-shadow: 0 22px 48px rgba(20, 34, 17, 0.16);
+      z-index: 2500;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(8px);
+      transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+      display: grid;
+      gap: 4px;
+    }
+    .v4-dropdown-panel::before {
+      content: "";
+      position: absolute;
+      top: -10px;
+      left: 0;
+      right: 0;
+      height: 10px;
+    }
+    .v4-dropdown-panel.v4-dropdown-align-right {
+      left: auto;
+      right: 0;
+    }
+    .v4-nav-dropdown:hover .v4-dropdown-panel,
+    .v4-nav-dropdown:focus-within .v4-dropdown-panel,
+    .v4-nav-dropdown.open .v4-dropdown-panel {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0);
+    }
+    body.v4-dropdowns-closed .v4-dropdown-panel {
+      opacity: 0 !important;
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    .v4-dropdown-header {
+      padding: 6px 10px 4px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--color-text-muted);
+      border-bottom: 1px solid #EDF4E7;
+      margin-bottom: 2px;
+    }
+    .v4-dropdown-item {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+      width: 100%;
+      padding: 9px 11px;
+      border-radius: 12px;
+      border: 1px solid transparent;
+      background: transparent;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+      font-family: var(--font-body);
+    }
+    .v4-dropdown-item:hover,
+    .v4-dropdown-item.active {
+      background: #EDF4E7;
+      border-color: rgba(29, 73, 13, 0.18);
+    }
+    .v4-dropdown-item-title {
+      display: block;
+      font-family: var(--font-heading);
+      font-size: 14.5px;
+      font-weight: 700;
+      color: #1D490D;
+      line-height: 1.2;
+    }
+    .v4-dropdown-item-sub {
+      display: block;
+      font-size: 12px;
+      color: var(--color-text-muted);
+      margin-top: 2px;
+      line-height: 1.3;
+    }
+    .v4-dropdown-item-price {
+      font-size: 11px;
+      font-weight: 700;
+      color: #9A5B13;
+      background: #FBF5EC;
+      border: 1px solid rgba(196, 125, 43, 0.32);
+      padding: 2px 8px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    /* Fil d'Ariane & Sous-Menu Contextuel des Pages Interieures (#v4SiteBreadcrumbBar) */
+    .v4-site-breadcrumb-bar {
+      display: none;
+      background: linear-gradient(90deg, #F4F9F0 0%, #FFFFFF 60%, #FBF5EC 100%);
+      border-bottom: 1.5px solid rgba(29, 73, 13, 0.14);
+      padding: 10px 0;
+      position: sticky;
+      top: 68px;
+      z-index: 930;
+      box-shadow: 0 4px 14px rgba(20, 34, 17, 0.04);
+    }
+    .v4-site-breadcrumb-bar.visible {
+      display: block;
+    }
+    .v4-site-breadcrumb-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .v4-site-bc-trail {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 13.5px;
+      color: var(--color-text-muted);
+    }
+    .v4-site-bc-trail button {
+      background: none;
+      border: none;
+      padding: 0;
+      color: #1D490D;
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 13.5px;
+      text-decoration: underline;
+    }
+    .v4-site-sublinks-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .v4-site-sublink-pill {
+      padding: 5px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(29, 73, 13, 0.2);
+      background: #FFFFFF;
+      color: #1D490D;
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .v4-site-sublink-pill:hover,
+    .v4-site-sublink-pill.active {
+      background: #1D490D;
+      color: #FFFFFF;
+      border-color: #1D490D;
+    }
+
+    /* Bouton Burger Mobile & Tiroir Lateral a Sous-Menus Accordeons */
+    .v4-mobile-burger-btn {
+      display: none;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 12px;
+      border-radius: 999px;
+      border: 1.5px solid #1D490D;
+      background: #EDF4E7;
+      color: #1D490D;
+      font-weight: 700;
+      font-size: 13px;
+      cursor: pointer;
+    }
+    .v4-mobile-menu-drawer {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 3400;
+      background: rgba(20, 34, 17, 0.55);
+      backdrop-filter: blur(4px);
+    }
+    .v4-mobile-menu-drawer.open {
+      display: block;
+    }
+    .v4-mobile-menu-sheet {
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: min(360px, 92vw);
+      background: #FFFFFF;
+      padding: 16px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      box-shadow: -12px 0 36px rgba(0, 0, 0, 0.22);
+    }
+    .v4-mobile-menu-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid #EDF4E7;
+    }
+    .v4-mobile-menu-body {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    details.v4-mob-accordion {
+      border: 1px solid rgba(29, 73, 13, 0.16);
+      border-radius: 12px;
+      background: #F7FAF4;
+      overflow: hidden;
+    }
+    details.v4-mob-accordion > summary {
+      padding: 11px 14px;
+      font-family: var(--font-heading);
+      font-size: 15px;
+      font-weight: 700;
+      color: #1D490D;
+      cursor: pointer;
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    details.v4-mob-accordion > summary::-webkit-details-marker {
+      display: none;
+    }
+    details.v4-mob-accordion > summary::after {
+      content: "▾";
+      font-size: 13px;
+      color: #8E5617;
+    }
+    details.v4-mob-accordion[open] > summary::after {
+      content: "▴";
+    }
+    .v4-mob-sublist {
+      display: grid;
+      gap: 4px;
+      padding: 6px 10px 10px;
+      background: #FFFFFF;
+      border-top: 1px solid rgba(29, 73, 13, 0.1);
+    }
+    .v4-mob-subbtn {
+      text-align: left;
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: none;
+      background: transparent;
+      color: var(--color-text);
+      font-size: 13.5px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+    .v4-mob-subbtn small {
+      font-size: 11px;
+      font-weight: 700;
+      color: #8E5617;
+      background: #FBF5EC;
+      border: 1px solid rgba(196, 125, 43, 0.28);
+      padding: 2px 7px;
+      border-radius: 999px;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .v4-mob-subbtn:hover {
+      background: #EDF4E7;
+      color: #1D490D;
+    }
+
     .v4-pub-subpages-nav {
       background: rgba(255, 255, 255, 0.96);
       backdrop-filter: blur(12px);
@@ -3615,6 +3921,12 @@
       .v4-pub-hub-grid {
         grid-template-columns: 1fr;
       }
+      .v4-mobile-burger-btn {
+        display: inline-flex;
+      }
+      .v4-dropdown-panel {
+        display: none !important;
+      }
       .v4-pub-subpages-nav {
         top: 56px;
         padding: 8px 0;
@@ -3629,6 +3941,12 @@
         white-space: nowrap;
         flex-shrink: 0;
       }
+    }
+    body.viewport-mobile .v4-mobile-burger-btn {
+      display: inline-flex;
+    }
+    body.viewport-mobile .v4-dropdown-panel {
+      display: none !important;
     }
     /* ECOPARK_V4_CANOPEE_CSS:END */
   </style>
@@ -3745,16 +4063,263 @@
             <span class="brand-location">CAMEROUN • Yaoundé – Ahala</span>
           </div>
         </a>
+        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
+        <nav class="main-nav" id="v4MainMegaNav" aria-label="Navigation principale ECOPARK">
+          <button type="button" class="nav-item active" id="nav-ACCUEIL" onclick="navigateV4SiteMenu('ACCUEIL')">Accueil</button>
 
-        <nav class="main-nav" aria-label="Navigation principale ECOPARK">
-          <button type="button" class="nav-item active" id="nav-ACCUEIL" onclick="navigateFamily('PUB', 'PUB-01')">Accueil</button>
-          <button type="button" class="nav-item" id="nav-PUB" onclick="navigateFamily('PUB', 'PUB-03')">Activités &amp; Lac</button>
-          <button type="button" class="nav-item" id="nav-TARIFS" onclick="navigateFamily('PUB', 'PUB-10')">Tarifs (FCFA)</button>
-          <button type="button" class="nav-item" id="nav-HOTELS" onclick="navigateFamily('PUB', 'PUB-08')">Hébergement</button>
-          <button type="button" class="nav-item" id="nav-SAVEURS" onclick="navigateFamily('PUB', 'PUB-07')">Restauration</button>
-          <button type="button" class="nav-item" id="nav-CFP" onclick="navigateFamily('PUB', 'PUB-12')">Formation CFP</button>
-          <button type="button" class="nav-item" id="nav-ACC" onclick="navigateFamily('ACC', 'ACC-02')">Mon Espace</button>
+          <div class="v4-nav-dropdown" data-v4-dropdown="activites">
+            <button type="button" class="nav-item v4-dropdown-toggle" id="nav-PUB" aria-haspopup="true" aria-expanded="false" onclick="navigateV4SiteMenu('ACTIVITES_ALL')">
+              <span>Activités &amp; Lac</span>
+              <span class="v4-nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="v4-dropdown-panel" role="menu" aria-label="Sous-menu Activités et Lac">
+              <div class="v4-dropdown-header">
+                <span>8 Attractions &amp; Plein Air</span>
+                <span>Dès 500 FCFA</span>
+              </div>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACTIVITES_ALL')">
+                <div>
+                  <span class="v4-dropdown-item-title">Catalogue complet des 8 Activités</span>
+                  <span class="v4-dropdown-item-sub">Filtres par envie, durée et budget en Francs CFA</span>
+                </div>
+                <span class="v4-dropdown-item-price">Page dédiée</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACT_PIROGUE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Balade en pirogue sur le lac</span>
+                  <span class="v4-dropdown-item-sub">Traversée 45 min • Gilet fourni &amp; pagayeur pro</span>
+                </div>
+                <span class="v4-dropdown-item-price">500 / 1 000 FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACT_ZOO')">
+                <div>
+                  <span class="v4-dropdown-item-title">Parc Animalier (« ToTo ») &amp; Botanique</span>
+                  <span class="v4-dropdown-item-sub">Primates, tortues géantes, paons &amp; sentiers ombragés</span>
+                </div>
+                <span class="v4-dropdown-item-price">500 / 1 000 FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACT_PISCINE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Piscine Semi-Olympique Surveillée</span>
+                  <span class="v4-dropdown-item-sub">Grand bain &amp; bassin enfant • Maîtres-nageurs permanents</span>
+                </div>
+                <span class="v4-dropdown-item-price">1 500 / 2 500 FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACT_CHEVAL')">
+                <div>
+                  <span class="v4-dropdown-item-title">Promenade à Cheval &amp; Manèges</span>
+                  <span class="v4-dropdown-item-sub">Initiation équestre encadrée • Bombe fournie dès 3 ans</span>
+                </div>
+                <span class="v4-dropdown-item-price">500 / 1 000 FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACT_PECHE_MUSEE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Pêche Ludique, Musée &amp; Bibliothèque</span>
+                  <span class="v4-dropdown-item-sub">Étangs d'Ahala, objets patrimoniaux &amp; espace lecture</span>
+                </div>
+                <span class="v4-dropdown-item-price">Dès 500 FCFA</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="v4-nav-dropdown" data-v4-dropdown="hotels">
+            <button type="button" class="nav-item v4-dropdown-toggle" id="nav-HOTELS" aria-haspopup="true" aria-expanded="false" onclick="navigateV4SiteMenu('HOTELS_ALL')">
+              <span>Hôtels &amp; Saveurs</span>
+              <span class="v4-nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="v4-dropdown-panel" role="menu" aria-label="Sous-menu Hébergement et Restauration">
+              <div class="v4-dropdown-header">
+                <span>Séjourner &amp; Déguster à Ahala</span>
+                <span>100 % Tarifs FCFA</span>
+              </div>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('HOTELS_COMPARATIF')">
+                <div>
+                  <span class="v4-dropdown-item-title">4 Cités Hôtelières (Comparatif &amp; Photos)</span>
+                  <span class="v4-dropdown-item-sub">Cités Bene, Chanthel, Ewondo VIP &amp; Suites Privées</span>
+                </div>
+                <span class="v4-dropdown-item-price">10k à 45k FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('HOTEL_EWONDO')">
+                <div>
+                  <span class="v4-dropdown-item-title">Cité Ewondo VIP &amp; Suites Privées</span>
+                  <span class="v4-dropdown-item-sub">Pavillons climatisés, terrasse jardin &amp; accès parc inclus</span>
+                </div>
+                <span class="v4-dropdown-item-price">20k / 45k FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('HOTEL_CHANTHEL')">
+                <div>
+                  <span class="v4-dropdown-item-title">Cités Chanthel (Confort) &amp; Bene (Éco)</span>
+                  <span class="v4-dropdown-item-sub">Séjours nature accessibles avec parking sécurisé gratuit</span>
+                </div>
+                <span class="v4-dropdown-item-price">10k / 15k FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" id="nav-SAVEURS" role="menuitem" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')">
+                <div>
+                  <span class="v4-dropdown-item-title">Le Château des Saveurs (Restauration)</span>
+                  <span class="v4-dropdown-item-sub">Poisson braisé d'Ahala, Poulet DG Royal &amp; pergolas sur l'eau</span>
+                </div>
+                <span class="v4-dropdown-item-price">2 500 à 6 500 FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('BOOK_LODGE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Réserver une Nuitée ou Table en Ligne</span>
+                  <span class="v4-dropdown-item-sub">Accès direct au simulateur FCFA avec confirmation QR</span>
+                </div>
+                <span class="v4-dropdown-item-price">Réservation directe</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="v4-nav-dropdown" data-v4-dropdown="tarifs">
+            <button type="button" class="nav-item v4-dropdown-toggle" id="nav-TARIFS" aria-haspopup="true" aria-expanded="false" onclick="navigateV4SiteMenu('TARIFS_GRILLE')">
+              <span>Tarifs &amp; Agenda</span>
+              <span class="v4-nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="v4-dropdown-panel" role="menu" aria-label="Sous-menu Tarifs FCFA, Groupes et Agenda">
+              <div class="v4-dropdown-header">
+                <span>Grille Officielle &amp; Événements</span>
+                <span>Enfant 500 FCFA protégé</span>
+              </div>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('TARIFS_PASS')">
+                <div>
+                  <span class="v4-dropdown-item-title">3 Pass Journée Tout-Inclus (Coupe-File)</span>
+                  <span class="v4-dropdown-item-sub">Pass Découverte, Pass Canopée Royal &amp; Forfait Famille</span>
+                </div>
+                <span class="v4-dropdown-item-price">Dès 3 000 FCFA</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('TARIFS_GRILLE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Grille Tarifaire Officielle Complète (FCFA)</span>
+                  <span class="v4-dropdown-item-sub">Détail transparent par activité, hébergement et menu</span>
+                </div>
+                <span class="v4-dropdown-item-price">Grille complète</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('TARIFS_GROUPES')">
+                <div>
+                  <span class="v4-dropdown-item-title">Écoles, Entreprises &amp; Salle (500 places)</span>
+                  <span class="v4-dropdown-item-sub">Excursions scolaires &amp; Salle « Menkii Essomba Anton »</span>
+                </div>
+                <span class="v4-dropdown-item-price">Devis Proforma PDF</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('AGENDA_SEMAINE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Agenda de la Semaine (Mardi – Dimanche)</span>
+                  <span class="v4-dropdown-item-sub">Grand Dimanche Royal, Samedi Grillades &amp; Mercredi Enfants</span>
+                </div>
+                <span class="v4-dropdown-item-price">Réservation 1 clic</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('SIMULATEUR_RES')">
+                <div>
+                  <span class="v4-dropdown-item-title">Simulateur de Visite &amp; Billet QR</span>
+                  <span class="v4-dropdown-item-sub">Calculez votre budget exact en FCFA avant de venir</span>
+                </div>
+                <span class="v4-dropdown-item-price">Guichet en ligne</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="v4-nav-dropdown" data-v4-dropdown="cfp">
+            <button type="button" class="nav-item v4-dropdown-toggle" id="nav-CFP" aria-haspopup="true" aria-expanded="false" onclick="navigateV4SiteMenu('CFP_CAMPUS')">
+              <span>Campus CFP &amp; Infos</span>
+              <span class="v4-nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="v4-dropdown-panel v4-dropdown-panel-right" role="menu" aria-label="Sous-menu Formation CFP et Infos Pratiques">
+              <div class="v4-dropdown-header">
+                <span>Formation MINEFOP &amp; Accès RN3</span>
+                <span>Ahala Barrière</span>
+              </div>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('CFP_CAMPUS')">
+                <div>
+                  <span class="v4-dropdown-item-title">Campus CFP ECOPARK (Agrément MINEFOP)</span>
+                  <span class="v4-dropdown-item-sub">5 filières diplômantes dès 16 ans • Pré-inscription en ligne</span>
+                </div>
+                <span class="v4-dropdown-item-price">250 000 FCFA/an</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('INFOS_PLAN_RN3')">
+                <div>
+                  <span class="v4-dropdown-item-title">Plan Interactif du Parc &amp; Accès RN3</span>
+                  <span class="v4-dropdown-item-sub">Carte vectorielle Zones A à E • Face Station Tradex Ahala</span>
+                </div>
+                <span class="v4-dropdown-item-price">Parking 150 pl.</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('INFOS_RDV')">
+                <div>
+                  <span class="v4-dropdown-item-title">Prendre Rendez-Vous sur Site</span>
+                  <span class="v4-dropdown-item-sub">Repérage mariage, visite école/ONG ou entretien CFP</span>
+                </div>
+                <span class="v4-dropdown-item-price">Créneau confirmé</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('INFOS_GALERIE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Galerie Photo HD &amp; Vidéos Réelles</span>
+                  <span class="v4-dropdown-item-sub">Visionneuse plein écran des installations d'Ahala</span>
+                </div>
+                <span class="v4-dropdown-item-price">Photos vérifiées</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('INFOS_FAQ')">
+                <div>
+                  <span class="v4-dropdown-item-title">Questions Fréquentes (FAQ) &amp; Recherche</span>
+                  <span class="v4-dropdown-item-sub">Horaires, Garantie Pluie 90j, animaux, sécurité &amp; paiements</span>
+                </div>
+                <span class="v4-dropdown-item-price">Réponses directes</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('INFOS_LEGAL')">
+                <div>
+                  <span class="v4-dropdown-item-title">Mentions Légales, Confidentialité &amp; CGV</span>
+                  <span class="v4-dropdown-item-sub">Conformité Loi n° 2010/012 Cameroun &amp; Garantie Pluie</span>
+                </div>
+                <span class="v4-dropdown-item-price">Officiel</span>
+              </button>
+            </div>
+          </div>
+
+          <div class="v4-nav-dropdown" data-v4-dropdown="compte">
+            <button type="button" class="nav-item v4-dropdown-toggle" id="nav-ACC" aria-haspopup="true" aria-expanded="false" onclick="navigateV4SiteMenu('ACC_DASHBOARD')">
+              <span>Mon Espace</span>
+              <span class="v4-nav-caret" aria-hidden="true">▾</span>
+            </button>
+            <div class="v4-dropdown-panel v4-dropdown-panel-right" role="menu" aria-label="Sous-menu Espace Visiteur et Billets QR">
+              <div class="v4-dropdown-header">
+                <span>Espace Client &amp; Billets QR</span>
+                <span>Sans mot de passe complexe</span>
+              </div>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACC_LOOKUP')">
+                <div>
+                  <span class="v4-dropdown-item-title">Retrouver mon Billet QR / Dossier</span>
+                  <span class="v4-dropdown-item-sub">Recherche par référence (ECP-2026-...) ou téléphone (+237)</span>
+                </div>
+                <span class="v4-dropdown-item-price">Accès immédiat</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACC_DASHBOARD')">
+                <div>
+                  <span class="v4-dropdown-item-title">Mes Réservations, Devis &amp; Dossiers CFP</span>
+                  <span class="v4-dropdown-item-sub">Téléchargement Billet PNG hors-ligne &amp; Facture Proforma PDF</span>
+                </div>
+                <span class="v4-dropdown-item-price">Tableau de bord</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('ACC_REPORT_DATE')">
+                <div>
+                  <span class="v4-dropdown-item-title">Reporter ma Date (Garantie Pluie 0 FCFA)</span>
+                  <span class="v4-dropdown-item-sub">Modification gratuite de la date de visite jusqu'à 90 jours</span>
+                </div>
+                <span class="v4-dropdown-item-price">Sans frais</span>
+              </button>
+              <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('SIMULATEUR_RES')">
+                <div>
+                  <span class="v4-dropdown-item-title">Nouvelle Réservation Coupe-File QR</span>
+                  <span class="v4-dropdown-item-sub">Orange Money, MTN MoMo ou Paiement Guichet à l'arrivée</span>
+                </div>
+                <span class="v4-dropdown-item-price">Réserver</span>
+              </button>
+            </div>
+          </div>
         </nav>
+
+        <button type="button" class="v4-mobile-burger-btn" id="v4MobileBurgerBtn" aria-label="Ouvrir le menu complet du site" aria-expanded="false" onclick="toggleV4MobileDrawer()">
+          <svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+          <span>Menu</span>
+        </button>
+        <!-- ECOPARK_V4_MAIN_MEGA_NAV:END -->
 
         <div style="display:flex;align-items:center;gap:6px;flex-wrap:nowrap;flex-shrink:0;">
           <button type="button" class="btn btn-secondary btn-sm" id="btnHeaderRdv" style="padding:7px 12px;font-size:13px;" onclick="openRdvModalSprint1('reperage_mariage')"><svg class="svg-mono" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg> Prendre RDV</button>
@@ -3763,6 +4328,85 @@
         </div>
       </div>
     </header>
+
+    <!-- ECOPARK_V4_MOBILE_DRAWER:START -->
+    <aside class="v4-mobile-menu-drawer" id="v4MobileMenuDrawer" aria-label="Menu complet et sous-menus ECOPARK" onclick="if(event.target === this) toggleV4MobileDrawer(false)">
+      <div class="v4-mobile-menu-sheet">
+        <div class="v4-mobile-menu-head">
+          <div>
+            <strong style="font-size:15px;color:#1D490D;display:block;">ECOPARK CAMEROUN</strong>
+            <span style="font-size:12px;color:var(--color-text-muted);">Menu officiel • Yaoundé – Ahala</span>
+          </div>
+          <button type="button" class="btn btn-secondary btn-sm" onclick="toggleV4MobileDrawer(false)">Fermer ×</button>
+        </div>
+        <div class="v4-mobile-menu-body">
+          <button type="button" class="btn btn-secondary" style="width:100%;justify-content:space-between;" onclick="navigateV4SiteMenu('ACCUEIL')">
+            <span>Accueil &amp; Orientation</span>
+            <span>→</span>
+          </button>
+
+          <details class="v4-mob-accordion" open>
+            <summary>Activités &amp; Lac (8 Attractions)</summary>
+            <div class="v4-mob-sublist">
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACTIVITES_ALL')"><span>Catalogue complet des 8 Activités</span><small>Page dédiée</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACT_PIROGUE')"><span>Balade en pirogue sur le lac</span><small>500 / 1 000 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACT_ZOO')"><span>Parc Animalier (« ToTo ») &amp; Forêt</span><small>500 / 1 000 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACT_PISCINE')"><span>Piscine Semi-Olympique Surveillée</span><small>1 500 / 2 500 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACT_CHEVAL')"><span>Promenade à Cheval &amp; Manèges</span><small>500 / 1 000 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACT_PECHE_MUSEE')"><span>Pêche Ludique, Musée &amp; Bibliothèque</span><small>Dès 500 F</small></button>
+            </div>
+          </details>
+
+          <details class="v4-mob-accordion">
+            <summary>Hôtels &amp; Château des Saveurs</summary>
+            <div class="v4-mob-sublist">
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTELS_COMPARATIF')"><span>Comparatif des 4 Cités Hôtelières</span><small>10k – 45k F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_EWONDO')"><span>Cité Ewondo VIP &amp; Suites</span><small>20k / 45k F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_CHANTHEL')"><span>Cités Chanthel &amp; Bene</span><small>10k / 15k F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')"><span>Le Château des Saveurs (Menus)</span><small>Dès 2 500 F</small></button>
+            </div>
+          </details>
+
+          <details class="v4-mob-accordion">
+            <summary>Tarifs FCFA, Groupes &amp; Agenda</summary>
+            <div class="v4-mob-sublist">
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('TARIFS_PASS')"><span>3 Pass Journée Tout-Inclus</span><small>Dès 3 000 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('TARIFS_GRILLE')"><span>Grille Tarifaire Officielle FCFA</span><small>Complète</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('TARIFS_GROUPES')"><span>Écoles, Entreprises &amp; Salle 500 pl.</span><small>Proforma</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('AGENDA_SEMAINE')"><span>Agenda de la Semaine (Mar–Dim)</span><small>4 Événements</small></button>
+            </div>
+          </details>
+
+          <details class="v4-mob-accordion">
+            <summary>Campus CFP &amp; Infos Pratiques</summary>
+            <div class="v4-mob-sublist">
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('CFP_CAMPUS')"><span>Campus CFP (5 filières MINEFOP)</span><small>Dès 16 ans</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('INFOS_PLAN_RN3')"><span>Plan Interactif RN3 &amp; Accès Ahala</span><small>Parking 150 pl.</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('INFOS_RDV')"><span>Prendre RDV sur Site</span><small>Repérage</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('INFOS_GALERIE')"><span>Galerie Photo HD &amp; Vidéos</span><small>Visite</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('INFOS_FAQ')"><span>FAQ &amp; Questions Fréquentes</span><small>Aide</small></button>
+            </div>
+          </details>
+
+          <details class="v4-mob-accordion">
+            <summary>Mon Espace &amp; Billets QR</summary>
+            <div class="v4-mob-sublist">
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACC_LOOKUP')"><span>Retrouver mon Billet QR / Dossier</span><small>Référence</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACC_DASHBOARD')"><span>Mes Réservations &amp; Dossiers CFP</span><small>Espace client</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('ACC_REPORT_DATE')"><span>Reporter ma Date (Garantie Pluie)</span><small>0 FCFA</small></button>
+            </div>
+          </details>
+
+          <div style="display:grid;gap:8px;padding-top:8px;border-top:1px solid #EDF4E7;">
+            <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;" onclick="navigateV4SiteMenu('SIMULATEUR_RES')">Réserver &amp; Obtenir mon Billet QR →</button>
+            <button type="button" class="btn btn-secondary btn-ochre-outline" style="width:100%;justify-content:center;" onclick="toggleV4MobileDrawer(false); openQuoteModalSprint1();">Demander un Devis Groupe / École</button>
+          </div>
+        </div>
+      </div>
+    </aside>
+    <!-- ECOPARK_V4_MOBILE_DRAWER:END -->
+
+
 
     <main id="mainContent">
 
@@ -3787,8 +4431,24 @@
           </div>
         </div>
 
+
+
+
         <!-- ECOPARK_V4_PUB_SUBPAGES_NAV:START -->
-        <nav class="v4-pub-subpages-nav" id="v4PubSubPagesNav" aria-label="Sous-pages dédiées du Site Public ECOPARK V4">
+        <div class="v4-site-breadcrumb-bar" id="v4SiteBreadcrumbBar" aria-label="Fil d'Ariane et sous-sections de la page">
+          <div class="container v4-site-breadcrumb-inner">
+            <div class="v4-site-bc-trail">
+              <button type="button" onclick="navigateV4SiteMenu('ACCUEIL')">Accueil ECOPARK</button>
+              <span aria-hidden="true">›</span>
+              <strong id="v4BreadcrumbRubrique">Activités &amp; Lac</strong>
+              <span id="v4BreadcrumbSubSep" style="display:none;" aria-hidden="true">›</span>
+              <span id="v4BreadcrumbSubItem" style="color:var(--color-accent-ochre-deep);font-weight:700;display:none;"></span>
+            </div>
+            <div class="v4-site-sublinks-row" id="v4SiteContextualSublinks" role="navigation" aria-label="Accès rapide aux rubriques de cette page"></div>
+          </div>
+        </div>
+
+        <nav class="v4-pub-subpages-nav admin-only-control" id="v4PubSubPagesNav" aria-label="Sous-pages dédiées du Site Public ECOPARK V4 (Mode Revue)">
           <div class="container v4-pub-subpages-inner">
             <div class="v4-pub-subpages-pills" role="tablist">
               <button type="button" class="v4-pub-subpage-pill active" data-pub-subpage="ACCUEIL" onclick="navigateFamily('PUB', 'PUB-01')">
@@ -3905,6 +4565,9 @@
               </div>
             </div>
             <!-- ECOPARK_V4_HERO_STAGE:END -->
+
+
+
 
 
 
@@ -4420,6 +5083,9 @@
 
 
 
+
+
+
             <div class="grid-12">
               <!-- Pôle 1 : Faune & Botanique<span class="tech-code-tag"> (PUB-05)</span> -->
               <article class="col-8 bento-card bento-wide" id="sec-PUB-05">
@@ -4572,6 +5238,9 @@
             </div>
           </div>
         </div>
+
+
+
 
 
 
@@ -5111,7 +5780,7 @@
                   <label class="form-label" for="globalSearchInput">Rechercher une activité, un tarif ou une information<span class="tech-code-tag"> (PUB-19)</span> :</label>
                   <input id="globalSearchInput" type="search" class="form-control" placeholder="Ex : piscine, pirogue, tarif enfant, loge Ewondo, CFP..." oninput="filterFAQSearch(this.value)" />
                 </div>
-                <div id="sec-PUB-17"><div id="sec-PUB-17"><div id="sec-PUB-17"><div id="sec-PUB-17"><div id="faqListContainer" style="display:grid;gap:10px;font-size:14.5px;">
+                <div id="sec-PUB-17"><div id="sec-PUB-17"><div id="sec-PUB-17"><div id="sec-PUB-17"><div id="sec-PUB-17"><div id="sec-PUB-17"><div id="sec-PUB-17"><div id="faqListContainer" style="display:grid;gap:10px;font-size:14.5px;">
                   <div style="padding:10px;background:var(--color-surface-soft);border-radius:8px;">
                     <strong>Quels sont les moyens de paiement acceptés ?</strong><br/>
                     En ligne et sur place par <strong>Orange Money</strong> et <strong>MTN Mobile Money</strong>, ou en espèces (FCFA) directement aux guichets d'Ahala.
@@ -5124,7 +5793,7 @@
                     <strong>Comment accéder facilement au parc et le stationnement est-il sécurisé ?</strong><br/>
                     ECOPARK est situé à <strong>Ahala Barrière (Route Nationale N°3, juste en face de la station Tradex Ahala)</strong>, sur un axe 100 % bitumé à 15 minutes du centre de Yaoundé. Un parking intérieur gratuit et gardé de 150 places (voitures et bus) vous attend dès le portail.
                   </div>
-                </div></div></div></div></div>
+                </div></div></div></div></div></div></div></div>
               </div>
 
               
@@ -5297,6 +5966,9 @@
                 <span class="status-badge status-info">Continuité Hors-Ligne Active</span>
               </div>
               <!-- ECOPARK_V4_SYSTEM_PAGES:END -->
+
+
+
 
 
 
@@ -5496,6 +6168,9 @@
             </div>
           </div>
         </div>
+
+
+
 
         <!-- ECOPARK_V4_PUB_HUB_AND_FOOTER:START -->
         <div class="section section-soft" id="v4PubHubCardsBlock" style="padding-top:26px;padding-bottom:32px;">
@@ -7275,6 +7950,9 @@
       </button>
     </nav>
     <!-- ECOPARK_V4_MOBILE_NAV:END -->
+
+
+
 
 
 
@@ -15070,12 +15748,21 @@ window.ecoparkOpenAdmin = function () {
       // 5. Synchronisation du menu principal (.main-nav) lorsque #view-PUB est actif
       var pubView = document.getElementById('view-PUB');
       if (pubView && pubView.classList.contains('active')) {
-        document.querySelectorAll('.main-nav .nav-item').forEach(function (n) { n.classList.remove('active'); });
+        document.querySelectorAll('.main-nav .nav-item, .main-nav .v4-dropdown-item').forEach(function (n) { n.classList.remove('active'); });
         var targetNavId = meta.navId;
-        if (opts.targetScreenId === 'PUB-07') targetNavId = 'nav-SAVEURS';
+        if (opts.targetScreenId === 'PUB-07') {
+          targetNavId = 'nav-HOTELS';
+          var savEl = document.getElementById('nav-SAVEURS');
+          if (savEl) savEl.classList.add('active');
+        }
         if (opts.targetScreenId === 'PUB-08' || opts.targetScreenId === 'PUB-09') targetNavId = 'nav-HOTELS';
         var navEl = document.getElementById(targetNavId) || document.getElementById('nav-PUB');
         if (navEl) navEl.classList.add('active');
+      }
+
+      // 6. Mise à jour du Fil d'Ariane et des sous-rubriques contextuelles (#v4SiteBreadcrumbBar)
+      if (typeof window.updateV4BreadcrumbBar === 'function') {
+        window.updateV4BreadcrumbBar(key, opts.subLabel || '');
       }
 
       if (opts.scrollTop) {
@@ -15083,6 +15770,227 @@ window.ecoparkOpenAdmin = function () {
       }
       return key;
     };
+
+    // =========================================================================
+    // MENU PRINCIPAL & SOUS-MENUS FONCTIONNELS (MEGA-MENU V4 + FIL D'ARIANE)
+    // =========================================================================
+    var V4_BREADCRUMB_CONFIG = {
+      ACCUEIL: { title: 'Accueil & Orientation', links: [] },
+      ACTIVITES: {
+        title: 'Activités & Lac (8 Attractions)',
+        links: [
+          ['Catalogue complet (8)', 'ACTIVITES_ALL'],
+          ['Balade en pirogue', 'ACT_PIROGUE'],
+          ['Parc Animalier « ToTo »', 'ACT_ZOO'],
+          ['Piscine Semi-Olympique', 'ACT_PISCINE'],
+          ['Équitation & Manèges', 'ACT_CHEVAL'],
+          ['Pêche, Musée & Biblio.', 'ACT_PECHE_MUSEE']
+        ]
+      },
+      FICHE_ACTIVITE: {
+        title: 'Fiche Détail Activité & Devis Direct',
+        links: [
+          ['← Catalogue 8 Activités', 'ACTIVITES_ALL'],
+          ['Balade en pirogue', 'ACT_PIROGUE'],
+          ['Parc Animalier « ToTo »', 'ACT_ZOO'],
+          ['Piscine Semi-Olympique', 'ACT_PISCINE'],
+          ['Promenade à Cheval', 'ACT_CHEVAL']
+        ]
+      },
+      HOTELS_SAVEURS: {
+        title: 'Hôtels & Château des Saveurs',
+        links: [
+          ['Comparatif des 4 Cités', 'HOTELS_COMPARATIF'],
+          ['Cité Ewondo VIP & Suites', 'HOTEL_EWONDO'],
+          ['Cités Chanthel & Bene', 'HOTEL_CHANTHEL'],
+          ['Le Château des Saveurs (Menus)', 'RESTAURANT_SAVEURS'],
+          ['Réserver Nuitée / Table →', 'BOOK_LODGE']
+        ]
+      },
+      TARIFS_AGENDA: {
+        title: 'Tarifs FCFA, Groupes & Agenda',
+        links: [
+          ['3 Pass Tout-Inclus', 'TARIFS_PASS'],
+          ['Grille Tarifaire FCFA', 'TARIFS_GRILLE'],
+          ['Écoles, Entreprises & Salle 500 pl.', 'TARIFS_GROUPES'],
+          ['Agenda Mardi – Dimanche', 'AGENDA_SEMAINE'],
+          ['Simulateur & Billet QR →', 'SIMULATEUR_RES']
+        ]
+      },
+      CFP_INFOS: {
+        title: 'Campus CFP, Plan RN3 & Infos Pratiques',
+        links: [
+          ['Campus CFP MINEFOP', 'CFP_CAMPUS'],
+          ['Plan Interactif RN3', 'INFOS_PLAN_RN3'],
+          ['Prendre RDV sur Site', 'INFOS_RDV'],
+          ['Galerie Photo HD', 'INFOS_GALERIE'],
+          ['FAQ & Recherche', 'INFOS_FAQ'],
+          ['Mentions Légales & CGV', 'INFOS_LEGAL']
+        ]
+      },
+      ALL: {
+        title: 'Vue Complète des 22 Écrans Publics',
+        links: [
+          ['Revenir au Mode 6 Pages (Accueil)', 'ACCUEIL']
+        ]
+      }
+    };
+
+    window._v4ActiveMenuAction = 'ACCUEIL';
+
+    window.updateV4BreadcrumbBar = function (pageKey, subLabel) {
+      var bar = document.getElementById('v4SiteBreadcrumbBar');
+      if (!bar) return;
+      var pubView = document.getElementById('view-PUB');
+      var isPubActive = pubView && pubView.classList.contains('active');
+      if (!isPubActive || pageKey === 'ACCUEIL') {
+        bar.classList.remove('visible');
+        return;
+      }
+      bar.classList.add('visible');
+      var cfg = V4_BREADCRUMB_CONFIG[pageKey] || V4_BREADCRUMB_CONFIG.ACTIVITES;
+      var rubEl = document.getElementById('v4BreadcrumbRubrique');
+      var sepEl = document.getElementById('v4BreadcrumbSubSep');
+      var subEl = document.getElementById('v4BreadcrumbSubItem');
+      var rowEl = document.getElementById('v4SiteContextualSublinks');
+      if (rubEl) rubEl.textContent = cfg.title;
+      if (sepEl && subEl) {
+        if (subLabel) {
+          sepEl.style.display = '';
+          subEl.style.display = '';
+          subEl.textContent = subLabel;
+        } else {
+          sepEl.style.display = 'none';
+          subEl.style.display = 'none';
+          subEl.textContent = '';
+        }
+      }
+      if (rowEl) {
+        rowEl.innerHTML = '';
+        (cfg.links || []).forEach(function (pair) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.className = 'v4-site-sublink-pill' + (window._v4ActiveMenuAction === pair[1] ? ' active' : '');
+          btn.textContent = pair[0];
+          btn.onclick = function () {
+            window.navigateV4SiteMenu(pair[1]);
+          };
+          rowEl.appendChild(btn);
+        });
+      }
+    };
+
+    window.closeAllV4Dropdowns = function () {
+      document.querySelectorAll('#v4MainMegaNav .v4-nav-dropdown').forEach(function (d) {
+        d.classList.remove('open');
+        d.classList.add('v4-dropdown-closed');
+        var btn = d.querySelector('.v4-dropdown-toggle');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+      });
+      setTimeout(function () {
+        document.querySelectorAll('#v4MainMegaNav .v4-nav-dropdown').forEach(function (d) {
+          d.classList.remove('v4-dropdown-closed');
+        });
+      }, 260);
+    };
+
+    window.toggleV4MobileDrawer = function (forceState) {
+      var drawer = document.getElementById('v4MobileMenuDrawer');
+      var btn = document.getElementById('v4MobileBurgerBtn');
+      if (!drawer) return false;
+      var nextOpen = typeof forceState === 'boolean' ? forceState : !drawer.classList.contains('open');
+      drawer.classList.toggle('open', nextOpen);
+      if (btn) btn.setAttribute('aria-expanded', nextOpen ? 'true' : 'false');
+      return nextOpen;
+    };
+
+    function scrollAndHaloSection(elId) {
+      setTimeout(function () {
+        var el = document.getElementById(elId);
+        if (el) {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (typeof triggerSectionFocusHalo === 'function') triggerSectionFocusHalo(el);
+        }
+      }, 60);
+    }
+
+    var V4_MENU_ACTIONS = {
+      ACCUEIL: { url: '/', family: 'PUB', screen: 'PUB-01', subLabel: '' },
+      ACTIVITES_ALL: { url: '/activites', family: 'PUB', screen: 'PUB-03', subLabel: 'Catalogue des 8 Activités', cat: 'ALL' },
+      ACT_PIROGUE: { url: '/fiche-activite', family: 'PUB', screen: 'PUB-04', subLabel: 'Balade en pirogue sur le lac', act: 'pirogue' },
+      ACT_ZOO: { url: '/fiche-activite', family: 'PUB', screen: 'PUB-04', subLabel: 'Parc Animalier (« ToTo »)', act: 'zoo' },
+      ACT_PISCINE: { url: '/fiche-activite', family: 'PUB', screen: 'PUB-04', subLabel: 'Piscine Semi-Olympique', act: 'piscine' },
+      ACT_CHEVAL: { url: '/fiche-activite', family: 'PUB', screen: 'PUB-04', subLabel: 'Promenade à Cheval', act: 'cheval' },
+      ACT_PECHE_MUSEE: { url: '/activites', family: 'PUB', screen: 'PUB-03', subLabel: 'Pêche, Musée & Bibliothèque', cat: 'CULTURE', scrollTo: 'sec-PUB-05' },
+      HOTELS_ALL: { url: '/hebergements', family: 'PUB', screen: 'PUB-09', subLabel: '4 Cités Hôtelières & Saveurs' },
+      HOTELS_COMPARATIF: { url: '/hebergements', family: 'PUB', screen: 'PUB-09', subLabel: 'Comparatif des 4 Cités', scrollTo: 'sec-PUB-09' },
+      HOTEL_EWONDO: { url: '/hebergements', family: 'PUB', screen: 'PUB-08', subLabel: 'Cité Ewondo VIP & Suites', scrollTo: 'sec-PUB-08' },
+      HOTEL_CHANTHEL: { url: '/hebergements', family: 'PUB', screen: 'PUB-09', subLabel: 'Cités Chanthel & Bene', scrollTo: 'sec-PUB-09' },
+      RESTAURANT_SAVEURS: { url: '/restaurant', family: 'PUB', screen: 'PUB-07', subLabel: 'Le Château des Saveurs', scrollTo: 'sec-PUB-07' },
+      BOOK_LODGE: { url: '/reserver', family: 'RES', screen: 'RES-03', subLabel: 'Réservation Nuitée / Table' },
+      TARIFS_PASS: { url: '/nos-tarifs', family: 'PUB', screen: 'PUB-10', subLabel: '3 Pass Journée Tout-Inclus', scrollTo: 'pubSalesBundlesGrid' },
+      TARIFS_GRILLE: { url: '/nos-tarifs', family: 'PUB', screen: 'PUB-10', subLabel: 'Grille Tarifaire FCFA', scrollTo: 'sec-PUB-10' },
+      TARIFS_GROUPES: { url: '/pack-entreprise', family: 'PUB', screen: 'PUB-11', subLabel: 'Écoles, Entreprises & Salle 500 pl.', scrollTo: 'sec-PUB-11' },
+      AGENDA_SEMAINE: { url: '/agenda', family: 'PUB', screen: 'PUB-16', subLabel: 'Agenda Mardi – Dimanche', scrollTo: 'sec-PUB-16' },
+      SIMULATEUR_RES: { url: '/reserver', family: 'RES', screen: 'RES-01', subLabel: 'Simulateur & Billet QR' },
+      CFP_CAMPUS: { url: '/formation', family: 'PUB', screen: 'PUB-12', subLabel: 'Campus CFP MINEFOP', scrollTo: 'sec-PUB-12' },
+      INFOS_PLAN_RN3: { url: '/contact', family: 'PUB', screen: 'PUB-13', subLabel: 'Plan Interactif RN3 & Accès', scrollTo: 'ahalaMapContainer' },
+      INFOS_RDV: { url: '/rdv', family: 'PUB', screen: 'PUB-18', subLabel: 'Prendre RDV sur Site', scrollTo: 'sec-PUB-18' },
+      INFOS_GALERIE: { url: '/contact', family: 'PUB', screen: 'PUB-14', subLabel: 'Galerie Photo HD & Vidéos', scrollTo: 'sec-PUB-14' },
+      INFOS_FAQ: { url: '/contact', family: 'PUB', screen: 'PUB-19', subLabel: 'Questions Fréquentes (FAQ)', scrollTo: 'sec-PUB-19' },
+      INFOS_LEGAL: { url: '/contact', family: 'PUB', screen: 'PUB-20', subLabel: 'Mentions Légales & Garanties', scrollTo: 'sec-PUB-20' },
+      ACC_LOOKUP: { url: '/mon-espace', family: 'ACC', screen: 'ACC-01', subLabel: 'Retrouver mon Billet QR' },
+      ACC_DASHBOARD: { url: '/mon-espace', family: 'ACC', screen: 'ACC-02', subLabel: 'Mes Réservations & Dossiers CFP' },
+      ACC_REPORT_DATE: { url: '/mon-espace', family: 'ACC', screen: 'ACC-05', subLabel: 'Garantie Pluie (Report 0 FCFA)' }
+    };
+
+    window.navigateV4SiteMenu = function (actionKey, opts) {
+      opts = opts || {};
+      var key = V4_MENU_ACTIONS[actionKey] ? actionKey : 'ACCUEIL';
+      var spec = V4_MENU_ACTIONS[key];
+      window._v4ActiveMenuAction = key;
+
+      window.closeAllV4Dropdowns();
+      window.toggleV4MobileDrawer(false);
+
+      if (spec.act && typeof window.openV4ActivityDetail === 'function') {
+        window.openV4ActivityDetail(spec.act);
+      } else {
+        window.navigateFamily(spec.family, spec.screen);
+      }
+
+      if (spec.cat && typeof window.filterV4CatalogCards === 'function') {
+        var pill = document.querySelector('#v4CatalogFilterHeader .v4-filter-pill[data-v4-cat="' + spec.cat + '"]');
+        window.filterV4CatalogCards(spec.cat, pill);
+      }
+
+      if (spec.family === 'PUB') {
+        var subPage = PUB_SCREEN_TO_SUBPAGE[spec.screen] || 'ACCUEIL';
+        window.updateV4BreadcrumbBar(subPage, spec.subLabel || '');
+      }
+
+      if (spec.scrollTo) {
+        scrollAndHaloSection(spec.scrollTo);
+      }
+
+      if (!opts.skipHistory && window.history && typeof window.history.pushState === 'function') {
+        try {
+          if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+            var currentPath = window.location.pathname || '/';
+            if (currentPath !== spec.url) {
+              window.history.pushState({ v4MenuAction: key }, '', spec.url + window.location.search);
+            }
+          }
+        } catch (e) {}
+      }
+      return key;
+    };
+
+    window.addEventListener('popstate', function (ev) {
+      if (ev && ev.state && ev.state.v4MenuAction && V4_MENU_ACTIONS[ev.state.v4MenuAction]) {
+        window.navigateV4SiteMenu(ev.state.v4MenuAction, { skipHistory: true });
+      }
+    });
 
     // Envelopper inspectScreen et navigateFamily pour activer automatiquement la sous-page correspondante
     var _origInspectScreenV4 = window.inspectScreen;
@@ -15112,6 +16020,9 @@ window.ecoparkOpenAdmin = function () {
         if (fam === 'PUB') {
           var subPage = PUB_SCREEN_TO_SUBPAGE[code] || 'ACCUEIL';
           window.switchPubSubPage(subPage, { targetScreenId: code });
+        } else {
+          var bcBar = document.getElementById('v4SiteBreadcrumbBar');
+          if (bcBar) bcBar.classList.remove('visible');
         }
         var res = _origNavigateFamilyV4.apply(this, arguments);
         if (fam === 'PUB') {
@@ -15123,15 +16034,21 @@ window.ecoparkOpenAdmin = function () {
       window.navigateFamily._v4SubPageWrapped = true;
     }
 
-    // Prise en charge des URLs dédiées (/activites, /fiche-activite, /agenda, /rdv, etc.)
+    // Prise en charge des URLs dédiées (/activites, /fiche-activite, /hebergements, /mon-espace, /agenda, /rdv, etc.)
     var pathNow = (window.location.pathname || '/').replace(/\/+$/, '').toLowerCase();
     var v4ExtraRoutes = {
       '/activites': ['PUB', 'PUB-03'],
       '/fiche-activite': ['PUB', 'PUB-04'],
+      '/hebergements': ['PUB', 'PUB-09'],
+      '/hotellerie': ['PUB', 'PUB-09'],
+      '/restaurant': ['PUB', 'PUB-07'],
+      '/nos-tarifs': ['PUB', 'PUB-10'],
+      '/tarifs': ['PUB', 'PUB-10'],
       '/agenda': ['PUB', 'PUB-16'],
       '/evenements': ['PUB', 'PUB-16'],
       '/rdv': ['PUB', 'PUB-18'],
-      '/rendez-vous': ['PUB', 'PUB-18']
+      '/rendez-vous': ['PUB', 'PUB-18'],
+      '/mon-espace': ['ACC', 'ACC-02']
     };
     if (v4ExtraRoutes[pathNow]) {
       setTimeout(function () {

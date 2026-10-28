@@ -166,6 +166,63 @@ def main():
             str(subpage_check)
         )
 
+        # 5c. Menu Principal & Sous-Menus Déroulants (Mega-Menu V4 + Fil d'Ariane + Tiroir Mobile)
+        mega_menu_check = page.evaluate("""() => {
+            const dropdownsCount = document.querySelectorAll('#v4MainMegaNav .v4-nav-dropdown').length;
+            const dropdownItemsCount = document.querySelectorAll('#v4MainMegaNav .v4-dropdown-item').length;
+            const mobileAccordionsCount = document.querySelectorAll('#v4MobileMenuDrawer details.v4-mob-accordion').length;
+
+            // Vérifier le routage via navigateV4SiteMenu
+            navigateV4SiteMenu('ACT_PISCINE');
+            const piscinePage = window._activePubSubPage;
+            const piscineTitle = document.getElementById('v4Pub04Title').textContent.trim();
+            const bcVisibleOnInterior = document.getElementById('v4SiteBreadcrumbBar').classList.contains('visible');
+            const bcSubItem = document.getElementById('v4BreadcrumbSubItem').textContent.trim();
+            const sublinksCount = document.querySelectorAll('#v4SiteContextualSublinks .v4-site-sublink-pill').length;
+
+            navigateV4SiteMenu('RESTAURANT_SAVEURS');
+            const saveursPage = window._activePubSubPage;
+            const navHotelsActive = document.getElementById('nav-HOTELS').classList.contains('active');
+
+            navigateV4SiteMenu('ACCUEIL');
+            const bcHiddenOnAccueil = !document.getElementById('v4SiteBreadcrumbBar').classList.contains('visible');
+
+            // Tiroir mobile accordéon
+            const drawerOpened = toggleV4MobileDrawer(true);
+            const drawerClosed = !toggleV4MobileDrawer(false);
+
+            return {
+                dropdownsCount,
+                dropdownItemsCount,
+                mobileAccordionsCount,
+                piscinePage,
+                piscineTitle,
+                bcVisibleOnInterior,
+                bcSubItem,
+                sublinksCount,
+                saveursPage,
+                navHotelsActive,
+                bcHiddenOnAccueil,
+                drawerOpened,
+                drawerClosed
+            };
+        }""")
+        check(
+            mega_menu_check["dropdownsCount"] == 5
+            and mega_menu_check["dropdownItemsCount"] >= 24
+            and mega_menu_check["mobileAccordionsCount"] == 5
+            and mega_menu_check["piscinePage"] == "FICHE_ACTIVITE"
+            and "piscine" in mega_menu_check["piscineTitle"].lower()
+            and mega_menu_check["bcVisibleOnInterior"]
+            and mega_menu_check["bcHiddenOnAccueil"]
+            and mega_menu_check["saveursPage"] == "HOTELS_SAVEURS"
+            and mega_menu_check["navHotelsActive"]
+            and mega_menu_check["drawerOpened"]
+            and mega_menu_check["drawerClosed"],
+            "Mega-Menu V4 (5 sous-menus déroulants, 26 entrées, Fil d'Ariane dynamique & Tiroir Mobile accordéon) 100 % fonctionnel",
+            str(mega_menu_check)
+        )
+
         # 6. Pilot 5 & 6 : Mobile 390x844 Bottom Nav & Cibles tactiles >= 44px (A-013, A-024)
         page.set_viewport_size({"width": 390, "height": 844})
         mob_check = page.evaluate("""() => {
