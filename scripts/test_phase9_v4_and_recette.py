@@ -6,13 +6,18 @@ Vérification E2E automatisée de la Phase 9 :
   3. Validation des correctifs des 24 anomalies (A-001 à A-024) + ADM-09 (A-011)
   4. Intégrité de la hiérarchie de vérité (Logo officiel, Tarifs FCFA sanctuarisés, 0 caractère > U+25FF)
 """
+import functools
+import http.server
+import socketserver
 import sys
+import threading
+from pathlib import Path
 from playwright.sync_api import sync_playwright
 
 if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
-BASE = "https://ecopark-cameroun-ahala.vercel.app" if "--prod" in sys.argv else "http://localhost:3000"
+ROOT_DIR = Path(__file__).resolve().parent.parent / "etape0-site-live"
 results = []
 
 
@@ -23,6 +28,17 @@ def check(cond, label, detail=""):
 
 def main():
     print("\n=== TEST PHASE 9 : DESIGN SYSTEM V4 « CANOPÉE IMMERSIVE » & CAHIER DE RECETTE (24 ANOMALIES) ===")
+    httpd = None
+    if "--prod" in sys.argv:
+        base_url = "https://ecopark-cameroun-ahala.vercel.app"
+    else:
+        handler = functools.partial(http.server.SimpleHTTPRequestHandler, directory=str(ROOT_DIR))
+        httpd = socketserver.ThreadingTCPServer(("127.0.0.1", 0), handler)
+        port = httpd.server_address[1]
+        t = threading.Thread(target=httpd.serve_forever, daemon=True)
+        t.start()
+        base_url = f"http://127.0.0.1:{port}"
+
     with sync_playwright() as p:
         browser = p.chromium.launch(headless=True)
         page = browser.new_page(viewport={"width": 1440, "height": 900})
@@ -31,7 +47,7 @@ def main():
         page.on("console", lambda msg: console_errors.append(msg.text) if msg.type == "error" else None)
         page.on("pageerror", lambda err: console_errors.append(str(err)))
 
-        page.goto(f"{BASE}/?demo=77", wait_until="networkidle")
+        page.goto(f"{base_url}/?demo=77", wait_until="networkidle")
 
         # 1. Pilot 1 : Hero Cinématique V4 & 4 Piliers
         v4_hero = page.evaluate("""() => {
@@ -221,6 +237,94 @@ def main():
             and mega_menu_check["drawerClosed"],
             "Mega-Menu V4 (5 sous-menus déroulants, 26 entrées, Fil d'Ariane dynamique & Tiroir Mobile accordéon) 100 % fonctionnel",
             str(mega_menu_check)
+        )
+
+        # 5d. Cohérence intégrale du Modèle Économique (6 corrections auditées)
+        econ_check = page.evaluate("""() => {
+            // 1. Vérifier que #lodgeCitySelect préserve les 4 cités (EWONDO, SUITES_PRIVEES, CHANTHEL, BENE) avec leurs bons libellés
+            syncLiveAvailabilityAndOverbooking();
+            const citySel = document.getElementById('lodgeCitySelect');
+            const optValues = Array.from(citySel.options).map(o => ({ val: o.value, txt: o.textContent.trim() }));
+            const suitesOpt = optValues.find(o => o.val === 'SUITES_PRIVEES');
+            const chanthelOpt = optValues.find(o => o.val === 'CHANTHEL');
+            const beneOpt = optValues.find(o => o.val === 'BENE');
+
+            // 2. Vérifier le 5e bouton d'activité (Musée & Bibliothèque) dans PUB-04
+            openV4ActivityDetail('musee');
+            const pub04MuseeTitle = document.getElementById('v4Pub04Title').textContent.trim();
+            const pub04MuseeSubtotal = document.getElementById('v4Pub04SubtotalFcfa').textContent.trim();
+
+            // 3. Vérifier l'événement Mercredi CFP en 1 clic : 2 adultes + 2 enfants = 3 000 FCFA (sans frais cachés)
+            counts.adults = 2;
+            counts.children = 2;
+            bookWeeklyEventInOneClick('EVT_MERCREDI_CFP');
+            const mercrediTotal = document.getElementById('grandTotalFCFA').textContent.trim();
+
+            // 4. Vérifier le tarif dynamique selon le plat choisi au Château des Saveurs (mode à la carte)
+            applySalesBundle('CUSTOM', false);
+            ['chkZoo', 'chkPiscine', 'chkPirogue', 'chkCheval', 'chkBumpPergola', 'chkBumpNutrition', 'chkBumpLodgeEwondo', 'chkBumpNavette', 'chkBumpPeche'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.checked = false;
+            });
+            document.getElementById('chkRepas').checked = true;
+            document.getElementById('simDishSelect').value = "Poisson Braisé d'Ahala (Étang frais)";
+            recalcSimulator();
+            const repasPoisson = document.getElementById('subRepas').textContent.trim(); // 2*5000 + 2*2500 = 15 000 FCFA
+
+            document.getElementById('simDishSelect').value = "Poulet DG Royal Plantain Mûr";
+            recalcSimulator();
+            const repasPouletDg = document.getElementById('subRepas').textContent.trim(); // 2*6500 + 2*2500 = 18 000 FCFA
+
+            // 5. Vérifier le Pack Escapade Couple VIP Ewondo sur 1 nuit (45 000 FCFA) vs 2 nuits (70 000 FCFA)
+            document.getElementById('lodgeCitySelect').value = 'EWONDO';
+            document.getElementById('lodgeNightsSelect').value = '1';
+            applySalesBundle('PACK_COUPLE_EWONDO', false);
+            const packCouple1Nuit = document.getElementById('grandTotalFCFA').textContent.trim();
+            document.getElementById('lodgeNightsSelect').value = '2';
+            recalcSimulator();
+            const packCouple2Nuits = document.getElementById('grandTotalFCFA').textContent.trim();
+            document.getElementById('lodgeNightsSelect').value = '1';
+
+            // Remettre l'état par défaut
+            counts.adults = 2;
+            counts.children = 2;
+            applySalesBundle('CUSTOM', false);
+            document.getElementById('chkZoo').checked = true;
+            document.getElementById('chkPiscine').checked = true;
+            document.getElementById('chkPirogue').checked = true;
+            document.getElementById('chkRepas').checked = false;
+            document.getElementById('chkBumpLodgeEwondo').checked = false;
+            recalcSimulator();
+            navigateV4SiteMenu('ACCUEIL');
+
+            return {
+                suitesOptTxt: suitesOpt ? suitesOpt.txt : '',
+                chanthelOptTxt: chanthelOpt ? chanthelOpt.txt : '',
+                beneOptTxt: beneOpt ? beneOpt.txt : '',
+                pub04MuseeTitle,
+                pub04MuseeSubtotal,
+                mercrediTotal,
+                repasPoisson,
+                repasPouletDg,
+                packCouple1Nuit,
+                packCouple2Nuits
+            };
+        }""")
+        check(
+            "Suites Privées" in econ_check["suitesOptTxt"]
+            and "30 000" in econ_check["suitesOptTxt"]
+            and "Chanthel" in econ_check["chanthelOptTxt"]
+            and "15 000" in econ_check["chanthelOptTxt"]
+            and "Bene" in econ_check["beneOptTxt"]
+            and "Musée" in econ_check["pub04MuseeTitle"]
+            and econ_check["pub04MuseeSubtotal"] == "3 000 FCFA"
+            and econ_check["mercrediTotal"] == "3 000 FCFA"
+            and econ_check["repasPoisson"] == "15 000 FCFA"
+            and econ_check["repasPouletDg"] == "18 000 FCFA"
+            and econ_check["packCouple1Nuit"] == "45 000 FCFA"
+            and econ_check["packCouple2Nuits"] == "70 000 FCFA",
+            "Cohérence du Modèle Économique validée (4 Cités distinctes, Musée PUB-04, Agenda Mercredi 3 000 F, Plats dynamiques 5k/6.5k, Pack Couple 1/2 nuits)",
+            str(econ_check)
         )
 
         # 6. Pilot 5 & 6 : Mobile 390x844 Bottom Nav & Cibles tactiles >= 44px (A-013, A-024)

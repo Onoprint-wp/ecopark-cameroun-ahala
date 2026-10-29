@@ -27,24 +27,48 @@ RELOOK_HTML_PATH = ROOT / "relooking" / "Prototype_Interactif_ECOPARK_V4_CANOPEE
 
 
 def update_content_snapshot():
-    """Corrige A-014 : Renseigne des prix FCFA explicites (> 0) sur tous les plats du Château des Saveurs."""
+    """Corrige A-014 & Cohérence Économique : Renseigne les prix FCFA explicites sur menu_items et aligne agenda_events."""
     if not SNAP_PATH.exists():
-        return
+        return None
     data = json.loads(SNAP_PATH.read_text(encoding="utf-8"))
-    price_map = {
-        "menu-1": 5000,  # Poisson Braisé d'Ahala
-        "menu-2": 6500,  # Poulet DG Royal
-        "menu-3": 5500,  # Ndolé Royal Crevettes
-        "menu-4": 2500,  # Menu Enfant
+    content = data.get("content", data)
+    sku_price_map = {
+        "MNU-POISSON-BRAISE": 5000,
+        "MNU-POULET-DG": 6500,
+        "MNU-NDOLE-ROYAL": 5500,
+        "MNU-MENU-ENFANT": 2500,
     }
-    for item in data.get("menu_items", []):
+    id_price_map = {
+        "menu-1": 5000,
+        "menu-2": 6500,
+        "menu-3": 5500,
+        "menu-4": 2500,
+    }
+    for item in content.get("menu_items", []):
+        sku = item.get("sku")
         item_id = item.get("id")
-        if item_id in price_map:
-            item["price_fcfa"] = price_map[item_id]
+        if sku in sku_price_map:
+            item["price_fcfa"] = sku_price_map[sku]
+        elif item_id in id_price_map:
+            item["price_fcfa"] = id_price_map[item_id]
         elif not item.get("price_fcfa") or item.get("price_fcfa") <= 0:
             item["price_fcfa"] = 5000
+
+    for ev in content.get("agenda_events", []):
+        code = ev.get("code")
+        if code == "EVT_MERCREDI_CFP":
+            ev["bundle_code"] = "CUSTOM"
+            ev["nutrition"] = False
+        elif code == "EVT_VENDREDI_AFTERWORK":
+            ev["price_text"] = "Plats 2 500 à 6 500 FCFA • Pergola Privée Bord du Lac : +5 000 FCFA"
+            ev["from_price_fcfa"] = 2500
+            ev["pergola"] = False
+        elif code == "EVT_SAMEDI_FAMILLE":
+            ev["nutrition"] = False
+
     SNAP_PATH.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    print("[OK] content-snapshot.json mis a jour (A-014 : prix FCFA explicites sur menu_items).")
+    print("[OK] content-snapshot.json mis a jour (A-014 + Coherence economique menu_items & agenda_events).")
+    return data
 
 
 V4_CSS_BLOCK = """    /* ECOPARK_V4_CANOPEE_CSS:START */
@@ -1200,7 +1224,7 @@ V4_CATALOG_FILTER_AND_CARDS_HTML = """            <!-- ECOPARK_V4_CATALOG_GRID:S
                   <select id="v4FilterPrice" class="form-control" style="width:auto;min-height:38px;padding:6px 12px;font-size:13.5px;" aria-label="Filtrer par tarif FCFA" onchange="filterV4CatalogCards(window._v4ActiveCat || 'ALL')">
                     <option value="ALL">Tous les tarifs officiels (FCFA)</option>
                     <option value="500">Dès 500 FCFA (Enfant protégé)</option>
-                    <option value="1500">Baignade &amp; Repas (1 500 – 8 500 FCFA)</option>
+                    <option value="1500">Baignade &amp; Repas (1 500 – 6 500 FCFA)</option>
                   </select>
                   <button type="button" class="btn btn-secondary btn-sm" onclick="resetV4CatalogFilters()">Réinitialiser les filtres</button>
                 </div>
@@ -1398,7 +1422,7 @@ V4_CATALOG_FILTER_AND_CARDS_HTML = """            <!-- ECOPARK_V4_CATALOG_GRID:S
                     <div class="v4-activity-footer">
                       <div class="v4-activity-price-block">
                         <small>Menu Enfant / Plats</small>
-                        <strong>2 500 – 8 500 FCFA</strong>
+                        <strong>2 500 – 6 500 FCFA</strong>
                       </div>
                       <div style="display:flex;gap:6px;align-items:center;">
                         <button type="button" class="btn btn-secondary btn-sm" style="padding:6px 10px;font-size:12.5px;" onclick="navigateFamily('PUB', 'PUB-07')">Voir Menu</button>
@@ -1506,6 +1530,7 @@ V4_PUB04_AND_PUB09_SECTIONS_HTML = """        <!-- ECOPARK_V4_PUB04_AND_PUB09:ST
                 <button type="button" class="v4-filter-pill" data-pub04-act="zoo" onclick="switchV4Pub04Activity('zoo', this)">2. Zoo « ToTo » (500/1 000 F)</button>
                 <button type="button" class="v4-filter-pill" data-pub04-act="piscine" onclick="switchV4Pub04Activity('piscine', this)">3. Piscine (1 500/2 500 F)</button>
                 <button type="button" class="v4-filter-pill" data-pub04-act="cheval" onclick="switchV4Pub04Activity('cheval', this)">4. Équitation (500/1 000 F)</button>
+                <button type="button" class="v4-filter-pill" data-pub04-act="musee" onclick="switchV4Pub04Activity('musee', this)">5. Musée &amp; Biblio. (500/1 000 F)</button>
               </div>
             </div>
 
@@ -1911,14 +1936,14 @@ V4_MAIN_MEGA_NAV_HTML = """        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
                   <span class="v4-dropdown-item-title">Cité Ewondo VIP &amp; Suites Privées</span>
                   <span class="v4-dropdown-item-sub">Pavillons climatisés, terrasse jardin &amp; accès parc inclus</span>
                 </div>
-                <span class="v4-dropdown-item-price">20k / 45k FCFA</span>
+                <span class="v4-dropdown-item-price">25k à 45k FCFA</span>
               </button>
               <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('HOTEL_CHANTHEL')">
                 <div>
                   <span class="v4-dropdown-item-title">Cités Chanthel (Confort) &amp; Bene (Éco)</span>
                   <span class="v4-dropdown-item-sub">Séjours nature accessibles avec parking sécurisé gratuit</span>
                 </div>
-                <span class="v4-dropdown-item-price">10k / 15k FCFA</span>
+                <span class="v4-dropdown-item-price">10k à 25k FCFA</span>
               </button>
               <button type="button" class="v4-dropdown-item" id="nav-SAVEURS" role="menuitem" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')">
                 <div>
@@ -1950,9 +1975,9 @@ V4_MAIN_MEGA_NAV_HTML = """        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
               <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('TARIFS_PASS')">
                 <div>
                   <span class="v4-dropdown-item-title">3 Pass Journée Tout-Inclus (Coupe-File)</span>
-                  <span class="v4-dropdown-item-sub">Pass Découverte, Pass Canopée Royal &amp; Forfait Famille</span>
+                  <span class="v4-dropdown-item-sub">Pass Découverte Nature, Pass Journée Royale &amp; Pack Escapade VIP</span>
                 </div>
-                <span class="v4-dropdown-item-price">Dès 3 000 FCFA</span>
+                <span class="v4-dropdown-item-price">Dès 1 500 / 2 500 FCFA</span>
               </button>
               <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('TARIFS_GRILLE')">
                 <div>
@@ -2121,16 +2146,16 @@ V4_MOBILE_DRAWER_HTML = """    <!-- ECOPARK_V4_MOBILE_DRAWER:START -->
             <summary>Hôtels &amp; Château des Saveurs</summary>
             <div class="v4-mob-sublist">
               <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTELS_COMPARATIF')"><span>Comparatif des 4 Cités Hôtelières</span><small>10k – 45k F</small></button>
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_EWONDO')"><span>Cité Ewondo VIP &amp; Suites</span><small>20k / 45k F</small></button>
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_CHANTHEL')"><span>Cités Chanthel &amp; Bene</span><small>10k / 15k F</small></button>
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')"><span>Le Château des Saveurs (Menus)</span><small>Dès 2 500 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_EWONDO')"><span>Cité Ewondo VIP &amp; Suites</span><small>25k – 45k F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_CHANTHEL')"><span>Cités Chanthel &amp; Bene</span><small>10k – 25k F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')"><span>Le Château des Saveurs (Menus)</span><small>2 500 – 6 500 F</small></button>
             </div>
           </details>
 
           <details class="v4-mob-accordion">
             <summary>Tarifs FCFA, Groupes &amp; Agenda</summary>
             <div class="v4-mob-sublist">
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('TARIFS_PASS')"><span>3 Pass Journée Tout-Inclus</span><small>Dès 3 000 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('TARIFS_PASS')"><span>3 Pass Journée Tout-Inclus</span><small>Dès 1 500 F</small></button>
               <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('TARIFS_GRILLE')"><span>Grille Tarifaire Officielle FCFA</span><small>Complète</small></button>
               <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('TARIFS_GROUPES')"><span>Écoles, Entreprises &amp; Salle 500 pl.</span><small>Proforma</small></button>
               <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('AGENDA_SEMAINE')"><span>Agenda de la Semaine (Mar–Dim)</span><small>4 Événements</small></button>
@@ -2479,6 +2504,20 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
         prog: '1. Prise de contact avec les chevaux et équipement sécurité • 2. Tour accompagné sur la piste cavalière d\'Ahala • 3. Photo souvenir.',
         savoir: 'Chaussures fermées recommandées. Tarif unique accessible : 500 FCFA Enfant / 1 000 FCFA Adulte.',
         avis: '« Mon fils de 6 ans a fait son premier tour à cheval pour 500 FCFA avec un encadrant très patient. » — Clarisse N. (Note : 4.9/5).'
+      },
+      musee: {
+        slug: 'musee',
+        title: 'Musée Patrimonial & Bibliothèque ECOPARK',
+        duration: '1h00',
+        age: 'Scolaires & Familles',
+        safety: 'Visite guidée & espace calme',
+        childFcfa: 500,
+        adultFcfa: 1000,
+        img: 'audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg',
+        desc: 'Découvrez la collection patrimoniale camerounaise (masques, instruments traditionnels, artisanat) et profitez de la bibliothèque éducative d\'ECOPARK Ahala au calme sous la canopée.',
+        prog: '1. Accueil par le médiateur culturel • 2. Visite commentée des salles d\'exposition patrimoniale (40 min) • 3. Temps calme et lecture à la bibliothèque jeunesse & chercheurs (20 min).',
+        savoir: 'Tarif éducatif accessible : 500 FCFA Enfant (protégé pour les sorties scolaires) / 1 000 FCFA Adulte.',
+        avis: '« Une halte culturelle passionnante après la visite du Zoo ToTo. Les élèves ont beaucoup appris. » — Collège Vogt (Note : 4.9/5).'
       }
     };
 
@@ -2752,6 +2791,126 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
       if (s.length < 6) return s;
       return s.slice(0, -4).replace(/[0-9]/g, '•') + s.slice(-4);
     };
+
+    // =========================================================================
+    // COHÉRENCE DU MODÈLE ÉCONOMIQUE V4 (AGENDA, GRILLE PUB-10 & SIMULATEUR)
+    // =========================================================================
+    if (typeof WEEKLY_AGENDA_CATALOG !== 'undefined') {
+      if (WEEKLY_AGENDA_CATALOG.EVT_MERCREDI_CFP) {
+        WEEKLY_AGENDA_CATALOG.EVT_MERCREDI_CFP.bundle = 'CUSTOM';
+        WEEKLY_AGENDA_CATALOG.EVT_MERCREDI_CFP.pergola = false;
+        WEEKLY_AGENDA_CATALOG.EVT_MERCREDI_CFP.nutrition = false;
+      }
+      if (WEEKLY_AGENDA_CATALOG.EVT_VENDREDI_AFTERWORK) {
+        WEEKLY_AGENDA_CATALOG.EVT_VENDREDI_AFTERWORK.bundle = 'CUSTOM';
+        WEEKLY_AGENDA_CATALOG.EVT_VENDREDI_AFTERWORK.priceText = 'Plats 2 500 à 6 500 FCFA • Pergola Privée Bord du Lac : +5 000 FCFA';
+        WEEKLY_AGENDA_CATALOG.EVT_VENDREDI_AFTERWORK.pergola = false;
+        WEEKLY_AGENDA_CATALOG.EVT_VENDREDI_AFTERWORK.nutrition = false;
+      }
+      if (WEEKLY_AGENDA_CATALOG.EVT_SAMEDI_FAMILLE) {
+        WEEKLY_AGENDA_CATALOG.EVT_SAMEDI_FAMILLE.bundle = 'PASS_DECOUVERTE';
+        WEEKLY_AGENDA_CATALOG.EVT_SAMEDI_FAMILLE.pergola = false;
+        WEEKLY_AGENDA_CATALOG.EVT_SAMEDI_FAMILLE.nutrition = false;
+      }
+      if (WEEKLY_AGENDA_CATALOG.EVT_DIMANCHE_ROYAL) {
+        WEEKLY_AGENDA_CATALOG.EVT_DIMANCHE_ROYAL.bundle = 'PASS_ROYALE';
+        WEEKLY_AGENDA_CATALOG.EVT_DIMANCHE_ROYAL.pergola = false;
+        WEEKLY_AGENDA_CATALOG.EVT_DIMANCHE_ROYAL.nutrition = false;
+      }
+    }
+    if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.LODGES) {
+      VISUAL_APPRECIATION_CATALOG.LODGES.SUITES_PRIVEES = {
+        title: 'Suites Privées Prestige VIP — Salon & Jacuzzi / Terrasse Privée',
+        rate: '30 000 – 45 000 FCFA / nuit',
+        desc: 'Suite Privée Prestige VIP climatisée avec salon privé, literie King-Size, room-service prioritaire Château des Saveurs et accès complet Piscine & Zoo.',
+        src: 'audit-assets/ecopark-real-media/chambre.jpeg',
+        lbIdx: 8
+      };
+    }
+
+    window.bookWeeklyEventInOneClick = function (eventCode) {
+      var ev = (typeof WEEKLY_AGENDA_CATALOG !== 'undefined' && WEEKLY_AGENDA_CATALOG[eventCode])
+        ? WEEKLY_AGENDA_CATALOG[eventCode]
+        : (typeof WEEKLY_AGENDA_CATALOG !== 'undefined' ? WEEKLY_AGENDA_CATALOG.EVT_DIMANCHE_ROYAL : null);
+      if (!ev) return '';
+      window._currentAgendaEventCode = ev.code;
+      window._selectedWeeklyEventTitle = ev.shortLabel;
+      if (typeof closeSprint1Modals === 'function') closeSprint1Modals();
+
+      var nextDateIso = typeof getNextDateForWeekday === 'function' ? getNextDateForWeekday(ev.targetWeekday) : '2026-11-15';
+      var vDate = document.getElementById('visitDate');
+      if (vDate) vDate.value = nextDateIso;
+
+      // Réinitialiser toutes les options additionnelles pour éviter toute facturation cachée non annoncée
+      ['chkBumpPergola', 'chkBumpNutrition', 'chkBumpLodgeEwondo', 'chkBumpNavette', 'chkBumpPeche', 'chkMusee', 'chkBibliotheque', 'chkAireJeux', 'chkCrecheGarderie'].forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) el.checked = false;
+      });
+
+      if (ev.code === 'EVT_MERCREDI_CFP') {
+        window._activeBundleCode = 'CUSTOM';
+        if (typeof updateBundleButtonsUI === 'function') updateBundleButtonsUI();
+        if (document.getElementById('chkZoo')) document.getElementById('chkZoo').checked = true;
+        if (document.getElementById('chkPiscine')) document.getElementById('chkPiscine').checked = false;
+        if (document.getElementById('chkPirogue')) document.getElementById('chkPirogue').checked = false;
+        if (document.getElementById('chkCheval')) document.getElementById('chkCheval').checked = false;
+        if (document.getElementById('chkRepas')) document.getElementById('chkRepas').checked = false;
+      } else if (ev.bundle && ev.bundle !== 'CUSTOM') {
+        applySalesBundle(ev.bundle, false);
+      } else {
+        window._activeBundleCode = 'CUSTOM';
+        if (typeof updateBundleButtonsUI === 'function') updateBundleButtonsUI();
+        if (document.getElementById('chkZoo')) document.getElementById('chkZoo').checked = true;
+        if (document.getElementById('chkPiscine')) document.getElementById('chkPiscine').checked = false;
+        if (document.getElementById('chkPirogue')) document.getElementById('chkPirogue').checked = false;
+        if (document.getElementById('chkCheval')) document.getElementById('chkCheval').checked = false;
+        if (document.getElementById('chkRepas')) document.getElementById('chkRepas').checked = true;
+      }
+
+      if (document.getElementById('chkBumpPergola')) document.getElementById('chkBumpPergola').checked = !!ev.pergola;
+      if (document.getElementById('chkBumpNutrition')) document.getElementById('chkBumpNutrition').checked = !!ev.nutrition;
+      if (document.getElementById('simDishSelect') && ev.dish) document.getElementById('simDishSelect').value = ev.dish;
+      if (document.getElementById('simMealSlotSelect') && ev.mealSlot) document.getElementById('simMealSlotSelect').value = ev.mealSlot;
+
+      var banner = document.getElementById('activeEventBannerSimulator');
+      var bannerTitle = document.getElementById('activeEventSimTitle');
+      if (banner) banner.classList.add('open');
+      if (bannerTitle) bannerTitle.textContent = ev.title + ' (Date pré-remplie : ' + nextDateIso + ')';
+
+      if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.EVENTS) {
+        var vis = VISUAL_APPRECIATION_CATALOG.EVENTS[ev.code] || VISUAL_APPRECIATION_CATALOG.EVENTS.EVT_DIMANCHE_ROYAL;
+        var simThumb = document.getElementById('activeEventSimThumb');
+        if (simThumb && vis) {
+          simThumb.src = vis.src;
+          simThumb.onclick = function () { openEcoparkLightbox(vis.lbIdx); };
+        }
+      }
+
+      if (typeof recalcSimulator === 'function') recalcSimulator();
+      navigateFamily('RES', 'RES-03');
+      showToastSprint1('• Événement « ' + ev.shortLabel + ' » (' + nextDateIso + ') pré-configuré au tarif exact affiché !');
+      return nextDateIso;
+    };
+
+    var _origRenderPubCatalogV4 = window.renderPubCatalogFromData;
+    window.renderPubCatalogFromData = function () {
+      if (typeof _origRenderPubCatalogV4 === 'function') _origRenderPubCatalogV4();
+      var tbody = document.getElementById('pubCatalogTableBody');
+      if (!tbody) return;
+      Array.prototype.forEach.call(tbody.querySelectorAll('tr'), function (tr) {
+        var html = tr.innerHTML || '';
+        if (html.indexOf('Château des Saveurs') !== -1 && tr.children.length >= 3) {
+          tr.children[2].innerHTML = '<span class="price-pill">5 000 à 6 500 FCFA</span>';
+        } else if (html.indexOf('Piscine Semi-Olympique') !== -1 && tr.children.length >= 2) {
+          tr.children[1].innerHTML = '<span class="price-pill">1 500 FCFA (Prévente/Sem.) • 2 500 FCFA (Guichet WE)</span>';
+        } else if (html.indexOf('Hébergement — Cités Bene, Chanthel') !== -1 && tr.children.length >= 1) {
+          tr.children[0].innerHTML = '<strong>Hébergement — Cités Bene, Chanthel, Ewondo &amp; Suites Privées</strong>';
+        }
+      });
+    };
+    setTimeout(function () {
+      if (typeof window.renderPubCatalogFromData === 'function') window.renderPubCatalogFromData();
+    }, 30);
 
     // =========================================================================
     // ARCHITECTURE MULTI-PAGES PUBLIQUES (6 SOUS-VUES DÉDIÉES DANS #view-PUB)
@@ -3339,22 +3498,241 @@ def apply_phase9_v4(html: str) -> str:
         1
     )
 
-    # 8. Ajouter id="sec-PUB-17" et id="sec-PUB-19" sur le bloc Recherche & FAQ de #sec-PUB-13 (A-019)
+    # 8. Ajouter id="sec-PUB-17" et id="sec-PUB-19" sur le bloc Recherche & FAQ de #sec-PUB-13 (A-019) de manière idempotente
     html = html.replace(
         '<div class="form-group" style="margin-bottom:10px;">\n                  <label class="form-label" for="globalSearchInput">',
         '<div class="form-group" id="sec-PUB-19" style="margin-bottom:10px;">\n                  <label class="form-label" for="globalSearchInput">',
         1
     )
-    html = html.replace(
-        '<div id="faqListContainer" style="display:grid;gap:10px;font-size:14.5px;">',
+    html = re.sub(
+        r'(?:<div id="sec-PUB-17">)*<div id="faqListContainer" style="display:grid;gap:10px;font-size:14\.5px;">',
         '<div id="sec-PUB-17"><div id="faqListContainer" style="display:grid;gap:10px;font-size:14.5px;">',
-        1
+        html,
+        count=1
     )
-    html = html.replace(
-        'Un parking intérieur gratuit et gardé de 150 places (voitures et bus) vous attend dès le portail.\n                  </div>\n                </div>',
-        'Un parking intérieur gratuit et gardé de 150 places (voitures et bus) vous attend dès le portail.\n                  </div>\n                </div></div>',
-        1
+    html = re.sub(
+        r'Un parking intérieur gratuit et gardé de 150 places \(voitures et bus\) vous attend dès le portail\.(\r?\n\s*</div>\r?\n\s*</div>)(?:</div>)*',
+        r'Un parking intérieur gratuit et gardé de 150 places (voitures et bus) vous attend dès le portail.\1</div>',
+        html,
+        count=1
     )
+
+    # 8b. Cohérence du modèle économique : Synchroniser #ecoparkContentSnapshot embarqué avec content-snapshot.json
+    if SNAP_PATH.exists():
+        snap_data = json.loads(SNAP_PATH.read_text(encoding="utf-8"))
+        snap_compact = json.dumps(snap_data, ensure_ascii=False, separators=(",", ":"))
+        html = re.sub(
+            r'<script type="application/json" id="ecoparkContentSnapshot">[\s\S]*?</script>',
+            lambda _m: f'<script type="application/json" id="ecoparkContentSnapshot">{snap_compact}</script>',
+            html,
+            count=1
+        )
+
+    # 8c. Cohérence du modèle économique : Corriger l'indexation par valeur (et non par index 0,1,2) de #lodgeCitySelect dans syncLiveAvailabilityAndOverbooking
+    old_lodge_sync_pattern = re.compile(
+        r"const citySel = document\.getElementById\('lodgeCitySelect'\);\s*"
+        r"if \(citySel && citySel\.options && citySel\.options\.length >= 3\) \{[\s\S]*?"
+        r"(?=\s*// Si la cité sélectionnée est complète)",
+        re.MULTILINE
+    )
+    new_lodge_sync_code = """const citySel = document.getElementById('lodgeCitySelect');
+      if (citySel && citySel.options && citySel.options.length >= 3) {
+        const findOpt = (val, fallbackIdx) => Array.from(citySel.options).find(o => o.value === val) || citySel.options[fallbackIdx];
+        const optEw = findOpt('EWONDO', 0);
+        const optSp = Array.from(citySel.options).find(o => o.value === 'SUITES_PRIVEES');
+        const optCh = findOpt('CHANTHEL', 1);
+        const optBe = findOpt('BENE', 2);
+
+        let ewUnit = 25000, spUnit = 30000, chUnit = 15000, beUnit = 10000;
+        if (window.EcoparkData && typeof EcoparkData.content === 'function') {
+          (EcoparkData.content('lodge_cities') || []).forEach(l => {
+            if (!l || l.status !== 'PUBLISHED') return;
+            if (l.code === 'EWONDO' && l.min_price_fcfa) ewUnit = l.min_price_fcfa;
+            if (l.code === 'SUITES_PRIVEES' && l.min_price_fcfa) spUnit = l.min_price_fcfa;
+            if (l.code === 'CHANTHEL' && l.min_price_fcfa) chUnit = l.min_price_fcfa;
+            if (l.code === 'BENE' && l.min_price_fcfa) beUnit = l.min_price_fcfa;
+          });
+        }
+        if (optEw) {
+          optEw.textContent = inv.ewondoFree > 0
+            ? `Cité Ewondo VIP — ${formatFCFA(ewUnit)}/nuit (${inv.ewondoFree}/8 libre${inv.ewondoFree > 1 ? 's' : ''})`
+            : 'Cité Ewondo VIP — Complet (0/8 libre)';
+          optEw.disabled = (inv.ewondoFree <= 0);
+        }
+        if (optSp) {
+          const spFree = Math.max(1, Math.min(4, inv.ewondoFree));
+          optSp.textContent = inv.ewondoFree > 0
+            ? `Suites Privées Prestige VIP — ${formatFCFA(spUnit)}/nuit (${spFree}/4 libre${spFree > 1 ? 's' : ''})`
+            : 'Suites Privées Prestige VIP — Complet (0/4 libre)';
+          optSp.disabled = (inv.ewondoFree <= 0);
+        }
+        if (optCh) {
+          optCh.textContent = inv.chanthelFree > 0
+            ? `Cité Chanthel Confort — ${formatFCFA(chUnit)}/nuit (${inv.chanthelFree}/12 libre${inv.chanthelFree > 1 ? 's' : ''})`
+            : 'Cité Chanthel Confort — Complet (0/12 libre)';
+          optCh.disabled = (inv.chanthelFree <= 0);
+        }
+        if (optBe) {
+          optBe.textContent = inv.beneFree > 0
+            ? `Cité Bene Standard — ${formatFCFA(beUnit)}/nuit (${inv.beneFree}/10 libre${inv.beneFree > 1 ? 's' : ''})`
+            : 'Cité Bene Standard — Complet à cette date (0/10)';
+          optBe.disabled = (inv.beneFree <= 0);
+        }"""
+    html = old_lodge_sync_pattern.sub(new_lodge_sync_code, html, count=1)
+
+    # 8d. Cohérence du modèle économique : Enrichir recalcSimulator() (protection enfant groupe piscine, prix plat dynamique, navette VIP 5 pl., remise Pack Couple plafonnée à 4 000 FCFA)
+    old_recalc_pattern = re.compile(
+        r"      // Tarif Piscine Enfant : 1 500 FCFA \(Prévente En Ligne / Semaine\) vs 2 500 FCFA \(Guichet Week-end & Jours Fériés\)[\s\S]*?"
+        r"        bundleLabel = 'Remise Forfait Escapade Couple VIP Ewondo \(-' \+ formatFCFA\(bundleDiscount\) \+ '\)';\r?\n      \}",
+        re.MULTILINE
+    )
+    new_recalc_code = """      // Tarif Piscine Enfant : 1 500 FCFA (Prévente En Ligne / Semaine ou Groupe 20+ protégé) vs 2 500 FCFA (Guichet Week-end & Jours Fériés individuel)
+      const poolPeriodEl = document.getElementById('poolRatePeriod');
+      const isWeekendFullRate = poolPeriodEl && poolPeriodEl.value === 'WEEKEND_PLEIN';
+      const piscineChildUnit = (isWeekendFullRate && !isGroup20Plus)
+        ? (typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('piscine', false, false) : 2500)
+        : (typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('piscine', isGroup20Plus, true) : 1500);
+      const lblPiscineInfo = document.getElementById('lblPiscineRateInfo');
+      if (lblPiscineInfo) {
+        lblPiscineInfo.textContent = (isWeekendFullRate && !isGroup20Plus)
+          ? '(Enfant Week-end/Férié : 2 500 FCFA • Adulte : 2 500 FCFA)'
+          : '(Enfant Prévente/Semaine ou Groupe : 1 500 FCFA • Adulte : 2 500 FCFA)';
+      }
+
+      const zooCost = document.getElementById('chkZoo').checked
+        ? (counts.adults * zooAdultUnit + counts.children * zooChildUnit) : 0;
+      const piscineAdultDynamic = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('piscine', isGroup20Plus, false) : 2500;
+      const piscineCost = document.getElementById('chkPiscine').checked
+        ? (counts.adults * piscineAdultDynamic + counts.children * piscineChildUnit) : 0;
+      const pirogueAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('pirogue', isGroup20Plus, false) : 1000;
+      const pirogueChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('pirogue', isGroup20Plus, true) : 500;
+      const pirogueCost = document.getElementById('chkPirogue').checked
+        ? (counts.adults * pirogueAdultDyn + counts.children * pirogueChildDyn) : 0;
+      const chevalAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('cheval', isGroup20Plus, false) : 1000;
+      const chevalChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('cheval', isGroup20Plus, true) : 500;
+      const chevalCost = document.getElementById('chkCheval').checked
+        ? (counts.adults * chevalAdultDyn + counts.children * chevalChildDyn) : 0;
+
+      // Tarification dynamique du repas selon la spécialité choisie (#simDishSelect) en mode à la carte, et base 5 000 FCFA en forfait packagé
+      let repasAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('saveurs', isGroup20Plus, false) : 5000;
+      const repasChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('saveurs', isGroup20Plus, true) : 2500;
+      const dishSelEl = document.getElementById('simDishSelect');
+      const selectedDishVal = dishSelEl ? dishSelEl.value : "Poisson Braisé d'Ahala (Étang frais)";
+      const isPackagedMealBundle = (window._activeBundleCode === 'PASS_ROYALE' || window._activeBundleCode === 'PACK_COUPLE_EWONDO');
+      if (!isPackagedMealBundle) {
+        if (selectedDishVal.indexOf('Poulet DG') !== -1) {
+          repasAdultDyn = isGroup20Plus ? 5500 : 6500;
+        } else if (selectedDishVal.indexOf('Ndolé') !== -1) {
+          repasAdultDyn = isGroup20Plus ? 5000 : 5500;
+        } else if (selectedDishVal.indexOf('Menu Enfant') !== -1) {
+          repasAdultDyn = 2500;
+        }
+      }
+      const repasCost = document.getElementById('chkRepas').checked
+        ? (counts.adults * repasAdultDyn + counts.children * repasChildDyn) : 0;
+
+      // Options Order Bumps (en 1 clic)
+      const bumpNutritionChecked = document.getElementById('chkBumpNutrition') && document.getElementById('chkBumpNutrition').checked;
+      const bumpPergolaChecked = document.getElementById('chkBumpPergola') && document.getElementById('chkBumpPergola').checked;
+      const bumpLodgeChecked = document.getElementById('chkBumpLodgeEwondo') && document.getElementById('chkBumpLodgeEwondo').checked;
+      const bumpNavetteChecked = document.getElementById('chkBumpNavette') && document.getElementById('chkBumpNavette').checked;
+      const bumpPecheChecked = document.getElementById('chkBumpPeche') && document.getElementById('chkBumpPeche').checked;
+
+      const nutritionPacksCount = bumpNutritionChecked ? Math.max(1, counts.children) : 0;
+      const nutritionUnitDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('nutrition_poissons', isGroup20Plus, true) : 500;
+      const nutritionCost = nutritionPacksCount * nutritionUnitDyn;
+      const pergolaUnitDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('pergola_lac', isGroup20Plus, false) : 5000;
+      const pergolaCost = bumpPergolaChecked ? pergolaUnitDyn : 0;
+      const lodgeDetails = getSelectedLodgeDetails();
+      const lodgeCost = bumpLodgeChecked ? lodgeDetails.total : 0;
+      const navetteAdultDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('navette_yaounde', isGroup20Plus, false) : 1500;
+      const navetteChildDyn = typeof getCatalogPriceDynamic === 'function' ? getCatalogPriceDynamic('navette_yaounde', isGroup20Plus, true) : 1000;
+      const shuttleFleetEl = document.getElementById('simShuttleFleetSelect');
+      const isVip5Shuttle = shuttleFleetEl && shuttleFleetEl.value === 'Véhicule VIP 5 places';
+      const navetteCost = bumpNavetteChecked
+        ? (isVip5Shuttle
+            ? Math.ceil(Math.max(1, totalPayingPax) / 5) * 10000
+            : (counts.adults * navetteAdultDyn + counts.children * navetteChildDyn))
+        : 0;
+      const pecheCost = bumpPecheChecked ? 2000 : 0;
+
+      document.getElementById('subZoo').textContent = formatFCFA(zooCost);
+      document.getElementById('subPiscine').textContent = formatFCFA(piscineCost);
+      document.getElementById('subPirogue').textContent = formatFCFA(pirogueCost);
+      document.getElementById('subCheval').textContent = formatFCFA(chevalCost);
+      document.getElementById('subRepas').textContent = formatFCFA(repasCost);
+      if (document.getElementById('subBumpNutrition')) document.getElementById('subBumpNutrition').textContent = formatFCFA(nutritionCost);
+      if (document.getElementById('subBumpPergola')) document.getElementById('subBumpPergola').textContent = formatFCFA(pergolaCost);
+      if (document.getElementById('subBumpLodge')) document.getElementById('subBumpLodge').textContent = formatFCFA(lodgeCost);
+      if (document.getElementById('subBumpNavette')) document.getElementById('subBumpNavette').textContent = formatFCFA(navetteCost);
+      if (document.getElementById('subBumpPeche')) document.getElementById('subBumpPeche').textContent = formatFCFA(pecheCost);
+
+      let bundleDiscount = 0;
+      let bundleLabel = '';
+      if (window._activeBundleCode === 'PASS_DECOUVERTE' && !isGroup20Plus) {
+        const bDec = typeof getSalesBundleDynamic === 'function' ? getSalesBundleDynamic('PASS_DECOUVERTE') : null;
+        if (bDec && document.getElementById('chkZoo').checked && document.getElementById('chkPirogue').checked && document.getElementById('chkCheval').checked) {
+          const targetDec = (counts.adults * (bDec.adult_bundle_price_fcfa || 2500)) + (counts.children * (bDec.child_bundle_price_fcfa || 1500));
+          bundleDiscount = Math.max(0, (zooCost + pirogueCost + chevalCost) - targetDec);
+        } else {
+          bundleDiscount = counts.adults * 500;
+        }
+        bundleLabel = 'Remise Pass Découverte Nature (-500 FCFA/adulte)';
+      } else if (window._activeBundleCode === 'PASS_ROYALE' && !isGroup20Plus) {
+        const bRoy = typeof getSalesBundleDynamic === 'function' ? getSalesBundleDynamic('PASS_ROYALE') : null;
+        if (bRoy && document.getElementById('chkZoo').checked && document.getElementById('chkPiscine').checked && document.getElementById('chkPirogue').checked && document.getElementById('chkRepas').checked) {
+          const targetRoy = (counts.adults * (bRoy.adult_bundle_price_fcfa || 8500)) + (counts.children * (bRoy.child_bundle_price_fcfa || 4500));
+          bundleDiscount = Math.max(0, (zooCost + piscineCost + pirogueCost + repasCost) - targetRoy);
+        } else {
+          bundleDiscount = (counts.adults * 1000) + (counts.children * 500);
+        }
+        bundleLabel = 'Remise Pass Journée Royale (-1 000 FCFA/adulte, -500 FCFA/enfant)';
+      } else if (window._activeBundleCode === 'PACK_COUPLE_EWONDO') {
+        const bCpl = typeof getSalesBundleDynamic === 'function' ? getSalesBundleDynamic('PACK_COUPLE_EWONDO') : null;
+        if (bCpl && bumpLodgeChecked) {
+          const baseCouple = zooCost + piscineCost + pirogueCost + repasCost + pergolaCost + lodgeCost;
+          bundleDiscount = Math.min(4000, Math.max(0, baseCouple - (bCpl.adult_bundle_price_fcfa || 45000)));
+        } else {
+          bundleDiscount = 4000;
+        }
+        bundleLabel = 'Remise Forfait Escapade Couple VIP Ewondo (-' + formatFCFA(bundleDiscount) + ')';
+      }"""
+    html = old_recalc_pattern.sub(new_recalc_code, html, count=1)
+
+    # 8e. Cohérence du modèle économique : Harmonisation des textes statiques HTML (Plafond Hôtels 45 000 FCFA, Plats 2 500 à 6 500 FCFA, Agenda Vendredi Dès 2 500 FCFA)
+    static_replacements = [
+        ('<span class="price-pill">Plats 3 500 – 8 500 FCFA</span>', '<span class="price-pill">2 500 – 6 500 FCFA</span>'),
+        ('<span class="price-pill">10 000 – 30 000 FCFA</span>', '<span class="price-pill">10 000 – 45 000 FCFA</span>'),
+        (
+            'Trois ambiances calmes au milieu des arbres (réception 24h/24) : <strong>Hôtel Bene</strong> (10 000–15 000 FCFA), <strong>Hôtel Chanthel</strong> (15 000–25 000 FCFA) et <strong>Hôtel Ewondo VIP</strong> (Suites &amp; Mini-suites, 25 000–30 000 FCFA).',
+            'Quatre ambiances calmes au milieu des arbres (réception 24h/24) : <strong>Hôtel Bene</strong> (10 000–15 000 FCFA), <strong>Hôtel Chanthel</strong> (15 000–25 000 FCFA), <strong>Hôtel Ewondo VIP</strong> (25 000–30 000 FCFA) et <strong>Suites Privées Prestige VIP</strong> (30 000–45 000 FCFA).'
+        ),
+        ('<td>Plats : <strong>3 500 à 8 500 FCFA</strong></td>', '<td>Plats : <strong>5 000 à 6 500 FCFA</strong></td>'),
+        (
+            '<td><strong>Hébergement — Cités Bene, Chanthel & Ewondo</strong></td>\n                    <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo)</td>',
+            '<td><strong>Hébergement — Cités Bene, Chanthel, Ewondo &amp; Suites Privées</strong></td>\n                    <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo) • <strong>30 000 à 45 000 FCFA</strong> (Suites Privées)</td>'
+        ),
+        ('<span class="price-pill" style="font-size:11.5px;padding:2px 8px;">Dès 3 500 FCFA</span>', '<span class="price-pill" style="font-size:11.5px;padding:2px 8px;">Dès 2 500 FCFA</span>'),
+        ("price: '1 500 – 8 500 FCFA'", "price: '1 500 – 6 500 FCFA'"),
+        (
+            "title: 'Zone E — Cités Hôtelières (Bene, Chanthel, Ewondo) & Campus CFP',\n        desc: 'Pavillons de séjour au calme (10 000 à 30 000 FCFA) et Centre de Formation Professionnelle agréé MINEFOP.',\n        price: '10 000 – 30 000 FCFA'",
+            "title: 'Zone E — Cités Hôtelières (Bene, Chanthel, Ewondo, Suites Privées) & Campus CFP',\n        desc: 'Pavillons de séjour au calme (10 000 à 45 000 FCFA) et Centre de Formation Professionnelle agréé MINEFOP.',\n        price: '10 000 – 45 000 FCFA'"
+        ),
+        (
+            '<strong style="margin-left:8px;">Repas au Château des Saveurs</strong> (Enfant : 2 500 FCFA • Adulte : 5 000 FCFA)',
+            '<strong style="margin-left:8px;">Repas au Château des Saveurs</strong> (Enfant : 2 500 FCFA • Adulte : 5 000 à 6 500 FCFA selon plat)'
+        ),
+        (
+            '<option value="Poisson Braisé d\'Ahala (Étang frais)" selected>Poisson Braisé d\'Ahala (Étang frais)</option>\n                          <option value="Poulet DG Royal Plantain Mûr">Poulet DG Royal &amp; Plantain Mûr</option>\n                          <option value="Ndolé Royal Crevettes & Miondo">Ndolé Royal Crevettes &amp; Miondo</option>\n                          <option value="Menu Enfant & Grillades Douces">Menu Enfant &amp; Grillades Douces</option>',
+            '<option value="Poisson Braisé d\'Ahala (Étang frais)" selected>Poisson Braisé d\'Ahala — 5 000 FCFA (Étang frais)</option>\n                          <option value="Poulet DG Royal Plantain Mûr">Poulet DG Royal &amp; Plantain Mûr — 6 500 FCFA</option>\n                          <option value="Ndolé Royal Crevettes & Miondo">Ndolé Royal Crevettes &amp; Miondo — 5 500 FCFA</option>\n                          <option value="Menu Enfant & Grillades Douces">Menu Enfant &amp; Grillades Douces — 2 500 FCFA</option>'
+        ),
+        (
+            '<option value="Navette Standard Climatisée" selected>Places en Navette Climatisée (18 / 32 pl.)</option>\n                          <option value="Véhicule VIP 5 places">Navette Privée VIP (5 places)</option>',
+            '<option value="Navette Standard Climatisée" selected>Places en Navette Climatisée 18/32 pl. (1 000 / 1 500 FCFA)</option>\n                          <option value="Véhicule VIP 5 places">Navette Privée VIP 5 places (Forfait 10 000 FCFA A/R)</option>'
+        ),
+    ]
+    for old_str, new_str in static_replacements:
+        html = html.replace(old_str, new_str)
 
     # 9. Injecter les cartes autonomes #sec-PUB-20, #sec-PUB-21 et #sec-PUB-22 à la fin de la grille de #sec-PUB-13 (A-019)
     pub14_close_anchor = """                        <strong style="font-size:1.02rem;">Équipes Zoo & Biosécurité</strong>
