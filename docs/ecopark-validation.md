@@ -119,5 +119,7 @@ Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et ré
 4. `04_restaurant_chateau_des_saveurs.png` : Sous-rubrique Restaurant Le Château des Saveurs (lieu, cuisine, carte en FCFA, horaires et modalités).
 5. `05_formation_cfp_minefop.png` : Gabarit complet Formations CFP MINEFOP (5 filières, 12 mois, admission dès 16 ans, frais en 4 tranches).
 6. `06_reservation_parcours_5_etapes.png` : Parcours de réservation restructuré (4 onglets de parcours + stepper 5 étapes dans l'ordre exact, sans billet QR prématuré).
-7. `07_assignation_taches_exploitation.png` : Module d'assignation de tâches (`#sec-EXP-MISSIONS`) avec KPIs, 4 modèles de pôles terrain (Guichet, Contrôle QR, Hébergements, Cuisine), formulaire d'affectation et registre filtrable.
-8. `08_fiche_mission_imprimable_a4.png` : Fiche de Mission Officielle Imprimable A4 (`#printableMissionSheetA4`) avec en-tête, logo, QR Code SVG de mission, dotation matériel, check-list terrain et 3 cadres d'émargement.
+7. `07_assignation_taches_exploitation.png` : Module d'assignation de tâches (`#sec-EXP-MISSIONS`) avec KPIs, 4 modèles de pôles terrain (Guichet, Contrôle QR, Hébergements, Cuisine), formulaire d'affectation, Matrice des 6 Processus d'Approbation et registre filtrable.
+8. `08_fiche_mission_imprimable_a4.png` : Fiche de Mission Officielle Imprimable A4 (`#printableMissionSheetA4`) avec en-tête, logo, QR Code SVG de mission (92 px), dotation matériel, check-list terrain et 3 cadres d'émargement interactifs (`Visa #1`, `Visa #2`, `Visa #3`).
+9. `09_mon_espace_sans_troncature.png` : Espace `Mes réservations` (`/mes-reservations`) avec boutons `Fiche Mission A4` et `Consulter Proforma` sans aucune troncature.
+10. `10_direction_barometre_services.png` : Tableau de bord Direction (`/direction`) avec le baromètre des 11 services (8 services porteurs/réguliers et 3 services en sous-performance).
