@@ -272,7 +272,110 @@
     },
     staff_profiles: { key: 'user_id', realtime: 'governance', order: 'full_name' },
     daily_quotas: { key: 'id', realtime: 'staff', order: 'quota_date' },
-    gateway_health: { key: 'provider', realtime: 'governance', order: 'provider' }
+    gateway_health: { key: 'provider', realtime: 'governance', order: 'provider' },
+    operational_missions: {
+      key: 'id', realtime: 'staff', legacyKey: 'operationalMissions', legacyId: 'id', order: 'created_at',
+      fromRow: function (r) {
+        return {
+          id: r.mission_ref,
+          orderRef: r.order_ref || null,
+          orderCustomer: r.order_customer || 'Exploitation ECOPARK',
+          orderTotalFcfa: Mappers.toFcfa(r.order_total_fcfa),
+          orderSummary: r.order_summary || r.title || '',
+          secondaryPoles: Array.isArray(r.secondary_poles) ? r.secondary_poles : [],
+          pole: r.pole,
+          poleLabel: r.pole_label,
+          badgeClass: r.badge_class || 'eco-cat-nature',
+          agentName: r.agent_name,
+          agentMatricule: r.agent_matricule,
+          agentRole: r.agent_role,
+          date: Mappers.frToIso(r.mission_date) || String(r.mission_date || ''),
+          shift: r.shift_label,
+          priority: r.priority || 'NORMALE',
+          status: r.status || 'ASSIGNEE',
+          title: r.title,
+          location: r.location,
+          objective: r.objective,
+          equipment: r.equipment || '',
+          guardrail: r.guardrail || '',
+          checklist: Array.isArray(r.checklist) ? r.checklist : [],
+          visas: (r.visas && typeof r.visas === 'object') ? r.visas : {},
+          assignedBy: r.assigned_by || 'Chef d\'Exploitation Ahala',
+          createdAt: r.created_at ? Mappers.tsToFr(r.created_at) : '',
+          version: r.version || 1,
+          _id: r.id
+        };
+      },
+      toRow: function (m) {
+        return {
+          mission_ref: m.id || m.mission_ref,
+          order_ref: m.orderRef || m.order_ref || null,
+          order_customer: m.orderCustomer || m.order_customer || 'Exploitation ECOPARK',
+          order_total_fcfa: Mappers.toFcfa(m.orderTotalFcfa != null ? m.orderTotalFcfa : m.order_total_fcfa),
+          order_summary: m.orderSummary || m.order_summary || m.title || '',
+          pole: m.pole || 'GUICHET_CAISSE',
+          pole_label: m.poleLabel || m.pole_label || 'Guichet & Caisse RN3',
+          badge_class: m.badgeClass || m.badge_class || 'eco-cat-nature',
+          secondary_poles: Array.isArray(m.secondaryPoles) ? m.secondaryPoles : (Array.isArray(m.secondary_poles) ? m.secondary_poles : []),
+          agent_name: m.agentName || m.agent_name || 'Agent ECOPARK',
+          agent_matricule: m.agentMatricule || m.agent_matricule || 'MAT-EXP-01',
+          agent_role: m.agentRole || m.agent_role || 'Agent Terrain',
+          mission_date: Mappers.frToIso(m.date || m.mission_date) || new Date().toISOString().slice(0, 10),
+          shift_label: m.shift || m.shift_label || '08h30 – 18h00 (Journée complète)',
+          priority: m.priority || 'NORMALE',
+          status: m.status || 'ASSIGNEE',
+          title: m.title || 'Mission Terrain ECOPARK',
+          location: m.location || 'Domaine d\'Ahala',
+          objective: m.objective || 'Exécution des consignes de poste.',
+          equipment: m.equipment || '',
+          guardrail: m.guardrail || '',
+          checklist: Array.isArray(m.checklist) ? m.checklist : [],
+          visas: (m.visas && typeof m.visas === 'object') ? m.visas : {},
+          assigned_by: m.assignedBy || m.assigned_by || 'Chef d\'Exploitation Ahala'
+        };
+      }
+    },
+    operational_alerts: {
+      key: 'id', realtime: 'staff', legacyKey: 'operationalAlerts', legacyId: 'alertId', order: 'created_at',
+      fromRow: function (r) {
+        return {
+          alertId: r.alert_ref,
+          missionId: r.mission_ref,
+          orderRef: r.order_ref || null,
+          customerName: r.customer_name,
+          orderSummary: r.order_summary || '',
+          amountFcfa: Mappers.toFcfa(r.amount_fcfa),
+          pole: r.pole,
+          poleLabel: r.pole_label,
+          badgeClass: r.badge_class || 'eco-cat-nature',
+          agentName: r.agent_name,
+          agentMatricule: r.agent_matricule,
+          title: r.title,
+          acknowledged: !!r.acknowledged,
+          acknowledgedAt: r.acknowledged_at ? Mappers.tsToFr(r.acknowledged_at) : null,
+          acknowledgedBy: r.acknowledged_by || null,
+          createdAt: r.created_at ? Mappers.tsToFr(r.created_at) : '',
+          _id: r.id
+        };
+      },
+      toRow: function (a) {
+        return {
+          alert_ref: a.alertId || a.alert_ref,
+          mission_ref: a.missionId || a.mission_ref,
+          order_ref: a.orderRef || a.order_ref || null,
+          customer_name: a.customerName || a.customer_name || 'Visiteur ECOPARK',
+          order_summary: a.orderSummary || a.order_summary || '',
+          amount_fcfa: Mappers.toFcfa(a.amountFcfa != null ? a.amountFcfa : a.amount_fcfa),
+          pole: a.pole || 'GUICHET_CAISSE',
+          pole_label: a.poleLabel || a.pole_label || 'Guichet & Caisse RN3',
+          badge_class: a.badgeClass || a.badge_class || 'eco-cat-nature',
+          agent_name: a.agentName || a.agent_name || 'Agent ECOPARK',
+          agent_matricule: a.agentMatricule || a.agent_matricule || 'MAT-EXP-01',
+          title: a.title || 'Alerte de poste ECOPARK',
+          acknowledged: !!a.acknowledged
+        };
+      }
+    }
   };
   Mappers.registry = Registry;
 
@@ -338,6 +441,12 @@
     }
     if (/ECOPARK_DUPLICATE_NOT_SUPPORTED/.test(full)) {
       return Errors.make('DUPLICATE_NOT_SUPPORTED', 'Ce type de fiche ne peut pas être dupliqué.', '', err);
+    }
+    if (/ECOPARK_VISA_REQUIRES_EXPLOITATION/.test(full)) {
+      return Errors.make('VISA_REQUIRES_EXPLOITATION', 'Les Visas #1 (Émission) et #3 (Clôture & Dotation) relèvent exclusivement du Chef d\'Exploitation ou de la Direction.', '', err);
+    }
+    if (/ECOPARK_INVALID_VISA_KEY/.test(full)) {
+      return Errors.make('INVALID_VISA_KEY', 'Clé de visa invalide (attendu : visa1, visa2 ou visa3).', '', err);
     }
     if (/ECOPARK_NOT_FOUND/.test(full) || code === 'P0002') {
       return Errors.make('NOT_FOUND', 'Cette fiche n\'existe plus (elle a peut-être été supprimée).', '', err);
@@ -705,7 +814,74 @@
     }, { source: 'local', entity: entity, op: 'remove' });
     return Promise.resolve({ ok: true, data: hard ? 'DELETED' : 'ARCHIVED' });
   };
-  LocalDemoDriver.prototype.rpc = function (name) {
+  LocalDemoDriver.prototype.rpc = function (name, args) {
+    var self = this;
+    args = args || {};
+    if (name === 'sign_mission_visa') {
+      var staffRoles = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+      if (staffRoles.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
+      var vk = args.p_visa_key;
+      if (['visa1', 'visa2', 'visa3'].indexOf(vk) < 0) return self._fail({ message: 'ECOPARK_INVALID_VISA_KEY' });
+      if ((vk === 'visa1' || vk === 'visa3') && !Rules.canEdit(self.role)) {
+        return self._fail({ message: 'ECOPARK_VISA_REQUIRES_EXPLOITATION' });
+      }
+      var mRef = args.p_mission_ref;
+      var rows = self._rows(self.store.state, 'operational_missions');
+      var m = rows.filter(function (r) { return (r.id || r.mission_ref) === mRef; })[0];
+      if (!m) return self._fail({ code: 'P0002' });
+      var updated;
+      self.store.patch(function (s) {
+        var list = self._rows(s, 'operational_missions');
+        var target = list.filter(function (r) { return (r.id || r.mission_ref) === mRef; })[0];
+        var stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
+        target.visas = target.visas || {};
+        if (!target.visas.visa1) target.visas.visa1 = { signed: true, actor: target.assignedBy || 'Chef d\'Exploitation Ahala', timestamp: stamp };
+        var actor = args.p_actor_name || (vk === 'visa2' ? ((target.agentName || 'Agent') + ' (' + (target.agentMatricule || 'MAT') + ')') : (target.assignedBy || 'Chef d\'Exploitation Ahala'));
+        if (vk === 'visa1') {
+          target.visas.visa1 = { signed: true, actor: actor, timestamp: stamp };
+        } else if (vk === 'visa2') {
+          target.visas.visa2 = { signed: true, actor: actor, timestamp: stamp };
+          if (target.status === 'ASSIGNEE') target.status = 'EN_COURS';
+        } else if (vk === 'visa3') {
+          if (!target.visas.visa2 || !target.visas.visa2.signed) {
+            target.visas.visa2 = { signed: true, actor: (target.agentName || 'Agent') + ' (' + (target.agentMatricule || 'MAT') + ')', timestamp: stamp };
+          }
+          target.visas.visa3 = { signed: true, actor: actor, timestamp: stamp };
+          target.status = 'TERMINEE';
+          if (Array.isArray(target.checklist)) {
+            target.checklist.forEach(function (c) { c.done = true; });
+          }
+        }
+        target.version = (target.version || 1) + 1;
+        self._audit(s, 'VISA_' + vk.toUpperCase(), 'operational_missions', target.title || mRef);
+        updated = clone(target);
+      }, { source: 'local', entity: 'operational_missions', op: 'rpc' });
+      return Promise.resolve({ ok: true, data: updated });
+    }
+    if (name === 'acknowledge_operational_alert') {
+      var staffRolesAck = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+      if (staffRolesAck.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
+      var aRef = args.p_alert_ref;
+      var aRows = self._rows(self.store.state, 'operational_alerts');
+      var al = aRows.filter(function (r) { return (r.alertId || r.alert_ref) === aRef; })[0];
+      if (!al) return self._fail({ code: 'P0002' });
+      var updatedAlert;
+      self.store.patch(function (s) {
+        var list = self._rows(s, 'operational_alerts');
+        var target = list.filter(function (r) { return (r.alertId || r.alert_ref) === aRef; })[0];
+        target.acknowledged = true;
+        target.acknowledgedAt = new Date().toISOString();
+        self._audit(s, 'ACK_ALERT', 'operational_alerts', target.title || aRef);
+        updatedAlert = clone(target);
+      }, { source: 'local', entity: 'operational_alerts', op: 'rpc' });
+      var linkedMRef = al.missionId || al.mission_ref;
+      if (linkedMRef) {
+        return self.rpc('sign_mission_visa', { p_mission_ref: linkedMRef, p_visa_key: 'visa2', p_actor_name: al.agentName || al.agent_name }).then(function () {
+          return { ok: true, data: updatedAlert };
+        });
+      }
+      return Promise.resolve({ ok: true, data: updatedAlert });
+    }
     return Promise.resolve({ ok: false, error: Errors.make('NOT_AVAILABLE_IN_DEMO', 'Fonction serveur « ' + name + ' » indisponible en mode démonstration.') });
   };
   /** Démo : l'image est conservée dans le navigateur (format data:image), sans serveur */
@@ -1201,6 +1377,18 @@
     return s[key];
   };
 
+  EcoparkData.signMissionVisa = function (missionRef, visaKey, actorName) {
+    return EcoparkData.rpc('sign_mission_visa', {
+      p_mission_ref: missionRef,
+      p_visa_key: visaKey,
+      p_actor_name: actorName || null
+    });
+  };
+  EcoparkData.acknowledgeAlert = function (alertRef) {
+    return EcoparkData.rpc('acknowledge_operational_alert', {
+      p_alert_ref: alertRef
+    });
+  };
   root.EcoparkData = EcoparkData;
   if (typeof module !== 'undefined' && module.exports) module.exports = EcoparkData;
 })(typeof window !== 'undefined' ? window : globalThis);

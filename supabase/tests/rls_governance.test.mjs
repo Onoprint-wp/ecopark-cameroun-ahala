@@ -17,6 +17,7 @@ const M1 = sql('../migrations/20261026000001_ecopark_schema_rls.sql');
 const M2 = sql('../migrations/20261028000001_admin_crud_governance.sql');
 const M3 = sql('../migrations/20261028000002_realtime_publication.sql');
 const M4 = sql('../migrations/20261028000003_publication_images.sql');
+const M5 = sql('../migrations/20261029000001_operational_missions_alerts.sql');
 
 const U = {
   dir:    { id: '00000000-0000-0000-0000-0000000000d1', name: 'Dr Christophe FOE NDI', role: 'direction' },
@@ -66,9 +67,11 @@ async function main() {
   await db.exec(M2);
   await db.exec(M3);
   await db.exec(M4);
+  await db.exec(M5);
   ok(true, 'Migrations Sprint 1, Gouvernance CRUD, temps réel et images appliquées');
   await db.exec(M2);
   await db.exec(M4);
+  await db.exec(M5);
   ok(true, 'Migrations Gouvernance CRUD et images ré-exécutables (idempotentes)');
 
   // Comptes de test
@@ -277,6 +280,35 @@ async function main() {
   ok(replaced.image_src.endsWith('balade_pirogue3.jpg') && replaced.image_alt === 'Nouvelle photo', 'Publier la version de travail remplace aussi l\'image en ligne');
   await expectError(asMfa(db, U.dir, (tx) => tx.query(`UPDATE public.catalog_activities SET image_src = NULL WHERE id = $1`, [noImg])),
     'ECOPARK_IMAGE_REQUIRED', 'Impossible de retirer l\'image d\'une offre en ligne');
+
+  console.log('\n7 ter. Fiches de Mission A4, 3 Visas & Alertes de Poste (20261029000001)');
+  const msnCount = (await db.query(`SELECT count(*)::int AS n FROM public.operational_missions`)).rows[0].n;
+  const altCount = (await db.query(`SELECT count(*)::int AS n FROM public.operational_alerts`)).rows[0].n;
+  ok(msnCount === 4 && altCount === 4, `4 Fiches de Mission A4 et 4 Alertes initiales (reçu ${msnCount} / ${altCount})`);
+
+  await as(db, ANON, async (tx) => {
+    const mAnon = await tx.query('SELECT count(*)::int AS n FROM public.operational_missions');
+    const aAnon = await tx.query('SELECT count(*)::int AS n FROM public.operational_alerts');
+    ok(mAnon.rows[0].n === 0 && aAnon.rows[0].n === 0, 'Visiteur anonyme : aucun accès aux Fiches de Mission ni aux Alertes');
+  });
+
+  await as(db, U.gui, async (tx) => {
+    const r2 = (await tx.query(`SELECT public.sign_mission_visa('MSN-2026-103', 'visa2', 'M. Samuel MBARGA (MAT-SEC-04)') AS r`)).rows[0].r;
+    ok(r2.status === 'EN_COURS' && r2.visas?.visa2?.signed === true, 'Agent guichet/terrain : émarge le Visa #2 (statut passe à EN_COURS)');
+    const ack = (await tx.query(`SELECT public.acknowledge_operational_alert('ALT-2026-203') AS r`)).rows[0].r;
+    ok(ack.acknowledged === true, 'Agent guichet/terrain : acquitte une alerte de poste via acknowledge_operational_alert()');
+  });
+
+  await expectError(as(db, U.gui, (tx) => tx.query(
+    `SELECT public.sign_mission_visa('MSN-2026-103', 'visa3')`)),
+    'ECOPARK_VISA_REQUIRES_EXPLOITATION', 'Agent guichet : ne peut pas signer seul le Visa #3 de clôture (réservé Exploitation / Direction)');
+
+  await as(db, U.exp, async (tx) => {
+    const r3 = (await tx.query(`SELECT public.sign_mission_visa('MSN-2026-103', 'visa3', 'Chef d''Exploitation Ahala') AS r`)).rows[0].r;
+    const allDone = Array.isArray(r3.checklist) && r3.checklist.every((c) => c.done === true);
+    ok(r3.status === 'TERMINEE' && r3.visas?.visa3?.signed === true && allDone,
+       'Responsable d\'exploitation : signe le Visa #3 (statut TERMINEE + 3/3 Visas + check-list complétée)');
+  });
 
   console.log('\n8. Journal d\'audit immuable (ADM-08)');
   const ops = (await db.query(`SELECT DISTINCT operation FROM public.audit_logs`)).rows.map((r) => r.operation);

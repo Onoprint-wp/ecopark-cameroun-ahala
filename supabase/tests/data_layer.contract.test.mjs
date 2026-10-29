@@ -58,6 +58,7 @@ async function setupSupabase() {
   await db.exec(sql('../migrations/20261028000001_admin_crud_governance.sql'));
   await db.exec(sql('../migrations/20261028000002_realtime_publication.sql'));
   await db.exec(sql('../migrations/20261028000003_publication_images.sql'));
+  await db.exec(sql('../migrations/20261029000001_operational_missions_alerts.sql'));
   for (const u of Object.values(U)) {
     await db.query('INSERT INTO auth.users (id, email) VALUES ($1, $2)', [u.id, `${u.id}@t.local`]);
     await db.query('INSERT INTO public.staff_profiles (user_id, full_name, role) VALUES ($1, $2, $3)', [u.id, u.name, u.role]);
@@ -208,6 +209,36 @@ async function contract(env) {
   const qd = qrow ? await ED.removeRow('daily_quotas', qrow.id) : { ok: false };
   const ql2 = await ED.list('daily_quotas', { filters: { quota_date: '2026-11-07' } });
   ok(qd.ok && ql2.ok && !ql2.data.some((r) => r.activity_id === pisc.id), 'Retour à la jauge standard (removeRow)');
+
+  // Fiches de Mission A4, 3 Visas & Alertes de Poste
+  const msnCreate = await ED.create('operational_missions', {
+    id: 'MSN-2026-901', orderRef: 'EPK-2026-9901', orderCustomer: 'Famille Test Contrat', orderTotalFcfa: 14000,
+    orderSummary: '2 Adultes, 2 Enfants • Pass Découverte', pole: 'GUICHET_CAISSE', poleLabel: 'Guichet & Caisse RN3',
+    badgeClass: 'eco-cat-nature', agentName: 'Mme Clarisse ATANGANA', agentMatricule: 'MAT-GUI-01',
+    agentRole: 'Caissière Principale Guichet RN3', date: '2026-11-20', shift: 'Matinée (08h30 – 14h30)',
+    priority: 'HAUTE', status: 'ASSIGNEE', title: 'Accueil Guichet & Bracelets — EPK-2026-9901',
+    location: 'Guichet Principal RN3 Ahala', objective: 'Contrôler billet et remettre bracelets.',
+    equipment: 'Caisse POS #01', guardrail: 'Tarif enfant 500 FCFA protégé.',
+    checklist: [{ text: 'Vérifier référence EPK-2026-9901', done: false }], assignedBy: "Chef d'Exploitation Ahala"
+  }, { legacy: true });
+  ok(msnCreate.ok, 'Création d\'une Fiche de Mission A4 via EcoparkData', msnCreate.ok ? '' : msnCreate.error.message);
+
+  const altCreate = await ED.create('operational_alerts', {
+    alertId: 'ALT-2026-901', missionId: 'MSN-2026-901', orderRef: 'EPK-2026-9901', customerName: 'Famille Test Contrat',
+    orderSummary: '2 Adultes, 2 Enfants', amountFcfa: 14000, pole: 'GUICHET_CAISSE', poleLabel: 'Guichet & Caisse RN3',
+    badgeClass: 'eco-cat-nature', agentName: 'Mme Clarisse ATANGANA', agentMatricule: 'MAT-GUI-01',
+    title: 'Accueil Guichet & Bracelets — EPK-2026-9901', acknowledged: false
+  }, { legacy: true });
+  ok(altCreate.ok, 'Création d\'une Alerte de Poste via EcoparkData', altCreate.ok ? '' : altCreate.error.message);
+
+  const v2 = await ED.signMissionVisa('MSN-2026-901', 'visa2', 'Mme Clarisse ATANGANA (MAT-GUI-01)');
+  ok(v2.ok && v2.data.status === 'EN_COURS' && v2.data.visas?.visa2?.signed === true, 'Signature du Visa #2 via EcoparkData.signMissionVisa()', v2.ok ? '' : v2.error.message);
+
+  const ackRes = await ED.acknowledgeAlert('ALT-2026-901');
+  ok(ackRes.ok && ackRes.data.acknowledged === true, 'Acquittement de l\'alerte via EcoparkData.acknowledgeAlert()', ackRes.ok ? '' : ackRes.error.message);
+
+  const v3 = await ED.signMissionVisa('MSN-2026-901', 'visa3', "Chef d'Exploitation Ahala");
+  ok(v3.ok && v3.data.status === 'TERMINEE' && v3.data.visas?.visa3?.signed === true, 'Signature du Visa #3 (clôture) via EcoparkData.signMissionVisa()', v3.ok ? '' : v3.error.message);
 
   if (env.asNoMfa) {
     await env.asNoMfa(U.dir);

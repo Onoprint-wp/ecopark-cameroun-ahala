@@ -3760,6 +3760,9 @@ REFONTE_JS = r"""
       if (typeof showToastSprint1 === 'function') {
         showToastSprint1('• Alerte ' + target.alertId + ' acquittée : Mission ' + target.missionId + ' (' + target.agentName + ') pointée En cours sur poste.');
       }
+      if (window.EcoparkData && typeof EcoparkData.acknowledgeAlert === 'function' && EcoparkData.driverName === 'supabase') {
+        try { EcoparkData.acknowledgeAlert(target.alertId); } catch (e) {}
+      }
       return target;
     };
 
@@ -3978,6 +3981,12 @@ REFONTE_JS = r"""
 
       if (!opts.silentToast && typeof showToastSprint1 === 'function') {
         showToastSprint1('• Alerte Poste [' + preset.poleLabel + '] : Commande ' + ref + ' → Fiche de Mission ' + newMissionId + ' assignée à ' + agentName + ' !');
+      }
+      if (window.EcoparkData && EcoparkData.driverName === 'supabase' && typeof EcoparkData.create === 'function') {
+        try {
+          EcoparkData.create('operational_missions', newMission);
+          EcoparkData.create('operational_alerts', newAlert);
+        } catch (e) {}
       }
 
       return newMission;
@@ -4407,6 +4416,12 @@ REFONTE_JS = r"""
       if (typeof showToastSprint1 === 'function') {
         showToastSprint1('• Mission ' + newId + ' assignée à ' + agentName + ' (' + preset.poleLabel + ') !');
       }
+      if (window.EcoparkData && EcoparkData.driverName === 'supabase' && typeof EcoparkData.create === 'function') {
+        try {
+          EcoparkData.create('operational_missions', newMission);
+          if (alerts && alerts[0]) EcoparkData.create('operational_alerts', alerts[0]);
+        } catch (e) {}
+      }
 
       if (openA4Immediately) {
         window.openMissionSheetA4(newId);
@@ -4477,6 +4492,9 @@ REFONTE_JS = r"""
       var a4El = document.getElementById('printableMissionSheetA4');
       if (a4El) {
         window.openMissionSheetA4(target.id);
+      }
+      if (window.EcoparkData && EcoparkData.driverName === 'supabase' && typeof EcoparkData.signMissionVisa === 'function') {
+        try { EcoparkData.signMissionVisa(target.id, visaKey); } catch (e) {}
       }
       return target;
     };
