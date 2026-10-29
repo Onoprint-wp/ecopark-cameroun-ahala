@@ -659,6 +659,31 @@ REFONTE_CSS = r"""    /* ECOPARK_REFONTE_CANOPEE_CSS:START */
         padding-bottom: 76px !important;
         overflow-x: hidden !important;
       }
+      .active-screen-indicator-inner,
+      .active-screen-indicator-inner > div {
+        flex-wrap: wrap !important;
+        max-width: 100% !important;
+      }
+      .btn,
+      button.btn {
+        white-space: normal !important;
+        max-width: 100% !important;
+        word-break: break-word;
+      }
+      #view-RES [style*="grid-template-columns"],
+      #view-PUB [style*="grid-template-columns"],
+      #view-DIR [style*="grid-template-columns"],
+      #view-EXP [style*="grid-template-columns"],
+      #view-AGT [style*="grid-template-columns"] {
+        grid-template-columns: 1fr !important;
+      }
+      .main-stage,
+      .view-section,
+      .card,
+      .eco-card {
+        max-width: 100% !important;
+        box-sizing: border-box !important;
+      }
     }
 
     /* Module Assignation des Tâches & Fiche de Mission A4 (Exploitation / Guichet / Admin) */
@@ -2436,37 +2461,37 @@ EXP_MISSIONS_MODULE_HTML = r"""            <!-- ECOPARK_EXP_MISSIONS_MODULE:STAR
                 </div>
                 <div class="governance-matrix-grid">
                   <div class="governance-matrix-item">
-                    <strong style="color:var(--eco-brand);display:block;margin-bottom:3px;">1. Fiche de Mission A4 (MSN-...)</strong>
+                    <strong style="color:var(--eco-brand);display:block;margin-bottom:3px;">1. Émission Fiche de Mission A4 (MSN-...)</strong>
                     <div><strong>Visa 1 (Émission) :</strong> Chef d'Exploitation / Dispatch Auto</div>
                     <div><strong>Visa 2 (Prise de poste) :</strong> Agent affecté (MAT-AGT / CTL / HTL / RES)</div>
                     <div><strong>Visa 3 (Clôture &amp; Dotation) :</strong> Contrôle contradictoire Chef + Agent</div>
                   </div>
                   <div class="governance-matrix-item">
-                    <strong style="color:var(--eco-water-text);display:block;margin-bottom:3px;">2. Billetterie, Solde Guichet &amp; Scan QR</strong>
+                    <strong style="color:var(--eco-water-text);display:block;margin-bottom:3px;">2. Prise de poste &amp; Exécution (Billetterie &amp; Scan QR)</strong>
                     <div><strong>Solde Guichet (11h00) :</strong> Caissière Principale (MAT-AGT-01)</div>
                     <div><strong>Entrée &amp; Bassin/Lac :</strong> Contrôleur QR (MAT-CTL-02, 7 états)</div>
                     <div><strong>Anti-fraude :</strong> Double scan et tarif enfant 500 FCFA verrouillés</div>
                   </div>
                   <div class="governance-matrix-item">
-                    <strong style="color:var(--eco-lodging);display:block;margin-bottom:3px;">3. Séjours 3 Cités &amp; Cuisine Saveurs</strong>
+                    <strong style="color:var(--eco-lodging);display:block;margin-bottom:3px;">3. Clôture de mission &amp; Remise dotation (Cités &amp; Saveurs)</strong>
                     <div><strong>Loges (14h00 / 11h00) :</strong> Gouvernante (MAT-HTL-03, remise en stock)</div>
                     <div><strong>Repas &amp; Pergolas :</strong> Chef de Cuisine (MAT-RES-04, Zéro Attente 12h30)</div>
                     <div><strong>Surclassement VIP :</strong> Visa Chef d'Exploitation</div>
                   </div>
                   <div class="governance-matrix-item">
-                    <strong style="color:var(--eco-nature-text);display:block;margin-bottom:3px;">4. Devis Groupes &amp; Salle Menkii (500 pl.)</strong>
+                    <strong style="color:var(--eco-nature-text);display:block;margin-bottom:3px;">4. Réservation / Billet QR / Caisse &amp; Devis Groupes</strong>
                     <div><strong>Proforma standard :</strong> Calculateur officiel (500 FCFA / élève protégé)</div>
                     <div><strong>Disponibilité &amp; Navettes :</strong> Chef d'Exploitation (EXP-03)</div>
                     <div><strong>Remise &amp; Privatisation :</strong> Direction Générale (DIR-01)</div>
                   </div>
                   <div class="governance-matrix-item">
-                    <strong style="color:var(--eco-training);display:block;margin-bottom:3px;">5. Admissions CFP MINEFOP (5 filières)</strong>
+                    <strong style="color:var(--eco-training);display:block;margin-bottom:3px;">5. Devis Groupes / Salle Menkii &amp; CFP MINEFOP</strong>
                     <div><strong>Éligibilité (&gt;= 16 ans, pièces) :</strong> Direction Pédagogique CFP (EXP-06)</div>
                     <div><strong>Inscription (50 000 FCFA) :</strong> Validation Caisse &amp; Comptabilité</div>
                     <div><strong>Scolarité (250 000 FCFA) :</strong> Suivi des 4 tranches réglementaires</div>
                   </div>
                   <div class="governance-matrix-item">
-                    <strong style="color:var(--eco-dining-text);display:block;margin-bottom:3px;">6. Clôture Caisse 18h00, Remboursements &amp; Tarifs</strong>
+                    <strong style="color:var(--eco-dining-text);display:block;margin-bottom:3px;">6. Tarifs, Catalogue &amp; Jauges (Clôture 18h00 &amp; MFA)</strong>
                     <div><strong>Écart &lt;= 2 000 FCFA :</strong> Billetage Caissière + Chef d'Exploitation</div>
                     <div><strong>Écart &gt; 2 000 FCFA ou Avoir/Remboursement :</strong> Direction Générale</div>
                     <div><strong>Grille tarifaire &amp; Publication :</strong> Admin MFA + Journal SHA-256</div>
@@ -3250,7 +3275,28 @@ REFONTE_JS = r"""
           }
           return actionKey;
         }
-        return typeof origNavV4Menu === 'function' ? origNavV4Menu.apply(this, arguments) : actionKey;
+        var navRes = typeof origNavV4Menu === 'function' ? origNavV4Menu.apply(this, arguments) : actionKey;
+        var canonicalMenuUrls = {
+          ACCUEIL: '/',
+          ACTIVITES: '/decouvrir',
+          HEBERGEMENTS: '/sejour-restaurant',
+          RESTAURANT: '/sejour-restaurant',
+          GROUPES: '/groupes-evenements',
+          FORMATION: '/formations',
+          TARIFS_GRILLE: '/preparer-ma-visite',
+          AGENDA_HEBDO: '/preparer-ma-visite',
+          INFOS_PLAN_RN3: '/preparer-ma-visite',
+          MON_ESPACE: '/mes-reservations',
+          RESERVER: '/reserver'
+        };
+        if (canonicalMenuUrls[actionKey] && !(opts && opts.skipHistory) && window.history && typeof window.history.replaceState === 'function') {
+          try {
+            if (window.location.protocol === 'http:' || window.location.protocol === 'https:') {
+              window.history.replaceState({ v4MenuAction: actionKey }, '', canonicalMenuUrls[actionKey] + window.location.search);
+            }
+          } catch (e) {}
+        }
+        return navRes;
       };
     }
 
