@@ -358,21 +358,43 @@ def main():
         if ARTIFACT_DIR.exists():
             page.screenshot(path=str(ARTIFACT_DIR / "06_reservation_parcours_5_etapes.png"), full_page=False)
 
-        # Scenario #5 : Statut d'une reservation existante dans Mes reservations
+        # Scenario #5 : Statut d'une reservation existante dans Mes reservations & zero troncature des boutons d'action
         page.evaluate("navigateV4SiteMenu('ACC_DASHBOARD')")
         page.wait_for_timeout(200)
         acc_check = page.evaluate("""() => {
             const viewAcc = document.getElementById('view-ACC');
             const txt = viewAcc ? viewAcc.innerText : '';
+            const tr = document.querySelector('#view-ACC .table-responsive');
+            const trR = tr ? tr.getBoundingClientRect() : null;
+            const visibleBtns = Array.from(document.querySelectorAll('#view-ACC table td:last-child .btn'))
+                .filter(b => getComputedStyle(b).display !== 'none');
+            const clippedBtns = visibleBtns.filter(b => {
+                const r = b.getBoundingClientRect();
+                return !trR || r.right > trR.right + 2 || r.left < trR.left - 2 || r.width < 20;
+            }).map(b => b.textContent.trim());
             return {
                 active: viewAcc && viewAcc.classList.contains('active'),
                 hasBookingRef: txt.includes('ECP-2026-84920') && txt.includes('Confirmé'),
-                hasQuoteRef: txt.includes('DEV-2026-3104')
+                hasQuoteRef: txt.includes('DEV-2026-3104'),
+                tableNoOverflow: tr ? (tr.scrollWidth <= tr.clientWidth + 1) : false,
+                visibleBtnCount: visibleBtns.length,
+                clippedBtns
             };
         }""")
-        check(acc_check["active"] and acc_check["hasBookingRef"] and acc_check["hasQuoteRef"],
-              "Scenario #5 : Consultation du statut d'une reservation existante et d'un devis dans Mes reservations",
-              acc_check)
+        check(
+            acc_check["active"]
+            and acc_check["hasBookingRef"]
+            and acc_check["hasQuoteRef"]
+            and acc_check["tableNoOverflow"]
+            and len(acc_check["clippedBtns"]) == 0,
+            "Scenario #5 : Consultation du statut d'une reservation existante et d'un devis dans Mes reservations (0 bouton tronque)",
+            acc_check
+        )
+        page.evaluate("() => { const c = document.querySelector('#view-ACC .col-8.card'); if (c) c.scrollIntoView({block: 'start'}); }")
+        page.wait_for_timeout(150)
+        page.screenshot(path=str(QA_DIR / "09_mon_espace_sans_troncature.png"), full_page=False)
+        if ARTIFACT_DIR.exists():
+            page.screenshot(path=str(ARTIFACT_DIR / "09_mon_espace_sans_troncature.png"), full_page=False)
 
         # 6. Verification des nouvelles URLs canoniques en acces direct
         print("\n6. Verification des URLs canoniques et anciennes en acces direct")
@@ -398,6 +420,71 @@ def main():
             page.wait_for_timeout(100)
             overflow = page.evaluate("() => document.documentElement.scrollWidth - document.documentElement.clientWidth")
             check(overflow <= 0, f"Largeur {w}px : zero debordement horizontal (overflow={overflow}px)")
+
+        # 8. Module Assignation d'une tache & Fiche de mission imprimable A4 (Exploitation / Guichet / Admin)
+        print("\n8. Module Assignation d'une tache & Fiche de mission imprimable A4")
+        page.set_viewport_size({"width": 1440, "height": 900})
+        page.wait_for_timeout(100)
+        mission_check = page.evaluate("""() => {
+            openExpMissionsPanel('CONTROLE_QR');
+            const sec = document.getElementById('sec-EXP-MISSIONS');
+            const initialRows = document.querySelectorAll('#expMissionsTableBody tr').length;
+            const created = assignOperationalMission(false);
+            const afterRows = document.querySelectorAll('#expMissionsTableBody tr').length;
+            updateOperationalMissionStatus(created.id, 'EN_COURS');
+            return {
+                hasSection: !!sec,
+                initialRows,
+                afterRows,
+                createdId: created ? created.id : null,
+                createdPole: created ? created.pole : null,
+                hasAgtBanner: !!document.getElementById('agtActiveMissionBanner'),
+                hasAdmBtn: !!document.getElementById('admOpenMissionsBtn')
+            };
+        }""")
+        check(
+            mission_check["hasSection"]
+            and mission_check["initialRows"] >= 4
+            and mission_check["afterRows"] == mission_check["initialRows"] + 1
+            and mission_check["createdPole"] == "CONTROLE_QR"
+            and mission_check["hasAgtBanner"]
+            and mission_check["hasAdmBtn"],
+            "Module d'assignation de taches operationnel sur les 4 poles terrain (creation, suivi, bandeau Guichet et acces Admin)",
+            mission_check
+        )
+        page.evaluate("""() => {
+            const sec = document.getElementById('sec-EXP-MISSIONS');
+            if (sec) {
+                const y = sec.getBoundingClientRect().top + window.scrollY - 90;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+            }
+        }""")
+        page.wait_for_timeout(150)
+        page.screenshot(path=str(QA_DIR / "07_assignation_taches_exploitation.png"), full_page=False)
+        if ARTIFACT_DIR.exists():
+            page.screenshot(path=str(ARTIFACT_DIR / "07_assignation_taches_exploitation.png"), full_page=False)
+
+        # Ouverture de la Fiche de Mission Officielle A4 Imprimable
+        a4_check = page.evaluate("""(mId) => {
+            openMissionSheetA4(mId || 'MSN-2026-101');
+            const sheet = document.getElementById('printableMissionSheetA4');
+            const txt = sheet ? sheet.textContent : '';
+            return {
+                sheetVisible: !!sheet && getComputedStyle(document.getElementById('modalOfficialPrintBox')).display !== 'none',
+                hasTitle: txt.includes('ORDRE DE MISSION TERRAIN'),
+                hasChecklist: sheet ? sheet.querySelectorAll('.mission-checklist-item').length >= 3 : false,
+                hasVisas: txt.includes('Visa Responsable Exploitation') && txt.includes('Émargement Agent')
+            };
+        }""", mission_check["createdId"])
+        check(
+            a4_check["sheetVisible"] and a4_check["hasTitle"] and a4_check["hasChecklist"] and a4_check["hasVisas"],
+            "Fiche de Mission Officielle A4 Imprimable complete (en-tete, QR, dotation, check-list terrain et 3 cadres d'emargement)",
+            a4_check
+        )
+        page.wait_for_timeout(150)
+        page.screenshot(path=str(QA_DIR / "08_fiche_mission_imprimable_a4.png"), full_page=False)
+        if ARTIFACT_DIR.exists():
+            page.screenshot(path=str(ARTIFACT_DIR / "08_fiche_mission_imprimable_a4.png"), full_page=False)
 
         check(len(console_errors) == 0, "Zero erreur console / page JavaScript sur l'ensemble des parcours", console_errors)
         browser.close()

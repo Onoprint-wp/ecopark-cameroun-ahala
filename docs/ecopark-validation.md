@@ -1,7 +1,7 @@
 # Journal de Validation & Données Métier — ECOPARK Cameroun
 
 **Dernière mise à jour :** 2026-10-29  
-**Statut :** Refonte terminée et validée à 100 % (32/32 contrôles de refonte + 333/333 tests existants réussis)
+**Statut :** Refonte et Module Fiches de Mission terminés et validés à 100 % (34/34 contrôles de refonte + 333/333 tests existants réussis)
 
 ---
 
@@ -87,7 +87,7 @@ Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et ré
 
 | Suite de vérification | Commande exécutée | Résultat | Détails |
 | :--- | :--- | :--- | :--- |
-| **Vérification complète Refonte « Canopée vivante »** | `python scripts/verify_refonte_complete.py` | **32 / 32 OK** | Règles `.agents/rules/`, docs, parité `index.html`, palette 9 tokens, police >= 16px, cibles >= 44px, 5 rubriques, 1 seul H1, 8 blocs Accueil dans l'ordre, 5 gabarits métier, 5 scénarios auto-service, 4 parcours & 5 étapes de réservation, 7 routes canoniques, 5 largeurs responsive, 6 captures |
+| **Vérification complète Refonte « Canopée vivante » & Missions A4** | `python scripts/verify_refonte_complete.py` | **34 / 34 OK** | Règles `.agents/rules/`, docs, parité `index.html`, palette 9 tokens, police >= 16px, cibles >= 44px, 5 rubriques, 1 seul H1, 8 blocs Accueil dans l'ordre, 5 gabarits métier, 5 scénarios auto-service, 4 parcours & 5 étapes de réservation, 7 routes canoniques, 5 largeurs responsive, module d'assignation de tâches (4 pôles) + Fiche de mission A4 imprimable, 8 captures |
 | **Gouvernance SQL, RLS & Audit SHA-256** | `npm run test:db` | **69 / 69 OK** | Migrations idempotentes, RLS visiteur/exploitation/direction/admin/guichet, garde-fous tarifs, chaîne d'audit SHA-256 |
 | **Contrat de la couche de données** | `npm run test:data` | **98 / 98 OK** | `SupabaseRestDriver`, `LocalDemoDriver`, synchronisation et validation des schémas |
 | **Navigateur & bascule Supabase / Hors-ligne** | `python scripts/test_data_layer_browser.py` | **19 / 19 OK** | Mode démo, mode Supabase avec validation stricte du téléphone WhatsApp, mode réseau coupé |
@@ -119,3 +119,5 @@ Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et ré
 4. `04_restaurant_chateau_des_saveurs.png` : Sous-rubrique Restaurant Le Château des Saveurs (lieu, cuisine, carte en FCFA, horaires et modalités).
 5. `05_formation_cfp_minefop.png` : Gabarit complet Formations CFP MINEFOP (5 filières, 12 mois, admission dès 16 ans, frais en 4 tranches).
 6. `06_reservation_parcours_5_etapes.png` : Parcours de réservation restructuré (4 onglets de parcours + stepper 5 étapes dans l'ordre exact, sans billet QR prématuré).
+7. `07_assignation_taches_exploitation.png` : Module d'assignation de tâches (`#sec-EXP-MISSIONS`) avec KPIs, 4 modèles de pôles terrain (Guichet, Contrôle QR, Hébergements, Cuisine), formulaire d'affectation et registre filtrable.
+8. `08_fiche_mission_imprimable_a4.png` : Fiche de Mission Officielle Imprimable A4 (`#printableMissionSheetA4`) avec en-tête, logo, QR Code SVG de mission, dotation matériel, check-list terrain et 3 cadres d'émargement.

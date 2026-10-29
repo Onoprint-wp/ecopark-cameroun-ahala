@@ -660,6 +660,286 @@ REFONTE_CSS = r"""    /* ECOPARK_REFONTE_CANOPEE_CSS:START */
         overflow-x: hidden !important;
       }
     }
+
+    /* Module Assignation des Tâches & Fiche de Mission A4 (Exploitation / Guichet / Admin) */
+    .exp-mission-preset-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+    .exp-mission-preset-btn {
+      background: #FFFFFF;
+      border: 1.5px solid var(--eco-border);
+      border-radius: 12px;
+      padding: 12px 14px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 6px;
+      transition: border-color 0.16s ease, box-shadow 0.16s ease, background-color 0.16s ease;
+    }
+    .exp-mission-preset-btn:hover,
+    .exp-mission-preset-btn.active {
+      border-color: var(--eco-brand);
+      background: #F4F8F2;
+      box-shadow: 0 6px 16px rgba(37, 75, 40, 0.08);
+    }
+    .mission-sheet-a4 {
+      background: #FFFFFF;
+      color: var(--eco-text);
+      border: 2px solid var(--eco-brand);
+      border-radius: 12px;
+      padding: 20px 22px;
+      display: grid;
+      gap: 14px;
+      font-size: 13.8px;
+      line-height: 1.5;
+    }
+    .mission-sheet-grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .mission-sheet-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+    .mission-checklist-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 8px;
+      padding: 7px 10px;
+      background: var(--eco-bg);
+      border: 1px solid var(--eco-border);
+      border-radius: 8px;
+      font-size: 13.5px;
+      cursor: pointer;
+    }
+    @media (max-width: 900px) {
+      .exp-mission-preset-grid,
+      .mission-sheet-grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    @media (max-width: 768px) {
+      .exp-mission-preset-grid,
+      .mission-sheet-grid-2,
+      .mission-sheet-grid-3 {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    @media print {
+      #modalOverlaySprint1 {
+        position: static !important;
+        background: #FFFFFF !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+      #modalOfficialPrintBox {
+        max-width: 100% !important;
+        max-height: none !important;
+        overflow: visible !important;
+        box-shadow: none !important;
+        border: none !important;
+        padding: 0 !important;
+      }
+    }
+
+    /* =========================================================================
+       CORRECTION DE L'AFFICHAGE DE L'ESPACE VISITEUR (#view-ACC / /mon-espace)
+       & GARANTIE ZÉRO TRONCATURE DES TABLEAUX ET BOUTONS D'ACTION
+       ========================================================================= */
+    .header-utility-actions #nav-ACC.active,
+    .header-utility-actions #nav-ACC[aria-current="page"] {
+      background: #E8F2E6 !important;
+      border-color: var(--eco-brand) !important;
+      color: var(--eco-brand) !important;
+      box-shadow: 0 0 0 2px rgba(37, 75, 40, 0.14) !important;
+    }
+
+    #view-ACC > .section > .container > .grid-12 > .col-4.card,
+    #view-ACC > .section > .container > .grid-12 > .col-8.card {
+      grid-column: 1 / -1 !important;
+      width: 100% !important;
+      max-width: 100% !important;
+    }
+
+    #view-ACC > .section > .container > .grid-12 > .col-4.card {
+      padding: 20px 24px !important;
+    }
+
+    #view-ACC #accSearchInput {
+      flex: 1 1 260px !important;
+      min-width: 0 !important;
+    }
+
+    #view-ACC > .section > .container > .grid-12 > .col-4.card .form-group > div {
+      flex-wrap: wrap !important;
+    }
+
+    #view-ACC > .section > .container > .grid-12 > .col-4.card > div:last-child {
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)) !important;
+    }
+
+    #view-ACC .table-responsive {
+      width: 100% !important;
+      overflow-x: auto !important;
+    }
+
+    #view-ACC table {
+      width: 100% !important;
+      table-layout: auto !important;
+      border-collapse: collapse !important;
+    }
+
+    #view-ACC table th,
+    #view-ACC table td {
+      padding: 12px 10px !important;
+      font-size: 13.5px !important;
+      vertical-align: middle !important;
+    }
+
+    #view-ACC table th:nth-child(1),
+    #view-ACC table td:nth-child(1),
+    #view-ACC table th:nth-child(4),
+    #view-ACC table td:nth-child(4) {
+      white-space: nowrap !important;
+    }
+
+    #view-ACC table td:nth-child(2) {
+      min-width: 108px;
+      max-width: 155px;
+    }
+
+    #view-ACC table td:nth-child(3) {
+      min-width: 200px;
+      max-width: 350px;
+    }
+
+    #view-ACC .status-badge {
+      white-space: normal !important;
+      max-width: 195px !important;
+      line-height: 1.35 !important;
+      text-align: left !important;
+      display: inline-flex !important;
+      padding: 5px 10px !important;
+      font-size: 12px !important;
+    }
+
+    #view-ACC table td:last-child {
+      display: table-cell !important;
+      vertical-align: middle !important;
+      min-width: 210px !important;
+      white-space: normal !important;
+    }
+
+    #view-ACC table td:last-child .btn:not(.admin-only-control) {
+      display: inline-flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      margin: 3px 6px 3px 0 !important;
+      padding: 6px 12px !important;
+      font-size: 12.5px !important;
+      min-height: 34px !important;
+      border-radius: 8px !important;
+      white-space: nowrap !important;
+      width: auto !important;
+    }
+
+    #view-ACC table td:last-child .btn.admin-only-control {
+      display: none !important;
+    }
+
+    @media (max-width: 960px) {
+      #view-ACC .table-responsive {
+        overflow-x: visible !important;
+      }
+      #view-ACC table,
+      #view-ACC table tbody {
+        display: block !important;
+        width: 100% !important;
+      }
+      #view-ACC table thead {
+        display: none !important;
+      }
+      #view-ACC table tbody tr {
+        display: block !important;
+        width: 100% !important;
+        background: #FFFFFF !important;
+        border: 1px solid var(--eco-border-strong) !important;
+        border-radius: 12px !important;
+        padding: 12px 14px !important;
+        margin-bottom: 12px !important;
+        box-shadow: 0 2px 8px rgba(36, 40, 36, 0.05) !important;
+      }
+      #view-ACC table tbody td,
+      #view-ACC table tbody td:last-child {
+        display: flex !important;
+        flex-wrap: wrap !important;
+        justify-content: space-between !important;
+        align-items: center !important;
+        gap: 8px !important;
+        width: 100% !important;
+        min-width: 0 !important;
+        max-width: 100% !important;
+        padding: 7px 0 !important;
+        border: none !important;
+        border-bottom: 1px dashed rgba(36, 40, 36, 0.1) !important;
+        white-space: normal !important;
+        text-align: left !important;
+      }
+      #view-ACC table tbody td:nth-child(3) {
+        display: block !important;
+      }
+      #view-ACC table tbody td:last-child {
+        border-bottom: none !important;
+        padding-top: 10px !important;
+        justify-content: flex-start !important;
+      }
+      #view-ACC table tbody td:nth-child(1)::before {
+        content: "Référence";
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--eco-text-muted);
+      }
+      #view-ACC table tbody td:nth-child(2)::before {
+        content: "Date de visite";
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--eco-text-muted);
+      }
+      #view-ACC table tbody td:nth-child(4)::before {
+        content: "Montant";
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--eco-text-muted);
+      }
+      #view-ACC table tbody td:nth-child(5)::before {
+        content: "Statut";
+        font-size: 11.5px;
+        font-weight: 700;
+        text-transform: uppercase;
+        color: var(--eco-text-muted);
+      }
+      #view-ACC table tbody td[colspan] {
+        display: block !important;
+        text-align: center !important;
+        border-bottom: none !important;
+      }
+      #view-ACC table tbody td[colspan]::before {
+        display: none !important;
+      }
+      #view-ACC .status-badge {
+        max-width: 100% !important;
+      }
+    }
     /* ECOPARK_REFONTE_CANOPEE_CSS:END */"""
 
 
@@ -1979,6 +2259,236 @@ RES_JOURNEY_AND_STEPPER_HTML = r"""            <!-- ECOPARK_V4_RES_STEPPER:START
             <!-- ECOPARK_V4_RES_STEPPER:END -->"""
 
 
+AGT_ACTIVE_MISSION_BANNER_HTML = r"""            <!-- ECOPARK_AGT_ACTIVE_MISSION:START -->
+            <div class="card" id="agtActiveMissionBanner" style="margin-bottom:20px;padding:16px 20px;background:#F4F8F2;border:1.5px solid var(--eco-brand);border-left:6px solid var(--eco-brand);">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <span class="eco-cat-badge eco-cat-nature" style="margin-bottom:4px;">Affectation Poste Active • Pôle Guichet &amp; Contrôle</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.18rem;color:var(--eco-brand);display:block;" id="agtBannerMissionTitle">
+                    MSN-2026-101 • Ouverture Guichet Principal #1, Fond de caisse 50 000 FCFA &amp; Billetterie RN3
+                  </strong>
+                  <span style="font-size:13.5px;color:var(--eco-text-muted);" id="agtBannerMissionMeta">
+                    Agent : <strong>Mme Clarisse ATANGANA (MAT-AGT-01)</strong> • Créneau : <strong>08h30 – 18h00</strong> • Statut : <strong id="agtBannerMissionStatus">En cours sur poste</strong>
+                  </span>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="openExpMissionsPanel('GUICHET_CAISSE')">
+                    Voir toutes les missions terrain
+                  </button>
+                  <button type="button" class="btn btn-primary btn-sm" id="btnAgtPrintMissionA4" onclick="openMissionSheetA4('MSN-2026-101')">
+                    <svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                    <span>Fiche de Mission A4 (Imprimer / PDF)</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+            <!-- ECOPARK_AGT_ACTIVE_MISSION:END -->"""
+
+
+EXP_MISSIONS_MODULE_HTML = r"""            <!-- ECOPARK_EXP_MISSIONS_MODULE:START -->
+            <div class="card" id="sec-EXP-MISSIONS" style="margin-bottom:22px;padding:24px;background:#FFFFFF;border:1.5px solid var(--eco-border);border-top:5px solid var(--eco-brand);">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:16px;">
+                <div>
+                  <span class="eco-cat-badge eco-cat-nature"><span class="tech-code-tag">EXP-MISSIONS • </span>Ordres d'affectation &amp; Fiches de mission imprimables A4</span>
+                  <h3 style="margin:8px 0 4px;font-size:1.45rem;">Assignation d'une tâche &amp; Fiche de mission des agents d'exploitation</h3>
+                  <p style="font-size:15px;color:var(--eco-text-muted);margin:0;">
+                    Affectez une mission quotidienne aux agents d'Ahala sur les 4 pôles terrain (Guichet &amp; Caisse, Contrôle QR Piscine/Lac, Hébergements Ewondo/Chanthel/Bene, Cuisine Château des Saveurs), suivez la check-list de contrôle et éditez la <strong>Fiche de Mission officielle A4</strong> avec cadre d'émargement.
+                  </p>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="openMissionSheetA4((window._activeMissionIdForPrint || 'MSN-2026-101'))">
+                    <svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="6 9 6 2 18 2 18 9"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect width="12" height="8" x="6" y="14"/></svg>
+                    <span>Aperçu Fiche de Mission A4</span>
+                  </button>
+                </div>
+              </div>
+
+              <!-- KPI Bar des missions du jour -->
+              <div class="eco-grid-4" style="gap:12px;margin-bottom:18px;">
+                <div style="padding:12px 14px;background:var(--eco-bg);border-radius:10px;border:1px solid var(--eco-border);">
+                  <span style="font-size:12.5px;color:var(--eco-text-muted);font-weight:700;text-transform:uppercase;display:block;">Missions du jour</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--eco-brand);" id="expMissionKpiTotal">4 missions</strong>
+                  <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;">Fuseau Africa/Douala (UTC+1)</span>
+                </div>
+                <div style="padding:12px 14px;background:var(--eco-bg);border-radius:10px;border:1px solid var(--eco-border);">
+                  <span style="font-size:12.5px;color:var(--eco-water-text);font-weight:700;text-transform:uppercase;display:block;">En cours sur poste</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--eco-water);" id="expMissionKpiActive">2 actives</strong>
+                  <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;">Agents pointés sur le terrain</span>
+                </div>
+                <div style="padding:12px 14px;background:var(--eco-bg);border-radius:10px;border:1px solid var(--eco-border);">
+                  <span style="font-size:12.5px;color:var(--eco-nature-text);font-weight:700;text-transform:uppercase;display:block;">Terminées &amp; Validées</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--eco-nature-text);" id="expMissionKpiDone">1 validée</strong>
+                  <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;">Visa exploitation enregistré</span>
+                </div>
+                <div style="padding:12px 14px;background:#FBF7F0;border-radius:10px;border:1px solid var(--eco-dining);">
+                  <span style="font-size:12.5px;color:var(--eco-dining-text);font-weight:700;text-transform:uppercase;display:block;">Pôles Terrain Couverts</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--eco-dining);" id="expMissionKpiPoles">4 / 4 pôles</strong>
+                  <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;">Guichet • Lac/Piscine • Loges • Cuisine</span>
+                </div>
+              </div>
+
+              <!-- Modèles rapides par pôle en 1 clic -->
+              <div style="margin-bottom:6px;font-size:13px;font-weight:700;color:var(--eco-brand);text-transform:uppercase;letter-spacing:0.03em;">
+                1. Choisir un modèle de mission par pôle terrain (pré-remplissage en 1 clic) :
+              </div>
+              <div class="exp-mission-preset-grid" id="expMissionPresetGrid">
+                <button type="button" class="exp-mission-preset-btn active" data-mission-pole="GUICHET_CAISSE" onclick="applyMissionPolePreset('GUICHET_CAISSE', this)">
+                  <div>
+                    <span class="eco-cat-badge eco-cat-nature" style="font-size:11px;padding:2px 8px;">1. Guichet &amp; Caisse</span>
+                    <strong style="display:block;font-size:14.5px;color:var(--eco-text);margin-top:6px;">Caisse Entrée RN3 &amp; Billetage</strong>
+                    <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;margin-top:2px;">Fond 50 000 FCFA, ventes Espèces/MoMo sans PIN, clôture contradictoire.</span>
+                  </div>
+                  <span style="font-size:12px;font-weight:700;color:var(--eco-brand);">Charger ce modèle →</span>
+                </button>
+
+                <button type="button" class="exp-mission-preset-btn" data-mission-pole="CONTROLE_QR" onclick="applyMissionPolePreset('CONTROLE_QR', this)">
+                  <div>
+                    <span class="eco-cat-badge eco-cat-water" style="font-size:11px;padding:2px 8px;">2. Contrôle QR Piscine &amp; Lac</span>
+                    <strong style="display:block;font-size:14.5px;color:var(--eco-text);margin-top:6px;">Scan QR 7 États &amp; Sécurité Bassin</strong>
+                    <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;margin-top:2px;">Tourniquet piscine, embarcadère pirogues, port obligatoire du gilet.</span>
+                  </div>
+                  <span style="font-size:12px;font-weight:700;color:var(--eco-water);">Charger ce modèle →</span>
+                </button>
+
+                <button type="button" class="exp-mission-preset-btn" data-mission-pole="HEBERGEMENT" onclick="applyMissionPolePreset('HEBERGEMENT', this)">
+                  <div>
+                    <span class="eco-cat-badge eco-cat-lodging" style="font-size:11px;padding:2px 8px;">3. Hébergements (3 Cités)</span>
+                    <strong style="display:block;font-size:14.5px;color:var(--eco-text);margin-top:6px;">Cités Ewondo VIP, Chanthel &amp; Bene</strong>
+                    <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;margin-top:2px;">Check-in 14h00 / Check-out 11h00, remise clés, contrôle climatisation.</span>
+                  </div>
+                  <span style="font-size:12px;font-weight:700;color:var(--eco-lodging);">Charger ce modèle →</span>
+                </button>
+
+                <button type="button" class="exp-mission-preset-btn" data-mission-pole="CUISINE_SAVEURS" onclick="applyMissionPolePreset('CUISINE_SAVEURS', this)">
+                  <div>
+                    <span class="eco-cat-badge eco-cat-dining" style="font-size:11px;padding:2px 8px;">4. Cuisine Château des Saveurs</span>
+                    <strong style="display:block;font-size:14.5px;color:var(--eco-text);margin-top:6px;">Précommandes 12h30 &amp; Pergolas</strong>
+                    <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;margin-top:2px;">Poisson braisé d'Ahala, Poulet DG Royal, service Zéro Attente 13h00.</span>
+                  </div>
+                  <span style="font-size:12px;font-weight:700;color:var(--eco-dining);">Charger ce modèle →</span>
+                </button>
+              </div>
+
+              <!-- Formulaire d'assignation de tâche -->
+              <div style="padding:18px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:12px;margin-bottom:20px;" id="expMissionAssignForm">
+                <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;margin-bottom:12px;">
+                  <strong style="font-size:15.5px;color:var(--eco-brand);">2. Paramètres de la tâche assignée &amp; consignes de poste</strong>
+                  <span style="font-size:12.5px;color:var(--eco-text-muted);">Enregistrement synchronisé avec le Journal d'Audit &amp; la Fiche de Mission A4</span>
+                </div>
+
+                <div class="grid-12" style="gap:12px;">
+                  <div class="col-3 form-group" style="margin:0;">
+                    <label class="form-label" for="missionPoleSelect">Pôle opérationnel <span style="color:#B42318;">*</span></label>
+                    <select id="missionPoleSelect" class="form-control" onchange="applyMissionPolePreset(this.value)">
+                      <option value="GUICHET_CAISSE" selected>1. Guichet &amp; Caisse Principale</option>
+                      <option value="CONTROLE_QR">2. Contrôle QR Piscine &amp; Lac</option>
+                      <option value="HEBERGEMENT">3. Hébergements (Ewondo / Chanthel / Bene)</option>
+                      <option value="CUISINE_SAVEURS">4. Cuisine Le Château des Saveurs</option>
+                    </select>
+                  </div>
+
+                  <div class="col-3 form-group" style="margin:0;">
+                    <label class="form-label" for="missionAgentSelect">Agent terrain affecté <span style="color:#B42318;">*</span></label>
+                    <select id="missionAgentSelect" class="form-control">
+                      <option value="Mme Clarisse ATANGANA|MAT-AGT-01|Caissière Principale Guichet #1" selected>Mme Clarisse ATANGANA (Guichet &amp; Caisse)</option>
+                      <option value="M. Samuel MBARGA|MAT-CTL-02|Contrôleur QR Piscine &amp; Embarcadère">M. Samuel MBARGA (Contrôle QR Piscine &amp; Lac)</option>
+                      <option value="Mme Chantal NGO BIYONG|MAT-HTL-03|Gouvernante Cités Ewondo, Chanthel &amp; Bene">Mme Chantal NGO BIYONG (Hébergements 3 Cités)</option>
+                      <option value="Chef Patrice ESSOMBA|MAT-RES-04|Chef de Cuisine &amp; Pergolas Château des Saveurs">Chef Patrice ESSOMBA (Cuisine Château des Saveurs)</option>
+                      <option value="M. Jean-Baptiste NKOA|MAT-EXP-05|Superviseur Polyvalent Parc &amp; Navettes">M. Jean-Baptiste NKOA (Superviseur Polyvalent)</option>
+                    </select>
+                  </div>
+
+                  <div class="col-2 form-group" style="margin:0;">
+                    <label class="form-label" for="missionDateInput">Date de mission <span style="color:#B42318;">*</span></label>
+                    <input type="date" id="missionDateInput" class="form-control" />
+                  </div>
+
+                  <div class="col-2 form-group" style="margin:0;">
+                    <label class="form-label" for="missionShiftSelect">Créneau horaire</label>
+                    <select id="missionShiftSelect" class="form-control">
+                      <option value="08h30 – 18h00 (Journée complète)" selected>08h30 – 18h00 (Journée)</option>
+                      <option value="08h30 – 14h00 (Service Matinée)">08h30 – 14h00 (Matinée)</option>
+                      <option value="11h30 – 20h30 (Service Midi &amp; Soir)">11h30 – 20h30 (Midi &amp; Soir)</option>
+                      <option value="14h00 – 11h00 J+1 (Garde Hôtelière 24h)">14h00 – 11h00 J+1 (Garde 24h)</option>
+                    </select>
+                  </div>
+
+                  <div class="col-2 form-group" style="margin:0;">
+                    <label class="form-label" for="missionPrioritySelect">Priorité</label>
+                    <select id="missionPrioritySelect" class="form-control">
+                      <option value="HAUTE" selected>Haute — Affluence / Groupe</option>
+                      <option value="NORMALE">Normale — Exploitation standard</option>
+                      <option value="URGENTE">Urgente — Sécurité / VIP</option>
+                    </select>
+                  </div>
+
+                  <div class="col-6 form-group" style="margin:0;">
+                    <label class="form-label" for="missionTitleInput">Intitulé précis de la tâche assignée <span style="color:#B42318;">*</span></label>
+                    <input type="text" id="missionTitleInput" class="form-control" value="Ouverture Guichet Principal #1, contrôle fond de caisse 50 000 FCFA &amp; accueil Groupes" />
+                  </div>
+
+                  <div class="col-6 form-group" style="margin:0;">
+                    <label class="form-label" for="missionLocationInput">Poste &amp; Zone d'affectation sur le site d'Ahala</label>
+                    <input type="text" id="missionLocationInput" class="form-control" value="Portail Principal RN3 (Face Station Tradex Ahala) — Guichet #1" />
+                  </div>
+
+                  <div class="col-6 form-group" style="margin:0;">
+                    <label class="form-label" for="missionObjectiveInput">Objectif opérationnel &amp; consignes d'exécution</label>
+                    <textarea id="missionObjectiveInput" class="form-control" rows="2">Assurer l'encaissement fluide des visiteurs walk-in (Espèces FCFA et Mobile Money sans saisie de code PIN), protéger le tarif enfant à 500 FCFA et maintenir un écart de caisse inférieur ou égal à 2 000 FCFA à la clôture contradictoire de 18h00.</textarea>
+                  </div>
+
+                  <div class="col-6 form-group" style="margin:0;">
+                    <label class="form-label" for="missionChecklistInput">Check-list de contrôle terrain (séparer les points par « ; »)</label>
+                    <textarea id="missionChecklistInput" class="form-control" rows="2">Vérifier le fond de caisse initial de 50 000 FCFA à 08h30; Appliquer strictement le tarif enfant protégé (500 FCFA Zoo / 0 FCFA moins de 3 ans); Vérifier les pré-réservations Guichet avant l'échéance de 11h00; Réaliser le billetage contradictoire et signer le PV de clôture à 18h00</textarea>
+                  </div>
+
+                  <div class="col-8 form-group" style="margin:0;">
+                    <label class="form-label" for="missionEquipmentInput">Dotation &amp; équipements remis à la prise de poste</label>
+                    <input type="text" id="missionEquipmentInput" class="form-control" value="Fond de caisse 50 000 FCFA, Terminal Caisse Rapide AGT-03, Rouleau thermique QR, Talkie-walkie Canal 1" />
+                  </div>
+
+                  <div class="col-4" style="display:flex;align-items:flex-end;gap:8px;flex-wrap:wrap;">
+                    <button type="button" class="btn btn-primary" id="btnAssignMissionSubmit" style="flex:1;" onclick="assignOperationalMission(false)">
+                      Assigner la tâche
+                    </button>
+                    <button type="button" class="btn btn-secondary" id="btnAssignAndPrintMission" onclick="assignOperationalMission(true)">
+                      Assigner &amp; Fiche A4
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Filtres et Tableau des missions assignées -->
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:12px;">
+                <div style="display:flex;gap:6px;flex-wrap:wrap;" id="expMissionFilterBar" role="tablist" aria-label="Filtrer les missions par pôle opérationnel">
+                  <button type="button" class="acc-filter-pill active" data-pole-filter="ALL" onclick="filterOperationalMissions('ALL', this)">Tous les pôles (4)</button>
+                  <button type="button" class="acc-filter-pill" data-pole-filter="GUICHET_CAISSE" onclick="filterOperationalMissions('GUICHET_CAISSE', this)">Guichet &amp; Caisse</button>
+                  <button type="button" class="acc-filter-pill" data-pole-filter="CONTROLE_QR" onclick="filterOperationalMissions('CONTROLE_QR', this)">Contrôle QR Piscine/Lac</button>
+                  <button type="button" class="acc-filter-pill" data-pole-filter="HEBERGEMENT" onclick="filterOperationalMissions('HEBERGEMENT', this)">Hébergements (Ewondo/Chanthel/Bene)</button>
+                  <button type="button" class="acc-filter-pill" data-pole-filter="CUISINE_SAVEURS" onclick="filterOperationalMissions('CUISINE_SAVEURS', this)">Cuisine Château des Saveurs</button>
+                </div>
+                <input type="search" id="expMissionSearchInput" class="form-control" style="max-width:280px;min-height:38px;padding:6px 12px;font-size:13.5px;" placeholder="Rechercher réf. MSN-..., agent, tâche..." aria-label="Rechercher une mission" oninput="renderOperationalMissionsTable()" />
+              </div>
+
+              <div class="table-responsive">
+                <table class="adm-table" id="expMissionsTable">
+                  <thead>
+                    <tr>
+                      <th>Réf. &amp; Pôle</th>
+                      <th>Agent affecté &amp; Poste</th>
+                      <th>Tâche assignée &amp; Créneau</th>
+                      <th>Check-list terrain</th>
+                      <th>Statut</th>
+                      <th>Actions &amp; Fiche A4</th>
+                    </tr>
+                  </thead>
+                  <tbody id="expMissionsTableBody"></tbody>
+                </table>
+              </div>
+            </div>
+            <!-- ECOPARK_EXP_MISSIONS_MODULE:END -->"""
+
+
 REFONTE_JS = r"""
   // ECOPARK_REFONTE_CANOPEE_JS:START
   (function () {
@@ -2481,6 +2991,62 @@ REFONTE_JS = r"""
       window.inspectScreen._refonteRes09Wrapped = true;
     }
 
+    // Révéler le billet QR lorsque l'utilisateur clique sur "Voir Billet QR" depuis Mes réservations (#view-ACC)
+    var origLoadBookingIntoQrPass = window.loadBookingIntoQrPass;
+    if (typeof origLoadBookingIntoQrPass === 'function' && !origLoadBookingIntoQrPass._refonteWrapped) {
+      window.loadBookingIntoQrPass = function (ref) {
+        window.setTicketConfirmationVisibility(true);
+        return origLoadBookingIntoQrPass.apply(this, arguments);
+      };
+      window.loadBookingIntoQrPass._refonteWrapped = true;
+    }
+
+    // Ré-appliquer systématiquement les vignettes visuelles dans #view-ACC après chaque rafraîchissement DB
+    var origSyncAllViewsRefonte = window.syncAllViewsFromDB;
+    if (typeof origSyncAllViewsRefonte === 'function' && !origSyncAllViewsRefonte._refonteAccThumbWrapped) {
+      window.syncAllViewsFromDB = function () {
+        var res = origSyncAllViewsRefonte.apply(this, arguments);
+        if (typeof window.decorateAccTableWithVisuals === 'function') {
+          try { window.decorateAccTableWithVisuals(); } catch (e) {}
+        }
+        return res;
+      };
+      window.syncAllViewsFromDB._refonteAccThumbWrapped = true;
+    }
+
+    // Synchroniser l'état actif et aria-current="page" du bouton utilitaire "Mes réservations" (#nav-ACC) et de la barre mobile
+    var origNavFamilyRefonte = window.navigateFamily;
+    if (typeof origNavFamilyRefonte === 'function' && !origNavFamilyRefonte._refonteAccNavWrapped) {
+      window.navigateFamily = function (familyCode, targetScreenId) {
+        var res = origNavFamilyRefonte.apply(this, arguments);
+        var accBtn = document.getElementById('nav-ACC');
+        if (accBtn) {
+          var isAcc = (familyCode === 'ACC');
+          accBtn.classList.toggle('active', isAcc);
+          if (isAcc) {
+            accBtn.setAttribute('aria-current', 'page');
+          } else {
+            accBtn.removeAttribute('aria-current');
+          }
+        }
+        var mobNav = document.getElementById('v4MobileBottomNav');
+        if (mobNav && (familyCode === 'ACC' || familyCode === 'RES')) {
+          mobNav.querySelectorAll('.v4-bottom-nav-btn').forEach(function (b) {
+            b.classList.remove('active');
+            b.removeAttribute('aria-current');
+          });
+          var mobTargetId = familyCode === 'ACC' ? 'v4MobNavCompte' : 'v4MobNavReserver';
+          var mobTarget = document.getElementById(mobTargetId);
+          if (mobTarget) {
+            mobTarget.classList.add('active');
+            mobTarget.setAttribute('aria-current', 'page');
+          }
+        }
+        return res;
+      };
+      window.navigateFamily._refonteAccNavWrapped = true;
+    }
+
     // Prise en charge des nouvelles URLs canoniques et des anciennes URLs au chargement direct
     var currentPath = (window.location.pathname || '/').replace(/\/+$/, '').toLowerCase();
     var canonicalRouteMap = {
@@ -2518,6 +3084,649 @@ REFONTE_JS = r"""
         }
       }, 80);
     }
+
+    // =========================================================================
+    // MODULE INTERACTIF : ASSIGNATION D'UNE TÂCHE & FICHE DE MISSION A4 (AHALA)
+    // =========================================================================
+    var MISSION_POLE_PRESETS = {
+      GUICHET_CAISSE: {
+        poleLabel: 'Guichet & Caisse Principale',
+        badgeClass: 'eco-cat-nature',
+        agentOption: 'Mme Clarisse ATANGANA|MAT-AGT-01|Caissière Principale Guichet #1',
+        shift: '08h30 – 18h00 (Journée complète)',
+        priority: 'HAUTE',
+        title: 'Ouverture Guichet Principal #1, contrôle fond de caisse 50 000 FCFA & accueil Groupes',
+        location: 'Portail Principal RN3 (Face Station Tradex Ahala) — Guichet #1',
+        objective: 'Assurer l\'encaissement fluide des visiteurs walk-in (Espèces FCFA et Mobile Money sans saisie de code PIN), protéger le tarif enfant à 500 FCFA et maintenir un écart de caisse inférieur ou égal à 2 000 FCFA à la clôture contradictoire de 18h00.',
+        equipment: 'Fond de caisse 50 000 FCFA, Terminal Caisse Rapide AGT-03, Rouleau thermique QR, Talkie-walkie Canal 1',
+        checklist: [
+          'Vérifier le fond de caisse initial de 50 000 FCFA à 08h30',
+          'Appliquer strictement le tarif enfant protégé (500 FCFA Zoo / 0 FCFA moins de 3 ans)',
+          'Vérifier les pré-réservations Guichet avant l\'échéance de 11h00',
+          'Réaliser le billetage contradictoire et signer le PV de clôture à 18h00'
+        ],
+        guardrail: 'Tolérance d\'écart de caisse <= 2 000 FCFA • Tarif enfant Zoo verrouillé à 500 FCFA • Zéro saisie de code PIN Mobile Money.'
+      },
+      CONTROLE_QR: {
+        poleLabel: 'Contrôle QR Piscine & Lac',
+        badgeClass: 'eco-cat-water',
+        agentOption: 'M. Samuel MBARGA|MAT-CTL-02|Contrôleur QR Piscine & Embarcadère',
+        shift: '08h30 – 18h00 (Journée complète)',
+        priority: 'URGENTE',
+        title: 'Contrôle QR 7 états au tourniquet Piscine, jauge baignade & sécurité gilets Pirogues',
+        location: 'Portique Piscine Semi-Olympique & Embarcadère du Lac d\'Ahala',
+        objective: 'Scanner systématiquement chaque billet QR avant l\'accès au bassin et au ponton (détection des 7 états : Valide, Déjà utilisé, Mauvaise date, Expiré, Annulé, Prestation différente, Inconnu) et imposer le port du gilet homologué sur le lac.',
+        equipment: 'Terminal Scanner QR Hors-Ligne AGT-05, Lot de 24 gilets homologués (Enfants & Adultes), Sifflet & Bouée maître-nageur, Talkie-walkie Canal 2',
+        checklist: [
+          'Tester la synchronisation hors-ligne du scanner QR dès 08h45',
+          'Imposer la douche savonnée et le maillot de bain réglementaire à la piscine',
+          'Équiper chaque passager (dès 3 ans accompagné) d\'un gilet homologué avant embarquement pirogue',
+          'Synchroniser la file des scans hors-ligne avec la base centrale en fin de service'
+        ],
+        guardrail: 'Embarquement pirogue strictement interdit sans gilet homologué bouclé • Enfants accompagnés d\'un adulte.'
+      },
+      HEBERGEMENT: {
+        poleLabel: 'Hébergements (Ewondo / Chanthel / Bene)',
+        badgeClass: 'eco-cat-lodging',
+        agentOption: 'Mme Chantal NGO BIYONG|MAT-HTL-03|Gouvernante Cités Ewondo, Chanthel & Bene',
+        shift: '14h00 – 11h00 J+1 (Garde Hôtelière 24h)',
+        priority: 'HAUTE',
+        title: 'Préparation Suites Cité Ewondo VIP, Chambres Chanthel & Bene (Check-in 14h00 / Check-out 11h00)',
+        location: 'Réception Hôtelière 7j/7 — Cités Ewondo VIP, Chanthel Confort & Bene Standard',
+        objective: 'Superviser la remise en blanc des chambres avant 13h30, accueillir les résidents à partir de 14h00, contrôler l\'état des Suites Privées (30 000 – 45 000 FCFA / nuit) et libérer le stock au Check-out de 11h00.',
+        equipment: 'Registre Réception Hôtelière 7j/7, Passe-partout électronique Cités Ewondo/Chanthel/Bene, Kit linge & accueil VIP, Téléphone d\'astreinte Réception',
+        checklist: [
+          'Contrôler les départs (Check-out avant 11h00) et mettre à jour le stock des loges libres',
+          'Inspecter la climatisation, l\'eau chaude et la literie King-Size des 2 Suites Cité Ewondo VIP',
+          'Valider les arrivées (Check-in dès 14h00) et remettre les bracelets d\'accès Parc & Piscine aux résidents',
+          'Transmettre l\'état d\'occupation nocturne au Chef d\'Exploitation à 20h00'
+        ],
+        guardrail: 'Réception ouverte 7j/7 (y compris le lundi) • Arrivée dès 14h00 • Départ avant 11h00 • Tarifs : 10 000 à 45 000 FCFA par chambre et par nuit.'
+      },
+      CUISINE_SAVEURS: {
+        poleLabel: 'Cuisine Le Château des Saveurs',
+        badgeClass: 'eco-cat-dining',
+        agentOption: 'Chef Patrice ESSOMBA|MAT-RES-04|Chef de Cuisine & Pergolas Château des Saveurs',
+        shift: '11h30 – 20h30 (Service Midi & Soir)',
+        priority: 'HAUTE',
+        title: 'Mise en place des 18 précommandes Zéro Attente (12h30 / 13h30) & service Pergolas du Lac',
+        location: 'Restaurant Le Château des Saveurs & 10 Pergolas au bord de l\'eau',
+        objective: 'Assurer l\'approvisionnement en poisson frais des étangs d\'Ahala, honorer à l\'heure exacte les précommandes familiales et groupes (Poisson braisé 5 000 FCFA, Poulet DG Royal 6 500 FCFA, Ndolé 5 500 FCFA, Menu Enfant 2 500 FCFA) et dresser les 6 pergolas réservées.',
+        equipment: 'Bon de production Cuisine EXP-05 (18 repas précommandés), Thermomètre sonde HACCP, Plan d\'attribution des 10 Pergolas du Lac',
+        checklist: [
+          'Réceptionner et calibrer les poissons frais issus des bassins piscicoles d\'Ahala à 10h30',
+          'Dresser en priorité les 6 pergolas réservées pour le créneau Zéro Attente de 12h30 et 13h30',
+          'Préparer les 18 repas précommandés (Poisson braisé d\'Ahala, Poulet DG Royal, Menus Enfants)',
+          'Contrôler l\'hygiène des postes de braise et mettre à jour les disponibilités de la carte à 19h30'
+        ],
+        guardrail: 'Service prioritaire des précommandes 12h30 / 13h30 • Traçabilité fraîcheur étangs d\'Ahala • Tarifs affichés par plat (2 500 à 6 500 FCFA).'
+      }
+    };
+
+    window.getDefaultOperationalMissions = function () {
+      var dIso = typeof window.getTodayVisitDateMinIso === 'function' ? window.getTodayVisitDateMinIso() : '2026-10-29';
+      return [
+        {
+          id: 'MSN-2026-101',
+          pole: 'GUICHET_CAISSE',
+          poleLabel: MISSION_POLE_PRESETS.GUICHET_CAISSE.poleLabel,
+          badgeClass: MISSION_POLE_PRESETS.GUICHET_CAISSE.badgeClass,
+          agentName: 'Mme Clarisse ATANGANA',
+          agentMatricule: 'MAT-AGT-01',
+          agentRole: 'Caissière Principale Guichet #1',
+          date: dIso,
+          shift: '08h30 – 18h00 (Journée complète)',
+          priority: 'HAUTE',
+          status: 'EN_COURS',
+          title: MISSION_POLE_PRESETS.GUICHET_CAISSE.title,
+          location: MISSION_POLE_PRESETS.GUICHET_CAISSE.location,
+          objective: MISSION_POLE_PRESETS.GUICHET_CAISSE.objective,
+          equipment: MISSION_POLE_PRESETS.GUICHET_CAISSE.equipment,
+          guardrail: MISSION_POLE_PRESETS.GUICHET_CAISSE.guardrail,
+          checklist: [
+            { text: MISSION_POLE_PRESETS.GUICHET_CAISSE.checklist[0], done: true },
+            { text: MISSION_POLE_PRESETS.GUICHET_CAISSE.checklist[1], done: true },
+            { text: MISSION_POLE_PRESETS.GUICHET_CAISSE.checklist[2], done: false },
+            { text: MISSION_POLE_PRESETS.GUICHET_CAISSE.checklist[3], done: false }
+          ],
+          assignedBy: 'Chef d\'Exploitation Ahala',
+          createdAt: '08:15 (Africa/Douala)'
+        },
+        {
+          id: 'MSN-2026-102',
+          pole: 'CONTROLE_QR',
+          poleLabel: MISSION_POLE_PRESETS.CONTROLE_QR.poleLabel,
+          badgeClass: MISSION_POLE_PRESETS.CONTROLE_QR.badgeClass,
+          agentName: 'M. Samuel MBARGA',
+          agentMatricule: 'MAT-CTL-02',
+          agentRole: 'Contrôleur QR Piscine & Embarcadère',
+          date: dIso,
+          shift: '08h30 – 18h00 (Journée complète)',
+          priority: 'URGENTE',
+          status: 'EN_COURS',
+          title: MISSION_POLE_PRESETS.CONTROLE_QR.title,
+          location: MISSION_POLE_PRESETS.CONTROLE_QR.location,
+          objective: MISSION_POLE_PRESETS.CONTROLE_QR.objective,
+          equipment: MISSION_POLE_PRESETS.CONTROLE_QR.equipment,
+          guardrail: MISSION_POLE_PRESETS.CONTROLE_QR.guardrail,
+          checklist: [
+            { text: MISSION_POLE_PRESETS.CONTROLE_QR.checklist[0], done: true },
+            { text: MISSION_POLE_PRESETS.CONTROLE_QR.checklist[1], done: true },
+            { text: MISSION_POLE_PRESETS.CONTROLE_QR.checklist[2], done: true },
+            { text: MISSION_POLE_PRESETS.CONTROLE_QR.checklist[3], done: false }
+          ],
+          assignedBy: 'Chef d\'Exploitation Ahala',
+          createdAt: '08:20 (Africa/Douala)'
+        },
+        {
+          id: 'MSN-2026-103',
+          pole: 'HEBERGEMENT',
+          poleLabel: MISSION_POLE_PRESETS.HEBERGEMENT.poleLabel,
+          badgeClass: MISSION_POLE_PRESETS.HEBERGEMENT.badgeClass,
+          agentName: 'Mme Chantal NGO BIYONG',
+          agentMatricule: 'MAT-HTL-03',
+          agentRole: 'Gouvernante Cités Ewondo, Chanthel & Bene',
+          date: dIso,
+          shift: '14h00 – 11h00 J+1 (Garde Hôtelière 24h)',
+          priority: 'HAUTE',
+          status: 'TERMINEE',
+          title: MISSION_POLE_PRESETS.HEBERGEMENT.title,
+          location: MISSION_POLE_PRESETS.HEBERGEMENT.location,
+          objective: MISSION_POLE_PRESETS.HEBERGEMENT.objective,
+          equipment: MISSION_POLE_PRESETS.HEBERGEMENT.equipment,
+          guardrail: MISSION_POLE_PRESETS.HEBERGEMENT.guardrail,
+          checklist: [
+            { text: MISSION_POLE_PRESETS.HEBERGEMENT.checklist[0], done: true },
+            { text: MISSION_POLE_PRESETS.HEBERGEMENT.checklist[1], done: true },
+            { text: MISSION_POLE_PRESETS.HEBERGEMENT.checklist[2], done: true },
+            { text: MISSION_POLE_PRESETS.HEBERGEMENT.checklist[3], done: true }
+          ],
+          assignedBy: 'Direction Générale ECOPARK',
+          createdAt: '07:45 (Africa/Douala)'
+        },
+        {
+          id: 'MSN-2026-104',
+          pole: 'CUISINE_SAVEURS',
+          poleLabel: MISSION_POLE_PRESETS.CUISINE_SAVEURS.poleLabel,
+          badgeClass: MISSION_POLE_PRESETS.CUISINE_SAVEURS.badgeClass,
+          agentName: 'Chef Patrice ESSOMBA',
+          agentMatricule: 'MAT-RES-04',
+          agentRole: 'Chef de Cuisine & Pergolas Château des Saveurs',
+          date: dIso,
+          shift: '11h30 – 20h30 (Service Midi & Soir)',
+          priority: 'HAUTE',
+          status: 'ASSIGNEE',
+          title: MISSION_POLE_PRESETS.CUISINE_SAVEURS.title,
+          location: MISSION_POLE_PRESETS.CUISINE_SAVEURS.location,
+          objective: MISSION_POLE_PRESETS.CUISINE_SAVEURS.objective,
+          equipment: MISSION_POLE_PRESETS.CUISINE_SAVEURS.equipment,
+          guardrail: MISSION_POLE_PRESETS.CUISINE_SAVEURS.guardrail,
+          checklist: [
+            { text: MISSION_POLE_PRESETS.CUISINE_SAVEURS.checklist[0], done: true },
+            { text: MISSION_POLE_PRESETS.CUISINE_SAVEURS.checklist[1], done: false },
+            { text: MISSION_POLE_PRESETS.CUISINE_SAVEURS.checklist[2], done: false },
+            { text: MISSION_POLE_PRESETS.CUISINE_SAVEURS.checklist[3], done: false }
+          ],
+          assignedBy: 'Chef d\'Exploitation Ahala',
+          createdAt: '09:00 (Africa/Douala)'
+        }
+      ];
+    };
+
+    window._activeMissionPoleFilter = 'ALL';
+    window._activeMissionIdForPrint = 'MSN-2026-101';
+
+    var MISSIONS_STORAGE_KEY = 'ecopark_operational_missions_v1';
+
+    window.loadOperationalMissions = function () {
+      try {
+        var raw = localStorage.getItem(MISSIONS_STORAGE_KEY);
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+        var defaults = window.getDefaultOperationalMissions();
+        localStorage.setItem(MISSIONS_STORAGE_KEY, JSON.stringify(defaults));
+        return defaults;
+      } catch (e) {
+        return window.getDefaultOperationalMissions();
+      }
+    };
+
+    window.saveOperationalMissions = function (missionsList) {
+      try {
+        localStorage.setItem(MISSIONS_STORAGE_KEY, JSON.stringify(missionsList));
+      } catch (e) {}
+    };
+
+    var missionDateEl = document.getElementById('missionDateInput');
+    if (missionDateEl) {
+      missionDateEl.setAttribute('min', todayMinIso);
+      if (!missionDateEl.value) missionDateEl.value = todayMinIso;
+    }
+
+    window.applyMissionPolePreset = function (poleKey, btnEl) {
+      var key = MISSION_POLE_PRESETS[poleKey] ? poleKey : 'GUICHET_CAISSE';
+      var preset = MISSION_POLE_PRESETS[key];
+
+      document.querySelectorAll('#expMissionPresetGrid .exp-mission-preset-btn').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-mission-pole') === key);
+      });
+
+      var poleSel = document.getElementById('missionPoleSelect');
+      var agentSel = document.getElementById('missionAgentSelect');
+      var shiftSel = document.getElementById('missionShiftSelect');
+      var prioSel = document.getElementById('missionPrioritySelect');
+      var titleIn = document.getElementById('missionTitleInput');
+      var locIn = document.getElementById('missionLocationInput');
+      var objIn = document.getElementById('missionObjectiveInput');
+      var chkIn = document.getElementById('missionChecklistInput');
+      var eqIn = document.getElementById('missionEquipmentInput');
+
+      if (poleSel) poleSel.value = key;
+      if (agentSel) agentSel.value = preset.agentOption;
+      if (shiftSel) shiftSel.value = preset.shift;
+      if (prioSel) prioSel.value = preset.priority;
+      if (titleIn) titleIn.value = preset.title;
+      if (locIn) locIn.value = preset.location;
+      if (objIn) objIn.value = preset.objective;
+      if (chkIn) chkIn.value = preset.checklist.join('; ');
+      if (eqIn) eqIn.value = preset.equipment;
+      return preset;
+    };
+
+    function formatMissionStatusBadge(status) {
+      if (status === 'TERMINEE') {
+        return '<span class="status-badge status-success">Terminée &amp; Validée</span>';
+      }
+      if (status === 'EN_COURS') {
+        return '<span class="status-badge status-info">En cours sur poste</span>';
+      }
+      return '<span class="status-badge status-warning">Assignée (À pointer)</span>';
+    }
+
+    function formatMissionPriorityLabel(priority) {
+      if (priority === 'URGENTE') return 'Urgente — Sécurité / VIP';
+      if (priority === 'HAUTE') return 'Haute — Affluence / Groupe';
+      return 'Normale';
+    }
+
+    window.renderOperationalMissionsTable = function () {
+      var list = window.loadOperationalMissions();
+      var tbody = document.getElementById('expMissionsTableBody');
+      var kpiTotal = document.getElementById('expMissionKpiTotal');
+      var kpiActive = document.getElementById('expMissionKpiActive');
+      var kpiDone = document.getElementById('expMissionKpiDone');
+      var kpiPoles = document.getElementById('expMissionKpiPoles');
+
+      var activeCount = list.filter(function (m) { return m.status === 'EN_COURS'; }).length;
+      var doneCount = list.filter(function (m) { return m.status === 'TERMINEE'; }).length;
+      var polesSet = {};
+      list.forEach(function (m) { if (m && m.pole) polesSet[m.pole] = true; });
+      var coveredPoles = Object.keys(polesSet).length;
+
+      if (kpiTotal) kpiTotal.textContent = list.length + (list.length > 1 ? ' missions' : ' mission');
+      if (kpiActive) kpiActive.textContent = activeCount + (activeCount > 1 ? ' actives' : ' active');
+      if (kpiDone) kpiDone.textContent = doneCount + (doneCount > 1 ? ' validées' : ' validée');
+      if (kpiPoles) kpiPoles.textContent = Math.min(4, coveredPoles) + ' / 4 pôles';
+
+      // Synchroniser le bandeau du poste Guichet (#view-AGT) avec la première mission Guichet/Contrôle
+      var guichetMission = list.find(function (m) { return m.pole === 'GUICHET_CAISSE' || m.pole === 'CONTROLE_QR'; }) || list[0];
+      if (guichetMission) {
+        var bTitle = document.getElementById('agtBannerMissionTitle');
+        var bMeta = document.getElementById('agtBannerMissionMeta');
+        var bBtn = document.getElementById('btnAgtPrintMissionA4');
+        if (bTitle) bTitle.textContent = guichetMission.id + ' • ' + guichetMission.title;
+        if (bMeta) {
+          var stTxt = guichetMission.status === 'TERMINEE' ? 'Terminée & Validée' : (guichetMission.status === 'EN_COURS' ? 'En cours sur poste' : 'Assignée');
+          bMeta.innerHTML = 'Agent : <strong>' + guichetMission.agentName + ' (' + guichetMission.agentMatricule + ')</strong> • Créneau : <strong>' + guichetMission.shift + '</strong> • Statut : <strong>' + stTxt + '</strong>';
+        }
+        if (bBtn) {
+          bBtn.setAttribute('onclick', "openMissionSheetA4('" + guichetMission.id + "')");
+        }
+      }
+
+      if (!tbody) return list;
+
+      var poleFilter = window._activeMissionPoleFilter || 'ALL';
+      var qInput = document.getElementById('expMissionSearchInput');
+      var query = (qInput && qInput.value ? qInput.value : '').trim().toLowerCase();
+
+      var filtered = list.filter(function (m) {
+        if (poleFilter !== 'ALL' && m.pole !== poleFilter) return false;
+        if (query) {
+          var hay = [m.id, m.poleLabel, m.agentName, m.agentMatricule, m.title, m.location, m.objective].join(' ').toLowerCase();
+          if (hay.indexOf(query) === -1) return false;
+        }
+        return true;
+      });
+
+      var esc = typeof escHtml === 'function' ? escHtml : function (s) { return String(s || ''); };
+
+      if (filtered.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;padding:18px;color:var(--eco-text-muted);">Aucune mission trouvée pour ce filtre. Utilisez le formulaire ci-dessus pour assigner une nouvelle tâche.</td></tr>';
+        return filtered;
+      }
+
+      tbody.innerHTML = filtered.map(function (m) {
+        var chkTotal = Array.isArray(m.checklist) ? m.checklist.length : 0;
+        var chkDone = Array.isArray(m.checklist) ? m.checklist.filter(function (c) { return c && c.done; }).length : 0;
+        var nextStatusBtn = '';
+        if (m.status === 'ASSIGNEE') {
+          nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'EN_COURS\')">Pointer prise de poste</button>';
+        } else if (m.status === 'EN_COURS') {
+          nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'TERMINEE\')">Valider fin de mission</button>';
+        } else {
+          nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'EN_COURS\')">Rouvrir</button>';
+        }
+
+        return '<tr data-mission-id="' + esc(m.id) + '">'
+          + '<td>'
+          + '  <strong style="color:var(--eco-brand);display:block;">' + esc(m.id) + '</strong>'
+          + '  <span class="eco-cat-badge ' + esc(m.badgeClass || 'eco-cat-nature') + '" style="font-size:11px;padding:2px 8px;margin-top:4px;">' + esc(m.poleLabel) + '</span>'
+          + '</td>'
+          + '<td>'
+          + '  <strong>' + esc(m.agentName) + '</strong>'
+          + '  <div style="font-size:12.5px;color:var(--eco-text-muted);">' + esc(m.agentMatricule) + ' • ' + esc(m.agentRole) + '</div>'
+          + '</td>'
+          + '<td>'
+          + '  <strong style="display:block;color:var(--eco-text);">' + esc(m.title) + '</strong>'
+          + '  <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;">' + esc(m.date) + ' • ' + esc(m.shift) + ' • Priorité : ' + esc(formatMissionPriorityLabel(m.priority)) + '</span>'
+          + '</td>'
+          + '<td>'
+          + '  <strong style="color:var(--eco-brand);">' + chkDone + ' / ' + chkTotal + ' contrôles</strong>'
+          + '  <div style="font-size:12px;color:var(--eco-text-muted);">' + esc(m.location) + '</div>'
+          + '</td>'
+          + '<td>' + formatMissionStatusBadge(m.status) + '</td>'
+          + '<td>'
+          + '  <div style="display:flex;gap:6px;flex-wrap:wrap;">'
+          +      nextStatusBtn
+          + '    <button type="button" class="btn btn-primary btn-sm" onclick="openMissionSheetA4(\'' + m.id + '\')">Fiche A4</button>'
+          + '  </div>'
+          + '</td>'
+          + '</tr>';
+      }).join('');
+
+      return filtered;
+    };
+
+    window.filterOperationalMissions = function (poleCode, btnEl) {
+      window._activeMissionPoleFilter = poleCode || 'ALL';
+      document.querySelectorAll('#expMissionFilterBar .acc-filter-pill').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-pole-filter') === window._activeMissionPoleFilter);
+      });
+      return window.renderOperationalMissionsTable();
+    };
+
+    window.assignOperationalMission = function (openA4Immediately) {
+      var poleSel = document.getElementById('missionPoleSelect');
+      var agentSel = document.getElementById('missionAgentSelect');
+      var dateIn = document.getElementById('missionDateInput');
+      var shiftSel = document.getElementById('missionShiftSelect');
+      var prioSel = document.getElementById('missionPrioritySelect');
+      var titleIn = document.getElementById('missionTitleInput');
+      var locIn = document.getElementById('missionLocationInput');
+      var objIn = document.getElementById('missionObjectiveInput');
+      var chkIn = document.getElementById('missionChecklistInput');
+      var eqIn = document.getElementById('missionEquipmentInput');
+
+      var poleKey = (poleSel && poleSel.value) || 'GUICHET_CAISSE';
+      var preset = MISSION_POLE_PRESETS[poleKey] || MISSION_POLE_PRESETS.GUICHET_CAISSE;
+      var agentRaw = (agentSel && agentSel.value) || preset.agentOption;
+      var agentParts = agentRaw.split('|');
+      var agentName = agentParts[0] || 'Agent ECOPARK';
+      var agentMatricule = agentParts[1] || 'MAT-EXP-01';
+      var agentRole = agentParts[2] || preset.poleLabel;
+
+      var title = (titleIn && titleIn.value.trim()) || preset.title;
+      var dateStr = (dateIn && dateIn.value) || todayMinIso;
+      var shiftStr = (shiftSel && shiftSel.value) || preset.shift;
+      var priorityStr = (prioSel && prioSel.value) || preset.priority;
+      var locationStr = (locIn && locIn.value.trim()) || preset.location;
+      var objectiveStr = (objIn && objIn.value.trim()) || preset.objective;
+      var equipmentStr = (eqIn && eqIn.value.trim()) || preset.equipment;
+
+      var rawChecklist = (chkIn && chkIn.value.trim())
+        ? chkIn.value.split(';').map(function (s) { return s.trim(); }).filter(Boolean)
+        : preset.checklist;
+      var checklistObjs = rawChecklist.map(function (itemText) {
+        return { text: itemText, done: false };
+      });
+
+      var list = window.loadOperationalMissions();
+      var newId = 'MSN-2026-' + (101 + list.length);
+      var newMission = {
+        id: newId,
+        pole: poleKey,
+        poleLabel: preset.poleLabel,
+        badgeClass: preset.badgeClass,
+        agentName: agentName,
+        agentMatricule: agentMatricule,
+        agentRole: agentRole,
+        date: dateStr,
+        shift: shiftStr,
+        priority: priorityStr,
+        status: 'ASSIGNEE',
+        title: title,
+        location: locationStr,
+        objective: objectiveStr,
+        equipment: equipmentStr,
+        guardrail: preset.guardrail,
+        checklist: checklistObjs,
+        assignedBy: 'Chef d\'Exploitation Ahala',
+        createdAt: typeof nowStamp === 'function' ? nowStamp() : dateStr
+      };
+
+      list.unshift(newMission);
+      window.saveOperationalMissions(list);
+      window._activeMissionIdForPrint = newId;
+      window._activeMissionPoleFilter = 'ALL';
+      document.querySelectorAll('#expMissionFilterBar .acc-filter-pill').forEach(function (b) {
+        b.classList.toggle('active', b.getAttribute('data-pole-filter') === 'ALL');
+      });
+      window.renderOperationalMissionsTable();
+
+      try {
+        var db = typeof loadDB === 'function' ? loadDB() : null;
+        if (db && Array.isArray(db.auditLogs)) {
+          db.auditLogs.unshift({
+            time: typeof nowStamp === 'function' ? nowStamp() : dateStr,
+            actor: 'Chef d\'Exploitation Ahala (EXP-MISSIONS)',
+            action: 'Assignation tâche ' + newId + ' à ' + agentName + ' (' + preset.poleLabel + ') : ' + title
+          });
+          if (typeof saveDB === 'function') saveDB(db);
+        }
+      } catch (e) {}
+
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Mission ' + newId + ' assignée à ' + agentName + ' (' + preset.poleLabel + ') !');
+      }
+
+      if (openA4Immediately) {
+        window.openMissionSheetA4(newId);
+      }
+      return newMission;
+    };
+
+    window.updateOperationalMissionStatus = function (missionId, nextStatus) {
+      var list = window.loadOperationalMissions();
+      var target = list.find(function (m) { return m.id === missionId; });
+      if (!target) return null;
+      target.status = nextStatus || 'EN_COURS';
+      if (target.status === 'TERMINEE' && Array.isArray(target.checklist)) {
+        target.checklist.forEach(function (c) { c.done = true; });
+      }
+      window.saveOperationalMissions(list);
+      window.renderOperationalMissionsTable();
+      if (typeof showToastSprint1 === 'function') {
+        var lbl = target.status === 'TERMINEE' ? 'Terminée & Validée' : (target.status === 'EN_COURS' ? 'En cours sur poste' : 'Assignée');
+        showToastSprint1('• Statut de la mission ' + target.id + ' (' + target.agentName + ') mis à jour : ' + lbl);
+      }
+      return target;
+    };
+
+    window.toggleMissionChecklistItem = function (missionId, itemIndex) {
+      var list = window.loadOperationalMissions();
+      var target = list.find(function (m) { return m.id === missionId; });
+      if (!target || !Array.isArray(target.checklist) || !target.checklist[itemIndex]) return null;
+      target.checklist[itemIndex].done = !target.checklist[itemIndex].done;
+      var allDone = target.checklist.every(function (c) { return c.done; });
+      var anyDone = target.checklist.some(function (c) { return c.done; });
+      if (allDone) {
+        target.status = 'TERMINEE';
+      } else if (anyDone && target.status === 'ASSIGNEE') {
+        target.status = 'EN_COURS';
+      }
+      window.saveOperationalMissions(list);
+      window.renderOperationalMissionsTable();
+      return target;
+    };
+
+    window.openExpMissionsPanel = function (presetPole) {
+      if (typeof window.navigateFamily === 'function') {
+        window.navigateFamily('EXP', 'EXP-01');
+      }
+      if (presetPole && MISSION_POLE_PRESETS[presetPole]) {
+        window.applyMissionPolePreset(presetPole);
+      }
+      setTimeout(function () {
+        var sec = document.getElementById('sec-EXP-MISSIONS');
+        if (sec) {
+          sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          if (typeof triggerSectionFocusHalo === 'function') triggerSectionFocusHalo(sec);
+        }
+      }, 60);
+    };
+
+    window.openMissionSheetA4 = function (missionId) {
+      var list = window.loadOperationalMissions();
+      var m = list.find(function (x) { return x.id === missionId; }) || list[0];
+      if (!m) return null;
+      window._activeMissionIdForPrint = m.id;
+      return window.printOfficialDocument('MISSION', m.id);
+    };
+
+    var origPrintOfficialDoc = window.printOfficialDocument;
+    if (typeof origPrintOfficialDoc === 'function' && !origPrintOfficialDoc._missionSheetWrapped) {
+      window.printOfficialDocument = function (docType, missionIdArg) {
+        if (docType === 'MISSION') {
+          var list = window.loadOperationalMissions();
+          var targetId = missionIdArg || window._activeMissionIdForPrint || 'MSN-2026-101';
+          var m = list.find(function (x) { return x.id === targetId; }) || list[0];
+          if (!m) return null;
+
+          var overlay = document.getElementById('modalOverlaySprint1');
+          var box = document.getElementById('modalOfficialPrintBox');
+          var titleEl = document.getElementById('officialPrintTitle');
+          var bodyEl = document.getElementById('officialPrintBody');
+          if (!overlay || !box || !bodyEl) return null;
+
+          ['modalQuoteBox', 'modalCfpBox', 'modalRdvBox', 'modalRescheduleBox', 'modalEventDetailBox', 'modalCgvBox'].forEach(function (id) {
+            var el = document.getElementById(id);
+            if (el) el.style.display = 'none';
+          });
+
+          var esc = typeof escHtml === 'function' ? escHtml : function (s) { return String(s || ''); };
+
+          if (titleEl) {
+            titleEl.textContent = 'FICHE DE MISSION & ORDRE D\'AFFECTATION POSTE — ' + m.id;
+          }
+
+          var stLabel = m.status === 'TERMINEE'
+            ? 'TERMINÉE & VALIDÉE'
+            : (m.status === 'EN_COURS' ? 'EN COURS SUR POSTE' : 'ASSIGNÉE — PRISE DE POSTE À POINTER');
+
+          var checklistHtml = (m.checklist || []).map(function (c, idx) {
+            var checkedAttr = c.done ? 'checked' : '';
+            return '<label class="mission-checklist-item">'
+              + '<input type="checkbox" ' + checkedAttr + ' onchange="toggleMissionChecklistItem(\'' + esc(m.id) + '\', ' + idx + ')" style="margin-top:3px;" />'
+              + '<span><strong>Point #' + (idx + 1) + ' :</strong> ' + esc(c.text) + '</span>'
+              + '</label>';
+          }).join('');
+
+          bodyEl.innerHTML = ''
+            + '<div class="mission-sheet-a4" id="printableMissionSheetA4">'
+            + '  <div style="display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;border-bottom:2px solid var(--eco-brand);padding-bottom:12px;">'
+            + '    <div style="display:flex;align-items:center;gap:12px;">'
+            + '      <img src="audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png" alt="Logo officiel ECOPARK Cameroun" style="width:56px;height:56px;object-fit:contain;border-radius:50%;border:1.5px solid var(--eco-brand);background:#FFF;padding:2px;" />'
+            + '      <div>'
+            + '        <span class="eco-cat-badge ' + esc(m.badgeClass || 'eco-cat-nature') + '" style="font-size:11px;padding:2px 8px;">Pôle : ' + esc(m.poleLabel) + '</span>'
+            + '        <strong style="font-family:var(--font-heading);font-size:1.22rem;color:var(--eco-brand);display:block;margin-top:3px;">ORDRE DE MISSION TERRAIN N° ' + esc(m.id) + '</strong>'
+            + '        <span style="font-size:12px;color:var(--eco-text-muted);">Complexe Agro-Écotouristique ECOPARK Cameroun • Yaoundé-Ahala Barrière (RN3, Face Station Tradex)</span>'
+            + '      </div>'
+            + '    </div>'
+            + '    <div style="display:flex;align-items:center;gap:12px;">'
+            + '      <div style="text-align:right;font-size:12.5px;">'
+            + '        <div><strong>Date :</strong> ' + esc(m.date) + '</div>'
+            + '        <div><strong>Fuseau :</strong> Africa/Douala (UTC+1)</div>'
+            + '        <div><strong>Priorité :</strong> ' + esc(formatMissionPriorityLabel(m.priority)) + '</div>'
+            + '        <div style="margin-top:4px;"><span class="status-badge status-info" style="font-size:11.5px;">' + stLabel + '</span></div>'
+            + '      </div>'
+            + '      <div id="missionSheetQrContainer" style="width:92px;height:92px;display:flex;align-items:center;justify-content:center;background:#FFF;border:1px solid var(--eco-border);border-radius:8px;padding:4px;"></div>'
+            + '    </div>'
+            + '  </div>'
+            + '  <div class="mission-sheet-grid-2">'
+            + '    <div style="padding:12px 14px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:10px;">'
+            + '      <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;margin-bottom:4px;">1. Agent Affecté &amp; Responsable</span>'
+            + '      <div><strong>Nom &amp; Prénom :</strong> ' + esc(m.agentName) + '</div>'
+            + '      <div><strong>Matricule &amp; Fonction :</strong> ' + esc(m.agentMatricule) + ' — ' + esc(m.agentRole) + '</div>'
+            + '      <div><strong>Autorité d\'affectation :</strong> ' + esc(m.assignedBy || 'Chef d\'Exploitation Ahala') + '</div>'
+            + '    </div>'
+            + '    <div style="padding:12px 14px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:10px;">'
+            + '      <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;margin-bottom:4px;">2. Poste, Lieu &amp; Horaires de Service</span>'
+            + '      <div><strong>Zone / Poste :</strong> ' + esc(m.location) + '</div>'
+            + '      <div><strong>Créneau horaire :</strong> ' + esc(m.shift) + '</div>'
+            + '      <div><strong>Émission de la fiche :</strong> ' + esc(m.createdAt || m.date) + '</div>'
+            + '    </div>'
+            + '  </div>'
+            + '  <div style="padding:12px 14px;background:#FFFFFF;border:1.5px solid var(--eco-border-strong);border-radius:10px;">'
+            + '    <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;margin-bottom:4px;">3. Intitulé de la Tâche &amp; Objectif Opérationnel</span>'
+            + '    <strong style="font-size:15px;color:var(--eco-text);display:block;margin-bottom:4px;">' + esc(m.title) + '</strong>'
+            + '    <p style="margin:0;font-size:13.5px;color:var(--eco-text-muted);">' + esc(m.objective) + '</p>'
+            + '  </div>'
+            + '  <div style="padding:10px 14px;background:#FBF7F0;border:1px solid var(--eco-dining);border-radius:10px;font-size:13px;">'
+            + '    <strong style="color:var(--eco-dining-text);">4. Dotation &amp; Équipements remis à la prise de poste :</strong> ' + esc(m.equipment)
+            + '    <div style="margin-top:4px;color:var(--eco-brand);"><strong>Rappel Garde-Fou Réglementaire ECOPARK :</strong> ' + esc(m.guardrail) + '</div>'
+            + '  </div>'
+            + '  <div>'
+            + '    <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;margin-bottom:6px;">5. Check-list de Contrôle Terrain (À cocher au fil du service)</span>'
+            + '    <div style="display:grid;gap:6px;">' + checklistHtml + '</div>'
+            + '  </div>'
+            + '  <div class="mission-sheet-grid-3" style="margin-top:6px;">'
+            + '    <div style="border:1px dashed var(--eco-border-strong);padding:12px;border-radius:8px;min-height:86px;">'
+            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-text-muted);display:block;">1. Visa Responsable Exploitation</span>'
+            + '      <div style="font-size:12.5px;margin-top:4px;">' + esc(m.assignedBy || 'Chef d\'Exploitation Ahala') + '</div>'
+            + '      <div style="margin-top:22px;border-top:1px solid #CCC;font-size:11px;color:#666;">Date, cachet &amp; signature</div>'
+            + '    </div>'
+            + '    <div style="border:1px dashed var(--eco-border-strong);padding:12px;border-radius:8px;min-height:86px;">'
+            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-text-muted);display:block;">2. Émargement Agent (Prise de poste)</span>'
+            + '      <div style="font-size:12.5px;margin-top:4px;">' + esc(m.agentName) + ' (' + esc(m.agentMatricule) + ')</div>'
+            + '      <div style="margin-top:22px;border-top:1px solid #CCC;font-size:11px;color:#666;">Heure d\'arrivée &amp; signature</div>'
+            + '    </div>'
+            + '    <div style="border:1px dashed var(--eco-border-strong);padding:12px;border-radius:8px;min-height:86px;">'
+            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-text-muted);display:block;">3. Visa Clôture &amp; Remise Dotation</span>'
+            + '      <div style="font-size:12.5px;margin-top:4px;">Contrôle contradictoire de fin de poste</div>'
+            + '      <div style="margin-top:22px;border-top:1px solid #CCC;font-size:11px;color:#666;">Heure de départ &amp; visa</div>'
+            + '    </div>'
+            + '  </div>'
+            + '</div>';
+
+          if (typeof window.renderEcoparkQrSvg === 'function') {
+            window.renderEcoparkQrSvg('ECOPARK-MISSION|' + m.id + '|' + m.agentMatricule + '|' + m.pole + '|' + m.date, 'missionSheetQrContainer');
+          }
+
+          overlay.style.display = 'flex';
+          box.style.display = 'block';
+          return m;
+        }
+        return origPrintOfficialDoc.apply(this, arguments);
+      };
+      window.printOfficialDocument._missionSheetWrapped = true;
+    }
+
+    window.renderOperationalMissionsTable();
   })();
   // ECOPARK_REFONTE_CANOPEE_JS:END
 """
@@ -2658,6 +3867,52 @@ def apply_refonte() -> None:
     res_stepper_pattern = re.compile(r"<!-- ECOPARK_V4_RES_STEPPER:START -->.*?<!-- ECOPARK_V4_RES_STEPPER:END -->", re.S)
     assert res_stepper_pattern.search(html), "Missing ECOPARK_V4_RES_STEPPER markers"
     html = res_stepper_pattern.sub(lambda _: RES_JOURNEY_AND_STEPPER_HTML, html, count=1)
+
+    # 12b. Inject or replace AGT_ACTIVE_MISSION_BANNER_HTML in #view-AGT
+    agt_banner_pattern = re.compile(r"<!-- ECOPARK_AGT_ACTIVE_MISSION:START -->.*?<!-- ECOPARK_AGT_ACTIVE_MISSION:END -->", re.S)
+    if agt_banner_pattern.search(html):
+        html = agt_banner_pattern.sub(lambda _: AGT_ACTIVE_MISSION_BANNER_HTML.strip(), html, count=1)
+    else:
+        html = html.replace(
+            "              <!-- Vente rapide au guichet (AGT-03, AGT-04) -->",
+            AGT_ACTIVE_MISSION_BANNER_HTML.replace("            <!-- ECOPARK_AGT_ACTIVE_MISSION:START -->", "            <!-- ECOPARK_AGT_ACTIVE_MISSION:START -->\n            <div class=\"col-12\" style=\"padding:0;\">")
+            .replace("<!-- ECOPARK_AGT_ACTIVE_MISSION:END -->", "</div>\n            <!-- ECOPARK_AGT_ACTIVE_MISSION:END -->")
+            + "\n\n              <!-- Vente rapide au guichet (AGT-03, AGT-04) -->",
+            1,
+        )
+
+    # 12c. Add subnav pill in #view-EXP and inject/replace EXP_MISSIONS_MODULE_HTML
+    if 'onclick="openExpMissionsPanel()"' not in html:
+        html = html.replace(
+            '<button class="subnav-pill" onclick="inspectScreen(\'EXP-07\')">EXP-07 Centre de Messages</button>',
+            '<button class="subnav-pill" onclick="inspectScreen(\'EXP-07\')">EXP-07 Centre de Messages</button>\n'
+            '              <button class="subnav-pill" id="btnSubnavExpMissions" onclick="openExpMissionsPanel()">Assignation &amp; Fiches de Mission A4</button>',
+            1,
+        )
+
+    exp_missions_pattern = re.compile(r"<!-- ECOPARK_EXP_MISSIONS_MODULE:START -->.*?<!-- ECOPARK_EXP_MISSIONS_MODULE:END -->", re.S)
+    if exp_missions_pattern.search(html):
+        html = exp_missions_pattern.sub(lambda _: EXP_MISSIONS_MODULE_HTML.strip(), html, count=1)
+    else:
+        fam7_pattern = re.compile(
+            r"([ \t]*</div>\s*)[ \t]*</div>\s*</div>\s*</section>\s*(<!-- ====================================================================\s*FAMILLE 7 : PILOTAGE & DIRECTION)",
+            re.S,
+        )
+        assert fam7_pattern.search(html), "Missing end of #view-EXP before FAMILLE 7"
+        html = fam7_pattern.sub(
+            lambda m: m.group(1) + "\n" + EXP_MISSIONS_MODULE_HTML + "\n          </div>\n        </div>\n      </section>\n\n      " + m.group(2),
+            html,
+            count=1,
+        )
+
+    # 12d. Add quick button in #sec-ADM-05 toolbar to open the Task Assignment & Mission Sheet module
+    if 'id="admOpenMissionsBtn"' not in html:
+        html = html.replace(
+            '<button type="button" class="btn btn-secondary btn-sm" id="admStaffAdd">+ Nouveau compte</button>',
+            '<button type="button" class="btn btn-primary btn-sm" id="admOpenMissionsBtn" onclick="openExpMissionsPanel()">Assigner une tâche / Fiche de mission A4 →</button> '
+            '<button type="button" class="btn btn-secondary btn-sm" id="admStaffAdd">+ Nouveau compte</button>',
+            1,
+        )
 
     # 13. Clean up public dev jargon ("Parcours Transactionnel", "Page 1/6", etc.)
     html = html.replace(

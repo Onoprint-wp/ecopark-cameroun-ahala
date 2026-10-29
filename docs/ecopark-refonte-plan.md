@@ -76,11 +76,34 @@
 | `/contact`, `/rdv`, `/rendez-vous` | Anciennes (conservées) | Préparer ma visite (`view-PUB` — `PUB-13` / `PUB-18`) | Ouvre Accès RN3, Contact & Rendez-vous |
 | `/mes-reservations`, `/mon-espace` | Nouvelle & Ancienne | Mes réservations (`view-ACC` — `ACC-02`) | Réservations, billets QR, demandes de devis et statuts |
 | `/reserver` | Canonique | Parcours de réservation (`view-RES` — `RES-01`) | 4 parcours distincts + stepper 5 étapes |
-| `/guichet`, `/direction`, `/admin` | Back-office (conservées) | `view-AGT`, `view-DIR`, `view-ADM` | Outils d'exploitation et d'administration 100 % opérationnels |
+| `/guichet`, `/direction`, `/admin` | Back-office (conservées) | `view-AGT`, `view-DIR`, `view-ADM`, `view-EXP` | Outils d'exploitation, d'assignation de missions A4 et d'administration 100 % opérationnels |
 
 ---
 
-## 3. Étapes d'exécution et état d'avancement
+## 3. Module Opérationnel : Assignation d'une tâche & Fiche de mission imprimable A4
+
+Suite à la demande d'outillage des équipes terrain d'Ahala, un module complet d'**Assignation de tâches et génération de Fiches de Mission A4** a été intégré dans les vues d'exploitation :
+- **Exploitation Terrain (`#view-EXP` → `#sec-EXP-MISSIONS`)** :
+  - Bandeau de suivi temps réel : nombre de missions du jour (fuseau `Africa/Douala`), missions actives (`En cours sur poste`), missions validées (`Terminées & Validées`) et couverture des **4 pôles terrain**.
+  - **4 modèles métiers pré-configurés en 1 clic** respectant les tokens graphiques « Canopée vivante » :
+    1. **Guichet & Caisse (`GUICHET_CAISSE` — `#527A35`)** : Caisse Entrée RN3, fond de caisse `50 000 FCFA`, encaissement Espèces/MoMo sans code PIN, clôture contradictoire.
+    2. **Contrôle QR Piscine & Lac (`CONTROLE_QR` — `#176B80`)** : Scan QR hors-ligne 7 états au tourniquet piscine et embarcadère pirogues, port obligatoire du gilet homologué.
+    3. **Hébergements 3 Cités (`HEBERGEMENT` — `#A45138`)** : Cités Ewondo VIP, Chanthel Confort & Bene Standard, Check-in `14h00` / Check-out `11h00`, réception `7j/7`.
+    4. **Cuisine Le Château des Saveurs (`CUISINE_SAVEURS` — `#946015`)** : Mise en place des précommandes `12h30`, Poisson braisé d'Ahala (`5 000 FCFA`), Poulet DG Royal (`6 500 FCFA`), service « Zéro Attente » `13h00`.
+  - Formulaire complet d'assignation (`#expMissionAssignForm`) avec choix du pôle, de l'agent (matricule & fonction), de la date (`Africa/Douala`), du créneau horaire, de la priorité, de l'intitulé, de la zone d'affectation, de la dotation matériel, des objectifs et des points de contrôle (check-list).
+  - Registre filtrable des missions (`#expMissionsTable`) avec progression de statut en 1 clic (`Assignée` → `En cours sur poste` → `Terminée & Validée`) et journalisation dans `db.auditLogs`.
+- **Guichet & Contrôle (`#view-AGT` → `#agtActiveMissionBanner`)** : bandeau permanent affichant la mission active du caissier/contrôleur avec accès direct en 1 clic à sa **Fiche de Mission A4** et au panneau d'exploitation.
+- **Administration (`#view-ADM` → `#sec-ADM-05`)** : bouton d'action rapide `#admOpenMissionsBtn` (`Assigner une tâche / Fiche de mission A4 →`) dans la gestion des comptes de l'équipe.
+- **Fiche de Mission Officielle Imprimable A4 (`#printableMissionSheetA4` via `openMissionSheetA4` / `printOfficialDocument('MISSION', id)`)** :
+  - En-tête officiel avec logo ECOPARK (proportions préservées), badge du pôle, référence unique `MSN-2026-XXXX`, date `Africa/Douala (UTC+1)` et **QR Code SVG** de vérification d'ordre de mission (`#missionSheetQrContainer`).
+  - Cartouche Agent affecté (Nom, Matricule, Fonction, Autorité d'affectation) & Poste/Horaires.
+  - Intitulé de la tâche, objectif opérationnel, dotation matériel remise et garde-fou réglementaire ECOPARK.
+  - Check-list interactive de contrôle terrain (cochable à l'écran et à l'impression).
+  - **3 cadres d'émargement contradictoire** : *1. Visa Responsable Exploitation*, *2. Émargement Agent (Prise de poste)*, *3. Visa Clôture & Remise Dotation*.
+
+---
+
+## 4. Étapes d'exécution et état d'avancement
 
 - [x] **Étape 1 — Audit des routes, composants, contenus, données et intégrations**
 - [x] **Étape 2 — Installation des règles persistantes (`.agents/rules/ecopark-*.md`)**
@@ -90,5 +113,6 @@
 - [x] **Étape 6 — Restructuration de l'Accueil (`/`) en 8 sections ordonnées avec un seul `<h1>` et suppression du jargon de développement**
 - [x] **Étape 7 — Application des gabarits métier complets (Fiche activité, Hébergement, Restaurant, Groupes & événements, Formation CFP, Préparer ma visite, Mes réservations)**
 - [x] **Étape 8 — Restructuration des parcours de réservation (`/reserver`) en 4 parcours et 5 étapes sans billet confirmé prématuré ni date figée `2026-11-15`**
-- [x] **Étape 9 — Vérifications multi-écrans (`360px`, `390px`, `768px`, `1280px`, `1440px`), tests automatisés (10 suites, 365 assertions validées à 100 %) et captures des 6 pages**
+- [x] **Étape 9 — Vérifications multi-écrans (`360px`, `390px`, `768px`, `1280px`, `1440px`), tests automatisés (10 suites, 367 assertions validées à 100 %) et captures**
 - [x] **Étape 10 — Mise à jour finale des documents de suivi et livraison**
+- [x] **Étape 11 — Implémentation et validation du module « Assignation d'une tâche & Fiche de mission imprimable A4 » sur les 4 pôles d'exploitation d'Ahala**
