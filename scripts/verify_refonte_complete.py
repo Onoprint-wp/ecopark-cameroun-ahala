@@ -547,6 +547,66 @@ def main():
         if ARTIFACT_DIR.exists():
             page.screenshot(path=str(ARTIFACT_DIR / "08_fiche_mission_imprimable_a4.png"), full_page=False)
 
+        # 9. Tableau de Bord de Direction (/direction — DIR-01 a DIR-05 : Services qui fonctionnent vs Sous-performance)
+        print("\n9. Tableau de Bord de Direction (/direction — DIR-01 a DIR-05 : Barometre des 11 services)")
+        page.evaluate("""() => {
+            const ov = document.getElementById('modalOverlaySprint1');
+            if (ov) ov.style.display = 'none';
+            navigateFamily('DIR', 'DIR-01');
+        }""")
+        page.wait_for_timeout(200)
+        dir_check = page.evaluate("""() => {
+            const allRows = document.querySelectorAll('#dirServicesBarometerBody tr').length;
+            filterDirectionServices('WORKING');
+            const workingRows = document.querySelectorAll('#dirServicesBarometerBody tr').length;
+            filterDirectionServices('UNDERPERFORMING');
+            const underRows = document.querySelectorAll('#dirServicesBarometerBody tr').length;
+            filterDirectionServices('ALL');
+            const hasDir01 = !!document.getElementById('sec-DIR-01');
+            const hasDir02 = !!document.getElementById('sec-DIR-02') && document.getElementById('dirChannelsPerformanceList').children.length >= 3;
+            const hasDir03 = !!document.getElementById('sec-DIR-03');
+            const hasDir04 = !!document.getElementById('sec-DIR-04') && document.getElementById('dirLodgesAndConversionBox').children.length >= 2;
+            const hasDir05 = !!document.getElementById('sec-DIR-05');
+            return {
+                allRows,
+                workingRows,
+                underRows,
+                hasDir01,
+                hasDir02,
+                hasDir03,
+                hasDir04,
+                hasDir05
+            };
+        }""")
+        check(
+            dir_check["allRows"] == 11
+            and dir_check["workingRows"] == 8
+            and dir_check["underRows"] == 3
+            and dir_check["hasDir01"]
+            and dir_check["hasDir02"]
+            and dir_check["hasDir03"]
+            and dir_check["hasDir04"]
+            and dir_check["hasDir05"],
+            "Tableau de bord Direction (DIR-01..05) : 11 services analyses (8 porteurs/reguliers vs 3 en sous-performance), canaux et entonnoir B2B/CFP",
+            dir_check
+        )
+        page.evaluate("""() => {
+            const toast = document.getElementById('toastSprint1');
+            if (toast) toast.style.display = 'none';
+            const el = document.getElementById('sec-DIR-03');
+            if (el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 85;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+            }
+        }""")
+        page.wait_for_timeout(120)
+        page.screenshot(path=str(QA_DIR / "10_direction_barometre_services.png"), full_page=False)
+        for w in [360, 390, 768, 1280, 1440]:
+            page.set_viewport_size({"width": w, "height": 844})
+            page.wait_for_timeout(80)
+            overflow_dir = page.evaluate("() => document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            check(overflow_dir <= 0, f"Vue /direction a {w}px : zero debordement horizontal (overflow={overflow_dir}px)")
+
         check(len(console_errors) == 0, "Zero erreur console / page JavaScript sur l'ensemble des parcours", console_errors)
         browser.close()
 
