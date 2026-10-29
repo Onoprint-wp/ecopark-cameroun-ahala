@@ -113,6 +113,7 @@ Suite à la demande d'outillage des équipes terrain d'Ahala, un module complet 
 - [x] **Étape 6 — Restructuration de l'Accueil (`/`) en 8 sections ordonnées avec un seul `<h1>` et suppression du jargon de développement**
 - [x] **Étape 7 — Application des gabarits métier complets (Fiche activité, Hébergement, Restaurant, Groupes & événements, Formation CFP, Préparer ma visite, Mes réservations)**
 - [x] **Étape 8 — Restructuration des parcours de réservation (`/reserver`) en 4 parcours et 5 étapes sans billet confirmé prématuré ni date figée `2026-11-15`**
-- [x] **Étape 9 — Vérifications multi-écrans (`360px`, `390px`, `768px`, `1280px`, `1440px`), tests automatisés (10 suites, 367 assertions validées à 100 %) et captures**
+- [x] **Étape 9 — Vérifications multi-écrans (`360px`, `390px`, `768px`, `1280px`, `1440px`), tests automatisés (10 suites, 368 assertions validées à 100 %) et captures**
 - [x] **Étape 10 — Mise à jour finale des documents de suivi et livraison**
 - [x] **Étape 11 — Implémentation et validation du module « Assignation d'une tâche & Fiche de mission imprimable A4 » sur les 4 pôles d'exploitation d'Ahala**
+- [x] **Étape 12 — Règle « 1 Commande = 1 Fiche de Mission selon l'affectation du poste » + Centre d'Alertes & Notifications Temps Réel (`#expPostAlertsCenter`, `dispatchOrderToPostMission`, `acknowledgeMissionAlert`, plan racine `missions-commandes-alertes-plan.md`)**

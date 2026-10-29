@@ -1,7 +1,7 @@
 # Journal de Validation & Données Métier — ECOPARK Cameroun
 
 **Dernière mise à jour :** 2026-10-29  
-**Statut :** Refonte et Module Fiches de Mission terminés et validés à 100 % (34/34 contrôles de refonte + 333/333 tests existants réussis)
+**Statut :** Refonte, Fiches de Mission A4, Dispatch Automatique Commande → Poste et Alertes Temps Réel terminés et validés à 100 % (35/35 contrôles de refonte + 333/333 tests existants réussis)
 
 ---
 
@@ -87,7 +87,7 @@ Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et ré
 
 | Suite de vérification | Commande exécutée | Résultat | Détails |
 | :--- | :--- | :--- | :--- |
-| **Vérification complète Refonte « Canopée vivante » & Missions A4** | `python scripts/verify_refonte_complete.py` | **34 / 34 OK** | Règles `.agents/rules/`, docs, parité `index.html`, palette 9 tokens, police >= 16px, cibles >= 44px, 5 rubriques, 1 seul H1, 8 blocs Accueil dans l'ordre, 5 gabarits métier, 5 scénarios auto-service, 4 parcours & 5 étapes de réservation, 7 routes canoniques, 5 largeurs responsive, module d'assignation de tâches (4 pôles) + Fiche de mission A4 imprimable, 8 captures |
+| **Vérification complète Refonte « Canopée vivante » & Missions/Alertes A4** | `python scripts/verify_refonte_complete.py` | **35 / 35 OK** | Règles `.agents/rules/`, docs, parité `index.html`, palette 9 tokens, police >= 16px, cibles >= 44px, 5 rubriques, 1 seul H1, 8 blocs Accueil dans l'ordre, 5 gabarits métier, 5 scénarios auto-service, 4 parcours & 5 étapes de réservation, 7 routes canoniques, 5 largeurs responsive, module d'assignation de tâches (4 pôles) + Fiche de mission A4 imprimable + Règle `1 Commande = 1 Fiche de Mission selon le poste` + Centre d'alertes temps réel avec acquittement, 8 captures |
 | **Gouvernance SQL, RLS & Audit SHA-256** | `npm run test:db` | **69 / 69 OK** | Migrations idempotentes, RLS visiteur/exploitation/direction/admin/guichet, garde-fous tarifs, chaîne d'audit SHA-256 |
 | **Contrat de la couche de données** | `npm run test:data` | **98 / 98 OK** | `SupabaseRestDriver`, `LocalDemoDriver`, synchronisation et validation des schémas |
 | **Navigateur & bascule Supabase / Hors-ligne** | `python scripts/test_data_layer_browser.py` | **19 / 19 OK** | Mode démo, mode Supabase avec validation stricte du téléphone WhatsApp, mode réseau coupé |

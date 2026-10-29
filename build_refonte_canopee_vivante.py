@@ -719,6 +719,44 @@ REFONTE_CSS = r"""    /* ECOPARK_REFONTE_CANOPEE_CSS:START */
       font-size: 13.5px;
       cursor: pointer;
     }
+    .post-alerts-center {
+      background: #FBF9F5;
+      border: 1.5px solid var(--eco-dining);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .post-alert-card {
+      background: #FFFFFF;
+      border: 1px solid var(--eco-border);
+      border-left: 5px solid var(--status-warning-text);
+      border-radius: 10px;
+      padding: 12px 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      transition: background-color 0.16s ease, border-color 0.16s ease;
+    }
+    .post-alert-card.is-acknowledged {
+      border-left-color: var(--status-success-text);
+      background: #F8FAF7;
+    }
+    .order-dispatch-live-banner {
+      margin-top: 14px;
+      margin-bottom: 14px;
+      padding: 14px 18px;
+      background: #F4F8F2;
+      border: 1.5px solid var(--eco-brand);
+      border-left: 6px solid var(--eco-brand);
+      border-radius: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
     @media (max-width: 900px) {
       .exp-mission-preset-grid,
       .mission-sheet-grid-3 {
@@ -2272,6 +2310,9 @@ AGT_ACTIVE_MISSION_BANNER_HTML = r"""            <!-- ECOPARK_AGT_ACTIVE_MISSION
                   </span>
                 </div>
                 <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnAgtUnreadAlerts" onclick="openExpMissionsPanel('GUICHET_CAISSE')">
+                    Alertes Poste (<span id="agtUnreadAlertsCount">2</span>)
+                  </button>
                   <button type="button" class="btn btn-secondary btn-sm" onclick="openExpMissionsPanel('GUICHET_CAISSE')">
                     Voir toutes les missions terrain
                   </button>
@@ -2325,6 +2366,32 @@ EXP_MISSIONS_MODULE_HTML = r"""            <!-- ECOPARK_EXP_MISSIONS_MODULE:STAR
                   <strong style="font-family:var(--font-heading);font-size:1.5rem;color:var(--eco-dining);" id="expMissionKpiPoles">4 / 4 pôles</strong>
                   <span style="font-size:12.5px;color:var(--eco-text-muted);display:block;">Guichet • Lac/Piscine • Loges • Cuisine</span>
                 </div>
+              </div>
+
+              <!-- Centre d'Alertes & Notifications Temps Réel par Poste (1 Commande = 1 Fiche de Mission) -->
+              <div class="post-alerts-center" id="expPostAlertsCenter" role="region" aria-label="Centre d'alertes et notifications des fiches de mission par poste">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:12px;">
+                  <div>
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+                      <span class="status-badge status-warning" id="expUnreadAlertsCountBadge">2 alertes postes non lues</span>
+                      <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--eco-dining-text);letter-spacing:0.03em;">Règle active : 1 Commande validée = 1 Fiche de Mission routée au poste</span>
+                    </div>
+                    <strong style="font-size:15.5px;color:var(--eco-text);display:block;margin-top:4px;">Centre d'Alertes &amp; Notifications Temps Réel des Postes Terrain</strong>
+                    <span style="font-size:13px;color:var(--eco-text-muted);">Chaque réservation, précommande, devis ou ticket caisse génère automatiquement la Fiche de Mission A4 du poste concerné et notifie l'agent affecté.</span>
+                  </div>
+                  <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnToggleMissionAlertSound" onclick="toggleMissionAlertSound()">
+                      Signal sonore : Activé
+                    </button>
+                    <button type="button" class="btn btn-secondary btn-sm" id="btnSimulateOrderDispatch" onclick="simulateInstantOrderToMissionDispatch()">
+                      Simuler Commande → Alerte Poste
+                    </button>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnAckAllMissionAlerts" onclick="acknowledgeAllMissionAlerts()">
+                      Tout acquitter
+                    </button>
+                  </div>
+                </div>
+                <div id="expAlertsFeedList" style="display:grid;gap:8px;"></div>
               </div>
 
               <!-- Modèles rapides par pôle en 1 clic -->
@@ -3168,6 +3235,11 @@ REFONTE_JS = r"""
       return [
         {
           id: 'MSN-2026-101',
+          orderRef: 'ECP-2026-84920',
+          orderCustomer: 'M. Jean-Paul NGUEMA (Famille)',
+          orderTotalFcfa: 14000,
+          orderSummary: '2 Adultes, 2 Enfants • Zoo + Piscine + Pirogue (Pré-réservation Guichet)',
+          secondaryPoles: ['Contrôle QR Piscine & Lac'],
           pole: 'GUICHET_CAISSE',
           poleLabel: MISSION_POLE_PRESETS.GUICHET_CAISSE.poleLabel,
           badgeClass: MISSION_POLE_PRESETS.GUICHET_CAISSE.badgeClass,
@@ -3189,11 +3261,16 @@ REFONTE_JS = r"""
             { text: MISSION_POLE_PRESETS.GUICHET_CAISSE.checklist[2], done: false },
             { text: MISSION_POLE_PRESETS.GUICHET_CAISSE.checklist[3], done: false }
           ],
-          assignedBy: 'Chef d\'Exploitation Ahala',
+          assignedBy: 'Affectation Automatique Commande → Poste',
           createdAt: '08:15 (Africa/Douala)'
         },
         {
           id: 'MSN-2026-102',
+          orderRef: 'ECP-2026-84921',
+          orderCustomer: 'Mme Clarisse EYENGA',
+          orderTotalFcfa: 26000,
+          orderSummary: '2 Adultes, 2 Enfants • Pass Journée Royale (Zoo + Piscine + Pirogue + Repas)',
+          secondaryPoles: ['Cuisine Le Château des Saveurs'],
           pole: 'CONTROLE_QR',
           poleLabel: MISSION_POLE_PRESETS.CONTROLE_QR.poleLabel,
           badgeClass: MISSION_POLE_PRESETS.CONTROLE_QR.badgeClass,
@@ -3215,11 +3292,16 @@ REFONTE_JS = r"""
             { text: MISSION_POLE_PRESETS.CONTROLE_QR.checklist[2], done: true },
             { text: MISSION_POLE_PRESETS.CONTROLE_QR.checklist[3], done: false }
           ],
-          assignedBy: 'Chef d\'Exploitation Ahala',
+          assignedBy: 'Affectation Automatique Commande → Poste',
           createdAt: '08:20 (Africa/Douala)'
         },
         {
           id: 'MSN-2026-103',
+          orderRef: 'ECP-2026-84922',
+          orderCustomer: 'Dr. Armand MBIDA (Couple VIP)',
+          orderTotalFcfa: 45000,
+          orderSummary: 'Pack Escapade Couple VIP — 1 Nuit Cité Ewondo VIP + 2 Repas + Parc',
+          secondaryPoles: ['Cuisine Le Château des Saveurs', 'Contrôle QR Piscine & Lac'],
           pole: 'HEBERGEMENT',
           poleLabel: MISSION_POLE_PRESETS.HEBERGEMENT.poleLabel,
           badgeClass: MISSION_POLE_PRESETS.HEBERGEMENT.badgeClass,
@@ -3241,11 +3323,16 @@ REFONTE_JS = r"""
             { text: MISSION_POLE_PRESETS.HEBERGEMENT.checklist[2], done: true },
             { text: MISSION_POLE_PRESETS.HEBERGEMENT.checklist[3], done: true }
           ],
-          assignedBy: 'Direction Générale ECOPARK',
+          assignedBy: 'Affectation Automatique Commande → Poste',
           createdAt: '07:45 (Africa/Douala)'
         },
         {
           id: 'MSN-2026-104',
+          orderRef: 'DEV-2026-3104',
+          orderCustomer: 'Complexe Scolaire Bilingue La Gaieté',
+          orderTotalFcfa: 135000,
+          orderSummary: '60 participants • Excursion scolaire + Déjeuner & Pergolas',
+          secondaryPoles: ['Guichet & Caisse Principale', 'Contrôle QR Piscine & Lac'],
           pole: 'CUISINE_SAVEURS',
           poleLabel: MISSION_POLE_PRESETS.CUISINE_SAVEURS.poleLabel,
           badgeClass: MISSION_POLE_PRESETS.CUISINE_SAVEURS.badgeClass,
@@ -3267,7 +3354,7 @@ REFONTE_JS = r"""
             { text: MISSION_POLE_PRESETS.CUISINE_SAVEURS.checklist[2], done: false },
             { text: MISSION_POLE_PRESETS.CUISINE_SAVEURS.checklist[3], done: false }
           ],
-          assignedBy: 'Chef d\'Exploitation Ahala',
+          assignedBy: 'Affectation Automatique Commande → Poste',
           createdAt: '09:00 (Africa/Douala)'
         }
       ];
@@ -3275,8 +3362,480 @@ REFONTE_JS = r"""
 
     window._activeMissionPoleFilter = 'ALL';
     window._activeMissionIdForPrint = 'MSN-2026-101';
+    window._missionAlertSoundEnabled = true;
 
     var MISSIONS_STORAGE_KEY = 'ecopark_operational_missions_v1';
+    var ALERTS_STORAGE_KEY = 'ecopark_operational_alerts_v1';
+
+    window.getDefaultOperationalAlerts = function () {
+      var dIso = typeof window.getTodayVisitDateMinIso === 'function' ? window.getTodayVisitDateMinIso() : '2026-10-29';
+      return [
+        {
+          alertId: 'ALT-2026-201',
+          missionId: 'MSN-2026-104',
+          orderRef: 'DEV-2026-3104',
+          customerName: 'Complexe Scolaire Bilingue La Gaieté',
+          orderSummary: '60 participants • Excursion scolaire + Déjeuner & Pergolas',
+          amountFcfa: 135000,
+          pole: 'CUISINE_SAVEURS',
+          poleLabel: 'Cuisine Le Château des Saveurs',
+          badgeClass: 'eco-cat-dining',
+          agentName: 'Chef Patrice ESSOMBA',
+          agentMatricule: 'MAT-RES-04',
+          title: 'Mise en place Cuisine & Pergolas — Commande DEV-2026-3104 (60 participants)',
+          createdAt: dIso + ' 09:00 (Africa/Douala)',
+          acknowledged: false
+        },
+        {
+          alertId: 'ALT-2026-202',
+          missionId: 'MSN-2026-101',
+          orderRef: 'ECP-2026-84920',
+          customerName: 'M. Jean-Paul NGUEMA (Famille)',
+          orderSummary: '2 Adultes, 2 Enfants • Zoo + Piscine + Pirogue (Solde Guichet 14 000 FCFA)',
+          amountFcfa: 14000,
+          pole: 'GUICHET_CAISSE',
+          poleLabel: 'Guichet & Caisse Principale',
+          badgeClass: 'eco-cat-nature',
+          agentName: 'Mme Clarisse ATANGANA',
+          agentMatricule: 'MAT-AGT-01',
+          title: 'Encaissement Guichet & Remise Bracelets — Commande ECP-2026-84920 (14 000 FCFA)',
+          createdAt: dIso + ' 08:15 (Africa/Douala)',
+          acknowledged: false
+        }
+      ];
+    };
+
+    window.loadOperationalAlerts = function () {
+      try {
+        var raw = localStorage.getItem(ALERTS_STORAGE_KEY);
+        if (raw) {
+          var parsed = JSON.parse(raw);
+          if (Array.isArray(parsed) && parsed.length > 0) {
+            return parsed;
+          }
+        }
+        var defaults = window.getDefaultOperationalAlerts();
+        localStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify(defaults));
+        return defaults;
+      } catch (e) {
+        return window.getDefaultOperationalAlerts();
+      }
+    };
+
+    window.saveOperationalAlerts = function (alertsList) {
+      try {
+        localStorage.setItem(ALERTS_STORAGE_KEY, JSON.stringify(alertsList));
+      } catch (e) {}
+    };
+
+    window.playMissionAlertChime = function () {
+      if (!window._missionAlertSoundEnabled) return;
+      try {
+        var AudioCtx = window.AudioContext || window.webkitAudioContext;
+        if (!AudioCtx) return;
+        var ctx = new AudioCtx();
+        var osc = ctx.createOscillator();
+        var gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(587.33, ctx.currentTime); // D5
+        osc.frequency.setValueAtTime(880, ctx.currentTime + 0.08); // A5
+        gain.gain.setValueAtTime(0.04, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.24);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.25);
+      } catch (e) {}
+    };
+
+    window.toggleMissionAlertSound = function () {
+      window._missionAlertSoundEnabled = !window._missionAlertSoundEnabled;
+      var btn = document.getElementById('btnToggleMissionAlertSound');
+      if (btn) {
+        btn.textContent = 'Signal sonore : ' + (window._missionAlertSoundEnabled ? 'Activé' : 'Muet');
+      }
+      if (window._missionAlertSoundEnabled) {
+        window.playMissionAlertChime();
+      }
+      return window._missionAlertSoundEnabled;
+    };
+
+    window.renderOperationalAlertsFeed = function () {
+      var alerts = window.loadOperationalAlerts();
+      var unreadCount = alerts.filter(function (a) { return !a.acknowledged; }).length;
+
+      var badgeEl = document.getElementById('expUnreadAlertsCountBadge');
+      if (badgeEl) {
+        badgeEl.textContent = unreadCount > 0
+          ? (unreadCount + (unreadCount > 1 ? ' alertes postes non lues' : ' alerte poste non lue'))
+          : '0 alerte en attente (Tous les postes à jour)';
+        badgeEl.className = 'status-badge ' + (unreadCount > 0 ? 'status-warning' : 'status-success');
+      }
+
+      var agtCountEl = document.getElementById('agtUnreadAlertsCount');
+      if (agtCountEl) {
+        agtCountEl.textContent = String(unreadCount);
+      }
+
+      var feedEl = document.getElementById('expAlertsFeedList');
+      if (!feedEl) return alerts;
+
+      var esc = typeof escHtml === 'function' ? escHtml : function (s) { return String(s || ''); };
+      var fmt = typeof formatFCFA === 'function' ? formatFCFA : function (n) { return (Number(n) || 0).toLocaleString('fr-FR') + ' FCFA'; };
+
+      feedEl.innerHTML = alerts.slice(0, 6).map(function (a) {
+        var stBadge = a.acknowledged
+          ? '<span class="status-badge status-success" style="font-size:11px;">ACQUITTÉE PAR LE POSTE</span>'
+          : '<span class="status-badge status-warning" style="font-size:11px;">NOUVELLE ALERTE POSTE — À PRENDRE EN CHARGE</span>';
+
+        var ackBtn = a.acknowledged
+          ? ''
+          : '<button type="button" class="btn btn-secondary btn-sm" onclick="acknowledgeMissionAlert(\'' + esc(a.alertId) + '\')">Acquitter &amp; Pointer</button>';
+
+        return '<div class="post-alert-card ' + (a.acknowledged ? 'is-acknowledged' : '') + '" data-alert-id="' + esc(a.alertId) + '">'
+          + '  <div style="flex:1;min-width:260px;">'
+          + '    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">'
+          +        stBadge
+          + '      <span class="eco-cat-badge ' + esc(a.badgeClass || 'eco-cat-nature') + '" style="font-size:11px;padding:2px 8px;">Poste : ' + esc(a.poleLabel) + '</span>'
+          + '      <span style="font-size:12px;font-weight:700;color:var(--eco-brand);">Commande ' + esc(a.orderRef) + ' → Fiche ' + esc(a.missionId) + '</span>'
+          + '    </div>'
+          + '    <strong style="font-size:14px;color:var(--eco-text);display:block;">' + esc(a.title) + '</strong>'
+          + '    <div style="font-size:12.5px;color:var(--eco-text-muted);margin-top:2px;">'
+          + '      Agent notifié : <strong>' + esc(a.agentName) + ' (' + esc(a.agentMatricule) + ')</strong> • Client : <strong>' + esc(a.customerName) + '</strong> • Montant : <strong>' + fmt(a.amountFcfa) + '</strong> • ' + esc(a.createdAt)
+          + '    </div>'
+          + '  </div>'
+          + '  <div style="display:flex;gap:6px;flex-wrap:wrap;align-items:center;">'
+          +      ackBtn
+          + '    <button type="button" class="btn btn-primary btn-sm" onclick="openMissionSheetA4(\'' + esc(a.missionId) + '\')">Fiche A4 (' + esc(a.missionId) + ')</button>'
+          + '  </div>'
+          + '</div>';
+      }).join('');
+
+      return alerts;
+    };
+
+    window.acknowledgeMissionAlert = function (alertId) {
+      var alerts = window.loadOperationalAlerts();
+      var target = alerts.find(function (a) { return a.alertId === alertId; });
+      if (!target) return null;
+      target.acknowledged = true;
+      window.saveOperationalAlerts(alerts);
+
+      if (target.missionId) {
+        var missions = window.loadOperationalMissions();
+        var m = missions.find(function (x) { return x.id === target.missionId; });
+        if (m && m.status === 'ASSIGNEE') {
+          m.status = 'EN_COURS';
+          window.saveOperationalMissions(missions);
+        }
+      }
+
+      window.renderOperationalAlertsFeed();
+      window.renderOperationalMissionsTable();
+
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Alerte ' + target.alertId + ' acquittée : Mission ' + target.missionId + ' (' + target.agentName + ') pointée En cours sur poste.');
+      }
+      return target;
+    };
+
+    window.acknowledgeAllMissionAlerts = function () {
+      var alerts = window.loadOperationalAlerts();
+      alerts.forEach(function (a) { a.acknowledged = true; });
+      window.saveOperationalAlerts(alerts);
+      window.renderOperationalAlertsFeed();
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Toutes les alertes postes ont été acquittées.');
+      }
+      return alerts;
+    };
+
+    // Résolution automatique du poste principal et des postes secondaires selon la commande
+    window.resolvePostForOrder = function (orderData) {
+      var o = orderData || {};
+      var summary = String(o.paxSummary || o.type || o.track || o.summary || '');
+      var sLower = summary.toLowerCase();
+      var ref = String(o.reference || o.orderRef || 'ECP-2026-90000');
+      var pay = String(o.payMethod || '').toUpperCase();
+
+      var isLodge = Boolean(o.lodgeCity)
+        || sLower.indexOf('ewondo') !== -1
+        || sLower.indexOf('chanthel') !== -1
+        || sLower.indexOf('bene') !== -1
+        || sLower.indexOf('suite') !== -1
+        || sLower.indexOf('couple') !== -1
+        || sLower.indexOf('nuit') !== -1
+        || sLower.indexOf('séjour') !== -1;
+
+      var isDining = Boolean(o.hasPergola)
+        || sLower.indexOf('saveurs') !== -1
+        || sLower.indexOf('repas') !== -1
+        || sLower.indexOf('royale') !== -1
+        || sLower.indexOf('pergola') !== -1
+        || sLower.indexOf('séminaire') !== -1
+        || sLower.indexOf('mariage') !== -1
+        || sLower.indexOf('buffet') !== -1
+        || sLower.indexOf('poisson') !== -1;
+
+      var isWaterOrPark = sLower.indexOf('piscine') !== -1
+        || sLower.indexOf('pirogue') !== -1
+        || sLower.indexOf('zoo') !== -1
+        || sLower.indexOf('équitation') !== -1
+        || sLower.indexOf('cheval') !== -1
+        || sLower.indexOf('pêche') !== -1
+        || sLower.indexOf('pass') !== -1
+        || sLower.indexOf('excursion') !== -1;
+
+      var isGuichetPay = (pay === 'GUICHET')
+        || ref.indexOf('POS-') === 0
+        || ref.indexOf('CFP-') === 0;
+
+      var primaryPole = 'CONTROLE_QR';
+      if (isLodge) {
+        primaryPole = 'HEBERGEMENT';
+      } else if (isDining && !isGuichetPay) {
+        primaryPole = 'CUISINE_SAVEURS';
+      } else if (isGuichetPay) {
+        primaryPole = 'GUICHET_CAISSE';
+      } else if (isDining) {
+        primaryPole = 'CUISINE_SAVEURS';
+      } else if (isWaterOrPark) {
+        primaryPole = 'CONTROLE_QR';
+      } else {
+        primaryPole = 'GUICHET_CAISSE';
+      }
+
+      var secondary = [];
+      if (primaryPole !== 'GUICHET_CAISSE' && isGuichetPay) secondary.push(MISSION_POLE_PRESETS.GUICHET_CAISSE.poleLabel);
+      if (primaryPole !== 'CUISINE_SAVEURS' && isDining) secondary.push(MISSION_POLE_PRESETS.CUISINE_SAVEURS.poleLabel);
+      if (primaryPole !== 'CONTROLE_QR' && isWaterOrPark) secondary.push(MISSION_POLE_PRESETS.CONTROLE_QR.poleLabel);
+      if (primaryPole !== 'HEBERGEMENT' && isLodge) secondary.push(MISSION_POLE_PRESETS.HEBERGEMENT.poleLabel);
+
+      return {
+        primaryPole: primaryPole,
+        secondaryPoles: secondary
+      };
+    };
+
+    // Création automatique de la Fiche de Mission A4 + Alerte Temps Réel pour toute commande validée
+    window.dispatchOrderToPostMission = function (orderData, opts) {
+      opts = opts || {};
+      var o = orderData || {};
+      var ref = String(o.reference || o.orderRef || ('ECP-2026-' + Math.floor(10000 + Math.random() * 89999)));
+
+      var missions = window.loadOperationalMissions();
+      var existing = missions.find(function (m) { return m.orderRef === ref; });
+      if (existing && !opts.forceNew) {
+        return existing;
+      }
+
+      var routing = window.resolvePostForOrder(o);
+      var poleKey = opts.forcePole || routing.primaryPole;
+      var preset = MISSION_POLE_PRESETS[poleKey] || MISSION_POLE_PRESETS.GUICHET_CAISSE;
+      var agentParts = preset.agentOption.split('|');
+      var agentName = agentParts[0] || 'Agent ECOPARK';
+      var agentMatricule = agentParts[1] || 'MAT-EXP-01';
+      var agentRole = agentParts[2] || preset.poleLabel;
+
+      var customer = o.holder || o.org || o.name || 'Visiteur ECOPARK';
+      var amount = Number(o.totalFcfa || o.budgetFcfa || o.amountFcfa || 14000);
+      var summary = o.paxSummary || o.type || o.track || 'Prestation ECOPARK Ahala';
+      var dateStr = o.date || todayMinIso;
+      var fmt = typeof formatFCFA === 'function' ? formatFCFA : function (n) { return (Number(n) || 0).toLocaleString('fr-FR') + ' FCFA'; };
+
+      var missionTitle = '';
+      var customChecklist = [];
+      if (poleKey === 'HEBERGEMENT') {
+        missionTitle = 'Préparation Loge & Accueil Séjour — Commande ' + ref + ' (' + customer + ')';
+        customChecklist = [
+          'Préparer et contrôler la chambre avant 13h30 pour la commande ' + ref + ' (' + summary + ')',
+          'Accueillir ' + customer + ' au Check-in dès 14h00 et remettre les bracelets résidents',
+          'Vérifier le règlement (' + fmt(amount) + ') et coordonner les pôles associés (' + (routing.secondaryPoles.join(', ') || 'Réception 7j/7') + ')',
+          'Valider l\'état des lieux au Check-out avant 11h00'
+        ];
+      } else if (poleKey === 'CUISINE_SAVEURS') {
+        missionTitle = 'Mise en place Cuisine & Pergola — Commande ' + ref + ' (' + customer + ')';
+        customChecklist = [
+          'Enregistrer le bon de production Cuisine pour la commande ' + ref + ' (' + summary + ')',
+          'Calibrer les portions (Poisson braisé d\'Ahala / Poulet DG / Menus) pour un montant de ' + fmt(amount),
+          'Dresser la table ou pergola avant 12h30 pour service Zéro Attente',
+          'Émarger la livraison des plats chauds et la satisfaction client'
+        ];
+      } else if (poleKey === 'GUICHET_CAISSE') {
+        missionTitle = 'Accueil Guichet, Encaissement & Bracelets — Commande ' + ref + ' (' + fmt(amount) + ')';
+        customChecklist = [
+          'Vérifier la référence ' + ref + ' (' + customer + ') à l\'arrivée au Portail RN3 Ahala',
+          'Contrôler ou encaisser le montant de ' + fmt(amount) + ' (Espèces FCFA ou Mobile Money sans PIN)',
+          'Remettre les bracelets correspondant à : ' + summary,
+          'Orienter le visiteur vers les pôles d\'activité (' + (routing.secondaryPoles.join(', ') || 'Parc & Loisirs') + ')'
+        ];
+      } else {
+        missionTitle = 'Contrôle QR 7 États & Sécurité Bassin/Lac — Commande ' + ref + ' (' + customer + ')';
+        customChecklist = [
+          'Scanner et valider le billet QR ' + ref + ' (' + customer + ') au tourniquet',
+          'Vérifier les effectifs et prestations autorisées : ' + summary,
+          'Équiper chaque participant d\'un gilet homologué (pirogue) et contrôler la tenue de bain (piscine)',
+          'Synchroniser le pointage d\'accès avec la base d\'exploitation'
+        ];
+      }
+
+      var newMissionId = 'MSN-2026-' + (101 + missions.length);
+      var stamp = typeof nowStamp === 'function' ? nowStamp() : (dateStr + ' (Africa/Douala)');
+
+      var newMission = {
+        id: newMissionId,
+        orderRef: ref,
+        orderCustomer: customer,
+        orderTotalFcfa: amount,
+        orderSummary: summary,
+        secondaryPoles: routing.secondaryPoles,
+        pole: poleKey,
+        poleLabel: preset.poleLabel,
+        badgeClass: preset.badgeClass,
+        agentName: agentName,
+        agentMatricule: agentMatricule,
+        agentRole: agentRole,
+        date: dateStr,
+        shift: preset.shift,
+        priority: amount >= 25000 || poleKey === 'HEBERGEMENT' ? 'URGENTE' : 'HAUTE',
+        status: 'ASSIGNEE',
+        title: missionTitle,
+        location: preset.location,
+        objective: 'Exécution opérationnelle de la commande ' + ref + ' (' + customer + ' — ' + fmt(amount) + ' • ' + summary + '). ' + preset.objective,
+        equipment: preset.equipment,
+        guardrail: preset.guardrail,
+        checklist: customChecklist.map(function (t) { return { text: t, done: false }; }),
+        assignedBy: 'Système Automatique Commande → Poste',
+        createdAt: stamp
+      };
+
+      missions.unshift(newMission);
+      window.saveOperationalMissions(missions);
+      window._activeMissionIdForPrint = newMissionId;
+
+      var alerts = window.loadOperationalAlerts();
+      var newAlert = {
+        alertId: 'ALT-2026-' + (201 + alerts.length),
+        missionId: newMissionId,
+        orderRef: ref,
+        customerName: customer,
+        orderSummary: summary,
+        amountFcfa: amount,
+        pole: poleKey,
+        poleLabel: preset.poleLabel,
+        badgeClass: preset.badgeClass,
+        agentName: agentName,
+        agentMatricule: agentMatricule,
+        title: missionTitle,
+        createdAt: stamp,
+        acknowledged: false
+      };
+      alerts.unshift(newAlert);
+      window.saveOperationalAlerts(alerts);
+
+      window.playMissionAlertChime();
+      window.renderOperationalAlertsFeed();
+      window.renderOperationalMissionsTable();
+
+      // Afficher la bannière d'alerte de dispatch temps réel dans #view-RES (si présente)
+      window.renderLiveOrderDispatchBanner(newMission, newAlert);
+
+      try {
+        var db = typeof loadDB === 'function' ? loadDB() : null;
+        if (db && Array.isArray(db.auditLogs)) {
+          db.auditLogs.unshift({
+            time: stamp,
+            actor: 'Dispatch Automatique (Commande → Poste)',
+            action: 'Commande ' + ref + ' convertie en Fiche de Mission ' + newMissionId + ' (' + preset.poleLabel + ' — ' + agentName + ') + Alerte ' + newAlert.alertId
+          });
+          if (typeof saveDB === 'function') saveDB(db);
+        }
+      } catch (e) {}
+
+      if (!opts.silentToast && typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Alerte Poste [' + preset.poleLabel + '] : Commande ' + ref + ' → Fiche de Mission ' + newMissionId + ' assignée à ' + agentName + ' !');
+      }
+
+      return newMission;
+    };
+
+    window.renderLiveOrderDispatchBanner = function (mission, alertObj) {
+      if (!mission) return;
+      var qrCard = document.getElementById('demoTicketCard');
+      if (!qrCard || !qrCard.parentNode) return;
+
+      var banner = document.getElementById('liveOrderDispatchAlertBox');
+      if (!banner) {
+        banner = document.createElement('div');
+        banner.id = 'liveOrderDispatchAlertBox';
+        banner.className = 'order-dispatch-live-banner';
+        qrCard.parentNode.insertBefore(banner, qrCard);
+      }
+
+      var esc = typeof escHtml === 'function' ? escHtml : function (s) { return String(s || ''); };
+      banner.innerHTML = ''
+        + '<div style="flex:1;min-width:240px;">'
+        + '  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">'
+        + '    <span class="status-badge status-warning" style="font-size:11px;">ALERTE POSTE ENVOYÉE EN TEMPS RÉEL</span>'
+        + '    <span class="eco-cat-badge ' + esc(mission.badgeClass || 'eco-cat-nature') + '" style="font-size:11px;padding:2px 8px;">' + esc(mission.poleLabel) + '</span>'
+        + '  </div>'
+        + '  <strong style="font-size:14.5px;color:var(--eco-brand);display:block;">Commande ' + esc(mission.orderRef) + ' → Fiche de Mission ' + esc(mission.id) + ' générée automatiquement</strong>'
+        + '  <span style="font-size:13px;color:var(--eco-text-muted);">Agent affecté &amp; notifié : <strong>' + esc(mission.agentName) + ' (' + esc(mission.agentMatricule) + ')</strong> • Créneau : ' + esc(mission.shift) + '</span>'
+        + '</div>'
+        + '<div style="display:flex;gap:8px;flex-wrap:wrap;">'
+        + '  <button type="button" class="btn btn-primary btn-sm" onclick="openMissionSheetA4(\'' + esc(mission.id) + '\')">Voir Fiche de Mission A4 (' + esc(mission.id) + ')</button>'
+        + '  <button type="button" class="btn btn-secondary btn-sm" onclick="openExpMissionsPanel(\'' + esc(mission.pole) + '\')">Centre d\'Alertes Postes</button>'
+        + '</div>';
+    };
+
+    window.openMissionSheetForOrder = function (orderRef) {
+      var ref = String(orderRef || '').trim();
+      var missions = window.loadOperationalMissions();
+      var found = missions.find(function (m) { return m.orderRef === ref; });
+      if (found) {
+        return window.openMissionSheetA4(found.id);
+      }
+      var db = typeof loadDB === 'function' ? loadDB() : { bookings: [], quotes: [], cfpApplications: [] };
+      var orderObj = (db.bookings || []).find(function (b) { return b.reference === ref; })
+        || (db.quotes || []).find(function (q) { return q.reference === ref; })
+        || (db.cfpApplications || []).find(function (c) { return c.reference === ref; })
+        || { reference: ref, holder: 'Client ECOPARK', paxSummary: 'Prestation associée à ' + ref, totalFcfa: 14000, date: todayMinIso };
+      var created = window.dispatchOrderToPostMission(orderObj, { forceNew: true });
+      return window.openMissionSheetA4(created.id);
+    };
+
+    window.simulateInstantOrderToMissionDispatch = function () {
+      var samples = [
+        {
+          reference: 'ECP-2026-' + Math.floor(10000 + Math.random() * 89999),
+          holder: 'Famille NKODO (Séjour Cité Ewondo VIP)',
+          paxSummary: '2 Adultes, 1 Enfant • Suite Cité Ewondo VIP + Piscine + Pirogue',
+          totalFcfa: 45000,
+          lodgeCity: 'EWONDO',
+          payMethod: 'OM',
+          date: todayMinIso
+        },
+        {
+          reference: 'ECP-2026-' + Math.floor(10000 + Math.random() * 89999),
+          holder: 'Mme Mireille TCHOUA (Déjeuner Pergola Lac)',
+          paxSummary: '4 Adultes • Pass Journée Royale + Saveurs + Pergola Lac',
+          totalFcfa: 34000,
+          hasPergola: true,
+          payMethod: 'MOMO',
+          date: todayMinIso
+        },
+        {
+          reference: 'ECP-2026-' + Math.floor(10000 + Math.random() * 89999),
+          holder: 'M. Christian FOUDA (Journée Nautique)',
+          paxSummary: '2 Adultes, 2 Enfants • Piscine + Pirogue + Zoo',
+          totalFcfa: 14000,
+          payMethod: 'GUICHET',
+          date: todayMinIso
+        }
+      ];
+      var pick = samples[window.loadOperationalMissions().length % samples.length];
+      return window.dispatchOrderToPostMission(pick, { forceNew: true });
+    };
 
     window.loadOperationalMissions = function () {
       try {
@@ -3422,10 +3981,15 @@ REFONTE_JS = r"""
           nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'EN_COURS\')">Rouvrir</button>';
         }
 
-        return '<tr data-mission-id="' + esc(m.id) + '">'
+        var orderBadgeHtml = m.orderRef
+          ? '<div style="margin-top:4px;font-size:11.5px;font-weight:700;color:var(--eco-dining-text);">Commande liée : ' + esc(m.orderRef) + '</div>'
+          : '<div style="margin-top:4px;font-size:11.5px;color:var(--eco-text-muted);">Affectation directe poste</div>';
+
+        return '<tr data-mission-id="' + esc(m.id) + '" data-order-ref="' + esc(m.orderRef || '') + '">'
           + '<td>'
           + '  <strong style="color:var(--eco-brand);display:block;">' + esc(m.id) + '</strong>'
           + '  <span class="eco-cat-badge ' + esc(m.badgeClass || 'eco-cat-nature') + '" style="font-size:11px;padding:2px 8px;margin-top:4px;">' + esc(m.poleLabel) + '</span>'
+          +    orderBadgeHtml
           + '</td>'
           + '<td>'
           + '  <strong>' + esc(m.agentName) + '</strong>'
@@ -3497,8 +4061,14 @@ REFONTE_JS = r"""
 
       var list = window.loadOperationalMissions();
       var newId = 'MSN-2026-' + (101 + list.length);
+      var linkedOrderRef = 'ORD-2026-' + (501 + list.length);
       var newMission = {
         id: newId,
+        orderRef: linkedOrderRef,
+        orderCustomer: 'Affectation Exploitation Terrain',
+        orderTotalFcfa: 0,
+        orderSummary: title,
+        secondaryPoles: [],
         pole: poleKey,
         poleLabel: preset.poleLabel,
         badgeClass: preset.badgeClass,
@@ -3522,6 +4092,28 @@ REFONTE_JS = r"""
       list.unshift(newMission);
       window.saveOperationalMissions(list);
       window._activeMissionIdForPrint = newId;
+
+      var alerts = window.loadOperationalAlerts();
+      alerts.unshift({
+        alertId: 'ALT-2026-' + (201 + alerts.length),
+        missionId: newId,
+        orderRef: linkedOrderRef,
+        customerName: 'Affectation Exploitation Ahala',
+        orderSummary: title,
+        amountFcfa: 0,
+        pole: poleKey,
+        poleLabel: preset.poleLabel,
+        badgeClass: preset.badgeClass,
+        agentName: agentName,
+        agentMatricule: agentMatricule,
+        title: title,
+        createdAt: newMission.createdAt,
+        acknowledged: false
+      });
+      window.saveOperationalAlerts(alerts);
+      window.playMissionAlertChime();
+      window.renderOperationalAlertsFeed();
+
       window._activeMissionPoleFilter = 'ALL';
       document.querySelectorAll('#expMissionFilterBar .acc-filter-pill').forEach(function (b) {
         b.classList.toggle('active', b.getAttribute('data-pole-filter') === 'ALL');
@@ -3682,7 +4274,11 @@ REFONTE_JS = r"""
             + '    </div>'
             + '  </div>'
             + '  <div style="padding:12px 14px;background:#FFFFFF;border:1.5px solid var(--eco-border-strong);border-radius:10px;">'
-            + '    <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;margin-bottom:4px;">3. Intitulé de la Tâche &amp; Objectif Opérationnel</span>'
+            + '    <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;margin-bottom:4px;">3. Commande / Dossier Client Rattaché &amp; Objectif Opérationnel</span>'
+            + '    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:8px 10px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:8px;margin-bottom:8px;font-size:13px;">'
+            + '      <div><strong>Réf. Commande liée :</strong> ' + esc(m.orderRef || 'ORD-DIRECT') + ' • <strong>Client :</strong> ' + esc(m.orderCustomer || 'Exploitation ECOPARK') + '</div>'
+            + '      <div><strong>Détail :</strong> ' + esc(m.orderSummary || m.title) + (m.orderTotalFcfa ? (' • <strong>' + Number(m.orderTotalFcfa).toLocaleString('fr-FR') + ' FCFA</strong>') : '') + '</div>'
+            + '    </div>'
             + '    <strong style="font-size:15px;color:var(--eco-text);display:block;margin-bottom:4px;">' + esc(m.title) + '</strong>'
             + '    <p style="margin:0;font-size:13.5px;color:var(--eco-text-muted);">' + esc(m.objective) + '</p>'
             + '  </div>'
@@ -3714,7 +4310,7 @@ REFONTE_JS = r"""
             + '</div>';
 
           if (typeof window.renderEcoparkQrSvg === 'function') {
-            window.renderEcoparkQrSvg('ECOPARK-MISSION|' + m.id + '|' + m.agentMatricule + '|' + m.pole + '|' + m.date, 'missionSheetQrContainer');
+            window.renderEcoparkQrSvg('ECOPARK-MISSION|' + m.id + '|' + (m.orderRef || 'ORD') + '|' + m.agentMatricule + '|' + m.pole + '|' + m.date, 'missionSheetQrContainer');
           }
 
           overlay.style.display = 'flex';
@@ -3726,6 +4322,96 @@ REFONTE_JS = r"""
       window.printOfficialDocument._missionSheetWrapped = true;
     }
 
+    // Règle d'Or : Toute commande validée génère automatiquement sa Fiche de Mission selon le poste + Alerte Temps Réel
+    var prevBookingForMission = window.createLiveBookingSprint1;
+    if (typeof prevBookingForMission === 'function' && !prevBookingForMission._orderMissionAutoWrapped) {
+      window.createLiveBookingSprint1 = function () {
+        var ok = prevBookingForMission.apply(this, arguments);
+        if (ok) {
+          try {
+            var db = typeof loadDB === 'function' ? loadDB() : null;
+            if (db && Array.isArray(db.bookings) && db.bookings[0]) {
+              window.dispatchOrderToPostMission(db.bookings[0]);
+            }
+          } catch (e) {}
+        }
+        return ok;
+      };
+      window.createLiveBookingSprint1._orderMissionAutoWrapped = true;
+    }
+
+    var prevQuoteForMission = window.submitGroupQuoteSprint1;
+    if (typeof prevQuoteForMission === 'function' && !prevQuoteForMission._orderMissionAutoWrapped) {
+      window.submitGroupQuoteSprint1 = function () {
+        var qRef = prevQuoteForMission.apply(this, arguments);
+        if (qRef) {
+          try {
+            var db = typeof loadDB === 'function' ? loadDB() : null;
+            var qObj = db && Array.isArray(db.quotes) ? db.quotes.find(function (x) { return x.reference === qRef; }) || db.quotes[0] : null;
+            if (qObj) {
+              window.dispatchOrderToPostMission(qObj);
+            }
+          } catch (e) {}
+        }
+        return qRef;
+      };
+      window.submitGroupQuoteSprint1._orderMissionAutoWrapped = true;
+    }
+
+    var prevCfpForMission = window.submitCfpApplicationSprint1;
+    if (typeof prevCfpForMission === 'function' && !prevCfpForMission._orderMissionAutoWrapped) {
+      window.submitCfpApplicationSprint1 = function () {
+        var cRef = prevCfpForMission.apply(this, arguments);
+        if (cRef) {
+          try {
+            var db = typeof loadDB === 'function' ? loadDB() : null;
+            var cObj = db && Array.isArray(db.cfpApplications) ? db.cfpApplications.find(function (x) { return x.reference === cRef; }) || db.cfpApplications[0] : null;
+            if (cObj) {
+              window.dispatchOrderToPostMission({
+                reference: cObj.reference,
+                holder: cObj.name,
+                paxSummary: 'Candidature CFP MINEFOP : ' + cObj.track,
+                totalFcfa: 50000,
+                payMethod: 'GUICHET',
+                date: todayMinIso
+              });
+            }
+          } catch (e) {}
+        }
+        return cRef;
+      };
+      window.submitCfpApplicationSprint1._orderMissionAutoWrapped = true;
+    }
+
+    var prevPosForMission = window.emitPosTicket;
+    if (typeof prevPosForMission === 'function' && !prevPosForMission._orderMissionAutoWrapped) {
+      window.emitPosTicket = function (method) {
+        var itemsSnapshot = Array.isArray(window.posItems) ? window.posItems.slice() : [];
+        var sumFcfa = itemsSnapshot.reduce(function (acc, it) { return acc + (Number(it.price || 0) * Number(it.qty || 1)); }, 0);
+        var summaryTxt = itemsSnapshot.map(function (it) { return (it.qty || 1) + 'x ' + (it.name || 'Entrée'); }).join(' + ');
+        var res = prevPosForMission.apply(this, arguments);
+        if (itemsSnapshot.length > 0 && sumFcfa > 0) {
+          try {
+            var db = typeof loadDB === 'function' ? loadDB() : null;
+            var latestLog = db && Array.isArray(db.auditLogs) && db.auditLogs[0] ? String(db.auditLogs[0].action || '') : '';
+            var mRef = latestLog.match(/POS-2026-\d+/);
+            var posRef = mRef ? mRef[0] : ('POS-2026-' + Math.floor(10000 + Math.random() * 89999));
+            window.dispatchOrderToPostMission({
+              reference: posRef,
+              holder: 'Visiteur Walk-In Guichet (' + (method || 'Espèces') + ')',
+              paxSummary: summaryTxt || 'Ticket Caisse Guichet',
+              totalFcfa: sumFcfa,
+              payMethod: 'GUICHET',
+              date: todayMinIso
+            });
+          } catch (e) {}
+        }
+        return res;
+      };
+      window.emitPosTicket._orderMissionAutoWrapped = true;
+    }
+
+    window.renderOperationalAlertsFeed();
     window.renderOperationalMissionsTable();
   })();
   // ECOPARK_REFONTE_CANOPEE_JS:END

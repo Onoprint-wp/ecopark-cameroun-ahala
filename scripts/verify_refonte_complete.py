@@ -475,6 +475,44 @@ def main():
             "Module d'assignation de taches operationnel sur les 4 poles terrain (creation, suivi, bandeau Guichet et acces Admin)",
             mission_check
         )
+
+        # Verification du routage automatique Commande -> Fiche de Mission selon le poste + Systeme d'Alerte Temps Reel
+        dispatch_alert_check = page.evaluate("""() => {
+            const alertsBefore = loadOperationalAlerts().length;
+            const dispatchedMission = dispatchOrderToPostMission({
+                reference: 'ECP-2026-99401',
+                holder: 'Famille ETOUNDI (Séjour Cité Ewondo VIP)',
+                paxSummary: '2 Adultes, 1 Enfant • Suite Cité Ewondo VIP + Piscine + Pirogue',
+                totalFcfa: 45000,
+                lodgeCity: 'EWONDO',
+                payMethod: 'OM',
+                date: '2026-11-05'
+            }, { forceNew: true, silentToast: true });
+            const alertsAfter = loadOperationalAlerts();
+            const topAlert = alertsAfter[0];
+            const unreadBadgeTxt = (document.getElementById('expUnreadAlertsCountBadge') || {}).textContent || '';
+            acknowledgeMissionAlert(topAlert.alertId);
+            const updatedMission = loadOperationalMissions().find(m => m.id === dispatchedMission.id);
+            return {
+                hasAlertsCenter: !!document.getElementById('expPostAlertsCenter'),
+                alertsIncremented: alertsAfter.length === alertsBefore + 1,
+                routedPole: dispatchedMission ? dispatchedMission.pole : null,
+                linkedOrderRef: dispatchedMission ? dispatchedMission.orderRef : null,
+                alertLinkedMission: topAlert ? topAlert.missionId === dispatchedMission.id : false,
+                unreadBadgeHasText: unreadBadgeTxt.includes('alerte'),
+                missionStatusAfterAck: updatedMission ? updatedMission.status : null
+            };
+        }""")
+        check(
+            dispatch_alert_check["hasAlertsCenter"]
+            and dispatch_alert_check["alertsIncremented"]
+            and dispatch_alert_check["routedPole"] == "HEBERGEMENT"
+            and dispatch_alert_check["linkedOrderRef"] == "ECP-2026-99401"
+            and dispatch_alert_check["alertLinkedMission"]
+            and dispatch_alert_check["missionStatusAfterAck"] == "EN_COURS",
+            "Regle 1 Commande = 1 Fiche de Mission selon le poste + Systeme d'alerte et notification temps reel avec acquittement",
+            dispatch_alert_check
+        )
         page.evaluate("""() => {
             const sec = document.getElementById('sec-EXP-MISSIONS');
             if (sec) {
