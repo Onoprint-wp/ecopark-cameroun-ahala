@@ -3950,7 +3950,7 @@
     }
     /* ECOPARK_V4_CANOPEE_CSS:END */
   
-                                                                                    /* ECOPARK_REFONTE_CANOPEE_CSS:START */
+                                                                                                                                /* ECOPARK_REFONTE_CANOPEE_CSS:START */
     :root {
       /* Palette de depart verifiee WCAG 2.2 AA/AAA */
       --eco-brand: #254B28;
@@ -4181,6 +4181,13 @@
       background: var(--eco-brand-soft) !important;
       color: var(--eco-brand) !important;
     }
+    .btn.btn-sm {
+      min-height: 40px !important;
+      padding: 8px 14px !important;
+      font-size: 13.8px !important;
+      line-height: 1.3 !important;
+      white-space: normal !important;
+    }
     .btn-link {
       background: transparent !important;
       border: none !important;
@@ -4345,8 +4352,27 @@
     #barometerAccordion,
     #pubEwondoScarcityBadge,
     #simPergolaRemainingBadge,
-    #simEwondoRemainingText {
+    #simEwondoRemainingText,
+    html:not([data-ecopark-demo="1"]) #sec-PUB-21,
+    html:not([data-ecopark-demo="1"]) #sec-PUB-22 {
       display: none !important;
+    }
+    #agtShiftAuthCard,
+    #agtActiveMissionBanner {
+      grid-column: 1 / -1 !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    .grid-12 > *,
+    #expAgentRatingsSummary,
+    #expAgentRatingsSummary * {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #view-ADM .adm-inline {
+      flex-wrap: wrap !important;
     }
 
     /* Sur mobile : une seule barre de navigation (pas de superposition de barres flottantes) */
@@ -4534,6 +4560,116 @@
       grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
     }
 
+    /* Garantie zéro débordement et zéro chevauchement entre les colonnes du parcours de réservation (#resMainGrid & #bundleQuickSelector) */
+    #view-PUB .tech-code-tag,
+    #view-RES .tech-code-tag,
+    #view-ACC .tech-code-tag {
+      display: none !important;
+    }
+    #resMainGrid > .col-7,
+    #resMainGrid > .col-5,
+    #resMainGrid .card {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+    #resStickySummaryCol {
+      top: 96px !important;
+    }
+    body.admin-mode-enabled #resStickySummaryCol {
+      top: 148px !important;
+    }
+    #bundleQuickSelector {
+      display: grid !important;
+      grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+      gap: 10px !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #bundleQuickSelector > .btn {
+      width: 100% !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      padding: 10px 12px !important;
+      font-size: 13.5px !important;
+      line-height: 1.35 !important;
+      white-space: normal !important;
+      text-align: left !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: space-between !important;
+      gap: 8px !important;
+    }
+    #bundleQuickSelector > .btn > span:first-child {
+      flex: 1 1 auto !important;
+      min-width: 0 !important;
+      white-space: normal !important;
+      overflow-wrap: break-word !important;
+      text-align: left !important;
+    }
+    #bundleQuickSelector > .btn > .price-pill {
+      flex: 0 0 auto !important;
+      white-space: nowrap !important;
+      font-size: 12px !important;
+      padding: 3px 9px !important;
+    }
+    #resMainGrid > .col-7 div[style*="display:grid"]:not(#bundleQuickSelector) {
+      grid-template-columns: minmax(0, 1fr) !important;
+      width: 100% !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    #view-RES label {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      flex-wrap: wrap !important;
+      gap: 8px !important;
+    }
+    #view-RES label > span:first-child {
+      flex: 1 1 200px !important;
+      min-width: 0 !important;
+      max-width: 100% !important;
+      flex-wrap: wrap !important;
+      white-space: normal !important;
+      overflow-wrap: break-word !important;
+    }
+    #view-RES label > .price-pill {
+      flex: 0 0 auto !important;
+      white-space: nowrap !important;
+    }
+    #lodgeCitySelect,
+    #lodgeNightsSelect {
+      max-width: 100% !important;
+      min-width: 0 !important;
+      box-sizing: border-box !important;
+    }
+    .selected-visual-strip-box {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+      overflow: hidden !important;
+    }
+    .selected-visual-strip-track {
+      display: grid !important;
+      grid-template-columns: repeat(auto-fit, minmax(165px, 1fr)) !important;
+      gap: 8px !important;
+      overflow-x: visible !important;
+    }
+    .selected-strip-chip {
+      min-width: 0 !important;
+      max-width: 100% !important;
+      box-sizing: border-box !important;
+    }
+    @media (max-width: 680px) {
+      #bundleQuickSelector {
+        grid-template-columns: 1fr !important;
+      }
+    }
+
     /* Responsive : 360px, 390px, 768px, 1280px, 1440px (Section B.5 & I.9) */
     @media (max-width: 1180px) {
       .eco-grid-5 {
@@ -4600,6 +4736,31 @@
       #view-EXP [style*="grid-template-columns"],
       #view-AGT [style*="grid-template-columns"] {
         grid-template-columns: 1fr !important;
+      }
+      .grid-12 > * {
+        grid-column: 1 / -1 !important;
+      }
+      #view-AGT .form-group > div[style*="display:flex"] {
+        flex-wrap: wrap !important;
+      }
+      #expRateMissionSelect,
+      #expRateCommentInput {
+        width: 100% !important;
+        min-width: 0 !important;
+      }
+      #view-ADM,
+      #view-ADM .adm-console,
+      #view-ADM .adm-card,
+      #view-ADM .adm-rolebar,
+      #view-ADM .adm-rolebar *,
+      #view-ADM .adm-toolbar *,
+      #view-ADM .adm-badge {
+        max-width: 100% !important;
+        min-width: 0 !important;
+        box-sizing: border-box !important;
+      }
+      #view-ADM .adm-badge {
+        white-space: normal !important;
       }
       .main-stage,
       .view-section,
@@ -5073,7 +5234,7 @@
             <span class="brand-location">CAMEROUN • Yaoundé – Ahala</span>
           </div>
         </a>
-                                                                                                                                                                                <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
+                                                                                                                                                                                                                                                                        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
         <nav class="main-nav" id="v4MainMegaNav" aria-label="Navigation principale ECOPARK">
           <button type="button" class="nav-item active" id="nav-ACCUEIL" onclick="navigateV4SiteMenu('ACCUEIL')">Accueil</button>
 
@@ -5341,7 +5502,7 @@
         </button>
         <!-- ECOPARK_V4_MAIN_MEGA_NAV:END -->
 
-                                                                                                                                                                                <div class="header-utility-actions">
+                                                                                                                                                                                                                                                                        <div class="header-utility-actions">
           <button type="button" class="btn btn-secondary btn-sm" id="nav-ACC" onclick="navigateV4SiteMenu('ACC_DASHBOARD')">
             <svg class="svg-mono" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
             <span>Mes réservations</span>
@@ -5353,7 +5514,7 @@
       </div>
     </header>
 
-                                                                                        <!-- ECOPARK_V4_MOBILE_DRAWER:START -->
+                                                                                                                                    <!-- ECOPARK_V4_MOBILE_DRAWER:START -->
     <aside class="v4-mobile-menu-drawer" id="v4MobileMenuDrawer" aria-label="Menu principal ECOPARK" onclick="if(event.target === this) toggleV4MobileDrawer(false)">
       <div class="v4-mobile-menu-sheet">
         <div class="v4-mobile-menu-head">
@@ -5523,7 +5684,7 @@
               </div>
             </div>
 
-                                                                                                                                                                                                                                                                        <!-- ECOPARK_V4_HERO_STAGE:START -->
+                                                                                                                                                                                                                                                                                                                                                                                                            <!-- ECOPARK_V4_HERO_STAGE:START -->
             <div class="v4-canopy-hero-stage" id="v4CanopyHeroStage">
               <img class="v4-canopy-hero-bg" id="v4CanopyHeroBgImg" src="audit-assets/ecopark-real-media/balade_pirogue3.jpg" alt="Lac verdoyant et balade en pirogue a ECOPARK Cameroun Yaounde-Ahala" />
               <div class="v4-canopy-hero-overlay">
@@ -6725,7 +6886,7 @@
                 </div>
               </article>
 
-                                                                                                                                                                                                                                                                          <!-- Pôle 5 : GABARIT COMPLET GROUPES & ÉVÉNEMENTS (SECTION E) -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                    <!-- Pôle 5 : GABARIT COMPLET GROUPES & ÉVÉNEMENTS (SECTION E) -->
               <article class="col-7 bento-card bento-wide" id="sec-PUB-11" style="border-top:4px solid var(--eco-brand);">
                 <div class="card-media-wrapper">
                   <img src="audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg" alt="Groupe et événement culturel à ECOPARK Yaoundé" />
@@ -6934,7 +7095,7 @@
                   </button>
                 </div>
 
-                                                                                                                                                                                                                                                                                                                                                                <!-- GABARIT FICHE ACTIVITÉ : PRÉSENTATION, DÉROULEMENT, INCLUS / NON INCLUS, CONDITIONS & COMPLÉMENTS -->
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <!-- GABARIT FICHE ACTIVITÉ : PRÉSENTATION, DÉROULEMENT, INCLUS / NON INCLUS, CONDITIONS & COMPLÉMENTS -->
                 <div class="v4-tabs-bar" role="tablist">
                   <button type="button" class="v4-tab-btn active" onclick="switchV4Pub04Tab('desc', this)">Présentation &amp; déroulement</button>
                   <button type="button" class="v4-tab-btn" onclick="switchV4Pub04Tab('prog', this)">Inclus &amp; non inclus</button>
@@ -7709,7 +7870,7 @@
                 <span class="eyebrow"><span class="tech-code-tag">PUB-20 • </span>Cadre Légal &amp; Confidentialité</span>
                 <h3 style="font-size:1.15rem;margin:4px 0 8px;">Mentions Légales, CGV &amp; Données (+237)</h3>
                 <p style="font-size:13.5px;color:var(--color-text-muted);margin-bottom:10px;">
-                  Complexe ECOPARK CAMEROUN (Yaoundé-Ahala Barrière, face station Tradex RN3). Billet enfant sanctuarisé à 500 FCFA. Report gratuit 90 jours en cas de pluie avant scan QR. Aucune collecte de code PIN Mobile Money sur le site.
+                  Complexe ECOPARK CAMEROUN — Structure exploitante : MPECK MULTI-SERVICES (Yaoundé-Ahala Barrière, face station Tradex RN3). Billet enfant sanctuarisé à 500 FCFA. Report gratuit 90 jours en cas de pluie avant scan QR. Aucune collecte de code PIN Mobile Money sur le site.
                 </p>
                 <span class="status-badge status-success">Conformité RGPD / Loi Cameroun 2010/012</span>
               </div>
@@ -8066,7 +8227,7 @@
               </p>
             </div>
 
-                                                                                                                                                                                                                                                                        <!-- ECOPARK_V4_RES_STEPPER:START -->
+                                                                                                                                                                                                                                                                                                                                                                                                            <!-- ECOPARK_V4_RES_STEPPER:START -->
             <!-- SÉLECTEUR DES 4 PARCOURS DE RÉSERVATION DISTINCTS (SECTION G) -->
             <div class="eco-journey-tabs" id="resJourneyTabs" role="tablist" aria-label="Choisir le type de réservation ou de demande">
               <button type="button" class="eco-journey-tab active" data-res-journey="DAY" onclick="switchResJourney('DAY', this)">
@@ -8885,7 +9046,46 @@
 
             <div class="grid-12">
             <!-- ECOPARK_AGT_ACTIVE_MISSION:START -->
-            <div class="card" id="agtActiveMissionBanner" style="margin-bottom:20px;padding:16px 20px;background:#F4F8F2;border:1.5px solid var(--eco-brand);border-left:6px solid var(--eco-brand);">
+            <div class="card col-12" id="agtShiftAuthCard" style="margin-bottom:14px;padding:14px 18px;background:#FFFFFF;border:1.5px solid var(--eco-border-strong);border-left:6px solid var(--eco-water);">
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
+                <div>
+                  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+                    <span class="eco-cat-badge eco-cat-water" style="font-size:11px;padding:2px 8px;">Authentification Terminal Partagé • Prise de Poste Terrain</span>
+                    <span class="status-badge status-success" id="agtShiftAuthStatusBadge" style="font-size:11.5px;">Session active : MAT-GUI-01 (Guichet &amp; Caisse RN3)</span>
+                  </div>
+                  <strong style="font-size:14.5px;color:var(--eco-text);display:block;">Ouverture &amp; verrouillage rapide de vacation par Matricule et Pôle</strong>
+                  <span style="font-size:12.5px;color:var(--eco-text-muted);">Identifiez l'agent affecté au terminal pour charger automatiquement sa Fiche de Mission A4 et tracer ses opérations (sans saisie de code PIN client).</span>
+                </div>
+                <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">
+                  <div>
+                    <label for="agtShiftMatriculeInput" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;color:var(--eco-text);">Matricule agent</label>
+                    <select id="agtShiftMatriculeInput" class="form-control" style="min-height:38px;padding:4px 10px;font-size:13px;">
+                      <option value="MAT-GUI-01" selected>MAT-GUI-01 — Mme Clarisse ATANGANA</option>
+                      <option value="MAT-CTL-02">MAT-CTL-02 — M. Samuel MBARGA</option>
+                      <option value="MAT-HTL-03">MAT-HTL-03 — Mme Chantal NGO BIYONG</option>
+                      <option value="MAT-RES-04">MAT-RES-04 — Chef Patrice ESSOMBA</option>
+                      <option value="MAT-CPT-01">MAT-CPT-01 — M. Paul ETOUNDI (Comptable)</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label for="agtShiftPoleSelect" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;color:var(--eco-text);">Poste / Pôle</label>
+                    <select id="agtShiftPoleSelect" class="form-control" style="min-height:38px;padding:4px 10px;font-size:13px;">
+                      <option value="GUICHET_CAISSE" selected>Guichet &amp; Caisse RN3</option>
+                      <option value="CONTROLE_QR">Contrôle QR Piscine &amp; Lac</option>
+                      <option value="HEBERGEMENT">Hébergements (3 Cités)</option>
+                      <option value="CUISINE_SAVEURS">Cuisine Château des Saveurs</option>
+                    </select>
+                  </div>
+                  <button type="button" class="btn btn-primary btn-sm" id="btnAgtShiftLogin" onclick="verifyShiftAgentLogin()">
+                    Activer prise de poste
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnAgtShiftLock" onclick="lockShiftAgentSession()">
+                    Verrouiller poste
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div class="card col-12" id="agtActiveMissionBanner" style="margin-bottom:20px;padding:16px 20px;background:#F4F8F2;border:1.5px solid var(--eco-brand);border-left:6px solid var(--eco-brand);">
               <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
                 <div>
                   <span class="eco-cat-badge eco-cat-nature" style="margin-bottom:4px;">Affectation Poste Active • Pôle Guichet &amp; Contrôle</span>
@@ -9644,13 +9844,53 @@
                       <th>Réf. &amp; Pôle</th>
                       <th>Agent affecté &amp; Poste</th>
                       <th>Tâche assignée &amp; Créneau</th>
-                      <th>Check-list terrain</th>
+                      <th>Check-list terrain &amp; Note</th>
                       <th>Statut</th>
                       <th>Actions &amp; Fiche A4</th>
                     </tr>
                   </thead>
                   <tbody id="expMissionsTableBody"></tbody>
                 </table>
+              </div>
+
+              <!-- PALMARÈS RH & MODULE DE NOTATION DES AGENTS DE TERRAIN SUR 100 POINTS (VISA #3) -->
+              <div style="margin-top:22px;padding:18px 20px;background:#F9FBF7;border:1.5px solid var(--eco-border-strong);border-left:5px solid var(--eco-brand);border-radius:12px;" id="expAgentRatingsSummary">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;margin-bottom:14px;">
+                  <div>
+                    <span class="eco-cat-badge eco-cat-nature" style="font-size:11px;padding:2px 8px;">Notation RH &amp; Qualité de Service Terrain • Visa #3</span>
+                    <h4 style="margin:6px 0 3px;font-size:1.18rem;color:var(--eco-brand);">Évaluation des agents de terrain sur 100 points (60 pts Objectifs + 40 pts Superviseur)</h4>
+                    <p style="margin:0;font-size:13.5px;color:var(--eco-text-muted);">
+                      Barème officiel : <strong>Ponctualité &amp; Alerte (20 pts)</strong> + <strong>Check-list accomplie (20 pts)</strong> + <strong>Conformité Caisse / Dotation (20 pts)</strong> + <strong>Appréciation Superviseur au Visa #3 (40 pts)</strong> = <strong>Note / 100</strong> (convertie sur 5 étoiles).
+                    </p>
+                  </div>
+                  <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;background:#FFFFFF;padding:10px 12px;border:1px solid var(--eco-border);border-radius:10px;">
+                    <div>
+                      <label for="expRateMissionSelect" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Mission à clôturer / noter</label>
+                      <select id="expRateMissionSelect" class="form-control" style="min-height:36px;padding:4px 8px;font-size:12.5px;">
+                        <option value="MSN-2026-101">MSN-2026-101 — Mme Clarisse ATANGANA</option>
+                        <option value="MSN-2026-102">MSN-2026-102 — M. Samuel MBARGA</option>
+                        <option value="MSN-2026-103">MSN-2026-103 — Mme Chantal NGO BIYONG</option>
+                        <option value="MSN-2026-104">MSN-2026-104 — Chef Patrice ESSOMBA</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label for="expRateSupScoreInput" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Score Superviseur (/ 40)</label>
+                      <input type="number" id="expRateSupScoreInput" class="form-control" min="0" max="40" value="38" style="width:76px;min-height:36px;padding:4px 8px;font-size:13px;font-weight:700;" />
+                    </div>
+                    <div>
+                      <label for="expRateCashGapInput" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Écart caisse (FCFA)</label>
+                      <input type="number" id="expRateCashGapInput" class="form-control" min="0" step="100" value="0" style="width:92px;min-height:36px;padding:4px 8px;font-size:13px;" />
+                    </div>
+                    <div>
+                      <label for="expRateCommentInput" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Appréciation managériale</label>
+                      <input type="text" id="expRateCommentInput" class="form-control" value="Accueil exemplaire, caisse et dotation conformes." style="min-width:210px;min-height:36px;padding:4px 8px;font-size:12.5px;" />
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm" id="btnExpSubmitVisa3Rating" onclick="submitMissionVisa3RatingFromPanel()">
+                      Noter &amp; Signer Visa #3
+                    </button>
+                  </div>
+                </div>
+                <div class="eco-grid-4" id="expAgentRatingsCardsGrid" style="gap:12px;"></div>
               </div>
             </div>
             <!-- ECOPARK_EXP_MISSIONS_MODULE:END -->
@@ -9822,25 +10062,92 @@
               </div>
             </div>
 
-            <!-- RAPPORTS EXÉCUTIFS, EXPORTS COMPTABLES & ACTIONS RAPIDES (DIR-05) -->
-            <div class="card" id="sec-DIR-05" style="padding:20px 24px;background:var(--eco-bg);border:1.5px solid var(--eco-border-strong);">
-              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:14px;">
+            <!-- RAPPORTS EXÉCUTIFS, CONSOLE COMPTABLE SYSCOHADA & COMPTABILITÉ ANALYTIQUE 6 PÔLES (DIR-05) -->
+            <div class="card" id="sec-DIR-05" style="padding:22px 24px;background:#FFFFFF;border:1.5px solid var(--eco-border-strong);border-top:5px solid var(--eco-brand);">
+              <div style="display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:14px;margin-bottom:16px;">
                 <div>
-                  <span class="eyebrow" style="display:block;margin-bottom:2px;"><span class="tech-code-tag">DIR-05 • </span>Rapports &amp; Exports de Direction</span>
-                  <strong style="font-size:1.12rem;color:var(--eco-text);display:block;">Édition des synthèses de pilotage et audit comptable</strong>
-                  <span style="font-size:14px;color:var(--eco-text-muted);">
-                    Générez la synthèse imprimable A4 de performance des services, le procès-verbal de clôture de caisse ou l'export CSV complet pour la comptabilité.
-                  </span>
+                  <span class="eyebrow" style="display:block;margin-bottom:4px;"><span class="tech-code-tag">DIR-05 • </span>Structure : MPECK MULTI-SERVICES • Console Comptable SYSCOHADA &amp; Comptabilité Analytique (6 Centres de Profit)</span>
+                  <h3 style="margin:0 0 4px;font-size:1.35rem;color:var(--eco-brand);">Récupération des écritures comptables, éclatement des Pass &amp; exports certifiés (MPECK MULTI-SERVICES)</h3>
+                  <p style="margin:0;font-size:14px;color:var(--eco-text-muted);">
+                    Double lecture intégrée pour le Comptable (<code>MAT-CPT-01</code>) et la Direction de <strong>MPECK MULTI-SERVICES (ECOPARK Cameroun)</strong> : <strong>1. Comptabilité Générale SYSCOHADA</strong> (journaux <code>571 Caisse RN3</code>, <code>5581 Orange Money</code>, <code>5582 MTN MoMo</code>, <code>521 Banque</code>) et <strong>2. Comptabilité Analytique d'Exploitation</strong> ventilée sur les <strong>6 centres de profit (ANA-01 à ANA-06)</strong> avec éclatement automatique des Pass tout-inclus.
+                  </p>
                 </div>
-                <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                  <button type="button" class="btn btn-secondary btn-sm" onclick="printOfficialDocument('CLOSURE')">
-                    PV Clôture &amp; Caisse A4
+                <div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;background:var(--eco-bg);padding:10px 12px;border:1px solid var(--eco-border);border-radius:10px;">
+                  <div>
+                    <label for="comptaDateFrom" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Du (Africa/Douala)</label>
+                    <input type="date" id="comptaDateFrom" class="form-control" value="2026-01-01" style="min-height:36px;padding:4px 8px;font-size:13px;" onchange="renderAccountingConsoleDir05()" />
+                  </div>
+                  <div>
+                    <label for="comptaDateTo" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Au (Africa/Douala)</label>
+                    <input type="date" id="comptaDateTo" class="form-control" value="2026-12-31" style="min-height:36px;padding:4px 8px;font-size:13px;" onchange="renderAccountingConsoleDir05()" />
+                  </div>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="renderAccountingConsoleDir05()">
+                    Actualiser période
                   </button>
-                  <button type="button" class="btn btn-secondary btn-sm" onclick="openExpMissionsPanel()">
-                    Assigner une mission terrain →
+                </div>
+              </div>
+
+              <!-- KPIs Comptabilité Générale vs Analytique -->
+              <div class="eco-grid-4" style="gap:12px;margin-bottom:16px;">
+                <div style="padding:12px 14px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:10px;">
+                  <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--eco-text-muted);display:block;">CA Brut Encaissé (701/706)</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.38rem;color:var(--eco-brand);display:block;margin:2px 0;" id="comptaTotalGrossFcfa">0 FCFA</strong>
+                  <span style="font-size:12px;color:var(--eco-text-muted);" id="comptaTotalTxCount">0 écriture(s) validée(s)</span>
+                </div>
+                <div style="padding:12px 14px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:10px;">
+                  <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--status-warning-text);display:block;">Avoirs &amp; Remboursements (RFD)</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.38rem;color:var(--status-warning-text);display:block;margin:2px 0;" id="comptaTotalRefundsFcfa">0 FCFA</strong>
+                  <span style="font-size:12px;color:var(--eco-text-muted);">Déductions tracées SHA-256</span>
+                </div>
+                <div style="padding:12px 14px;background:#F0FDF4;border:1px solid #86EFAC;border-radius:10px;">
+                  <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:#166534;display:block;">CA Net Ventilé (6 Axes ANA)</span>
+                  <strong style="font-family:var(--font-heading);font-size:1.38rem;color:#166534;display:block;margin:2px 0;" id="comptaTotalNetFcfa">0 FCFA</strong>
+                  <span class="status-badge status-success" id="comptaBalanceCheckBadge" style="font-size:11px;padding:1px 6px;">Équilibre OHADA = Analytique (100 %)</span>
+                </div>
+                <div style="padding:12px 14px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:10px;">
+                  <span style="font-size:12px;font-weight:700;text-transform:uppercase;color:var(--eco-water-text);display:block;">Journaux de Trésorerie (Classe 5)</span>
+                  <div style="font-size:12.5px;color:var(--eco-text);margin-top:4px;" id="comptaTreasurySplitText">
+                    571 Caisse RN3 • 5581 OM • 5582 MoMo • 521 Banque
+                  </div>
+                </div>
+              </div>
+
+              <!-- Tableau de Comptabilité Analytique par Centre de Profit (ANA-01 à ANA-06) -->
+              <div class="table-responsive" style="margin-bottom:16px;">
+                <table class="adm-table" id="dirAnalyticalAccountingTable">
+                  <thead>
+                    <tr>
+                      <th>Code Axe</th>
+                      <th>Centre de Profit Analytique (Pôle Métier)</th>
+                      <th>Compte SYSCOHADA</th>
+                      <th>Clé de ventilation &amp; éclatement des Pass</th>
+                      <th>Écritures</th>
+                      <th>CA Brut (FCFA)</th>
+                      <th>Avoirs RFD</th>
+                      <th>CA Net Ventilé (FCFA)</th>
+                    </tr>
+                  </thead>
+                  <tbody id="dirAnalyticalAccountingBody"></tbody>
+                </table>
+              </div>
+
+              <!-- Barre des 4 boutons d'extraction normalisés pour le Comptable et la Direction -->
+              <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;padding-top:14px;border-top:1px solid var(--eco-border);">
+                <div style="font-size:13px;color:var(--eco-text-muted);">
+                  <strong>Formats compatibles logiciels comptables :</strong> Sage 100 Comptabilité, Odoo, QuickBooks &amp; Excel (UTF-8 avec BOM, séparateur <code>;</code>).
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                  <button type="button" class="btn btn-primary btn-sm" id="btnExportJournalOhada" onclick="exportJournalOHADACSV()">
+                    1. Exporter Journal Général OHADA (CSV)
                   </button>
-                  <button type="button" class="btn btn-primary btn-sm" onclick="exportEcoparkDatabaseCSV()">
-                    Exporter Base Complète CSV (Excel)
+                  <button type="button" class="btn btn-primary btn-sm" id="btnExportGrandLivreAnalytique" onclick="exportGrandLivreAnalytiqueCSV()">
+                    2. Exporter Grand-Livre Analytique 6 Pôles (CSV)
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" id="btnPrintClosureA4" onclick="printOfficialDocument('CLOSURE')">
+                    3. PV Clôture &amp; Z de Caisse A4
+                  </button>
+                  <button type="button" class="btn btn-secondary btn-sm" onclick="exportEcoparkDatabaseCSV()">
+                    Exporter Base Complète CSV
                   </button>
                 </div>
               </div>
@@ -9896,8 +10203,6 @@
                   <option value="HEBERGEMENT">Hébergement</option>
                   <option value="GROUPES_B2B">Groupes &amp; Navettes</option>
                   <option value="FORMATION_CFP">Formation CFP</option>
-                  <option value="CULTURE_EDUCATION">Musée &amp; Bibliothèque</option>
-                  <option value="FAMILLE_ENFANCE">Aire de Jeux &amp; Crèche-Garderie</option>
                 </select>
                 <select class="form-control" id="admStatusFilter" aria-label="Filtrer par statut">
                   <option value="ACTIVE">En ligne + brouillons</option>
@@ -9987,49 +10292,7 @@
               <div id="admGatewayList"></div>
             </div>
 
-            <!-- ECOPARK_ADM_LEADS_INBOX:START -->
-            <div class="adm-card" id="admLeadsInboxCard">
-              <span id="sec-ADM-09"></span>
-              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> <span class="tech-code-tag">ADM-09 — </span>Inbox Unifiée des Leads &amp; Réservations (Statuts en 1 Clic)</h3>
-              <p class="adm-lead">Centralisation en temps réel des 4 canaux d'acquisition (Billets QR, Devis Groupes B2B/Écoles, Rendez-vous Repérage/Mariage, Candidatures CFP MINEFOP) avec qualification en 1 clic et relance directe WhatsApp.</p>
-
-              <div class="adm-kpis" id="admLeadsKpiBar" style="margin-bottom:14px;">
-                <span class="adm-kpi">Total Dossiers Actifs : <b id="admLeadsTotalCount">0</b></span>
-                <span class="adm-kpi">Nouveaux / En attente : <b id="admLeadsPendingCount">0</b></span>
-                <span class="adm-kpi">Confirmés / Validés : <b id="admLeadsConfirmedCount">0</b></span>
-                <span class="adm-kpi">Traités / Clôturés : <b id="admLeadsProcessedCount">0</b></span>
-                <span class="adm-kpi">Volume Cumulé : <b id="admLeadsVolumeFcfa">0 FCFA</b></span>
-              </div>
-
-              <div class="adm-toolbar" style="justify-content:space-between;">
-                <div class="adm-tabs" id="admLeadsChannelTabs" style="margin-bottom:0;">
-                  <button type="button" data-lead-channel="ALL" class="active" onclick="filterAdmLeadsInbox('ALL', this)">Tous les canaux</button>
-                  <button type="button" data-lead-channel="BOOKING" onclick="filterAdmLeadsInbox('BOOKING', this)">Billets QR &amp; Loges</button>
-                  <button type="button" data-lead-channel="QUOTE" onclick="filterAdmLeadsInbox('QUOTE', this)">Devis B2B / Écoles</button>
-                  <button type="button" data-lead-channel="RDV" onclick="filterAdmLeadsInbox('RDV', this)">Rendez-vous</button>
-                  <button type="button" data-lead-channel="CFP" onclick="filterAdmLeadsInbox('CFP', this)">Candidatures CFP</button>
-                </div>
-                <input type="search" class="form-control" id="admLeadsSearchInput" placeholder="Filtrer par référence, nom, école, téléphone (+237)..." aria-label="Rechercher dans l'Inbox des Leads" oninput="renderAdmLeadsInbox()" style="max-width:300px;" />
-              </div>
-
-              <div class="table-responsive">
-                <table class="adm-table" id="admLeadsTable">
-                  <thead>
-                    <tr>
-                      <th>Référence &amp; Canal</th>
-                      <th>Contact &amp; Téléphone (+237)</th>
-                      <th>Détail de la Demande &amp; Date</th>
-                      <th>Montant (FCFA)</th>
-                      <th>Statut Actuel</th>
-                      <th>Actions en 1 Clic</th>
-                    </tr>
-                  </thead>
-                  <tbody id="admLeadsTableBody"></tbody>
-                </table>
-              </div>
-            </div>
-<!-- ECOPARK_ADM_LEADS_INBOX:END -->
-<div class="adm-card" id="sec-ADM-08">
+            <div class="adm-card" id="sec-ADM-08">
               <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg> <span class="tech-code-tag">ADM-08 — </span>Journal d'audit immuable</h3>
               <div class="adm-toolbar">
                 <select class="form-control" id="admAuditOp" aria-label="Filtrer par opération">
@@ -10179,7 +10442,7 @@
 
     </main>
 
-                                                                                        <!-- ECOPARK_V4_MOBILE_NAV:START -->
+                                                                                                                                    <!-- ECOPARK_V4_MOBILE_NAV:START -->
     <nav class="v4-mobile-bottom-nav" id="v4MobileBottomNav" aria-label="Navigation mobile principale ECOPARK">
       <button type="button" class="v4-bottom-nav-btn active" id="v4MobNavAccueil" onclick="navigateV4MobileTab('ACCUEIL')">
         <svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
@@ -10222,7 +10485,7 @@
               </div>
               <div>
                 <strong style="font-family:var(--font-heading);font-size:1.3rem;color:var(--color-brand-deep);">ECOPARK CAMEROUN</strong>
-                <div style="font-size:13.5px;color:var(--color-text-muted);">Complexe Agro-Écotouristique, Loisirs, Hébergement & Formation</div>
+                <div style="font-size:13.5px;color:var(--color-text-muted);">Complexe Agro-Écotouristique, Loisirs, Hébergement & Formation • Structure : MPECK MULTI-SERVICES</div>
               </div>
             </div>
             <p style="font-size:14.5px;color:var(--color-text-muted);max-width:440px;">
@@ -10249,7 +10512,7 @@
           </div>
         </div>
         <div style="border-top:1px solid var(--color-border);margin-top:28px;padding-top:18px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;font-size:13.5px;color:var(--color-text-muted);">
-          <span>© 2026 ECOPARK CAMEROUN (Yaoundé-Ahala). Tous droits réservés.</span>
+          <span>© 2026 MPECK MULTI-SERVICES — ECOPARK CAMEROUN (Yaoundé-Ahala). Tous droits réservés.</span>
           <span>Mentions légales<span class="tech-code-tag"> (`PUB-20`)</span> • Politique de confidentialité • Conditions générales de réservation</span>
         </div>
       </div>
@@ -10648,7 +10911,7 @@
       <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--color-brand-deep);padding-bottom:12px;">
         <div>
           <strong style="font-family:var(--font-heading);font-size:1.35rem;color:var(--color-brand-deep);display:block;" id="officialPrintTitle">DOCUMENT OFFICIEL — ECOPARK CAMEROUN (YAOUNDÉ-AHALA)</strong>
-          <span style="font-size:12.5px;color:var(--color-text-muted);">Route Nationale N°3, Ahala Barrière (Face Station Tradex Ahala) • Tél / WhatsApp : +237 697 13 62 03</span>
+          <span style="font-size:12.5px;color:var(--color-text-muted);">Structure : MPECK MULTI-SERVICES • Route Nationale N°3, Ahala Barrière (Face Station Tradex Ahala) • Tél / WhatsApp : +237 697 13 62 03</span>
         </div>
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeSprint1Modals()">Fermer</button>
       </div>
@@ -10700,7 +10963,7 @@
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeSprint1Modals()">Fermer</button>
       </div>
       <div style="font-size:13.5px;color:var(--color-text-main);display:grid;gap:12px;line-height:1.55;">
-        <div><strong>1. Identité & Exploitation :</strong> Le site officiel ECOPARK Cameroun est exploité par ECOPARK Yaoundé-Ahala (Route Nationale N°3, Face Station Tradex Ahala Barrière, Yaoundé). Contact officiel : +237 697 13 62 03 / +237 670 00 00 00.</div>
+        <div><strong>1. Identité & Exploitation :</strong> Le site officiel et le complexe ECOPARK Cameroun sont exploités par la structure <strong>MPECK MULTI-SERVICES</strong> — ECOPARK Yaoundé-Ahala (Route Nationale N°3, Face Station Tradex Ahala Barrière, Yaoundé). Contact officiel : +237 697 13 62 03 / +237 675 56 26 55.</div>
         <div><strong>2. Horaires & Jours d'Ouverture :</strong> Le parc est ouvert du Mardi au Dimanche de 09h00 à 18h00. Le parc est fermé au public tous les Lundis pour repos animalier et entretien des installations.</div>
         <div><strong>3. Garantie Météo & Report 90 jours :</strong> Tout billet QR non consommé au tourniquet bénéficie d'un report gratuit sans frais dans un délai de 90 jours calendaires à compter de la date initiale, en cas d'intempérie sur la RN3 ou d'imprévu.</div>
         <div><strong>4. Annulation & Remboursements :</strong> L'annulation à plus de 48 heures ouvre droit à un remboursement intégral (100 %) sur le numéro Mobile Money (Orange Money / MTN MoMo) émetteur ou à un Avoir QR 100 %. Moins de 48h avant la visite avec hébergement ou pergola privative immobilisée : retenue de 20 % pour frais d'immobilisation, ou avoir 100 %.</div>
@@ -11021,6 +11284,11 @@ equipment: r.equipment || '',
 guardrail: r.guardrail || '',
 checklist: Array.isArray(r.checklist) ? r.checklist : [],
 visas: (r.visas && typeof r.visas === 'object') ? r.visas : {},
+ratingAuto60: r.rating_auto_60 != null ? Number(r.rating_auto_60) : (r.ratingAuto60 != null ? Number(r.ratingAuto60) : null),
+ratingSupervisor40: r.rating_supervisor_40 != null ? Number(r.rating_supervisor_40) : (r.ratingSupervisor40 != null ? Number(r.ratingSupervisor40) : null),
+ratingTotal100: r.rating_total_100 != null ? Number(r.rating_total_100) : (r.ratingTotal100 != null ? Number(r.ratingTotal100) : null),
+ratingStars: r.rating_stars != null ? Number(r.rating_stars) : (r.ratingStars != null ? Number(r.ratingStars) : null),
+ratingComment: r.rating_comment || r.ratingComment || '',
 assignedBy: r.assigned_by || 'Chef d\'Exploitation Ahala',
 createdAt: r.created_at ? Mappers.tsToFr(r.created_at) : '',
 version: r.version || 1,
@@ -11052,6 +11320,11 @@ equipment: m.equipment || '',
 guardrail: m.guardrail || '',
 checklist: Array.isArray(m.checklist) ? m.checklist : [],
 visas: (m.visas && typeof m.visas === 'object') ? m.visas : {},
+rating_auto_60: m.ratingAuto60 != null ? Number(m.ratingAuto60) : (m.rating_auto_60 != null ? Number(m.rating_auto_60) : 0),
+rating_supervisor_40: m.ratingSupervisor40 != null ? Number(m.ratingSupervisor40) : (m.rating_supervisor_40 != null ? Number(m.rating_supervisor_40) : 0),
+rating_total_100: m.ratingTotal100 != null ? Number(m.ratingTotal100) : (m.rating_total_100 != null ? Number(m.rating_total_100) : 0),
+rating_stars: m.ratingStars != null ? Number(m.ratingStars) : (m.rating_stars != null ? Number(m.rating_stars) : 0),
+rating_comment: m.ratingComment || m.rating_comment || '',
 assigned_by: m.assignedBy || m.assigned_by || 'Chef d\'Exploitation Ahala'
 };
 }
@@ -11506,7 +11779,7 @@ LocalDemoDriver.prototype.rpc = function (name, args) {
 var self = this;
 args = args || {};
 if (name === 'sign_mission_visa') {
-var staffRoles = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+var staffRoles = ['agent_guichet', 'agent_controle', 'comptable', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
 if (staffRoles.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
 var vk = args.p_visa_key;
 if (['visa1', 'visa2', 'visa3'].indexOf(vk) < 0) return self._fail({ message: 'ECOPARK_INVALID_VISA_KEY' });
@@ -11539,6 +11812,20 @@ target.status = 'TERMINEE';
 if (Array.isArray(target.checklist)) {
 target.checklist.forEach(function (c) { c.done = true; });
 }
+var auto60 = target.ratingAuto60 != null ? Number(target.ratingAuto60) : 56;
+var sup40 = target.ratingSupervisor40 != null ? Number(target.ratingSupervisor40) : 40;
+var tot100 = Math.max(0, Math.min(100, auto60 + sup40));
+var stars = Math.round((tot100 / 20) * 10) / 10;
+target.ratingAuto60 = auto60;
+target.ratingSupervisor40 = sup40;
+target.ratingTotal100 = tot100;
+target.ratingStars = stars;
+target.rating_auto_60 = auto60;
+target.rating_supervisor_40 = sup40;
+target.rating_total_100 = tot100;
+target.rating_stars = stars;
+if (!target.ratingComment) target.ratingComment = 'Clôture conforme Visa #3';
+target.rating_comment = target.ratingComment;
 }
 target.version = (target.version || 1) + 1;
 self._audit(s, 'VISA_' + vk.toUpperCase(), 'operational_missions', target.title || mRef);
@@ -11546,8 +11833,131 @@ updated = clone(target);
 }, { source: 'local', entity: 'operational_missions', op: 'rpc' });
 return Promise.resolve({ ok: true, data: updated });
 }
+if (name === 'rate_mission_on_visa3') {
+if (!Rules.canEdit(self.role)) {
+return self._fail({ code: '42501', message: 'ECOPARK_VISA_REQUIRES_EXPLOITATION' });
+}
+var rawSup = args.p_supervisor_40 != null ? args.p_supervisor_40 : args.p_supervisor_score_40;
+var supScore = rawSup != null ? Number(rawSup) : 36;
+if (isNaN(supScore) || supScore < 0 || supScore > 40) {
+return self._fail({ message: 'ECOPARK_INVALID_SUPERVISOR_SCORE' });
+}
+var mRefRate = args.p_mission_ref;
+var rowsRate = self._rows(self.store.state, 'operational_missions');
+var mRate = rowsRate.filter(function (r) { return (r.id || r.mission_ref) === mRefRate; })[0];
+if (!mRate) return self._fail({ code: 'P0002' });
+var updatedRate;
+self.store.patch(function (s) {
+var list = self._rows(s, 'operational_missions');
+var target = list.filter(function (r) { return (r.id || r.mission_ref) === mRefRate; })[0];
+var stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
+target.visas = target.visas || {};
+if (!target.visas.visa1) target.visas.visa1 = { signed: true, actor: target.assignedBy || 'Chef d\'Exploitation Ahala', timestamp: stamp };
+var hadVisa2 = !!(target.visas.visa2 && target.visas.visa2.signed);
+var cl = Array.isArray(target.checklist) ? target.checklist : [];
+var clTotal = cl.length;
+var clDone = cl.filter(function (c) { return !!c.done; }).length;
+var checklistScore = clTotal > 0 ? Math.max(14, Math.min(20, Math.round((clDone / clTotal) * 20))) : 20;
+var punctualityScore = 20;
+var gap = Math.abs(Number(args.p_cash_gap_fcfa || 0));
+var complianceScore = gap === 0 ? 20 : (gap <= 2000 ? 10 : 0);
+var auto60 = Math.min(60, punctualityScore + checklistScore + complianceScore);
+var tot100 = Math.min(100, auto60 + supScore);
+var stars = Math.round((tot100 / 20) * 10) / 10;
+var actor = args.p_actor_name || target.assignedBy || 'Chef d\'Exploitation Ahala';
+var comment = args.p_comment || 'Clôture contradictoire conforme.';
+if (!hadVisa2) {
+target.visas.visa2 = { signed: true, actor: (target.agentName || 'Agent') + ' (' + (target.agentMatricule || 'MAT') + ')', timestamp: stamp };
+}
+target.visas.visa3 = {
+signed: true, actor: actor, timestamp: stamp,
+rating_auto_60: auto60, rating_supervisor_40: supScore, rating_total_100: tot100, rating_stars: stars, comment: comment
+};
+target.status = 'TERMINEE';
+cl.forEach(function (c) { c.done = true; });
+target.ratingAuto60 = auto60;
+target.ratingSupervisor40 = supScore;
+target.ratingTotal100 = tot100;
+target.ratingStars = stars;
+target.ratingComment = comment;
+target.rating_auto_60 = auto60;
+target.rating_supervisor_40 = supScore;
+target.rating_total_100 = tot100;
+target.rating_stars = stars;
+target.rating_comment = comment;
+target.version = (target.version || 1) + 1;
+self._audit(s, 'RATE_VISA3', 'operational_missions', (target.title || mRefRate) + ' (' + tot100 + '/100)');
+updatedRate = clone(target);
+}, { source: 'local', entity: 'operational_missions', op: 'rpc' });
+return Promise.resolve({ ok: true, data: updatedRate });
+}
+if (name === 'get_analytical_accounting_ledger') {
+var acctRoles = ['comptable', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+if (acctRoles.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
+var dFrom = args.p_date_from || '2026-01-01';
+var dTo = args.p_date_to || '2099-12-31';
+var st = self.store.state;
+var orders = (st.orders || []).filter(function (o) {
+if (o.status !== 'PAYE') return false;
+var iso = Mappers.frToIso(o.date) || String(o.date || '').slice(0, 10);
+return (!iso || (iso >= dFrom && iso <= dTo));
+});
+var pos = (st.posTickets || []).filter(function (t) {
+if (String(t.status || '').indexOf('ENCAISSE') !== 0) return false;
+var iso = Mappers.frToIso(t.time) || String(t.time || '').slice(0, 10);
+return (!iso || (iso >= dFrom && iso <= dTo));
+});
+var lodges = (st.lodgeBookings || []).filter(function (l) {
+if (l.status !== 'CONFIRME') return false;
+var iso = Mappers.frToIso(l.checkIn) || String(l.checkIn || '').slice(0, 10);
+return (!iso || (iso >= dFrom && iso <= dTo));
+});
+var axes = [
+{ analytical_code: 'ANA-01', pole_code: 'NATURE_FAUNE', pole_label: 'Nature, Faune et Jardin Zoologique', ohada_account: '7061', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+{ analytical_code: 'ANA-02', pole_code: 'EAU_PLEIN_AIR', pole_label: 'Eau, Piscine Semi-Olympique et Lac', ohada_account: '7062', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+{ analytical_code: 'ANA-03', pole_code: 'RESTAURATION', pole_label: 'Restaurant Le Château des Saveurs et Pergolas', ohada_account: '7011/7063', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+{ analytical_code: 'ANA-04', pole_code: 'HEBERGEMENT', pole_label: 'Cités Hôtelières (Bene, Chanthel, Ewondo VIP)', ohada_account: '7064', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+{ analytical_code: 'ANA-05', pole_code: 'GROUPES_B2B', pole_label: 'Groupes, Salle Menkii (500 pl.) et Navettes', ohada_account: '7065', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+{ analytical_code: 'ANA-06', pole_code: 'FORMATION_CFP', pole_label: 'Campus CFP Agréé MINEFOP (5 filières)', ohada_account: '7066', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 }
+];
+orders.forEach(function (o) {
+var amt = Mappers.toFcfa(o.total);
+var sum = String(o.summary || '').toUpperCase();
+if (sum.indexOf('ROYALE') >= 0) {
+axes[0].gross_fcfa += Math.round(amt * 0.28);
+axes[1].gross_fcfa += Math.round(amt * 0.56);
+axes[2].gross_fcfa += amt - Math.round(amt * 0.28) - Math.round(amt * 0.56);
+axes[0].tx_count++; axes[1].tx_count++; axes[2].tx_count++;
+} else if (sum.indexOf('COUPLE') >= 0 || sum.indexOf('EWONDO') >= 0) {
+axes[1].gross_fcfa += Math.round(amt * 0.30);
+axes[2].gross_fcfa += amt - Math.round(amt * 0.30);
+axes[1].tx_count++; axes[2].tx_count++;
+} else {
+axes[0].gross_fcfa += Math.round(amt * 0.45);
+axes[1].gross_fcfa += amt - Math.round(amt * 0.45);
+axes[0].tx_count++; axes[1].tx_count++;
+}
+});
+pos.forEach(function (t) {
+var amt = Mappers.toFcfa(t.amount);
+axes[0].gross_fcfa += Math.round(amt * 0.45);
+axes[1].gross_fcfa += amt - Math.round(amt * 0.45);
+axes[0].tx_count++; axes[1].tx_count++;
+});
+lodges.forEach(function (l) {
+var amt = Mappers.toFcfa(l.total);
+axes[3].gross_fcfa += amt;
+axes[3].tx_count++;
+});
+axes.forEach(function (a) {
+a.net_fcfa = a.gross_fcfa - a.refunds_fcfa;
+a.net_revenue_fcfa = a.net_fcfa;
+a.transactions_count = a.tx_count;
+});
+return Promise.resolve({ ok: true, data: axes });
+}
 if (name === 'acknowledge_operational_alert') {
-var staffRolesAck = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+var staffRolesAck = ['agent_guichet', 'agent_controle', 'comptable', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
 if (staffRolesAck.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
 var aRef = args.p_alert_ref;
 var aRows = self._rows(self.store.state, 'operational_alerts');
@@ -12013,6 +12423,21 @@ p_visa_key: visaKey,
 p_actor_name: actorName || null
 });
 };
+EcoparkData.rateMissionOnVisa3 = function (missionRef, supervisorScore40, comment, actorName, cashGapFcfa) {
+return EcoparkData.rpc('rate_mission_on_visa3', {
+p_mission_ref: missionRef,
+p_supervisor_40: supervisorScore40 != null ? Number(supervisorScore40) : 36,
+p_comment: comment || '',
+p_cash_gap_fcfa: cashGapFcfa != null ? Number(cashGapFcfa) : 0,
+p_actor_name: actorName || null
+});
+};
+EcoparkData.getAnalyticalLedger = function (dateFrom, dateTo) {
+return EcoparkData.rpc('get_analytical_accounting_ledger', {
+p_date_from: dateFrom || '2026-01-01',
+p_date_to: dateTo || '2099-12-31'
+});
+};
 EcoparkData.acknowledgeAlert = function (alertRef) {
 return EcoparkData.rpc('acknowledge_operational_alert', {
 p_alert_ref: alertRef
@@ -12032,7 +12457,7 @@ window.ecoparkOpenAdmin = function () {
   if (location.protocol === 'file:') base = /etape0-site-live\/index\.html$/.test(location.pathname) ? 'js/' : 'etape0-site-live/js/';
   window._ecoparkAdminLoading = new Promise(function (resolve, reject) {
     var s = document.createElement('script');
-    s.src = base + 'ecopark-admin.js?v=9fad54b232';
+    s.src = base + 'ecopark-admin.js?v=f5263f9552';
     s.onload = resolve; s.onerror = reject;
     document.head.appendChild(s);
   }).then(function () { return EcoparkAdmin.open(); }, function () {
@@ -15249,7 +15674,7 @@ window.ecoparkOpenAdmin = function () {
         if (titleEl) titleEl.textContent = `FACTURE PROFORMA OFFICIELLE N° ${qRef}`;
         bodyEl.innerHTML = `
           <div style="display:flex;justify-content:space-between;background:#FBF5EC;padding:12px;border-radius:8px;border:1px solid rgba(196,125,43,0.4);">
-            <div><strong>Client / Institution :</strong> ${escHtml(org)}<br/><strong>Objet :</strong> ${escHtml(type)}</div>
+            <div><strong>Structure émettrice :</strong> MPECK MULTI-SERVICES — ECOPARK CAMEROUN<br/><strong>Client / Institution :</strong> ${escHtml(org)}<br/><strong>Objet :</strong> ${escHtml(type)}</div>
             <div style="text-align:right;"><strong>Date prévue :</strong> ${escHtml(date)}<br/><strong>Effectif :</strong> ${escHtml(calc.pax)} participants</div>
           </div>
           <table style="width:100%;border-collapse:collapse;margin-top:8px;">
@@ -15289,7 +15714,7 @@ window.ecoparkOpenAdmin = function () {
         bodyEl.innerHTML = `
           ${alertHeader}
           <div style="font-size:13px;color:var(--color-text-muted);margin-bottom:12px;display:flex;justify-content:space-between;flex-wrap:wrap;border-bottom:1px solid var(--color-border);padding-bottom:8px;">
-            <div><strong>Site :</strong> Complexe Agro-Ecotouristique ECOPARK Ahala (RN3)</div>
+            <div><strong>Structure :</strong> MPECK MULTI-SERVICES • <strong>Site :</strong> ECOPARK Ahala (RN3)</div>
             <div><strong>Poste :</strong> Guichet Principal #1</div>
             <div><strong>Caissiere :</strong> Mme Clarisse ATANGANA</div>
             <div><strong>Superviseur :</strong> Chef d'Exploitation Ahala</div>
@@ -18678,6 +19103,8 @@ window.ecoparkOpenAdmin = function () {
     window.ECOPARK_SOURCE_UNIQUE = {
       brand: {
         name: 'ECOPARK CAMEROUN',
+        legalEntity: 'MPECK MULTI-SERVICES',
+        structureName: 'MPECK MULTI-SERVICES',
         directionArtistique: 'Canopée vivante',
         address: 'Quartier Ahala Barrière, face station Tradex Ahala, Route Nationale N°3, Yaoundé, Cameroun',
         phones: ['+237 697 13 62 03', '+237 675 56 26 55'],
@@ -18837,7 +19264,14 @@ window.ecoparkOpenAdmin = function () {
       var el = document.getElementById(id);
       if (!el) return;
       el.setAttribute('min', todayMinIso);
-      if (!el.value || el.value === '2026-11-15') {
+      var isMonday = false;
+      if (el.value) {
+        var checkDt = new Date(el.value + 'T12:00:00Z');
+        if (!isNaN(checkDt.getTime()) && checkDt.getUTCDay() === 1) {
+          isMonday = true;
+        }
+      }
+      if (!el.value || el.value === '2026-11-15' || isMonday) {
         el.value = defaultOpenIso;
       }
     });
@@ -19164,16 +19598,64 @@ window.ecoparkOpenAdmin = function () {
       };
     }
 
-    // Mettre à jour l'état actif dans les 5 rubriques principales (#v4MainMegaNav)
+    // Mettre à jour l'état actif dans les 5 rubriques principales (#v4MainMegaNav) et séparer proprement Groupes, Formations et Préparer ma visite
     var origSwitchPubSubPageRefonte = window.switchPubSubPage;
     if (typeof origSwitchPubSubPageRefonte === 'function' && !origSwitchPubSubPageRefonte._refonteNavSync) {
       window.switchPubSubPage = function (pageKey, opts) {
         var res = origSwitchPubSubPageRefonte.apply(this, arguments);
         opts = opts || {};
-        if (opts.targetScreenId === 'PUB-11') {
-          document.querySelectorAll('.main-nav .nav-item').forEach(function (n) { n.classList.remove('active'); });
-          var grpBtn = document.getElementById('nav-GROUPES');
-          if (grpBtn) grpBtn.classList.add('active');
+        var curP = (window.location.pathname || '/').replace(/\/+$/, '').toLowerCase();
+        var actMenu = String(window._v4ActiveMenuAction || '');
+        var isGroups = opts.targetScreenId === 'PUB-11'
+          || /^GROUPES/.test(actMenu)
+          || curP === '/groupes-evenements'
+          || curP === '/pack-ecole'
+          || curP === '/pack-entreprise';
+        var isCfpOnly = opts.targetScreenId === 'PUB-12'
+          || /^CFP_|^FORMATION$/.test(actMenu)
+          || curP === '/formations'
+          || curP === '/formation';
+
+        if (pageKey === 'TARIFS_AGENDA') {
+          var sec03 = document.getElementById('sec-PUB-03');
+          var el11 = document.getElementById('sec-PUB-11');
+          var el10 = document.getElementById('sec-PUB-10');
+          var el16 = document.getElementById('sec-PUB-16');
+          var el13 = document.getElementById('sec-PUB-13');
+          if (isGroups) {
+            if (sec03) sec03.style.display = '';
+            if (el11) {
+              el11.style.display = '';
+              el11.style.gridColumn = 'span 12';
+            }
+            if (el10) el10.style.display = 'none';
+            if (el16) el16.style.display = 'none';
+            if (el13) el13.style.display = 'none';
+            document.querySelectorAll('.main-nav .nav-item').forEach(function (n) { n.classList.remove('active'); });
+            var grpBtn = document.getElementById('nav-GROUPES');
+            if (grpBtn) grpBtn.classList.add('active');
+          } else {
+            if (sec03) sec03.style.display = 'none';
+            if (el11) el11.style.display = 'none';
+            if (el10) el10.style.display = '';
+            if (el16) el16.style.display = '';
+            if (el13) el13.style.display = '';
+            if (typeof window.syncAgendaVisibilityFromData === 'function') {
+              window.syncAgendaVisibilityFromData();
+            }
+          }
+        } else if (pageKey === 'CFP_INFOS') {
+          var sec03Cfp = document.getElementById('sec-PUB-03');
+          var el12Cfp = document.getElementById('sec-PUB-12');
+          var el13Cfp = document.getElementById('sec-PUB-13');
+          if (isCfpOnly && opts.targetScreenId !== 'PUB-13' && opts.targetScreenId !== 'PUB-18') {
+            if (sec03Cfp) sec03Cfp.style.display = '';
+            if (el12Cfp) {
+              el12Cfp.style.display = '';
+              el12Cfp.style.gridColumn = 'span 12';
+            }
+            if (el13Cfp) el13Cfp.style.display = 'none';
+          }
         }
         return res;
       };
@@ -19273,7 +19755,11 @@ window.ecoparkOpenAdmin = function () {
       '/rendez-vous': ['PUB', 'PUB-18'],
       '/mes-reservations': ['ACC', 'ACC-02'],
       '/mon-espace': ['ACC', 'ACC-02'],
-      '/reserver': ['RES', 'RES-01']
+      '/reserver': ['RES', 'RES-01'],
+      '/exploitation': ['EXP', 'EXP-01'],
+      '/guichet': ['AGT', 'AGT-01'],
+      '/direction': ['DIR', 'DIR-01'],
+      '/admin': ['ADM', 'ADM-01']
     };
     if (canonicalRouteMap[currentPath]) {
       setTimeout(function () {
@@ -20162,11 +20648,16 @@ window.ecoparkOpenAdmin = function () {
         var chkDone = Array.isArray(m.checklist) ? m.checklist.filter(function (c) { return c && c.done; }).length : 0;
         var visaCount = window.countMissionVisas(m);
         var visaBadgeHtml = '<div style="margin-top:4px;font-size:11.5px;font-weight:700;color:' + (visaCount === 3 ? '#166534' : 'var(--eco-brand)') + ';">Visas : ' + visaCount + ' / 3 émargés</div>';
+        var ratingTot = m.ratingTotal100 != null ? Number(m.ratingTotal100) : (m.status === 'TERMINEE' ? 96 : null);
+        var ratingSt = m.ratingStars != null ? Number(m.ratingStars) : (ratingTot != null ? Math.round((ratingTot / 20) * 10) / 10 : null);
+        var ratingBadgeHtml = ratingTot != null
+          ? '<div style="margin-top:4px;"><span class="status-badge status-success" style="font-size:11px;padding:2px 7px;">Note Visa #3 : ' + ratingTot + ' / 100 (' + ratingSt.toFixed(1) + ' / 5)</span></div>'
+          : '<div style="margin-top:4px;font-size:11px;color:var(--eco-text-muted);">Notation à la clôture Visa #3</div>';
         var nextStatusBtn = '';
         if (m.status === 'ASSIGNEE') {
           nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'EN_COURS\')">Pointer prise de poste</button>';
         } else if (m.status === 'EN_COURS') {
-          nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'TERMINEE\')">Valider fin de mission</button>';
+          nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="signMissionVisa(\'' + m.id + '\', \'visa3\')">Noter &amp; Visa #3</button>';
         } else {
           nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'EN_COURS\')">Rouvrir</button>';
         }
@@ -20193,6 +20684,7 @@ window.ecoparkOpenAdmin = function () {
           + '  <strong style="color:var(--eco-brand);">' + chkDone + ' / ' + chkTotal + ' contrôles</strong>'
           + '  <div style="font-size:12px;color:var(--eco-text-muted);">' + esc(m.location) + '</div>'
           +    visaBadgeHtml
+          +    ratingBadgeHtml
           + '</td>'
           + '<td>' + formatMissionStatusBadge(m.status) + '</td>'
           + '<td>'
@@ -20204,6 +20696,9 @@ window.ecoparkOpenAdmin = function () {
           + '</tr>';
       }).join('');
 
+      if (typeof window.renderAgentRatingsSummary === 'function') {
+        window.renderAgentRatingsSummary(list);
+      }
       return filtered;
     };
 
@@ -20368,7 +20863,7 @@ window.ecoparkOpenAdmin = function () {
       return target;
     };
 
-    window.signMissionVisa = function (missionId, visaKey) {
+    window.signMissionVisa = function (missionId, visaKey, ratingOpts) {
       var list = window.loadOperationalMissions();
       var target = list.find(function (m) { return m.id === missionId; });
       if (!target) return null;
@@ -20384,27 +20879,61 @@ window.ecoparkOpenAdmin = function () {
           target.status = 'EN_COURS';
         }
       } else if (visaKey === 'visa3') {
+        var hadVisa2 = !!(v.visa2 && v.visa2.signed);
+        var cl = Array.isArray(target.checklist) ? target.checklist : [];
+        var clTot = cl.length;
+        var clDoneBefore = cl.filter(function (c) { return c && c.done; }).length;
+        var ptsPunct = hadVisa2 ? 20 : 18;
+        var ptsChk = clTot > 0 ? Math.max(16, Math.min(20, Math.round((clDoneBefore / clTot) * 20))) : 20;
+        if (clDoneBefore === clTot) ptsChk = 20;
+        var gapFcfa = ratingOpts && ratingOpts.cashGapFcfa != null ? Math.abs(Number(ratingOpts.cashGapFcfa)) : 0;
+        var ptsComp = gapFcfa === 0 ? 20 : (gapFcfa <= 2000 ? 10 : 0);
+        var auto60 = Math.min(60, ptsPunct + ptsChk + ptsComp);
+        if (ratingOpts && ratingOpts.forceFullAuto60 !== false && gapFcfa === 0) {
+          auto60 = 58;
+        }
+        var sup40 = ratingOpts && ratingOpts.supervisorScore40 != null
+          ? Math.max(0, Math.min(40, Number(ratingOpts.supervisorScore40)))
+          : (target.ratingSupervisor40 != null ? Number(target.ratingSupervisor40) : 38);
+        var tot100 = Math.min(100, auto60 + sup40);
+        var stars5 = Math.round((tot100 / 20) * 10) / 10;
+        var commentTxt = (ratingOpts && ratingOpts.comment) || target.ratingComment || 'Clôture contradictoire conforme et dotation restituée (Visa #3).';
+
         v.visa2.signed = true;
         v.visa2.timestamp = v.visa2.timestamp || stamp;
         v.visa3.signed = true;
         v.visa3.timestamp = stamp;
+        target.visa3ClosureSigned = true;
         target.status = 'TERMINEE';
         if (Array.isArray(target.checklist)) {
           target.checklist.forEach(function (c) { c.done = true; });
         }
+        target.ratingAuto60 = auto60;
+        target.ratingSupervisor40 = sup40;
+        target.ratingTotal100 = tot100;
+        target.ratingStars = stars5;
+        target.ratingComment = commentTxt;
       }
       window.saveOperationalMissions(list);
       window.renderOperationalMissionsTable();
       if (typeof showToastSprint1 === 'function') {
-        var vNum = visaKey === 'visa3' ? 'Visa #3 (Clôture & Dotation)' : (visaKey === 'visa2' ? 'Visa #2 (Émargement Prise de Poste)' : 'Visa #1 (Exploitation)');
-        showToastSprint1('• ' + vNum + ' signé sur la fiche ' + target.id + ' (' + window.countMissionVisas(target) + '/3 Visas).');
+        var vNum = visaKey === 'visa3'
+          ? 'Visa #3 signé & Agent noté (' + (target.ratingTotal100 || 96) + '/100 • ' + (target.ratingStars || 4.8) + '/5)'
+          : (visaKey === 'visa2' ? 'Visa #2 (Émargement Prise de Poste)' : 'Visa #1 (Exploitation)');
+        showToastSprint1('• ' + vNum + ' sur la fiche ' + target.id + ' (' + window.countMissionVisas(target) + '/3 Visas).');
       }
       var a4El = document.getElementById('printableMissionSheetA4');
       if (a4El) {
         window.openMissionSheetA4(target.id);
       }
-      if (window.EcoparkData && EcoparkData.driverName === 'supabase' && typeof EcoparkData.signMissionVisa === 'function') {
-        try { EcoparkData.signMissionVisa(target.id, visaKey); } catch (e) {}
+      if (window.EcoparkData && typeof EcoparkData.signMissionVisa === 'function') {
+        try {
+          if (visaKey === 'visa3' && typeof EcoparkData.rateMissionOnVisa3 === 'function') {
+            EcoparkData.rateMissionOnVisa3(target.id, target.ratingSupervisor40, target.ratingComment, null, 0);
+          } else {
+            EcoparkData.signMissionVisa(target.id, visaKey);
+          }
+        } catch (e) {}
       }
       return target;
     };
@@ -20509,7 +21038,7 @@ window.ecoparkOpenAdmin = function () {
             + '      <div>'
             + '        <span class="eco-cat-badge ' + esc(m.badgeClass || 'eco-cat-nature') + '" style="font-size:11px;padding:2px 8px;">Pôle : ' + esc(m.poleLabel) + '</span>'
             + '        <strong style="font-family:var(--font-heading);font-size:1.22rem;color:var(--eco-brand);display:block;margin-top:3px;">ORDRE DE MISSION TERRAIN N° ' + esc(m.id) + '</strong>'
-            + '        <span style="font-size:12px;color:var(--eco-text-muted);">Complexe Agro-Écotouristique ECOPARK Cameroun • Yaoundé-Ahala Barrière (RN3, Face Station Tradex)</span>'
+            + '        <span style="font-size:12px;color:var(--eco-text-muted);">MPECK MULTI-SERVICES • Complexe Agro-Écotouristique ECOPARK Cameroun • Yaoundé-Ahala Barrière (RN3, Face Station Tradex)</span>'
             + '      </div>'
             + '    </div>'
             + '    <div style="display:flex;align-items:center;gap:12px;">'
@@ -20589,6 +21118,21 @@ window.ecoparkOpenAdmin = function () {
             + '        <span style="font-size:11px;color:#555;">' + (v3Signed ? ('Clôturé : ' + esc(visas.visa3.timestamp || m.date)) : 'À signer après remise dotation') + '</span>'
             + '        <button type="button" class="btn btn-primary btn-sm" style="font-size:11px;padding:3px 8px;min-height:28px;" onclick="signMissionVisa(\'' + esc(m.id) + '\', \'visa3\')">' + (v3Signed ? 'Clôture Validée (3/3)' : 'Valider Clôture & Dotation (Visa #3)') + '</button>'
             + '      </div>'
+            + '    </div>'
+            + '  </div>'
+            + '  <div id="a4MissionRatingSection" style="margin-top:8px;padding:12px 14px;background:' + (v3Signed ? '#F0FDF4' : 'var(--eco-bg)') + ';border:1.5px solid ' + (v3Signed ? '#86EFAC' : 'var(--eco-border-strong)') + ';border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">'
+            + '    <div>'
+            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;">6. Notation de Fin de Vacation Agent (Visa #3 — Barème sur 100 pts)</span>'
+            + '      <div style="font-size:13px;color:var(--eco-text);margin-top:2px;">'
+            + '        <strong>Score Objectif (/60) :</strong> ' + (m.ratingAuto60 != null ? m.ratingAuto60 : (v3Signed ? 58 : 'En cours')) + ' pts • '
+            + '        <strong>Score Superviseur (/40) :</strong> ' + (m.ratingSupervisor40 != null ? m.ratingSupervisor40 : (v3Signed ? 38 : 'À évaluer')) + ' pts'
+            + '      </div>'
+            + '      <div style="font-size:12px;color:var(--eco-text-muted);margin-top:2px;">Appréciation : ' + esc(m.ratingComment || (v3Signed ? 'Clôture contradictoire conforme et dotation restituée.' : 'Sera enregistrée à la signature du Visa #3.')) + '</div>'
+            + '    </div>'
+            + '    <div style="text-align:right;">'
+            + '      <span class="status-badge ' + (v3Signed ? 'status-success' : 'status-info') + '" style="font-size:13px;padding:4px 12px;">'
+            +          (v3Signed ? ('Note Finale : ' + (m.ratingTotal100 != null ? m.ratingTotal100 : 96) + ' / 100 (' + Number(m.ratingStars != null ? m.ratingStars : 4.8).toFixed(1) + ' / 5)') : 'En attente Visa #3')
+            + '      </span>'
             + '    </div>'
             + '  </div>'
             + '</div>';
@@ -21258,6 +21802,747 @@ window.ecoparkOpenAdmin = function () {
       window.syncAllViewsFromDB._dirServicesWrapped = true;
     }
 
+    // =========================================================================
+    // K — GESTION DES 8 COMPTES, AUTHENTIFICATION 3 PROFILS, NOTATION AGENTS
+    //     (/100 & /5) & COMPTABILITÉ SYSCOHADA + ANALYTIQUE (6 CENTRES ANA-01..06)
+    // =========================================================================
+
+    // 1. Enrichissement du sélecteur de rôle global (#roleSelector) avec le 8e rôle « comptable »
+    var roleSelGlobal = document.getElementById('roleSelector');
+    if (roleSelGlobal && !roleSelGlobal.querySelector('option[value="comptable"]')) {
+      var optCpt = document.createElement('option');
+      optCpt.value = 'comptable';
+      optCpt.textContent = '5b. Comptable et Contrôle Financier (OHADA / Analytique)';
+      var refOpt = roleSelGlobal.querySelector('option[value="direction"]');
+      if (refOpt && refOpt.parentNode) {
+        refOpt.parentNode.insertBefore(optCpt, refOpt);
+      } else {
+        roleSelGlobal.appendChild(optCpt);
+      }
+    }
+
+    var origApplyRoleForCpt = window.applyRole;
+    if (typeof origApplyRoleForCpt === 'function' && !origApplyRoleForCpt._cptRoleWrapped) {
+      window.applyRole = function (roleKey) {
+        if (roleKey === 'comptable') {
+          var res = origApplyRoleForCpt.call(this, 'direction');
+          var sel = document.getElementById('roleSelector');
+          if (sel) sel.value = 'comptable';
+          var badge = document.getElementById('roleScopeBadge');
+          if (badge) {
+            badge.textContent = 'Périmètre : Comptable & Contrôle Financier (SYSCOHADA + Analytique 6 Pôles • Lecture seule certifiée)';
+          }
+          if (window.EcoparkData && EcoparkData.driver) {
+            EcoparkData.driver.role = 'comptable';
+          }
+          if (window.EcoparkAdmin && EcoparkAdmin.state) {
+            EcoparkAdmin.state.role = 'comptable';
+            if (typeof EcoparkAdmin.render === 'function') EcoparkAdmin.render();
+          }
+          return res;
+        }
+        return origApplyRoleForCpt.apply(this, arguments);
+      };
+      window.applyRole._cptRoleWrapped = true;
+    }
+
+    // 2. Authentification Profil 1 : Visiteur / Client B2C & B2B sans mot de passe (#accOtpVerifyForm dans #sec-ACC-01)
+    window.ensureVisitorOtpVerifyBar = function () {
+      var accSec = document.getElementById('sec-ACC-01') || document.querySelector('#view-ACC .section .container') || document.getElementById('view-ACC');
+      if (!accSec) return;
+      if (!accSec.id && accSec.id !== 'view-ACC') accSec.id = 'sec-ACC-01';
+      if (document.getElementById('accOtpVerifyForm')) return;
+      var bar = document.createElement('div');
+      bar.id = 'accOtpVerifyForm';
+      bar.style.cssText = 'margin:12px 0 16px;padding:14px 16px;background:var(--eco-bg);border:1px solid var(--eco-border-strong);border-left:5px solid var(--eco-brand);border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;';
+      bar.innerHTML = ''
+        + '<div style="flex:1;min-width:240px;">'
+        + '  <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:3px;">'
+        + '    <span class="eco-cat-badge eco-cat-nature" style="font-size:11px;padding:2px 8px;">Accès Visiteur Sans Mot de Passe • OTP / Référence</span>'
+        + '    <span class="status-badge status-success" id="accAuthStatusBadge" style="font-size:11.5px;">Vérification par Référence + Téléphone (+237)</span>'
+        + '  </div>'
+        + '  <strong style="font-size:14px;color:var(--eco-text);display:block;">Retrouver un billet QR, un devis B2B ou une candidature CFP sur n\'importe quel appareil</strong>'
+        + '  <span style="font-size:12.5px;color:var(--eco-text-muted);">Saisissez votre référence (ex. <code>EPK-2026-8841</code>, <code>DEV-2026-312</code>, <code>CFP-2026-109</code>) et les 4 derniers chiffres de votre numéro <code>+237</code> (ou code OTP WhatsApp).</span>'
+        + '</div>'
+        + '<div style="display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap;">'
+        + '  <div>'
+        + '    <label for="accAuthRefInput" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Référence dossier</label>'
+        + '    <input type="text" id="accAuthRefInput" class="form-control" value="EPK-2026-8841" placeholder="EPK-2026-..." style="width:150px;min-height:36px;padding:4px 8px;font-size:13px;" />'
+        + '  </div>'
+        + '  <div>'
+        + '    <label for="accAuthCodeInput" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">4 derniers chiffres tél. / OTP</label>'
+        + '    <input type="text" id="accAuthCodeInput" class="form-control" value="6203" maxlength="6" placeholder="ex. 6203" style="width:125px;min-height:36px;padding:4px 8px;font-size:13px;" />'
+        + '  </div>'
+        + '  <button type="button" class="btn btn-primary btn-sm" id="btnVerifyVisitorAccess" onclick="verifyVisitorAccessCode()">Vérifier mon accès</button>'
+        + '</div>';
+      var firstChild = accSec.querySelector('.section-header') || accSec.firstElementChild;
+      if (firstChild && firstChild.nextSibling) {
+        accSec.insertBefore(bar, firstChild.nextSibling);
+      } else {
+        accSec.appendChild(bar);
+      }
+    };
+
+    window.verifyVisitorAccessCode = function (refArg, codeArg) {
+      window.ensureVisitorOtpVerifyBar();
+      var refIn = document.getElementById('accAuthRefInput');
+      var codeIn = document.getElementById('accAuthCodeInput');
+      var badge = document.getElementById('accAuthStatusBadge');
+      var ref = String(refArg != null ? refArg : (refIn ? refIn.value : '')).trim().toUpperCase();
+      var code = String(codeArg != null ? codeArg : (codeIn ? codeIn.value : '')).trim();
+      if (!ref || code.length < 4 || code === '0000') {
+        if (badge) {
+          badge.className = 'status-badge status-warning';
+          badge.textContent = 'Veuillez saisir une référence et un code à 4 chiffres valide.';
+        }
+        return { ok: false, verified: false, ref: ref };
+      }
+      var searchIn = document.getElementById('accSearchInput');
+      if (searchIn) {
+        searchIn.value = ref;
+        if (typeof window.filterClientDossiers === 'function') {
+          window.filterClientDossiers(window._currentAccFilter || 'ALL');
+        }
+      }
+      if (badge) {
+        badge.className = 'status-badge status-success';
+        badge.textContent = 'Accès vérifié : Dossier ' + ref + ' déverrouillé (OTP #' + code.slice(-4) + ')';
+      }
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Accès visiteur vérifié pour la référence ' + ref + '.');
+      }
+      return { ok: true, verified: true, ref: ref, codeLast4: code.slice(-4) };
+    };
+
+    // 3. Authentification Profil 2 : Prise de poste & Verrouillage Agent de terrain sur terminal partagé (#agtShiftAuthCard)
+    var SHIFT_AGENT_DIRECTORY = {
+      'MAT-GUI-01': { name: 'Mme Clarisse ATANGANA', role: 'agent_guichet', roleLabel: 'Caissière Principale Guichet #1', defaultPole: 'GUICHET_CAISSE' },
+      'MAT-AGT-01': { name: 'Mme Clarisse ATANGANA', role: 'agent_guichet', roleLabel: 'Caissière Principale Guichet #1', defaultPole: 'GUICHET_CAISSE' },
+      'MAT-CTL-02': { name: 'M. Samuel MBARGA', role: 'agent_controle', roleLabel: 'Contrôleur QR Piscine & Embarcadère', defaultPole: 'CONTROLE_QR' },
+      'MAT-HTL-03': { name: 'Mme Chantal NGO BIYONG', role: 'responsable_exploitation', roleLabel: 'Gouvernante Cités Hôtelières', defaultPole: 'HEBERGEMENT' },
+      'MAT-RES-04': { name: 'Chef Patrice ESSOMBA', role: 'responsable_exploitation', roleLabel: 'Chef de Cuisine Château des Saveurs', defaultPole: 'CUISINE_SAVEURS' },
+      'MAT-CPT-01': { name: 'M. Paul ETOUNDI', role: 'comptable', roleLabel: 'Comptable & Contrôle Financier', defaultPole: 'GUICHET_CAISSE' }
+    };
+
+    window.verifyShiftAgentLogin = function (matriculeArg, poleArg) {
+      var matEl = document.getElementById('agtShiftMatriculeInput');
+      var poleEl = document.getElementById('agtShiftPoleSelect');
+      var mat = String(matriculeArg || (matEl ? matEl.value : 'MAT-GUI-01')).trim().toUpperCase();
+      var info = SHIFT_AGENT_DIRECTORY[mat] || { name: 'Agent Terrain ECOPARK', role: 'agent_guichet', roleLabel: 'Agent d\'Exploitation', defaultPole: 'GUICHET_CAISSE' };
+      var pole = String(poleArg || (poleEl ? poleEl.value : info.defaultPole)).trim().toUpperCase();
+      if (matEl && matriculeArg) matEl.value = mat;
+      if (poleEl && poleArg) poleEl.value = pole;
+
+      window._activeShiftSession = {
+        matricule: mat,
+        agentName: info.name,
+        role: info.role,
+        pole: pole,
+        locked: false,
+        unlocked: true,
+        openedAt: typeof nowStamp === 'function' ? nowStamp() : todayMinIso
+      };
+
+      var badge = document.getElementById('agtShiftAuthStatusBadge');
+      if (badge) {
+        badge.className = 'status-badge status-success';
+        badge.textContent = 'Session active : ' + mat + ' — ' + info.name + ' (' + pole + ')';
+      }
+
+      var missions = window.loadOperationalMissions();
+      var matched = missions.find(function (m) {
+        return m.pole === pole || m.agentMatricule === mat || (mat === 'MAT-GUI-01' && m.agentMatricule === 'MAT-AGT-01');
+      }) || missions[0];
+
+      if (matched) {
+        var bTitle = document.getElementById('agtBannerMissionTitle');
+        var bMeta = document.getElementById('agtBannerMissionMeta');
+        var bBtn = document.getElementById('btnAgtPrintMissionA4');
+        if (bTitle) bTitle.textContent = matched.id + ' • ' + matched.title;
+        if (bMeta) {
+          bMeta.innerHTML = 'Agent : <strong>' + info.name + ' (' + mat + ')</strong> • Créneau : <strong>' + matched.shift + '</strong> • Statut : <strong>En cours sur poste</strong>';
+        }
+        if (bBtn) bBtn.setAttribute('onclick', "openMissionSheetA4('" + matched.id + "')");
+      }
+
+      try {
+        var db = typeof loadDB === 'function' ? loadDB() : null;
+        if (db && Array.isArray(db.auditLogs)) {
+          db.auditLogs.unshift({
+            time: window._activeShiftSession.openedAt,
+            actor: info.name + ' (' + mat + ')',
+            action: 'Ouverture de vacation sur terminal partagé — Pôle ' + pole
+          });
+          if (typeof saveDB === 'function') saveDB(db);
+        }
+      } catch (e) {}
+
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Vacation ouverte : ' + info.name + ' (' + mat + ' — ' + pole + ').');
+      }
+      return window._activeShiftSession;
+    };
+
+    window.lockShiftAgentSession = function () {
+      var prev = window._activeShiftSession || { matricule: 'MAT-GUI-01', agentName: 'Mme Clarisse ATANGANA', pole: 'GUICHET_CAISSE' };
+      window._activeShiftSession = {
+        matricule: prev.matricule,
+        agentName: prev.agentName,
+        pole: prev.pole,
+        locked: true,
+        lockedAt: typeof nowStamp === 'function' ? nowStamp() : todayMinIso
+      };
+      var badge = document.getElementById('agtShiftAuthStatusBadge');
+      if (badge) {
+        badge.className = 'status-badge status-warning';
+        badge.textContent = 'Poste verrouillé en pause (' + prev.matricule + ') — Cliquez sur Activer prise de poste';
+      }
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Session du poste ' + prev.pole + ' verrouillée temporairement (' + prev.matricule + ').');
+      }
+      return window._activeShiftSession;
+    };
+
+    // 4. Notation des Agents de Terrain sur 100 points (60 pts Objectifs + 40 pts Superviseur) & 5 étoiles au Visa #3
+    window.rateMissionOnVisa3 = function (missionId, supervisorScore40, comment, cashGapFcfa) {
+      var mId = String(missionId || 'MSN-2026-101').trim();
+      var sup = supervisorScore40 != null ? Math.max(0, Math.min(40, Number(supervisorScore40))) : 38;
+      var gap = cashGapFcfa != null ? Math.abs(Number(cashGapFcfa)) : 0;
+      var cmt = String(comment || 'Accueil exemplaire, caisse et dotation conformes (Visa #3).').trim();
+      return window.signMissionVisa(mId, 'visa3', {
+        supervisorScore40: sup,
+        cashGapFcfa: gap,
+        comment: cmt,
+        forceFullAuto60: gap === 0
+      });
+    };
+
+    window.submitMissionVisa3RatingFromPanel = function () {
+      var mSel = document.getElementById('expRateMissionSelect');
+      var supIn = document.getElementById('expRateSupScoreInput');
+      var gapIn = document.getElementById('expRateCashGapInput');
+      var cmtIn = document.getElementById('expRateCommentInput');
+      var mId = mSel ? mSel.value : 'MSN-2026-101';
+      var sup = supIn ? Number(supIn.value) : 38;
+      var gap = gapIn ? Number(gapIn.value) : 0;
+      var cmt = cmtIn ? cmtIn.value : '';
+      return window.rateMissionOnVisa3(mId, sup, cmt, gap);
+    };
+
+    window.renderAgentRatingsSummary = function (missionsArg) {
+      var grid = document.getElementById('expAgentRatingsCardsGrid');
+      if (!grid) return [];
+      var list = Array.isArray(missionsArg) ? missionsArg : window.loadOperationalMissions();
+      var mSel = document.getElementById('expRateMissionSelect');
+      if (mSel && list.length > 0) {
+        var curVal = mSel.value;
+        mSel.innerHTML = list.map(function (m) {
+          return '<option value="' + m.id + '"' + (m.id === curVal ? ' selected' : '') + '>' + m.id + ' — ' + m.agentName + ' (' + m.poleLabel + ')</option>';
+        }).join('');
+      }
+
+      var byAgent = {};
+      list.forEach(function (m) {
+        if (!m || !m.agentName) return;
+        var key = m.agentName;
+        if (!byAgent[key]) {
+          byAgent[key] = {
+            agentName: m.agentName,
+            matricule: m.agentMatricule || 'MAT-EQP',
+            poleLabel: m.poleLabel || m.pole,
+            badgeClass: m.badgeClass || 'eco-cat-nature',
+            missionsCount: 0,
+            ratedCount: 0,
+            sumAuto60: 0,
+            sumSup40: 0,
+            sumTotal100: 0,
+            lastComment: ''
+          };
+        }
+        var ag = byAgent[key];
+        ag.missionsCount++;
+        var auto60 = m.ratingAuto60 != null ? Number(m.ratingAuto60) : (m.status === 'TERMINEE' ? 58 : 56);
+        var sup40 = m.ratingSupervisor40 != null ? Number(m.ratingSupervisor40) : (m.status === 'TERMINEE' ? 38 : 36);
+        var tot100 = m.ratingTotal100 != null ? Number(m.ratingTotal100) : (auto60 + sup40);
+        ag.sumAuto60 += auto60;
+        ag.sumSup40 += sup40;
+        ag.sumTotal100 += tot100;
+        if (m.status === 'TERMINEE' || m.ratingTotal100 != null) ag.ratedCount++;
+        if (m.ratingComment) ag.lastComment = m.ratingComment;
+      });
+
+      var agents = Object.keys(byAgent).map(function (k) {
+        var a = byAgent[k];
+        var cnt = Math.max(1, a.missionsCount);
+        a.avgAuto60 = Math.round(a.sumAuto60 / cnt);
+        a.avgSup40 = Math.round(a.sumSup40 / cnt);
+        a.avgTotal100 = Math.round(a.sumTotal100 / cnt);
+        a.avgStars = Math.round((a.avgTotal100 / 20) * 10) / 10;
+        return a;
+      });
+
+      var starSvg = '<svg class="svg-mono" width="14" height="14" viewBox="0 0 24 24" fill="#D97706" stroke="#B45309" stroke-width="1.8" style="vertical-align:-2px;margin-right:3px;" aria-hidden="true"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>';
+
+      grid.innerHTML = agents.map(function (a) {
+        return '<div data-agent-rating-card="' + a.matricule + '" style="padding:12px 14px;background:#FFFFFF;border:1px solid var(--eco-border);border-radius:10px;display:flex;flex-direction:column;justify-content:space-between;gap:6px;">'
+          + '<div>'
+          + '  <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">'
+          + '    <span class="eco-cat-badge ' + a.badgeClass + '" style="font-size:10.5px;padding:1px 7px;">' + a.matricule + '</span>'
+          + '    <span style="font-size:12.5px;font-weight:700;color:#B45309;">' + starSvg + a.avgStars.toFixed(1) + ' / 5</span>'
+          + '  </div>'
+          + '  <strong style="display:block;font-size:14px;color:var(--eco-text);margin-top:4px;">' + a.agentName + '</strong>'
+          + '  <span style="font-size:12px;color:var(--eco-text-muted);display:block;">' + a.poleLabel + '</span>'
+          + '</div>'
+          + '<div style="padding-top:6px;border-top:1px dashed var(--eco-border);font-size:12px;color:var(--eco-text);">'
+          + '  <div><strong>Score Global : ' + a.avgTotal100 + ' / 100</strong> (' + a.avgAuto60 + '/60 auto + ' + a.avgSup40 + '/40 sup.)</div>'
+          + '  <div style="color:var(--eco-text-muted);margin-top:2px;">' + a.ratedCount + '/' + a.missionsCount + ' mission(s) clôturée(s) Visa #3</div>'
+          + '</div>'
+          + '</div>';
+      }).join('');
+
+      return agents;
+    };
+
+    // 5. Moteur de Comptabilité Générale SYSCOHADA & Comptabilité Analytique (6 Centres de Profit ANA-01 à ANA-06)
+    window.computeEcoparkAccountingLedgers = function (dateFromArg, dateToArg) {
+      var fromEl = document.getElementById('comptaDateFrom');
+      var toEl = document.getElementById('comptaDateTo');
+      var dateFrom = String(dateFromArg || (fromEl && fromEl.value) || '2026-01-01').trim();
+      var dateTo = String(dateToArg || (toEl && toEl.value) || '2099-12-31').trim();
+
+      var db = typeof loadDB === 'function' ? loadDB() : { bookings: [], quotes: [], cfpApplications: [], posStats: {} };
+      var bookings = Array.isArray(db.bookings) ? db.bookings : [];
+      var quotes = Array.isArray(db.quotes) ? db.quotes : [];
+      var cfpApps = Array.isArray(db.cfpApplications) ? db.cfpApplications : [];
+      var posStats = db.posStats || { cashTotalFcfa: 425000, momoTotalFcfa: 310000, ticketsIssued: 48 };
+
+      var toIso = function (dStr) {
+        var s = String(dStr || '').trim();
+        if (/^\d{4}-\d{2}-\d{2}/.test(s)) return s.slice(0, 10);
+        var m = s.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
+        if (m) return m[3] + '-' + ('0' + m[2]).slice(-2) + '-' + ('0' + m[1]).slice(-2);
+        return todayMinIso;
+      };
+      var inRange = function (dStr) {
+        var iso = toIso(dStr);
+        return (!dateFrom || iso >= dateFrom) && (!dateTo || iso <= dateTo);
+      };
+
+      var axesMap = {
+        'ANA-01': {
+          code: 'ANA-01',
+          poleCode: 'NATURE_FAUNE',
+          label: '1. Pôle Nature, Faune & Culture (Zoo « ToTo », Cheval, Musée, Biblio)',
+          badgeClass: 'eco-cat-nature',
+          ohadaAccount: '7061',
+          ruleText: '100 % billets Nature • 65 % Pass Découverte • 20 % Pass Royale',
+          txCount: 0,
+          grossFcfa: 0,
+          refundsFcfa: 0,
+          netFcfa: 0
+        },
+        'ANA-02': {
+          code: 'ANA-02',
+          poleCode: 'EAU_PLEIN_AIR',
+          label: '2. Pôle Eau, Loisirs & Plein Air (Piscine Semi-Olympique, Pirogue, Pêche)',
+          badgeClass: 'eco-cat-water',
+          ohadaAccount: '7062',
+          ruleText: '100 % Piscine/Lac • 35 % Pass Découverte • 35 % Pass Royale • 15 % Pack Couple',
+          txCount: 0,
+          grossFcfa: 0,
+          refundsFcfa: 0,
+          netFcfa: 0
+        },
+        'ANA-03': {
+          code: 'ANA-03',
+          poleCode: 'RESTAURATION',
+          label: '3. Pôle Restauration — Le Château des Saveurs & Pergolas',
+          badgeClass: 'eco-cat-dining',
+          ohadaAccount: '7011 / 7063',
+          ruleText: '100 % Carte & Pergolas • 45 % Pass Journée Royale • 30 % Pack Couple Ewondo',
+          txCount: 0,
+          grossFcfa: 0,
+          refundsFcfa: 0,
+          netFcfa: 0
+        },
+        'ANA-04': {
+          code: 'ANA-04',
+          poleCode: 'HEBERGEMENT',
+          label: '4. Pôle Hébergement — Cités Hôtelières (Bene, Chanthel, Ewondo VIP)',
+          badgeClass: 'eco-cat-lodging',
+          ohadaAccount: '7064',
+          ruleText: '100 % Nuitées Cités & Suites • 55 % Pack Couple Ewondo VIP',
+          txCount: 0,
+          grossFcfa: 0,
+          refundsFcfa: 0,
+          netFcfa: 0
+        },
+        'ANA-05': {
+          code: 'ANA-05',
+          poleCode: 'GROUPES_B2B',
+          label: '5. Pôle Groupes, Écoles, Salle Menkii (500 pl.) & Navettes',
+          badgeClass: 'eco-cat-brand',
+          ohadaAccount: '7065',
+          ruleText: '100 % Devis B2B / Écoles validés, location Salle Menkii & Navettes',
+          txCount: 0,
+          grossFcfa: 0,
+          refundsFcfa: 0,
+          netFcfa: 0
+        },
+        'ANA-06': {
+          code: 'ANA-06',
+          poleCode: 'FORMATION_CFP',
+          label: '6. Pôle Formation Professionnelle — CFP Agréé MINEFOP (5 filières)',
+          badgeClass: 'eco-cat-cfp',
+          ohadaAccount: '7066',
+          ruleText: '100 % Frais d\'inscription (50 000 FCFA) & 4 tranches de scolarité (250 000 FCFA)',
+          txCount: 0,
+          grossFcfa: 0,
+          refundsFcfa: 0,
+          netFcfa: 0
+        }
+      };
+
+      var ohadaJournal = [];
+      var analyticalEntries = [];
+      var treasuryTotals = { caisse571: 0, om5581: 0, momo5582: 0, banque521: 0 };
+
+      var resolveTreasuryAccount = function (payMethod) {
+        var pm = String(payMethod || 'GUICHET').toUpperCase();
+        if (pm.indexOf('OM') !== -1 || pm.indexOf('ORANGE') !== -1) {
+          return { journal: 'MOMO_OM', account: '5581', name: 'Monnaie Électronique Orange Money', key: 'om5581', mode: 'Orange Money' };
+        }
+        if (pm.indexOf('MOMO') !== -1 || pm.indexOf('MTN') !== -1) {
+          return { journal: 'MOMO_MTN', account: '5582', name: 'Monnaie Électronique MTN MoMo', key: 'momo5582', mode: 'MTN MoMo' };
+        }
+        if (pm.indexOf('VIREMENT') !== -1 || pm.indexOf('BANQUE') !== -1 || pm.indexOf('PROFORMA') !== -1) {
+          return { journal: 'BANQUE', account: '5211', name: 'Banque Locale Cameroun (Virement B2B)', key: 'banque521', mode: 'Virement / Banque' };
+        }
+        return { journal: 'CAISSE_RN3', account: '5711', name: 'Caisse Espèces Guichet Principal RN3', key: 'caisse571', mode: 'Espèces Guichet' };
+      };
+
+      var postAnalyticalSplit = function (dateIso, pieceRef, label, amountFcfa, payMethod, splits, isRefund) {
+        var amt = Math.round(Number(amountFcfa || 0));
+        if (amt <= 0) return;
+        var tr = resolveTreasuryAccount(payMethod);
+        if (!isRefund) {
+          treasuryTotals[tr.key] += amt;
+          ohadaJournal.push({
+            date: dateIso,
+            journal: tr.journal,
+            pieceRef: pieceRef,
+            ohadaAccount: tr.account,
+            accountName: tr.name,
+            label: 'Encaissement ' + label,
+            debitFcfa: amt,
+            creditFcfa: 0,
+            payMode: tr.mode,
+            status: 'RAPPROCHE'
+          });
+        } else {
+          treasuryTotals[tr.key] = Math.max(0, treasuryTotals[tr.key] - amt);
+        }
+
+        var remaining = amt;
+        splits.forEach(function (sp, idx) {
+          var ax = axesMap[sp.axis] || axesMap['ANA-01'];
+          var part = (idx === splits.length - 1) ? remaining : Math.round(amt * sp.weight);
+          remaining -= part;
+          if (part <= 0) return;
+
+          if (isRefund) {
+            ax.refundsFcfa += part;
+            ohadaJournal.push({
+              date: dateIso,
+              journal: 'OD_AVOIRS',
+              pieceRef: pieceRef,
+              ohadaAccount: ax.ohadaAccount.split('/')[0].trim(),
+              accountName: 'Avoir / Remboursement ' + ax.poleCode,
+              label: 'Avoir client ' + label + ' (' + sp.rule + ')',
+              debitFcfa: part,
+              creditFcfa: 0,
+              payMode: tr.mode,
+              status: 'AVOIR_TRACE'
+            });
+            ohadaJournal.push({
+              date: dateIso,
+              journal: 'OD_AVOIRS',
+              pieceRef: pieceRef,
+              ohadaAccount: tr.account,
+              accountName: tr.name,
+              label: 'Sortie trésorerie avoir ' + pieceRef,
+              debitFcfa: 0,
+              creditFcfa: part,
+              payMode: tr.mode,
+              status: 'AVOIR_TRACE'
+            });
+          } else {
+            ax.grossFcfa += part;
+            ax.txCount += 1;
+            ohadaJournal.push({
+              date: dateIso,
+              journal: tr.journal,
+              pieceRef: pieceRef,
+              ohadaAccount: ax.ohadaAccount.split('/')[0].trim(),
+              accountName: 'Produits ' + ax.poleCode,
+              label: label + ' [' + sp.rule + ']',
+              debitFcfa: 0,
+              creditFcfa: part,
+              payMode: tr.mode,
+              status: 'VENTILE_' + ax.code
+            });
+          }
+
+          analyticalEntries.push({
+            date: dateIso,
+            analyticalCode: ax.code,
+            profitCenter: ax.label,
+            ohadaAccount: ax.ohadaAccount,
+            pieceRef: pieceRef,
+            originLabel: label,
+            splitRule: sp.rule,
+            grossFcfa: isRefund ? 0 : part,
+            refundFcfa: isRefund ? part : 0,
+            netFcfa: isRefund ? -part : part
+          });
+        });
+      };
+
+      // A. Ventilation des réservations & billets QR (individuel, pass, séjours)
+      bookings.forEach(function (b) {
+        if (!b || !inRange(b.date)) return;
+        var amt = Math.round(Number(b.totalFcfa || 0));
+        if (amt <= 0) return;
+        var sum = String(b.paxSummary || '').toUpperCase();
+        var iso = toIso(b.date);
+        var ref = b.reference || 'EPK-2026-000';
+        var holder = b.holder || 'Visiteur ECOPARK';
+        var label = ref + ' — ' + holder + ' (' + (b.paxSummary || 'Visite') + ')';
+
+        if (sum.indexOf('PACK COUPLE') !== -1 || (b.lodgeCity && sum.indexOf('COUPLE') !== -1)) {
+          postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
+            { axis: 'ANA-04', weight: 0.55, rule: 'Pack Couple Ewondo 55 % Hébergement' },
+            { axis: 'ANA-03', weight: 0.30, rule: 'Pack Couple Ewondo 30 % Restauration' },
+            { axis: 'ANA-02', weight: 0.15, rule: 'Pack Couple Ewondo 15 % Eau/Loisirs' }
+          ], false);
+        } else if (b.lodgeCity || sum.indexOf('CITÉ') !== -1 || sum.indexOf('EWONDO') !== -1 || sum.indexOf('CHANTHEL') !== -1 || sum.indexOf('BENE') !== -1) {
+          postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
+            { axis: 'ANA-04', weight: 1.0, rule: '100 % Nuitée Cité Hôtelière' }
+          ], false);
+        } else if (sum.indexOf('ROYALE') !== -1) {
+          postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
+            { axis: 'ANA-01', weight: 0.20, rule: 'Pass Royale 20 % Nature/Zoo' },
+            { axis: 'ANA-02', weight: 0.35, rule: 'Pass Royale 35 % Piscine/Pirogue' },
+            { axis: 'ANA-03', weight: 0.45, rule: 'Pass Royale 45 % Repas Saveurs' }
+          ], false);
+        } else if (sum.indexOf('DÉCOUVERTE') !== -1 || sum.indexOf('DECOUVERTE') !== -1) {
+          postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
+            { axis: 'ANA-01', weight: 0.65, rule: 'Pass Découverte 65 % Zoo/Cheval' },
+            { axis: 'ANA-02', weight: 0.35, rule: 'Pass Découverte 35 % Pirogue' }
+          ], false);
+        } else if (sum.indexOf('SAVEURS') !== -1 || sum.indexOf('BRAISÉ') !== -1 || sum.indexOf('POULET') !== -1 || b.hasPergola) {
+          postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
+            { axis: 'ANA-03', weight: 0.60, rule: '60 % Restauration & Pergola' },
+            { axis: 'ANA-02', weight: 0.40, rule: '40 % Activités Parc & Eau' }
+          ], false);
+        } else if (sum.indexOf('PISCINE') !== -1 || sum.indexOf('PIROGUE') !== -1) {
+          postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
+            { axis: 'ANA-02', weight: 0.65, rule: '65 % Piscine & Lac' },
+            { axis: 'ANA-01', weight: 0.35, rule: '35 % Entrée Parc & Zoo' }
+          ], false);
+        } else {
+          postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
+            { axis: 'ANA-01', weight: 1.0, rule: '100 % Entrée Parc & Nature' }
+          ], false);
+        }
+      });
+
+      // B. Recettes Caisse Guichet POS (AGT-03)
+      var posCash = Math.round(Number(posStats.cashTotalFcfa || 425000));
+      var posMomo = Math.round(Number(posStats.momoTotalFcfa || 310000));
+      if (inRange(todayMinIso)) {
+        if (posCash > 0) {
+          postAnalyticalSplit(todayMinIso, 'POS-Z-CAISSE-RN3', 'Ventes directes Guichet RN3 (Espèces FCFA)', posCash, 'GUICHET', [
+            { axis: 'ANA-01', weight: 0.45, rule: 'Z Caisse 45 % Entrées Zoo/Nature' },
+            { axis: 'ANA-02', weight: 0.35, rule: 'Z Caisse 35 % Piscine/Pirogue' },
+            { axis: 'ANA-03', weight: 0.20, rule: 'Z Caisse 20 % Boissons/Saveurs' }
+          ], false);
+        }
+        if (posMomo > 0) {
+          postAnalyticalSplit(todayMinIso, 'POS-Z-MOMO-RN3', 'Ventes directes Guichet RN3 (Mobile Money sans PIN)', posMomo, 'OM', [
+            { axis: 'ANA-02', weight: 0.50, rule: 'Z MoMo 50 % Piscine/Loisirs' },
+            { axis: 'ANA-03', weight: 0.30, rule: 'Z MoMo 30 % Château des Saveurs' },
+            { axis: 'ANA-01', weight: 0.20, rule: 'Z MoMo 20 % Parc Animalier' }
+          ], false);
+        }
+      }
+
+      // C. Devis Groupes B2B & Scolaires (ANA-05)
+      quotes.forEach(function (q) {
+        if (!q || !inRange(q.date)) return;
+        var amt = Math.round(Number(q.budgetFcfa || 0));
+        if (amt <= 0) return;
+        postAnalyticalSplit(toIso(q.date), q.reference || 'DEV-2026-300', (q.org || 'Groupe B2B') + ' (' + (q.pax || 20) + ' pers.)', amt, 'BANQUE', [
+          { axis: 'ANA-05', weight: 1.0, rule: '100 % Forfait Groupe / Salle Menkii / Navettes' }
+        ], false);
+      });
+
+      // D. Candidatures & Inscriptions CFP MINEFOP (ANA-06)
+      cfpApps.forEach(function (c) {
+        if (!c) return;
+        var fee = 50000;
+        if (String(c.track || '').toUpperCase().indexOf('INTÉGRAL') !== -1 || String(c.track || '').toUpperCase().indexOf('INTEGRAL') !== -1) {
+          fee = 300000;
+        } else if (String(c.status || '').toUpperCase().indexOf('100') !== -1) {
+          fee = 150000;
+        }
+        postAnalyticalSplit(todayMinIso, c.reference || 'CFP-2026-100', 'Frais CFP MINEFOP — ' + (c.name || 'Apprenant'), fee, 'MOMO', [
+          { axis: 'ANA-06', weight: 1.0, rule: '100 % Inscription & Scolarité CFP MINEFOP' }
+        ], false);
+      });
+
+      var axesList = Object.keys(axesMap).map(function (k) {
+        var a = axesMap[k];
+        a.netFcfa = a.grossFcfa - a.refundsFcfa;
+        return a;
+      });
+
+      var totalGrossFcfa = axesList.reduce(function (s, a) { return s + a.grossFcfa; }, 0);
+      var totalRefundsFcfa = axesList.reduce(function (s, a) { return s + a.refundsFcfa; }, 0);
+      var totalNetFcfa = axesList.reduce(function (s, a) { return s + a.netFcfa; }, 0);
+      var totalDebitOhada = ohadaJournal.reduce(function (s, j) { return s + j.debitFcfa; }, 0);
+      var totalCreditOhada = ohadaJournal.reduce(function (s, j) { return s + j.creditFcfa; }, 0);
+
+      return {
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        axes: axesList,
+        analyticalList: axesList,
+        ohadaJournal: ohadaJournal,
+        analyticalEntries: analyticalEntries,
+        treasuryTotals: treasuryTotals,
+        totalGrossFcfa: totalGrossFcfa,
+        totalRefundsFcfa: totalRefundsFcfa,
+        totalNetFcfa: totalNetFcfa,
+        totalDebitOhada: totalDebitOhada,
+        totalCreditOhada: totalCreditOhada,
+        isBalanced: totalDebitOhada === totalCreditOhada && totalNetFcfa === (totalGrossFcfa - totalRefundsFcfa)
+      };
+    };
+
+    window.renderAccountingConsoleDir05 = function () {
+      var tbody = document.getElementById('dirAnalyticalAccountingBody');
+      if (!tbody) return null;
+      var ledgers = window.computeEcoparkAccountingLedgers();
+      var fmt = typeof window.formatFCFA === 'function'
+        ? window.formatFCFA
+        : function (n) { return Number(n || 0).toLocaleString('fr-FR') + ' FCFA'; };
+
+      var elGross = document.getElementById('comptaTotalGrossFcfa');
+      var elRef = document.getElementById('comptaTotalRefundsFcfa');
+      var elNet = document.getElementById('comptaTotalNetFcfa');
+      var elCnt = document.getElementById('comptaTotalTxCount');
+      var elBal = document.getElementById('comptaBalanceCheckBadge');
+      var elTr = document.getElementById('comptaTreasurySplitText');
+
+      if (elGross) elGross.textContent = fmt(ledgers.totalGrossFcfa);
+      if (elRef) elRef.textContent = fmt(ledgers.totalRefundsFcfa);
+      if (elNet) elNet.textContent = fmt(ledgers.totalNetFcfa);
+      if (elCnt) elCnt.textContent = ledgers.ohadaJournal.length + ' lignes au Journal OHADA';
+      if (elBal) {
+        elBal.className = 'status-badge ' + (ledgers.isBalanced ? 'status-success' : 'status-warning');
+        elBal.textContent = ledgers.isBalanced
+          ? 'Équilibre OHADA = Analytique (100 %)'
+          : 'Contrôle d\'équilibre requis';
+      }
+      if (elTr) {
+        elTr.innerHTML = '<strong>571 Caisse :</strong> ' + fmt(ledgers.treasuryTotals.caisse571)
+          + ' • <strong>5581 OM :</strong> ' + fmt(ledgers.treasuryTotals.om5581)
+          + '<br/><strong>5582 MoMo :</strong> ' + fmt(ledgers.treasuryTotals.momo5582)
+          + ' • <strong>521 Banque :</strong> ' + fmt(ledgers.treasuryTotals.banque521);
+      }
+
+      var denom = Math.max(1, ledgers.totalNetFcfa);
+      tbody.innerHTML = ledgers.axes.map(function (ax) {
+        var sharePct = Math.round((ax.netFcfa / denom) * 100);
+        return '<tr data-analytical-code="' + ax.code + '">'
+          + '<td><strong style="font-family:var(--font-mono);color:var(--eco-brand);">' + ax.code + '</strong></td>'
+          + '<td>'
+          + '  <span class="eco-cat-badge ' + ax.badgeClass + '" style="font-size:10.5px;padding:1px 7px;margin-bottom:3px;">' + ax.poleCode + '</span>'
+          + '  <strong style="display:block;font-size:13.5px;color:var(--eco-text);">' + ax.label + '</strong>'
+          + '</td>'
+          + '<td><code style="font-weight:700;color:var(--eco-brand);">' + ax.ohadaAccount + '</code></td>'
+          + '<td style="font-size:12.5px;color:var(--eco-text-muted);">' + ax.ruleText + '</td>'
+          + '<td><strong>' + ax.txCount + '</strong> op.</td>'
+          + '<td style="white-space:nowrap;">' + fmt(ax.grossFcfa) + '</td>'
+          + '<td style="white-space:nowrap;color:var(--status-warning-text);">' + fmt(ax.refundsFcfa) + '</td>'
+          + '<td style="white-space:nowrap;"><strong>' + fmt(ax.netFcfa) + '</strong> <span style="font-size:11.5px;color:var(--eco-text-muted);">(' + sharePct + ' %)</span></td>'
+          + '</tr>';
+      }).join('');
+
+      return ledgers;
+    };
+
+    window.exportJournalOHADACSV = function () {
+      var ledgers = window.computeEcoparkAccountingLedgers();
+      var escCsv = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+      var headers = ['Structure_Exploitante', 'Date_Africa_Douala', 'Journal', 'Piece_Ref', 'Compte_OHADA', 'Intitule_Compte', 'Libelle_Ecriture', 'Debit_FCFA', 'Credit_FCFA', 'Mode_Reglement', 'Statut'];
+      var lines = [headers.map(escCsv).join(';')].concat(ledgers.ohadaJournal.map(function (r) {
+        return ['MPECK MULTI-SERVICES', r.date, r.journal, r.pieceRef, r.ohadaAccount, r.accountName, r.label, r.debitFcfa, r.creditFcfa, r.payMode, r.status].map(escCsv).join(';');
+      }));
+      var csvContent = '\ufeff' + lines.join('\r\n');
+      try {
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'ecopark-journal-ohada-' + todayMinIso + '.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (e) {}
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Journal Général SYSCOHADA (MPECK MULTI-SERVICES) exporté (' + ledgers.ohadaJournal.length + ' lignes équilibrées Débit = Crédit).');
+      }
+      return { filename: 'ecopark-journal-ohada-' + todayMinIso + '.csv', rowsCount: ledgers.ohadaJournal.length, csv: csvContent };
+    };
+
+    window.exportGrandLivreAnalytiqueCSV = function () {
+      var ledgers = window.computeEcoparkAccountingLedgers();
+      var escCsv = function (v) { return '"' + String(v == null ? '' : v).replace(/"/g, '""') + '"'; };
+      var headers = ['Structure_Exploitante', 'Date_Africa_Douala', 'Axe_Analytique', 'Centre_De_Profit', 'Compte_OHADA_Produit', 'Piece_Ref', 'Origine_Prestation', 'Cle_Ventilation_Pass', 'Montant_Brut_FCFA', 'Avoirs_RFD_FCFA', 'Montant_Net_FCFA'];
+      var lines = [headers.map(escCsv).join(';')].concat(ledgers.analyticalEntries.map(function (r) {
+        return ['MPECK MULTI-SERVICES', r.date, r.analyticalCode, r.profitCenter, r.ohadaAccount, r.pieceRef, r.originLabel, r.splitRule, r.grossFcfa, r.refundFcfa, r.netFcfa].map(escCsv).join(';');
+      }));
+      var csvContent = '\ufeff' + lines.join('\r\n');
+      try {
+        var blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+        var a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'ecopark-grand-livre-analytique-' + todayMinIso + '.csv';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+      } catch (e) {}
+      if (typeof showToastSprint1 === 'function') {
+        showToastSprint1('• Grand-Livre Analytique 6 Centres de Profit (ANA-01 à ANA-06) exporté (' + ledgers.analyticalEntries.length + ' ventilations).');
+      }
+      return { filename: 'ecopark-grand-livre-analytique-' + todayMinIso + '.csv', rowsCount: ledgers.analyticalEntries.length, csv: csvContent };
+    };
+
+    var origRenderDirDash = window.renderDirectionServicesDashboard;
+    if (typeof origRenderDirDash === 'function' && !origRenderDirDash._comptaWrapped) {
+      window.renderDirectionServicesDashboard = function () {
+        var r = origRenderDirDash.apply(this, arguments);
+        if (typeof window.renderAccountingConsoleDir05 === 'function') {
+          window.renderAccountingConsoleDir05();
+        }
+        return r;
+      };
+      window.renderDirectionServicesDashboard._comptaWrapped = true;
+    }
+
+    window.ensureVisitorOtpVerifyBar();
+    window.renderAgentRatingsSummary();
     if (typeof window.enrichOrderTablesWithMissionSheetLinks === 'function') {
       window.enrichOrderTablesWithMissionSheetLinks();
     }

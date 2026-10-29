@@ -18,13 +18,15 @@ const M2 = sql('../migrations/20261028000001_admin_crud_governance.sql');
 const M3 = sql('../migrations/20261028000002_realtime_publication.sql');
 const M4 = sql('../migrations/20261028000003_publication_images.sql');
 const M5 = sql('../migrations/20261029000001_operational_missions_alerts.sql');
+const M6 = sql('../migrations/20261030000001_accounts_rating_accounting.sql');
 
 const U = {
-  dir:    { id: '00000000-0000-0000-0000-0000000000d1', name: 'Dr Christophe FOE NDI', role: 'direction' },
-  adm:    { id: '00000000-0000-0000-0000-0000000000a1', name: 'Admin Plateforme ONOGRAPH', role: 'administrateur_plateforme' },
-  exp:    { id: '00000000-0000-0000-0000-0000000000e1', name: "Chef d'Exploitation Ahala", role: 'responsable_exploitation' },
-  gui:    { id: '00000000-0000-0000-0000-0000000000b1', name: 'Mme Clarisse ATANGANA', role: 'agent_guichet' },
-  ctl:    { id: '00000000-0000-0000-0000-0000000000c1', name: 'Brigade Contrôle Portail', role: 'agent_controle' },
+  dir:    { id: '00000000-0000-0000-0000-0000000000d1', name: 'Dr Christophe FOE NDI', role: 'direction', matricule: 'MAT-DIR-01', pole: 'DIRECTION_GENERALE' },
+  adm:    { id: '00000000-0000-0000-0000-0000000000a1', name: 'Admin Plateforme ONOGRAPH', role: 'administrateur_plateforme', matricule: 'MAT-ADM-01', pole: 'DIRECTION_GENERALE' },
+  exp:    { id: '00000000-0000-0000-0000-0000000000e1', name: "Chef d'Exploitation Ahala", role: 'responsable_exploitation', matricule: 'MAT-EXP-01', pole: 'GUICHET_CAISSE' },
+  cpt:    { id: '00000000-0000-0000-0000-0000000000b9', name: 'M. Paul ETOUNDI', role: 'comptable', matricule: 'MAT-CPT-01', pole: 'FINANCE_COMPTA' },
+  gui:    { id: '00000000-0000-0000-0000-0000000000b1', name: 'Mme Clarisse ATANGANA', role: 'agent_guichet', matricule: 'MAT-GUI-01', pole: 'GUICHET_CAISSE' },
+  ctl:    { id: '00000000-0000-0000-0000-0000000000c1', name: 'Brigade Contrôle Portail', role: 'agent_controle', matricule: 'MAT-CTL-02', pole: 'CONTROLE_QR' },
   client: { id: '00000000-0000-0000-0000-0000000000f1' },
 };
 const ANON = { anon: true };
@@ -68,19 +70,21 @@ async function main() {
   await db.exec(M3);
   await db.exec(M4);
   await db.exec(M5);
-  ok(true, 'Migrations Sprint 1, Gouvernance CRUD, temps réel et images appliquées');
+  await db.exec(M6);
+  ok(true, 'Migrations Sprint 1, Gouvernance CRUD, temps réel, images et comptes/notation/compta appliquées');
   await db.exec(M2);
   await db.exec(M4);
   await db.exec(M5);
-  ok(true, 'Migrations Gouvernance CRUD et images ré-exécutables (idempotentes)');
+  await db.exec(M6);
+  ok(true, 'Migrations Gouvernance CRUD, images et comptes/notation/compta ré-exécutables (idempotentes)');
 
   // Comptes de test
   for (const u of Object.values(U)) {
     await db.query('INSERT INTO auth.users (id, email) VALUES ($1, $2)', [u.id, `${u.id}@test.local`]);
   }
-  for (const u of [U.dir, U.adm, U.exp, U.gui, U.ctl]) {
-    await db.query('INSERT INTO public.staff_profiles (user_id, full_name, role, post_label) VALUES ($1, $2, $3, $4)',
-      [u.id, u.name, u.role, 'Poste test']);
+  for (const u of [U.dir, U.adm, U.exp, U.cpt, U.gui, U.ctl]) {
+    await db.query('INSERT INTO public.staff_profiles (user_id, full_name, role, post_label, matricule, assigned_pole) VALUES ($1, $2, $3, $4, $5, $6)',
+      [u.id, u.name, u.role, 'Poste test', u.matricule, u.pole]);
   }
 
   const zooId = (await db.query(`SELECT id FROM public.catalog_activities WHERE slug = 'zoo'`)).rows[0].id;
@@ -304,11 +308,30 @@ async function main() {
     'ECOPARK_VISA_REQUIRES_EXPLOITATION', 'Agent guichet : ne peut pas signer seul le Visa #3 de clôture (réservé Exploitation / Direction)');
 
   await as(db, U.exp, async (tx) => {
-    const r3 = (await tx.query(`SELECT public.sign_mission_visa('MSN-2026-103', 'visa3', 'Chef d''Exploitation Ahala') AS r`)).rows[0].r;
+    const r3 = (await tx.query(`SELECT public.rate_mission_on_visa3('MSN-2026-103', 38, 'Pavillons Ewondo impeccables à 14h00', 0, 'Chef d''Exploitation Ahala') AS r`)).rows[0].r;
     const allDone = Array.isArray(r3.checklist) && r3.checklist.every((c) => c.done === true);
     ok(r3.status === 'TERMINEE' && r3.visas?.visa3?.signed === true && allDone,
        'Responsable d\'exploitation : signe le Visa #3 (statut TERMINEE + 3/3 Visas + check-list complétée)');
+    ok(r3.rating_auto_60 >= 54 && r3.rating_supervisor_40 === 38 && r3.rating_total_100 >= 92 && Number(r3.rating_stars) >= 4.5,
+       `Notation agent au Visa #3 : ${r3.rating_total_100}/100 (${r3.rating_stars}/5 étoiles)`);
   });
+
+  console.log('\n7 quater. Rôle Comptable (8e rôle) & Comptabilité Analytique (20261030000001)');
+  await as(db, U.cpt, async (tx) => {
+    const prof = (await tx.query('SELECT public.get_my_profile() AS p')).rows[0].p;
+    ok(prof.role === 'comptable' && prof.matricule === 'MAT-CPT-01' && prof.assigned_pole === 'FINANCE_COMPTA',
+       'get_my_profile() renvoie le rôle comptable, son matricule MAT-CPT-01 et son pôle FINANCE_COMPTA');
+    const qRead = await tx.query('SELECT count(*)::int AS n FROM public.group_quotes');
+    const aRead = await tx.query('SELECT count(*)::int AS n FROM public.audit_logs');
+    ok(qRead.rows[0].n >= 1 && aRead.rows[0].n >= 1, 'Comptable : lit les devis B2B et le journal d\'audit financier');
+    const ledger = await tx.query('SELECT * FROM public.get_analytical_accounting_ledger()');
+    ok(ledger.rows.length === 6 && ledger.rows[0].analytical_code === 'ANA-01' && ledger.rows[5].analytical_code === 'ANA-06',
+       'Comptable : exécute get_analytical_accounting_ledger() (6 axes analytiques ANA-01 à ANA-06)');
+    const mut = await tx.query(`UPDATE public.catalog_activities SET adult_price_fcfa = 9999 WHERE id = $1`, [zooId]);
+    ok(mut.affectedRows === 0, 'Comptable : lecture seule stricte sur les tarifs (0 ligne modifiée)');
+  });
+  await expectError(as(db, U.gui, (tx) => tx.query('SELECT * FROM public.get_analytical_accounting_ledger()')),
+    'ECOPARK_FORBIDDEN', 'Agent guichet : ne peut pas accéder au grand-livre analytique comptable');
 
   console.log('\n8. Journal d\'audit immuable (ADM-08)');
   const ops = (await db.query(`SELECT DISTINCT operation FROM public.audit_logs`)).rows.map((r) => r.operation);

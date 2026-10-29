@@ -59,6 +59,7 @@ async function setupSupabase() {
   await db.exec(sql('../migrations/20261028000002_realtime_publication.sql'));
   await db.exec(sql('../migrations/20261028000003_publication_images.sql'));
   await db.exec(sql('../migrations/20261029000001_operational_missions_alerts.sql'));
+  await db.exec(sql('../migrations/20261030000001_accounts_rating_accounting.sql'));
   for (const u of Object.values(U)) {
     await db.query('INSERT INTO auth.users (id, email) VALUES ($1, $2)', [u.id, `${u.id}@t.local`]);
     await db.query('INSERT INTO public.staff_profiles (user_id, full_name, role) VALUES ($1, $2, $3)', [u.id, u.name, u.role]);
@@ -239,6 +240,14 @@ async function contract(env) {
 
   const v3 = await ED.signMissionVisa('MSN-2026-901', 'visa3', "Chef d'Exploitation Ahala");
   ok(v3.ok && v3.data.status === 'TERMINEE' && v3.data.visas?.visa3?.signed === true, 'Signature du Visa #3 (clôture) via EcoparkData.signMissionVisa()', v3.ok ? '' : v3.error.message);
+
+  const rated = await ED.rateMissionOnVisa3('MSN-2026-901', 38, 'Excellent accueil et caisse exacte', "Chef d'Exploitation Ahala");
+  const ratedTotal = rated.data && (rated.data.rating_total_100 ?? rated.data.ratingTotal100);
+  const ratedStars = rated.data && Number(rated.data.rating_stars ?? rated.data.ratingStars);
+  ok(rated.ok && ratedTotal === 98 && ratedStars === 4.9, 'Notation agent sur Visa #3 (98/100 • 4.9/5) via EcoparkData.rateMissionOnVisa3()', rated.ok ? '' : rated.error.message);
+
+  const ana = await ED.getAnalyticalLedger('2026-01-01', '2026-12-31');
+  ok(ana.ok && Array.isArray(ana.data) && ana.data.length === 6 && ana.data[0].analytical_code === 'ANA-01', 'Grand Livre Analytique (6 centres de profit ANA-01 à ANA-06) via EcoparkData.getAnalyticalLedger()', ana.ok ? '' : ana.error.message);
 
   if (env.asNoMfa) {
     await env.asNoMfa(U.dir);

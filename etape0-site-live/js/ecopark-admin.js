@@ -37,11 +37,20 @@
     client_connecte: 'Client connecté',
     agent_guichet: 'Agent guichet (caisse)',
     agent_controle: 'Agent contrôle (scanner QR)',
+    comptable: 'Comptable et contrôle financier',
     responsable_exploitation: "Responsable d'exploitation",
     direction: 'Direction',
     administrateur_plateforme: 'Administrateur plateforme'
   };
-  var STAFF_ROLES = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+  var STAFF_ROLES = ['agent_guichet', 'agent_controle', 'comptable', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+  var STAFF_POLES = {
+    GUICHET_CAISSE: 'Guichet et Caisse RN3',
+    CONTROLE_QR: 'Contrôle QR et Portail',
+    HEBERGEMENT: 'Cités Hôtelières',
+    CUISINE_SAVEURS: 'Le Château des Saveurs',
+    FINANCE_COMPTA: 'Comptabilité et Finance',
+    DIRECTION_GENERALE: 'Direction et Administration'
+  };
   var POLES = {
     NATURE_FAUNE: 'Nature & Faune', EAU_PLEIN_AIR: 'Eau & Plein air', RESTAURATION: 'Restauration',
     HEBERGEMENT: 'Hébergement', GROUPES_B2B: 'Groupes & Navettes', FORMATION_CFP: 'Formation CFP', CULTURE_EDUCATION: 'Musée & Bibliothèque', FAMILLE_ENFANCE: 'Aire de Jeux & Crèche-Garderie'
@@ -145,6 +154,8 @@
     ].concat(IMAGE_FIELDS),
     staff_profiles: [
       { k: 'full_name', l: 'Nom et prénom', t: 'text', req: true, wide: true },
+      { k: 'matricule', l: 'Code matricule (ex. MAT-GUI-01)', t: 'text', req: true },
+      { k: 'assigned_pole', l: "Pôle d'affectation", t: 'select', req: true, opts: Object.keys(STAFF_POLES).map(function (k) { return [k, STAFF_POLES[k]]; }) },
       { k: 'post_label', l: 'Poste', t: 'text', wide: true },
       { k: 'role', l: 'Rôle', t: 'select', req: true, opts: STAFF_ROLES.map(function (r) { return [r, ROLE_LABELS[r]]; }) }
     ]
@@ -154,15 +165,16 @@
     sales_bundles: { included_slugs: [], adult_bundle_price_fcfa: 0, child_bundle_price_fcfa: 0, is_featured: false },
     agenda_events: { target_weekday: 6, day_filter: 'SAMEDI', schedule: [], bundle_code: 'CUSTOM', meal_slot: 'Service 12h30', pergola: false, nutrition: false },
     menu_items: { category: 'PLAT', in_stock: true, preorder_enabled: true, is_signature: false, price_fcfa: null },
-    staff_profiles: { role: 'agent_guichet' }
+    staff_profiles: { role: 'agent_guichet', matricule: 'MAT-GUI-02', assigned_pole: 'GUICHET_CAISSE' }
   };
   var DEMO_STAFF = [
-    { user_id: 'demo-dir', full_name: 'Dr Christophe FOÉ NDI', post_label: 'Promoteur — Direction générale', role: 'direction', is_active: true },
-    { user_id: 'demo-gerant', full_name: 'M. Daryl MGBATOU', post_label: 'Gérant délégué', role: 'direction', is_active: true },
-    { user_id: 'demo-exp', full_name: "Chef d'exploitation Ahala", post_label: 'Réception, Château des Saveurs & loges', role: 'responsable_exploitation', is_active: true },
-    { user_id: 'demo-gui', full_name: 'Mme Clarisse ATANGANA', post_label: 'Caissière principale — Guichet #1 (RN3)', role: 'agent_guichet', is_active: true },
-    { user_id: 'demo-ctl', full_name: 'Brigade contrôle portail', post_label: 'Scanner QR — Entrée principale', role: 'agent_controle', is_active: true },
-    { user_id: 'demo-adm', full_name: 'Administrateur plateforme', post_label: 'Support technique ONOGRAPH', role: 'administrateur_plateforme', is_active: true }
+    { user_id: 'demo-dir', full_name: 'Dr Christophe FOÉ NDI', matricule: 'MAT-DIR-01', assigned_pole: 'DIRECTION_GENERALE', post_label: 'Promoteur — Direction générale', role: 'direction', is_active: true },
+    { user_id: 'demo-gerant', full_name: 'M. Daryl MGBATOU', matricule: 'MAT-DIR-02', assigned_pole: 'DIRECTION_GENERALE', post_label: 'Gérant délégué', role: 'direction', is_active: true },
+    { user_id: 'demo-exp', full_name: "Chef d'exploitation Ahala", matricule: 'MAT-EXP-01', assigned_pole: 'HEBERGEMENT', post_label: 'Réception, Château des Saveurs et loges', role: 'responsable_exploitation', is_active: true },
+    { user_id: 'demo-cpt', full_name: 'M. Paul ETOUNDI', matricule: 'MAT-CPT-01', assigned_pole: 'FINANCE_COMPTA', post_label: 'Comptabilité générale OHADA et analytique', role: 'comptable', is_active: true },
+    { user_id: 'demo-gui', full_name: 'Mme Clarisse ATANGANA', matricule: 'MAT-GUI-01', assigned_pole: 'GUICHET_CAISSE', post_label: 'Caissière principale — Guichet #1 (RN3)', role: 'agent_guichet', is_active: true },
+    { user_id: 'demo-ctl', full_name: 'Brigade contrôle portail', matricule: 'MAT-CTL-01', assigned_pole: 'CONTROLE_QR', post_label: 'Scanner QR — Entrée principale', role: 'agent_controle', is_active: true },
+    { user_id: 'demo-adm', full_name: 'Administrateur plateforme', matricule: 'MAT-ADM-01', assigned_pole: 'DIRECTION_GENERALE', post_label: 'Support technique ONOGRAPH', role: 'administrateur_plateforme', is_active: true }
   ];
   var DEMO_GATEWAYS = [
     { provider: 'ORANGE_MONEY', display_name: 'Orange Money WebPay Cameroun', mode: 'SANDBOX', status: 'UNKNOWN', key_last4: null, last_webhook_at: null },
@@ -254,7 +266,14 @@
     if (!isDemo()) return;
     var st = ED().store.state;
     st.content = st.content || {};
-    if (!st.content.staff_profiles || !st.content.staff_profiles.length) st.content.staff_profiles = clone(DEMO_STAFF);
+    if (!st.content.staff_profiles || !st.content.staff_profiles.length) {
+      st.content.staff_profiles = clone(DEMO_STAFF);
+    } else {
+      var hasCpt = st.content.staff_profiles.some(function (u) { return u.role === 'comptable'; });
+      if (!hasCpt) {
+        st.content.staff_profiles = clone(DEMO_STAFF);
+      }
+    }
     if (!st.content.gateway_health || !st.content.gateway_health.length) st.content.gateway_health = clone(DEMO_GATEWAYS);
     if (!st.content.daily_quotas) st.content.daily_quotas = [];
     ED().store.persist();
@@ -340,15 +359,21 @@
   function renderRoleBar() {
     var el = $('admRoleBar');
     if (!el) return;
+    var needsMfa = S.role === 'direction' || S.role === 'administrateur_plateforme' || S.role === 'comptable';
+    var mfaBadge = needsMfa
+      ? (S.mfaOk
+        ? ' <span class="adm-badge adm-badge-live" id="admMfaStatusBadge">MFA TOTP (AAL2) vérifié</span>'
+        : ' <span class="adm-badge adm-badge-error" id="admMfaStatusBadge">Double authentification requise</span>')
+      : ' <span class="adm-badge adm-badge-draft" id="admMfaStatusBadge">Session poste (AAL1)</span>';
     var right;
     if (isDemo()) {
       right = '<label class="adm-inline"><span>Rôle simulé (démo)</span><select class="form-control" id="admDemoRole">' +
-        ['direction', 'administrateur_plateforme', 'responsable_exploitation', 'agent_guichet'].map(function (r) {
+        ['direction', 'administrateur_plateforme', 'responsable_exploitation', 'comptable', 'agent_guichet', 'agent_controle'].map(function (r) {
           return '<option value="' + r + '"' + (r === S.role ? ' selected' : '') + '>' + esc(ROLE_LABELS[r]) + '</option>';
-        }).join('') + '</select></label>';
+        }).join('') + '</select>' + mfaBadge + '</label>';
     } else {
       right = '<span class="adm-who">' + esc(S.profileName || 'Session') + ' — ' + esc(ROLE_LABELS[S.role] || S.role) +
-        (S.mfaOk ? '' : ' <span class="adm-badge adm-badge-error">Double authentification requise</span>') + '</span>';
+        mfaBadge + '</span>';
     }
     var mode = isDemo()
       ? '<span class="adm-badge adm-badge-draft">Mode démonstration — données de ce navigateur uniquement</span>'
@@ -357,7 +382,9 @@
       ? (S.role === 'direction' ? 'Vous pouvez préparer, publier et archiver les tarifs.'
         : S.role === 'administrateur_plateforme' ? 'Vous préparez et archivez ; la publication des tarifs revient à la Direction.'
           : 'Vous préparez les brouillons et publiez agenda et carte ; les tarifs sont publiés par la Direction.')
-      : 'Consultation seule : votre rôle ne permet pas de modifier le contenu.';
+      : (S.role === 'comptable'
+        ? 'Accès financier certifié : consultation des écritures, exports OHADA / analytique et audit ; modification du catalogue désactivée.'
+        : 'Consultation seule : votre rôle ne permet pas de modifier le contenu.');
     el.innerHTML = '<div class="adm-rolebar-left">' + mode + '<span class="adm-rights">' + esc(rights) + '</span></div><div>' + right + '</div>';
     var sel = $('admDemoRole');
     if (sel) sel.onchange = function () {
@@ -513,7 +540,9 @@
     $('admStaffAdd').title = isDemo() ? '' : "L'invitation par e-mail s'active avec Supabase Auth (Phase 2).";
     body.innerHTML = S.staff.map(function (u) {
       var id = esc(u.user_id);
-      return '<tr><td class="adm-col-offer"><strong>' + esc(u.full_name) + '</strong><div class="adm-sub">' + esc(u.post_label || '') + '</div></td>' +
+      var mat = u.matricule ? '<span class="adm-badge adm-badge-draft" style="font-family:var(--font-mono); margin-right:6px;">' + esc(u.matricule) + '</span>' : '';
+      var poleLabel = u.assigned_pole && STAFF_POLES[u.assigned_pole] ? ' · ' + esc(STAFF_POLES[u.assigned_pole]) : '';
+      return '<tr><td class="adm-col-offer"><strong>' + esc(u.full_name) + '</strong><div class="adm-sub">' + mat + esc(u.post_label || '') + poleLabel + '</div></td>' +
         '<td>' + esc(ROLE_LABELS[u.role] || u.role) + '</td>' +
         '<td>' + (u.is_active ? '<span class="adm-badge adm-badge-live">Actif</span>' : '<span class="adm-badge adm-badge-error">Suspendu</span>') + '</td>' +
         '<td><div class="adm-actions">' +
@@ -1091,7 +1120,7 @@
       else if (act === 'staff-edit') openEditor('staff_profiles', S.staff.filter(function (u) { return u.user_id === id; })[0]);
       else if (act === 'staff-dup') {
         var src = S.staff.filter(function (u) { return u.user_id === id; })[0];
-        openEditor('staff_profiles', null, { prefill: { role: src.role, post_label: src.post_label, full_name: '' } });
+        openEditor('staff_profiles', null, { prefill: { role: src.role, post_label: src.post_label, matricule: (src.matricule || 'MAT-EQP') + '-BIS', assigned_pole: src.assigned_pole || 'GUICHET_CAISSE', full_name: '' } });
       } else if (act === 'staff-toggle') staffToggle(id);
       else if (act === 'gw-test') {
         ED().logEvent('GATEWAY_TEST', 'gateway_health', id, 'Test manuel de la passerelle ' + id).then(function (res) {

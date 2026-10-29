@@ -49,9 +49,14 @@
     { "source": "/reserver/", "destination": "/index.html" },
     { "source": "/whatsapp", "destination": "/index.html" },
     { "source": "/whatsapp/", "destination": "/index.html" },
+    { "source": "/exploitation", "destination": "/index.html" },
+    { "source": "/exploitation/", "destination": "/index.html" },
     { "source": "/guichet", "destination": "/index.html" },
+    { "source": "/guichet/", "destination": "/index.html" },
     { "source": "/direction", "destination": "/index.html" },
-    { "source": "/admin", "destination": "/index.html" }
+    { "source": "/direction/", "destination": "/index.html" },
+    { "source": "/admin", "destination": "/index.html" },
+    { "source": "/admin/", "destination": "/index.html" }
   ],
   "headers": [
     {

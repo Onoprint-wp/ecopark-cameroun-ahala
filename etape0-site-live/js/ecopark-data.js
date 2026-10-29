@@ -300,6 +300,11 @@
           guardrail: r.guardrail || '',
           checklist: Array.isArray(r.checklist) ? r.checklist : [],
           visas: (r.visas && typeof r.visas === 'object') ? r.visas : {},
+          ratingAuto60: r.rating_auto_60 != null ? Number(r.rating_auto_60) : (r.ratingAuto60 != null ? Number(r.ratingAuto60) : null),
+          ratingSupervisor40: r.rating_supervisor_40 != null ? Number(r.rating_supervisor_40) : (r.ratingSupervisor40 != null ? Number(r.ratingSupervisor40) : null),
+          ratingTotal100: r.rating_total_100 != null ? Number(r.rating_total_100) : (r.ratingTotal100 != null ? Number(r.ratingTotal100) : null),
+          ratingStars: r.rating_stars != null ? Number(r.rating_stars) : (r.ratingStars != null ? Number(r.ratingStars) : null),
+          ratingComment: r.rating_comment || r.ratingComment || '',
           assignedBy: r.assigned_by || 'Chef d\'Exploitation Ahala',
           createdAt: r.created_at ? Mappers.tsToFr(r.created_at) : '',
           version: r.version || 1,
@@ -331,6 +336,11 @@
           guardrail: m.guardrail || '',
           checklist: Array.isArray(m.checklist) ? m.checklist : [],
           visas: (m.visas && typeof m.visas === 'object') ? m.visas : {},
+          rating_auto_60: m.ratingAuto60 != null ? Number(m.ratingAuto60) : (m.rating_auto_60 != null ? Number(m.rating_auto_60) : 0),
+          rating_supervisor_40: m.ratingSupervisor40 != null ? Number(m.ratingSupervisor40) : (m.rating_supervisor_40 != null ? Number(m.rating_supervisor_40) : 0),
+          rating_total_100: m.ratingTotal100 != null ? Number(m.ratingTotal100) : (m.rating_total_100 != null ? Number(m.rating_total_100) : 0),
+          rating_stars: m.ratingStars != null ? Number(m.ratingStars) : (m.rating_stars != null ? Number(m.rating_stars) : 0),
+          rating_comment: m.ratingComment || m.rating_comment || '',
           assigned_by: m.assignedBy || m.assigned_by || 'Chef d\'Exploitation Ahala'
         };
       }
@@ -818,7 +828,7 @@
     var self = this;
     args = args || {};
     if (name === 'sign_mission_visa') {
-      var staffRoles = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+      var staffRoles = ['agent_guichet', 'agent_controle', 'comptable', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
       if (staffRoles.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
       var vk = args.p_visa_key;
       if (['visa1', 'visa2', 'visa3'].indexOf(vk) < 0) return self._fail({ message: 'ECOPARK_INVALID_VISA_KEY' });
@@ -851,6 +861,20 @@
           if (Array.isArray(target.checklist)) {
             target.checklist.forEach(function (c) { c.done = true; });
           }
+          var auto60 = target.ratingAuto60 != null ? Number(target.ratingAuto60) : 56;
+          var sup40 = target.ratingSupervisor40 != null ? Number(target.ratingSupervisor40) : 40;
+          var tot100 = Math.max(0, Math.min(100, auto60 + sup40));
+          var stars = Math.round((tot100 / 20) * 10) / 10;
+          target.ratingAuto60 = auto60;
+          target.ratingSupervisor40 = sup40;
+          target.ratingTotal100 = tot100;
+          target.ratingStars = stars;
+          target.rating_auto_60 = auto60;
+          target.rating_supervisor_40 = sup40;
+          target.rating_total_100 = tot100;
+          target.rating_stars = stars;
+          if (!target.ratingComment) target.ratingComment = 'Clôture conforme Visa #3';
+          target.rating_comment = target.ratingComment;
         }
         target.version = (target.version || 1) + 1;
         self._audit(s, 'VISA_' + vk.toUpperCase(), 'operational_missions', target.title || mRef);
@@ -858,8 +882,131 @@
       }, { source: 'local', entity: 'operational_missions', op: 'rpc' });
       return Promise.resolve({ ok: true, data: updated });
     }
+    if (name === 'rate_mission_on_visa3') {
+      if (!Rules.canEdit(self.role)) {
+        return self._fail({ code: '42501', message: 'ECOPARK_VISA_REQUIRES_EXPLOITATION' });
+      }
+      var rawSup = args.p_supervisor_40 != null ? args.p_supervisor_40 : args.p_supervisor_score_40;
+      var supScore = rawSup != null ? Number(rawSup) : 36;
+      if (isNaN(supScore) || supScore < 0 || supScore > 40) {
+        return self._fail({ message: 'ECOPARK_INVALID_SUPERVISOR_SCORE' });
+      }
+      var mRefRate = args.p_mission_ref;
+      var rowsRate = self._rows(self.store.state, 'operational_missions');
+      var mRate = rowsRate.filter(function (r) { return (r.id || r.mission_ref) === mRefRate; })[0];
+      if (!mRate) return self._fail({ code: 'P0002' });
+      var updatedRate;
+      self.store.patch(function (s) {
+        var list = self._rows(s, 'operational_missions');
+        var target = list.filter(function (r) { return (r.id || r.mission_ref) === mRefRate; })[0];
+        var stamp = new Date().toISOString().slice(0, 16).replace('T', ' ');
+        target.visas = target.visas || {};
+        if (!target.visas.visa1) target.visas.visa1 = { signed: true, actor: target.assignedBy || 'Chef d\'Exploitation Ahala', timestamp: stamp };
+        var hadVisa2 = !!(target.visas.visa2 && target.visas.visa2.signed);
+        var cl = Array.isArray(target.checklist) ? target.checklist : [];
+        var clTotal = cl.length;
+        var clDone = cl.filter(function (c) { return !!c.done; }).length;
+        var checklistScore = clTotal > 0 ? Math.max(14, Math.min(20, Math.round((clDone / clTotal) * 20))) : 20;
+        var punctualityScore = 20;
+        var gap = Math.abs(Number(args.p_cash_gap_fcfa || 0));
+        var complianceScore = gap === 0 ? 20 : (gap <= 2000 ? 10 : 0);
+        var auto60 = Math.min(60, punctualityScore + checklistScore + complianceScore);
+        var tot100 = Math.min(100, auto60 + supScore);
+        var stars = Math.round((tot100 / 20) * 10) / 10;
+        var actor = args.p_actor_name || target.assignedBy || 'Chef d\'Exploitation Ahala';
+        var comment = args.p_comment || 'Clôture contradictoire conforme.';
+        if (!hadVisa2) {
+          target.visas.visa2 = { signed: true, actor: (target.agentName || 'Agent') + ' (' + (target.agentMatricule || 'MAT') + ')', timestamp: stamp };
+        }
+        target.visas.visa3 = {
+          signed: true, actor: actor, timestamp: stamp,
+          rating_auto_60: auto60, rating_supervisor_40: supScore, rating_total_100: tot100, rating_stars: stars, comment: comment
+        };
+        target.status = 'TERMINEE';
+        cl.forEach(function (c) { c.done = true; });
+        target.ratingAuto60 = auto60;
+        target.ratingSupervisor40 = supScore;
+        target.ratingTotal100 = tot100;
+        target.ratingStars = stars;
+        target.ratingComment = comment;
+        target.rating_auto_60 = auto60;
+        target.rating_supervisor_40 = supScore;
+        target.rating_total_100 = tot100;
+        target.rating_stars = stars;
+        target.rating_comment = comment;
+        target.version = (target.version || 1) + 1;
+        self._audit(s, 'RATE_VISA3', 'operational_missions', (target.title || mRefRate) + ' (' + tot100 + '/100)');
+        updatedRate = clone(target);
+      }, { source: 'local', entity: 'operational_missions', op: 'rpc' });
+      return Promise.resolve({ ok: true, data: updatedRate });
+    }
+    if (name === 'get_analytical_accounting_ledger') {
+      var acctRoles = ['comptable', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+      if (acctRoles.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
+      var dFrom = args.p_date_from || '2026-01-01';
+      var dTo = args.p_date_to || '2099-12-31';
+      var st = self.store.state;
+      var orders = (st.orders || []).filter(function (o) {
+        if (o.status !== 'PAYE') return false;
+        var iso = Mappers.frToIso(o.date) || String(o.date || '').slice(0, 10);
+        return (!iso || (iso >= dFrom && iso <= dTo));
+      });
+      var pos = (st.posTickets || []).filter(function (t) {
+        if (String(t.status || '').indexOf('ENCAISSE') !== 0) return false;
+        var iso = Mappers.frToIso(t.time) || String(t.time || '').slice(0, 10);
+        return (!iso || (iso >= dFrom && iso <= dTo));
+      });
+      var lodges = (st.lodgeBookings || []).filter(function (l) {
+        if (l.status !== 'CONFIRME') return false;
+        var iso = Mappers.frToIso(l.checkIn) || String(l.checkIn || '').slice(0, 10);
+        return (!iso || (iso >= dFrom && iso <= dTo));
+      });
+      var axes = [
+        { analytical_code: 'ANA-01', pole_code: 'NATURE_FAUNE', pole_label: 'Nature, Faune et Jardin Zoologique', ohada_account: '7061', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+        { analytical_code: 'ANA-02', pole_code: 'EAU_PLEIN_AIR', pole_label: 'Eau, Piscine Semi-Olympique et Lac', ohada_account: '7062', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+        { analytical_code: 'ANA-03', pole_code: 'RESTAURATION', pole_label: 'Restaurant Le Château des Saveurs et Pergolas', ohada_account: '7011/7063', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+        { analytical_code: 'ANA-04', pole_code: 'HEBERGEMENT', pole_label: 'Cités Hôtelières (Bene, Chanthel, Ewondo VIP)', ohada_account: '7064', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+        { analytical_code: 'ANA-05', pole_code: 'GROUPES_B2B', pole_label: 'Groupes, Salle Menkii (500 pl.) et Navettes', ohada_account: '7065', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 },
+        { analytical_code: 'ANA-06', pole_code: 'FORMATION_CFP', pole_label: 'Campus CFP Agréé MINEFOP (5 filières)', ohada_account: '7066', gross_fcfa: 0, refunds_fcfa: 0, net_fcfa: 0, net_revenue_fcfa: 0, tx_count: 0, transactions_count: 0 }
+      ];
+      orders.forEach(function (o) {
+        var amt = Mappers.toFcfa(o.total);
+        var sum = String(o.summary || '').toUpperCase();
+        if (sum.indexOf('ROYALE') >= 0) {
+          axes[0].gross_fcfa += Math.round(amt * 0.28);
+          axes[1].gross_fcfa += Math.round(amt * 0.56);
+          axes[2].gross_fcfa += amt - Math.round(amt * 0.28) - Math.round(amt * 0.56);
+          axes[0].tx_count++; axes[1].tx_count++; axes[2].tx_count++;
+        } else if (sum.indexOf('COUPLE') >= 0 || sum.indexOf('EWONDO') >= 0) {
+          axes[1].gross_fcfa += Math.round(amt * 0.30);
+          axes[2].gross_fcfa += amt - Math.round(amt * 0.30);
+          axes[1].tx_count++; axes[2].tx_count++;
+        } else {
+          axes[0].gross_fcfa += Math.round(amt * 0.45);
+          axes[1].gross_fcfa += amt - Math.round(amt * 0.45);
+          axes[0].tx_count++; axes[1].tx_count++;
+        }
+      });
+      pos.forEach(function (t) {
+        var amt = Mappers.toFcfa(t.amount);
+        axes[0].gross_fcfa += Math.round(amt * 0.45);
+        axes[1].gross_fcfa += amt - Math.round(amt * 0.45);
+        axes[0].tx_count++; axes[1].tx_count++;
+      });
+      lodges.forEach(function (l) {
+        var amt = Mappers.toFcfa(l.total);
+        axes[3].gross_fcfa += amt;
+        axes[3].tx_count++;
+      });
+      axes.forEach(function (a) {
+        a.net_fcfa = a.gross_fcfa - a.refunds_fcfa;
+        a.net_revenue_fcfa = a.net_fcfa;
+        a.transactions_count = a.tx_count;
+      });
+      return Promise.resolve({ ok: true, data: axes });
+    }
     if (name === 'acknowledge_operational_alert') {
-      var staffRolesAck = ['agent_guichet', 'agent_controle', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
+      var staffRolesAck = ['agent_guichet', 'agent_controle', 'comptable', 'responsable_exploitation', 'direction', 'administrateur_plateforme'];
       if (staffRolesAck.indexOf(self.role) < 0) return self._fail({ code: '42501', message: 'ECOPARK_FORBIDDEN' });
       var aRef = args.p_alert_ref;
       var aRows = self._rows(self.store.state, 'operational_alerts');
@@ -1382,6 +1529,21 @@
       p_mission_ref: missionRef,
       p_visa_key: visaKey,
       p_actor_name: actorName || null
+    });
+  };
+  EcoparkData.rateMissionOnVisa3 = function (missionRef, supervisorScore40, comment, actorName, cashGapFcfa) {
+    return EcoparkData.rpc('rate_mission_on_visa3', {
+      p_mission_ref: missionRef,
+      p_supervisor_40: supervisorScore40 != null ? Number(supervisorScore40) : 36,
+      p_comment: comment || '',
+      p_cash_gap_fcfa: cashGapFcfa != null ? Number(cashGapFcfa) : 0,
+      p_actor_name: actorName || null
+    });
+  };
+  EcoparkData.getAnalyticalLedger = function (dateFrom, dateTo) {
+    return EcoparkData.rpc('get_analytical_accounting_ledger', {
+      p_date_from: dateFrom || '2026-01-01',
+      p_date_to: dateTo || '2099-12-31'
     });
   };
   EcoparkData.acknowledgeAlert = function (alertRef) {

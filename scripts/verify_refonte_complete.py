@@ -351,12 +351,20 @@ def main():
                 omRadio.dispatchEvent(new Event('change'));
             }
 
+            const col7Rect = document.querySelector('#resMainGrid > .col-7').getBoundingClientRect();
+            const bundleBtns = Array.from(document.querySelectorAll('#bundleQuickSelector > .btn'));
+            const bundleButtonsFitCol7 = bundleBtns.length === 4 && bundleBtns.every(b => {
+                const r = b.getBoundingClientRect();
+                return r.right <= col7Rect.right - 8 && r.left >= col7Rect.left + 8;
+            });
+
             return {
                 journeyTabs,
                 steps,
                 visitDateVal,
                 qrVisibleBefore,
-                guichetBoxTxt
+                guichetBoxTxt,
+                bundleButtonsFitCol7
             };
         }""")
         expected_steps = [
@@ -371,8 +379,9 @@ def main():
             and res_check_before["steps"] == expected_steps
             and res_check_before["visitDateVal"] != "2026-11-15"
             and not res_check_before["qrVisibleBefore"]
-            and "Montant restant à régler au guichet" in res_check_before["guichetBoxTxt"],
-            "Parcours de reservation : 4 parcours distincts, 5 etapes dans l'ordre, billet QR masque avant validation, solde guichet explicite",
+            and "Montant restant à régler au guichet" in res_check_before["guichetBoxTxt"]
+            and res_check_before["bundleButtonsFitCol7"],
+            "Parcours de reservation : 4 parcours distincts, 5 etapes dans l'ordre, 4 formules sans debordement de colonne, billet QR masque avant validation, solde guichet explicite",
             res_check_before
         )
         page.evaluate("window.scrollTo({ top: 0, behavior: 'instant' })")
@@ -626,6 +635,160 @@ def main():
             page.wait_for_timeout(80)
             overflow_dir = page.evaluate("() => document.documentElement.scrollWidth - document.documentElement.clientWidth")
             check(overflow_dir <= 0, f"Vue /direction a {w}px : zero debordement horizontal (overflow={overflow_dir}px)")
+
+        # 13. Comptes RBAC (8 roles), Authentification (3 flux), Notation Agents (/100 & /5) et Comptabilite Analytique & SYSCOHADA (DIR-05)
+        print("\n10. Comptes RBAC (8 roles), Authentification (3 flux), Notation Agents (/100 & /5) & Comptabilite Analytique SYSCOHADA")
+        page.set_viewport_size({"width": 1440, "height": 900})
+        auth_rbac_check = page.evaluate("""async () => {
+            navigateFamily('ADM', 'ADM-05');
+            if (typeof window.ecoparkOpenAdmin === 'function') {
+                await window.ecoparkOpenAdmin();
+            }
+            const roleOpts = Array.from(document.querySelectorAll('#roleSelector option')).map(o => o.value);
+            const hasComptableOpt = roleOpts.includes('comptable') && roleOpts.length === 8;
+            const mfaBadge = document.getElementById('admMfaStatusBadge');
+            const staffHtml = document.getElementById('admStaffBody')?.innerHTML || '';
+            const hasPaulEtoundi = staffHtml.includes('MAT-CPT-01') && staffHtml.includes('Paul ETOUNDI');
+
+            // Flux 1 : Visiteur OTP / 4 derniers chiffres en /mon-espace
+            navigateFamily('ACC', 'ACC-01');
+            const otpBar = document.getElementById('accOtpVerifyForm');
+            const hasOtpBarVisible = !!otpBar && getComputedStyle(otpBar).display !== 'none';
+            const otpOk = verifyVisitorAccessCode('EPK-2026-8841', '6203');
+            const otpFail = verifyVisitorAccessCode('EPK-2026-8841', '0000');
+
+            // Flux 2 : Agent de terrain prise de poste par matricule en /guichet
+            navigateFamily('AGT', 'AGT-01');
+            const shiftOk = verifyShiftAgentLogin('MAT-CTL-02', 'CONTROLE_QR');
+            const shiftStatusUnlocked = document.getElementById('agtShiftAuthStatusBadge')?.textContent || '';
+            lockShiftAgentSession();
+            const shiftStatusLocked = document.getElementById('agtShiftAuthStatusBadge')?.textContent || '';
+
+            const pub21 = document.getElementById('sec-PUB-21');
+            const pub22 = document.getElementById('sec-PUB-22');
+            const pub21Hidden = !pub21 || getComputedStyle(pub21).display === 'none';
+            const pub22Hidden = !pub22 || getComputedStyle(pub22).display === 'none';
+
+            return {
+                roleOptsCount: roleOpts.length,
+                hasComptableOpt,
+                hasMfaBadge: !!mfaBadge && mfaBadge.textContent.includes('MFA'),
+                hasPaulEtoundi,
+                hasOtpBarVisible,
+                otpOk: !!(otpOk && otpOk.verified),
+                otpFailRejected: !otpFail || !otpFail.verified,
+                shiftOk: !!(shiftOk && shiftOk.unlocked && shiftOk.matricule === 'MAT-CTL-02'),
+                shiftStatusUnlocked,
+                shiftStatusLocked,
+                pub21Hidden,
+                pub22Hidden
+            };
+        }""")
+        check(
+            auth_rbac_check["hasComptableOpt"]
+            and auth_rbac_check["hasMfaBadge"]
+            and auth_rbac_check["hasPaulEtoundi"]
+            and auth_rbac_check["hasOtpBarVisible"]
+            and auth_rbac_check["otpOk"]
+            and auth_rbac_check["otpFailRejected"]
+            and auth_rbac_check["shiftOk"]
+            and auth_rbac_check["pub21Hidden"]
+            and auth_rbac_check["pub22Hidden"],
+            "Comptes RBAC (8 roles dont comptable MAT-CPT-01) et 3 flux d'authentification (OTP visiteur, Matricule prise de poste agent, MFA AAL2 gouvernance)",
+            auth_rbac_check
+        )
+
+        rating_check = page.evaluate("""async () => {
+            navigateFamily('EXP', 'EXP-05');
+            const rated = await rateMissionOnVisa3('MSN-2026-101', 38, 'Excellent service guichet, zero ecart de caisse', 0);
+            openMissionSheetA4('MSN-2026-101');
+            const a4RatingText = document.getElementById('a4MissionRatingSection')?.textContent || '';
+            const cardsCount = document.querySelectorAll('#expAgentRatingsCardsGrid [data-agent-rating-card]').length;
+            const tableText = document.getElementById('expMissionsTable')?.textContent || '';
+            return {
+                ratedScore100: rated ? rated.ratingTotal100 : null,
+                ratedAuto60: rated ? rated.ratingAuto60 : null,
+                ratedSup40: rated ? rated.ratingSupervisor40 : null,
+                ratedStars: rated ? rated.ratingStars : null,
+                visa3Signed: rated ? rated.visa3ClosureSigned : false,
+                hasA4Rating: a4RatingText.includes('96 / 100') && a4RatingText.includes('4.8 / 5'),
+                cardsCount,
+                tableHasScore: tableText.includes('96 / 100')
+            };
+        }""")
+        check(
+            rating_check["ratedScore100"] == 96
+            and rating_check["ratedAuto60"] == 58
+            and rating_check["ratedSup40"] == 38
+            and rating_check["ratedStars"] == 4.8
+            and rating_check["visa3Signed"]
+            and rating_check["hasA4Rating"]
+            and rating_check["cardsCount"] >= 4
+            and rating_check["tableHasScore"],
+            "Notation des agents de terrain au Visa #3 : bareme 100 pts (60 auto + 40 superviseur) et 5 etoiles, palmares RH et fiche de mission A4",
+            rating_check
+        )
+
+        accounting_check = page.evaluate("""() => {
+            const ov = document.getElementById('modalOverlaySprint1');
+            if (ov) ov.style.display = 'none';
+            navigateFamily('DIR', 'DIR-05');
+            renderAccountingConsoleDir05();
+            const ledger = computeEcoparkAccountingLedgers();
+            const anaRows = document.querySelectorAll('#dirAnalyticalAccountingBody tr').length;
+            const ohadaRes = exportJournalOHADACSV();
+            const anaRes = exportGrandLivreAnalytiqueCSV();
+            const ohadaCsv = (ohadaRes && ohadaRes.csv ? ohadaRes.csv : String(ohadaRes || '')).replace(/^\\ufeff/, '');
+            const anaCsv = (anaRes && anaRes.csv ? anaRes.csv : String(anaRes || '')).replace(/^\\ufeff/, '');
+            printOfficialDocument('CLOSURE');
+            const ov2 = document.getElementById('modalOverlaySprint1');
+            if (ov2) ov2.style.display = 'none';
+            return {
+                axesCount: ledger.axes.length,
+                isBalanced: ledger.isBalanced,
+                totalGrossFcfa: ledger.totalGrossFcfa,
+                totalRefundsFcfa: ledger.totalRefundsFcfa,
+                totalNetFcfa: ledger.totalNetFcfa,
+                totalDebitOhada: ledger.totalDebitOhada,
+                totalCreditOhada: ledger.totalCreditOhada,
+                anaRows,
+                ohadaCsvLines: ohadaCsv.trim().split(/\\r?\\n/).length,
+                anaCsvLines: anaCsv.trim().split(/\\r?\\n/).length,
+                ohadaHeaderValid: ohadaCsv.includes('Compte_OHADA') && ohadaCsv.includes('Debit_FCFA') && ohadaCsv.includes('Credit_FCFA'),
+                anaHeaderValid: anaCsv.includes('Axe_Analytique') && anaCsv.includes('Centre_De_Profit') && anaCsv.includes('Compte_OHADA_Produit')
+            };
+        }""")
+        check(
+            accounting_check["axesCount"] == 6
+            and accounting_check["isBalanced"]
+            and accounting_check["totalNetFcfa"] == (accounting_check["totalGrossFcfa"] - accounting_check["totalRefundsFcfa"])
+            and accounting_check["totalDebitOhada"] == accounting_check["totalCreditOhada"]
+            and accounting_check["anaRows"] == 6
+            and accounting_check["ohadaCsvLines"] >= 8
+            and accounting_check["anaCsvLines"] >= 6
+            and accounting_check["ohadaHeaderValid"]
+            and accounting_check["anaHeaderValid"],
+            "Comptabilite generale SYSCOHADA et analytique 6 centres de profit (ANA-01..06) : ventilation multi-services, equilibre Debit=Credit et exports CSV",
+            accounting_check
+        )
+        page.evaluate("""() => {
+            const toast = document.getElementById('toastSprint1');
+            if (toast) toast.style.display = 'none';
+            const el = document.getElementById('sec-DIR-05');
+            if (el) {
+                const y = el.getBoundingClientRect().top + window.scrollY - 85;
+                window.scrollTo({ top: Math.max(0, y), behavior: 'instant' });
+            }
+        }""")
+        page.wait_for_timeout(120)
+        page.screenshot(path=str(QA_DIR / "11_direction_comptabilite_analytique_ohada.png"), full_page=False)
+
+        for fam_code, scr_code in [("AGT", "AGT-01"), ("EXP", "EXP-05"), ("ADM", "ADM-05")]:
+            page.evaluate(f"() => navigateFamily('{fam_code}', '{scr_code}')")
+            page.set_viewport_size({"width": 360, "height": 844})
+            page.wait_for_timeout(80)
+            ovf = page.evaluate("() => document.documentElement.scrollWidth - document.documentElement.clientWidth")
+            check(ovf <= 0, f"Vue {fam_code} a 360px : zero debordement horizontal (overflow={ovf}px)")
 
         check(len(console_errors) == 0, "Zero erreur console / page JavaScript sur l'ensemble des parcours", console_errors)
         browser.close()
