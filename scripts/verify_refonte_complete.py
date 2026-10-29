@@ -29,7 +29,7 @@ if hasattr(sys.stdout, "reconfigure"):
 ROOT = Path(__file__).resolve().parent.parent
 LIVE_DIR = ROOT / "etape0-site-live"
 QA_DIR = ROOT / "audit-assets" / "qa-refonte"
-ARTIFACT_DIR = Path(r"C:\Users\PcGamerCm\.gemini\antigravity\brain\647fe6a0-be58-4692-ab77-e139c6c1d041")
+ARTIFACT_DIR = Path(r"C:\Users\PcGamerCm\.gemini\antigravity\brain\22573085-c0a8-4d57-ad11-d7368cdd4f89")
 
 
 class _SpaHandler(http.server.SimpleHTTPRequestHandler):
@@ -525,21 +525,41 @@ def main():
         if ARTIFACT_DIR.exists():
             page.screenshot(path=str(ARTIFACT_DIR / "07_assignation_taches_exploitation.png"), full_page=False)
 
-        # Ouverture de la Fiche de Mission Officielle A4 Imprimable
+        # Ouverture de la Fiche de Mission Officielle A4 Imprimable + Matrice d'Approbation + Signature interactive des 3 Visas
         a4_check = page.evaluate("""(mId) => {
-            openMissionSheetA4(mId || 'MSN-2026-101');
+            const targetId = mId || 'MSN-2026-101';
+            openMissionSheetA4(targetId);
+            signMissionVisa(targetId, 'visa3');
             const sheet = document.getElementById('printableMissionSheetA4');
             const txt = sheet ? sheet.textContent : '';
+            const govMatrix = document.getElementById('expGovernanceApprovalMatrix');
+            const govItemsCount = govMatrix ? govMatrix.querySelectorAll('.governance-matrix-item').length : 0;
+            enrichOrderTablesWithMissionSheetLinks();
+            const accOrderLinks = document.querySelectorAll('#view-ACC table tbody button[onclick*="openMissionSheetForOrder"]').length;
+            const expOrderLinks = document.querySelectorAll('#view-EXP table tbody button[onclick*="openMissionSheetForOrder"]').length;
+            const qrSvg = document.querySelector('#missionSheetQrContainer svg');
+            const qrRect = qrSvg ? qrSvg.getBoundingClientRect() : { width: 0, height: 0 };
             return {
                 sheetVisible: !!sheet && getComputedStyle(document.getElementById('modalOfficialPrintBox')).display !== 'none',
                 hasTitle: txt.includes('ORDRE DE MISSION TERRAIN'),
                 hasChecklist: sheet ? sheet.querySelectorAll('.mission-checklist-item').length >= 3 : false,
-                hasVisas: txt.includes('Visa Responsable Exploitation') && txt.includes('Émargement Agent')
+                hasVisas: txt.includes('Visa Responsable Exploitation') && txt.includes('Émargement Agent') && txt.includes('3/3 VISAS'),
+                govItemsCount,
+                accOrderLinks,
+                expOrderLinks,
+                qrFitsContainer: qrRect.width > 0 && qrRect.width <= 92
             };
         }""", mission_check["createdId"])
         check(
-            a4_check["sheetVisible"] and a4_check["hasTitle"] and a4_check["hasChecklist"] and a4_check["hasVisas"],
-            "Fiche de Mission Officielle A4 Imprimable complete (en-tete, QR, dotation, check-list terrain et 3 cadres d'emargement)",
+            a4_check["sheetVisible"]
+            and a4_check["hasTitle"]
+            and a4_check["hasChecklist"]
+            and a4_check["hasVisas"]
+            and a4_check["govItemsCount"] == 6
+            and a4_check["accOrderLinks"] >= 3
+            and a4_check["expOrderLinks"] >= 2
+            and a4_check["qrFitsContainer"],
+            "Fiche de Mission Officielle A4 Imprimable + 3 Visas interactifs + Matrice des 6 Processus d'Approbation + Liens Fiche A4 sur Dossiers",
             a4_check
         )
         page.wait_for_timeout(150)

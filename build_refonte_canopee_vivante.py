@@ -757,16 +757,46 @@ REFONTE_CSS = r"""    /* ECOPARK_REFONTE_CANOPEE_CSS:START */
       gap: 12px;
       flex-wrap: wrap;
     }
+    #missionSheetQrContainer svg {
+      width: 100% !important;
+      height: 100% !important;
+      max-width: 84px !important;
+      max-height: 84px !important;
+      display: block;
+    }
+    .governance-matrix-box {
+      background: #FFFFFF;
+      border: 1.5px solid var(--eco-border-strong);
+      border-radius: 12px;
+      padding: 16px 18px;
+      margin-bottom: 20px;
+    }
+    .governance-matrix-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .governance-matrix-item {
+      background: var(--eco-bg);
+      border: 1px solid var(--eco-border);
+      border-radius: 10px;
+      padding: 11px 13px;
+      font-size: 12.8px;
+      line-height: 1.45;
+    }
     @media (max-width: 900px) {
       .exp-mission-preset-grid,
-      .mission-sheet-grid-3 {
+      .mission-sheet-grid-3,
+      .governance-matrix-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
     @media (max-width: 768px) {
       .exp-mission-preset-grid,
       .mission-sheet-grid-2,
-      .mission-sheet-grid-3 {
+      .mission-sheet-grid-3,
+      .governance-matrix-grid {
         grid-template-columns: 1fr !important;
       }
     }
@@ -875,7 +905,8 @@ REFONTE_CSS = r"""    /* ECOPARK_REFONTE_CANOPEE_CSS:START */
       white-space: normal !important;
     }
 
-    #view-ACC table td:last-child .btn:not(.admin-only-control) {
+    #view-ACC table td:last-child .btn:not(.admin-only-control),
+    body.admin-mode-enabled #view-ACC table td:last-child .btn.admin-only-control {
       display: inline-flex !important;
       align-items: center !important;
       justify-content: center !important;
@@ -888,7 +919,7 @@ REFONTE_CSS = r"""    /* ECOPARK_REFONTE_CANOPEE_CSS:START */
       width: auto !important;
     }
 
-    #view-ACC table td:last-child .btn.admin-only-control {
+    body:not(.admin-mode-enabled) #view-ACC table td:last-child .btn.admin-only-control {
       display: none !important;
     }
 
@@ -2392,6 +2423,55 @@ EXP_MISSIONS_MODULE_HTML = r"""            <!-- ECOPARK_EXP_MISSIONS_MODULE:STAR
                   </div>
                 </div>
                 <div id="expAlertsFeedList" style="display:grid;gap:8px;"></div>
+              </div>
+
+              <!-- Matrice des Approbations & Habilitations par Processus ("Qui approuve quoi et pour quel process") -->
+              <div class="governance-matrix-box" id="expGovernanceApprovalMatrix" role="region" aria-label="Matrice des approbations et habilitations par processus opérationnel">
+                <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;">
+                  <div>
+                    <span class="eco-cat-badge eco-cat-nature" style="font-size:11px;padding:2px 8px;">Gouvernance Opérationnelle • Séparation des Pouvoirs &amp; Double Contrôle</span>
+                    <strong style="font-size:15px;color:var(--eco-brand);display:block;margin-top:4px;">Matrice des Approbations &amp; Habilitations : Qui approuve quoi et pour quel processus ?</strong>
+                  </div>
+                  <span style="font-size:12px;color:var(--eco-text-muted);">3 Visas contradictoires sur chaque Fiche de Mission A4 • Audit SHA-256 actif</span>
+                </div>
+                <div class="governance-matrix-grid">
+                  <div class="governance-matrix-item">
+                    <strong style="color:var(--eco-brand);display:block;margin-bottom:3px;">1. Fiche de Mission A4 (MSN-...)</strong>
+                    <div><strong>Visa 1 (Émission) :</strong> Chef d'Exploitation / Dispatch Auto</div>
+                    <div><strong>Visa 2 (Prise de poste) :</strong> Agent affecté (MAT-AGT / CTL / HTL / RES)</div>
+                    <div><strong>Visa 3 (Clôture &amp; Dotation) :</strong> Contrôle contradictoire Chef + Agent</div>
+                  </div>
+                  <div class="governance-matrix-item">
+                    <strong style="color:var(--eco-water-text);display:block;margin-bottom:3px;">2. Billetterie, Solde Guichet &amp; Scan QR</strong>
+                    <div><strong>Solde Guichet (11h00) :</strong> Caissière Principale (MAT-AGT-01)</div>
+                    <div><strong>Entrée &amp; Bassin/Lac :</strong> Contrôleur QR (MAT-CTL-02, 7 états)</div>
+                    <div><strong>Anti-fraude :</strong> Double scan et tarif enfant 500 FCFA verrouillés</div>
+                  </div>
+                  <div class="governance-matrix-item">
+                    <strong style="color:var(--eco-lodging);display:block;margin-bottom:3px;">3. Séjours 3 Cités &amp; Cuisine Saveurs</strong>
+                    <div><strong>Loges (14h00 / 11h00) :</strong> Gouvernante (MAT-HTL-03, remise en stock)</div>
+                    <div><strong>Repas &amp; Pergolas :</strong> Chef de Cuisine (MAT-RES-04, Zéro Attente 12h30)</div>
+                    <div><strong>Surclassement VIP :</strong> Visa Chef d'Exploitation</div>
+                  </div>
+                  <div class="governance-matrix-item">
+                    <strong style="color:var(--eco-nature-text);display:block;margin-bottom:3px;">4. Devis Groupes &amp; Salle Menkii (500 pl.)</strong>
+                    <div><strong>Proforma standard :</strong> Calculateur officiel (500 FCFA / élève protégé)</div>
+                    <div><strong>Disponibilité &amp; Navettes :</strong> Chef d'Exploitation (EXP-03)</div>
+                    <div><strong>Remise &amp; Privatisation :</strong> Direction Générale (DIR-01)</div>
+                  </div>
+                  <div class="governance-matrix-item">
+                    <strong style="color:var(--eco-training);display:block;margin-bottom:3px;">5. Admissions CFP MINEFOP (5 filières)</strong>
+                    <div><strong>Éligibilité (&gt;= 16 ans, pièces) :</strong> Direction Pédagogique CFP (EXP-06)</div>
+                    <div><strong>Inscription (50 000 FCFA) :</strong> Validation Caisse &amp; Comptabilité</div>
+                    <div><strong>Scolarité (250 000 FCFA) :</strong> Suivi des 4 tranches réglementaires</div>
+                  </div>
+                  <div class="governance-matrix-item">
+                    <strong style="color:var(--eco-dining-text);display:block;margin-bottom:3px;">6. Clôture Caisse 18h00, Remboursements &amp; Tarifs</strong>
+                    <div><strong>Écart &lt;= 2 000 FCFA :</strong> Billetage Caissière + Chef d'Exploitation</div>
+                    <div><strong>Écart &gt; 2 000 FCFA ou Avoir/Remboursement :</strong> Direction Générale</div>
+                    <div><strong>Grille tarifaire &amp; Publication :</strong> Admin MFA + Journal SHA-256</div>
+                  </div>
+                </div>
               </div>
 
               <!-- Modèles rapides par pôle en 1 clic -->
@@ -4056,6 +4136,51 @@ REFONTE_JS = r"""
       return 'Normale';
     }
 
+    window.ensureMissionVisas = function (m) {
+      if (!m) return { visa1: {}, visa2: {}, visa3: {} };
+      var defStamp = m.createdAt || m.date || todayMinIso;
+      if (!m.visas || typeof m.visas !== 'object') {
+        m.visas = {};
+      }
+      if (!m.visas.visa1) {
+        m.visas.visa1 = {
+          signed: true,
+          actor: m.assignedBy || 'Chef d\'Exploitation Ahala',
+          timestamp: defStamp
+        };
+      }
+      var isStarted = m.status === 'EN_COURS' || m.status === 'TERMINEE';
+      var isDone = m.status === 'TERMINEE';
+      if (!m.visas.visa2) {
+        m.visas.visa2 = {
+          signed: isStarted,
+          actor: (m.agentName || 'Agent ECOPARK') + ' (' + (m.agentMatricule || 'MAT') + ')',
+          timestamp: isStarted ? defStamp : ''
+        };
+      } else if (isStarted && !m.visas.visa2.signed) {
+        m.visas.visa2.signed = true;
+        m.visas.visa2.timestamp = m.visas.visa2.timestamp || defStamp;
+      }
+      if (!m.visas.visa3) {
+        m.visas.visa3 = {
+          signed: isDone,
+          actor: 'Chef d\'Exploitation & ' + (m.agentName || 'Agent'),
+          timestamp: isDone ? defStamp : ''
+        };
+      } else if (isDone && !m.visas.visa3.signed) {
+        m.visas.visa3.signed = true;
+        m.visas.visa3.timestamp = m.visas.visa3.timestamp || defStamp;
+      }
+      return m.visas;
+    };
+
+    window.countMissionVisas = function (m) {
+      var v = window.ensureMissionVisas(m);
+      return (v.visa1 && v.visa1.signed ? 1 : 0)
+        + (v.visa2 && v.visa2.signed ? 1 : 0)
+        + (v.visa3 && v.visa3.signed ? 1 : 0);
+    };
+
     window.renderOperationalMissionsTable = function () {
       var list = window.loadOperationalMissions();
       var tbody = document.getElementById('expMissionsTableBody');
@@ -4116,6 +4241,8 @@ REFONTE_JS = r"""
       tbody.innerHTML = filtered.map(function (m) {
         var chkTotal = Array.isArray(m.checklist) ? m.checklist.length : 0;
         var chkDone = Array.isArray(m.checklist) ? m.checklist.filter(function (c) { return c && c.done; }).length : 0;
+        var visaCount = window.countMissionVisas(m);
+        var visaBadgeHtml = '<div style="margin-top:4px;font-size:11.5px;font-weight:700;color:' + (visaCount === 3 ? '#166534' : 'var(--eco-brand)') + ';">Visas : ' + visaCount + ' / 3 émargés</div>';
         var nextStatusBtn = '';
         if (m.status === 'ASSIGNEE') {
           nextStatusBtn = '<button type="button" class="btn btn-secondary btn-sm" onclick="updateOperationalMissionStatus(\'' + m.id + '\', \'EN_COURS\')">Pointer prise de poste</button>';
@@ -4146,6 +4273,7 @@ REFONTE_JS = r"""
           + '<td>'
           + '  <strong style="color:var(--eco-brand);">' + chkDone + ' / ' + chkTotal + ' contrôles</strong>'
           + '  <div style="font-size:12px;color:var(--eco-text-muted);">' + esc(m.location) + '</div>'
+          +    visaBadgeHtml
           + '</td>'
           + '<td>' + formatMissionStatusBadge(m.status) + '</td>'
           + '<td>'
@@ -4290,15 +4418,65 @@ REFONTE_JS = r"""
       var list = window.loadOperationalMissions();
       var target = list.find(function (m) { return m.id === missionId; });
       if (!target) return null;
+      var stamp = typeof nowStamp === 'function' ? nowStamp() : todayMinIso;
       target.status = nextStatus || 'EN_COURS';
-      if (target.status === 'TERMINEE' && Array.isArray(target.checklist)) {
-        target.checklist.forEach(function (c) { c.done = true; });
+      window.ensureMissionVisas(target);
+      if (target.status === 'EN_COURS') {
+        target.visas.visa2.signed = true;
+        target.visas.visa2.timestamp = target.visas.visa2.timestamp || stamp;
+        target.visas.visa3.signed = false;
+      } else if (target.status === 'TERMINEE') {
+        target.visas.visa2.signed = true;
+        target.visas.visa2.timestamp = target.visas.visa2.timestamp || stamp;
+        target.visas.visa3.signed = true;
+        target.visas.visa3.timestamp = stamp;
+        if (Array.isArray(target.checklist)) {
+          target.checklist.forEach(function (c) { c.done = true; });
+        }
       }
       window.saveOperationalMissions(list);
       window.renderOperationalMissionsTable();
       if (typeof showToastSprint1 === 'function') {
-        var lbl = target.status === 'TERMINEE' ? 'Terminée & Validée' : (target.status === 'EN_COURS' ? 'En cours sur poste' : 'Assignée');
+        var lbl = target.status === 'TERMINEE' ? 'Terminée & Validée (3/3 Visas)' : (target.status === 'EN_COURS' ? 'En cours sur poste (2/3 Visas)' : 'Assignée');
         showToastSprint1('• Statut de la mission ' + target.id + ' (' + target.agentName + ') mis à jour : ' + lbl);
+      }
+      return target;
+    };
+
+    window.signMissionVisa = function (missionId, visaKey) {
+      var list = window.loadOperationalMissions();
+      var target = list.find(function (m) { return m.id === missionId; });
+      if (!target) return null;
+      var stamp = typeof nowStamp === 'function' ? nowStamp() : todayMinIso;
+      var v = window.ensureMissionVisas(target);
+      if (visaKey === 'visa1') {
+        v.visa1.signed = true;
+        v.visa1.timestamp = stamp;
+      } else if (visaKey === 'visa2') {
+        v.visa2.signed = true;
+        v.visa2.timestamp = stamp;
+        if (target.status === 'ASSIGNEE') {
+          target.status = 'EN_COURS';
+        }
+      } else if (visaKey === 'visa3') {
+        v.visa2.signed = true;
+        v.visa2.timestamp = v.visa2.timestamp || stamp;
+        v.visa3.signed = true;
+        v.visa3.timestamp = stamp;
+        target.status = 'TERMINEE';
+        if (Array.isArray(target.checklist)) {
+          target.checklist.forEach(function (c) { c.done = true; });
+        }
+      }
+      window.saveOperationalMissions(list);
+      window.renderOperationalMissionsTable();
+      if (typeof showToastSprint1 === 'function') {
+        var vNum = visaKey === 'visa3' ? 'Visa #3 (Clôture & Dotation)' : (visaKey === 'visa2' ? 'Visa #2 (Émargement Prise de Poste)' : 'Visa #1 (Exploitation)');
+        showToastSprint1('• ' + vNum + ' signé sur la fiche ' + target.id + ' (' + window.countMissionVisas(target) + '/3 Visas).');
+      }
+      var a4El = document.getElementById('printableMissionSheetA4');
+      if (a4El) {
+        window.openMissionSheetA4(target.id);
       }
       return target;
     };
@@ -4307,13 +4485,21 @@ REFONTE_JS = r"""
       var list = window.loadOperationalMissions();
       var target = list.find(function (m) { return m.id === missionId; });
       if (!target || !Array.isArray(target.checklist) || !target.checklist[itemIndex]) return null;
+      var stamp = typeof nowStamp === 'function' ? nowStamp() : todayMinIso;
       target.checklist[itemIndex].done = !target.checklist[itemIndex].done;
       var allDone = target.checklist.every(function (c) { return c.done; });
       var anyDone = target.checklist.some(function (c) { return c.done; });
+      var v = window.ensureMissionVisas(target);
       if (allDone) {
         target.status = 'TERMINEE';
+        v.visa2.signed = true;
+        v.visa2.timestamp = v.visa2.timestamp || stamp;
+        v.visa3.signed = true;
+        v.visa3.timestamp = stamp;
       } else if (anyDone && target.status === 'ASSIGNEE') {
         target.status = 'EN_COURS';
+        v.visa2.signed = true;
+        v.visa2.timestamp = v.visa2.timestamp || stamp;
       }
       window.saveOperationalMissions(list);
       window.renderOperationalMissionsTable();
@@ -4365,14 +4551,16 @@ REFONTE_JS = r"""
           });
 
           var esc = typeof escHtml === 'function' ? escHtml : function (s) { return String(s || ''); };
+          var visas = window.ensureMissionVisas(m);
+          var visaCount = window.countMissionVisas(m);
 
           if (titleEl) {
             titleEl.textContent = 'FICHE DE MISSION & ORDRE D\'AFFECTATION POSTE — ' + m.id;
           }
 
           var stLabel = m.status === 'TERMINEE'
-            ? 'TERMINÉE & VALIDÉE'
-            : (m.status === 'EN_COURS' ? 'EN COURS SUR POSTE' : 'ASSIGNÉE — PRISE DE POSTE À POINTER');
+            ? 'TERMINÉE & VALIDÉE (' + visaCount + '/3 VISAS)'
+            : (m.status === 'EN_COURS' ? 'EN COURS SUR POSTE (' + visaCount + '/3 VISAS)' : 'ASSIGNÉE — PRISE DE POSTE À POINTER (' + visaCount + '/3 VISAS)');
 
           var checklistHtml = (m.checklist || []).map(function (c, idx) {
             var checkedAttr = c.done ? 'checked' : '';
@@ -4381,6 +4569,9 @@ REFONTE_JS = r"""
               + '<span><strong>Point #' + (idx + 1) + ' :</strong> ' + esc(c.text) + '</span>'
               + '</label>';
           }).join('');
+
+          var v2Signed = !!(visas.visa2 && visas.visa2.signed);
+          var v3Signed = !!(visas.visa3 && visas.visa3.signed);
 
           bodyEl.innerHTML = ''
             + '<div class="mission-sheet-a4" id="printableMissionSheetA4">'
@@ -4435,20 +4626,41 @@ REFONTE_JS = r"""
             + '    <div style="display:grid;gap:6px;">' + checklistHtml + '</div>'
             + '  </div>'
             + '  <div class="mission-sheet-grid-3" style="margin-top:6px;">'
-            + '    <div style="border:1px dashed var(--eco-border-strong);padding:12px;border-radius:8px;min-height:86px;">'
-            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-text-muted);display:block;">1. Visa Responsable Exploitation</span>'
-            + '      <div style="font-size:12.5px;margin-top:4px;">' + esc(m.assignedBy || 'Chef d\'Exploitation Ahala') + '</div>'
-            + '      <div style="margin-top:22px;border-top:1px solid #CCC;font-size:11px;color:#666;">Date, cachet &amp; signature</div>'
+            + '    <div style="border:1.5px solid #86EFAC;background:#F0FDF4;padding:12px;border-radius:8px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;">'
+            + '      <div>'
+            + '        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;">'
+            + '          <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:#166534;">1. Visa Responsable Exploitation</span>'
+            + '          <span class="status-badge status-success" style="font-size:10.5px;padding:1px 6px;">Visa #1 Validé</span>'
+            + '        </div>'
+            + '        <div style="font-size:12.5px;margin-top:4px;font-weight:600;">' + esc(visas.visa1.actor || m.assignedBy || 'Chef d\'Exploitation Ahala') + '</div>'
+            + '      </div>'
+            + '      <div style="margin-top:10px;border-top:1px solid #BBF7D0;padding-top:4px;font-size:11px;color:#166534;">Signé à l\'émission : ' + esc(visas.visa1.timestamp || m.createdAt || m.date) + '</div>'
             + '    </div>'
-            + '    <div style="border:1px dashed var(--eco-border-strong);padding:12px;border-radius:8px;min-height:86px;">'
-            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-text-muted);display:block;">2. Émargement Agent (Prise de poste)</span>'
-            + '      <div style="font-size:12.5px;margin-top:4px;">' + esc(m.agentName) + ' (' + esc(m.agentMatricule) + ')</div>'
-            + '      <div style="margin-top:22px;border-top:1px solid #CCC;font-size:11px;color:#666;">Heure d\'arrivée &amp; signature</div>'
+            + '    <div style="border:' + (v2Signed ? '1.5px solid #86EFAC;background:#F0FDF4;' : '1px dashed var(--eco-border-strong);background:#FFFFFF;') + 'padding:12px;border-radius:8px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;">'
+            + '      <div>'
+            + '        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;">'
+            + '          <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:' + (v2Signed ? '#166534' : 'var(--eco-text-muted)') + ';">2. Émargement Agent (Prise de poste)</span>'
+            + '          <span class="status-badge ' + (v2Signed ? 'status-success' : 'status-warning') + '" style="font-size:10.5px;padding:1px 6px;">' + (v2Signed ? 'Visa #2 Émargé' : 'À émarger') + '</span>'
+            + '        </div>'
+            + '        <div style="font-size:12.5px;margin-top:4px;font-weight:600;">' + esc(m.agentName) + ' (' + esc(m.agentMatricule) + ')</div>'
+            + '      </div>'
+            + '      <div style="margin-top:8px;border-top:1px solid #CCC;padding-top:6px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">'
+            + '        <span style="font-size:11px;color:#555;">' + (v2Signed ? ('Pointé : ' + esc(visas.visa2.timestamp || m.date)) : 'En attente de prise de poste') + '</span>'
+            + '        <button type="button" class="btn btn-secondary btn-sm" style="font-size:11px;padding:3px 8px;min-height:28px;" onclick="signMissionVisa(\'' + esc(m.id) + '\', \'visa2\')">' + (v2Signed ? 'Actualiser Visa #2' : 'Émarger Prise de Poste (Visa #2)') + '</button>'
+            + '      </div>'
             + '    </div>'
-            + '    <div style="border:1px dashed var(--eco-border-strong);padding:12px;border-radius:8px;min-height:86px;">'
-            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-text-muted);display:block;">3. Visa Clôture &amp; Remise Dotation</span>'
-            + '      <div style="font-size:12.5px;margin-top:4px;">Contrôle contradictoire de fin de poste</div>'
-            + '      <div style="margin-top:22px;border-top:1px solid #CCC;font-size:11px;color:#666;">Heure de départ &amp; visa</div>'
+            + '    <div style="border:' + (v3Signed ? '1.5px solid #86EFAC;background:#F0FDF4;' : '1px dashed var(--eco-border-strong);background:#FFFFFF;') + 'padding:12px;border-radius:8px;min-height:96px;display:flex;flex-direction:column;justify-content:space-between;">'
+            + '      <div>'
+            + '        <div style="display:flex;justify-content:space-between;align-items:center;gap:4px;">'
+            + '          <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:' + (v3Signed ? '#166534' : 'var(--eco-text-muted)') + ';">3. Visa Clôture &amp; Remise Dotation</span>'
+            + '          <span class="status-badge ' + (v3Signed ? 'status-success' : 'status-info') + '" style="font-size:10.5px;padding:1px 6px;">' + (v3Signed ? 'Visa #3 Clôturé' : 'Fin de poste') + '</span>'
+            + '        </div>'
+            + '        <div style="font-size:12.5px;margin-top:4px;">Contrôle contradictoire Chef d\'Exploitation &amp; Agent</div>'
+            + '      </div>'
+            + '      <div style="margin-top:8px;border-top:1px solid #CCC;padding-top:6px;display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">'
+            + '        <span style="font-size:11px;color:#555;">' + (v3Signed ? ('Clôturé : ' + esc(visas.visa3.timestamp || m.date)) : 'À signer après remise dotation') + '</span>'
+            + '        <button type="button" class="btn btn-primary btn-sm" style="font-size:11px;padding:3px 8px;min-height:28px;" onclick="signMissionVisa(\'' + esc(m.id) + '\', \'visa3\')">' + (v3Signed ? 'Clôture Validée (3/3)' : 'Valider Clôture & Dotation (Visa #3)') + '</button>'
+            + '      </div>'
             + '    </div>'
             + '  </div>'
             + '</div>';
@@ -4465,6 +4677,56 @@ REFONTE_JS = r"""
       };
       window.printOfficialDocument._missionSheetWrapped = true;
     }
+
+    // Enrichissement systématique des tables de dossiers (#view-ACC et #view-EXP) avec accès direct à la Fiche Mission A4 liée
+    window.enrichOrderTablesWithMissionSheetLinks = function () {
+      var accRows = document.querySelectorAll('#view-ACC table tbody tr');
+      accRows.forEach(function (tr) {
+        var strongEl = tr.querySelector('td:first-child strong');
+        if (!strongEl) return;
+        var ref = (strongEl.textContent || '').trim();
+        if (!ref) return;
+        var lastTd = tr.querySelector('td:last-child');
+        if (!lastTd) return;
+        var accType = tr.getAttribute('data-dossier-kind') || tr.getAttribute('data-acc-type') || '';
+        if ((accType === 'QUOTE' || /^DEV-/i.test(ref)) && lastTd.innerHTML.indexOf('openQuoteModalSprint1') === -1) {
+          var proformaBtn = document.createElement('button');
+          proformaBtn.type = 'button';
+          proformaBtn.className = 'btn btn-secondary btn-sm';
+          proformaBtn.textContent = 'Consulter Proforma';
+          proformaBtn.setAttribute('onclick', 'openQuoteModalSprint1()');
+          lastTd.insertBefore(proformaBtn, lastTd.firstChild);
+        }
+        if (lastTd.innerHTML.indexOf('openMissionSheetForOrder') === -1) {
+          var mBtn = document.createElement('button');
+          mBtn.type = 'button';
+          mBtn.className = 'btn btn-secondary btn-sm';
+          mBtn.textContent = 'Fiche Mission A4';
+          mBtn.setAttribute('onclick', "openMissionSheetForOrder('" + ref.replace(/'/g, '') + "')");
+          lastTd.appendChild(mBtn);
+        }
+      });
+
+      var expRows = document.querySelectorAll('#view-EXP table tbody tr');
+      expRows.forEach(function (tr) {
+        if (tr.closest('#expMissionsTableBody')) return;
+        var rowText = tr.textContent || '';
+        var mRef = rowText.match(/(EPK|ECP|DEV|CFP|RDV|POS)-\d{4}-\d+/i);
+        if (!mRef) return;
+        var ref = mRef[0];
+        var lastTd = tr.querySelector('td:last-child');
+        if (!lastTd) return;
+        if (lastTd.innerHTML.indexOf('openMissionSheetForOrder') === -1) {
+          var mBtn = document.createElement('button');
+          mBtn.type = 'button';
+          mBtn.className = 'btn btn-secondary btn-sm';
+          mBtn.style.marginLeft = '6px';
+          mBtn.textContent = 'Fiche Mission A4';
+          mBtn.setAttribute('onclick', "openMissionSheetForOrder('" + ref.replace(/'/g, '') + "')");
+          lastTd.appendChild(mBtn);
+        }
+      });
+    };
 
     // Règle d'Or : Toute commande validée génère automatiquement sa Fiche de Mission selon le poste + Alerte Temps Réel
     var prevBookingForMission = window.createLiveBookingSprint1;
@@ -5060,11 +5322,17 @@ REFONTE_JS = r"""
         if (typeof window.renderDirectionServicesDashboard === 'function') {
           window.renderDirectionServicesDashboard();
         }
+        if (typeof window.enrichOrderTablesWithMissionSheetLinks === 'function') {
+          window.enrichOrderTablesWithMissionSheetLinks();
+        }
         return r;
       };
       window.syncAllViewsFromDB._dirServicesWrapped = true;
     }
 
+    if (typeof window.enrichOrderTablesWithMissionSheetLinks === 'function') {
+      window.enrichOrderTablesWithMissionSheetLinks();
+    }
     window.renderDirectionServicesDashboard();
   })();
   // ECOPARK_REFONTE_CANOPEE_JS:END
