@@ -14,9 +14,12 @@ Controle :
   - Captures visuelles des 6 pages : accueil, catalogue et fiche activite, hebergement,
     restaurant, formation, reservation.
 """
+import http.server
 import json
 import os
+import socketserver
 import sys
+import threading
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -24,9 +27,29 @@ if hasattr(sys.stdout, "reconfigure"):
     sys.stdout.reconfigure(encoding="utf-8")
 
 ROOT = Path(__file__).resolve().parent.parent
-BASE = os.environ.get("ECOPARK_BASE_URL", "http://localhost:3000").rstrip("/")
+LIVE_DIR = ROOT / "etape0-site-live"
 QA_DIR = ROOT / "audit-assets" / "qa-refonte"
-ARTIFACT_DIR = Path(r"C:\Users\PcGamerCm\.gemini\antigravity\brain\22573085-c0a8-4d57-ad11-d7368cdd4f89")
+ARTIFACT_DIR = Path(r"C:\Users\PcGamerCm\.gemini\antigravity\brain\647fe6a0-be58-4692-ab77-e139c6c1d041")
+
+
+class _SpaHandler(http.server.SimpleHTTPRequestHandler):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, directory=str(LIVE_DIR), **kwargs)
+
+    def do_GET(self):
+        clean = self.path.lstrip("/").split("?")[0]
+        target = LIVE_DIR / clean
+        if not target.exists() or target.is_dir():
+            self.path = "/index.html"
+        return super().do_GET()
+
+    def log_message(self, *args):
+        pass
+
+
+_httpd = socketserver.TCPServer(("127.0.0.1", 0), _SpaHandler)
+threading.Thread(target=_httpd.serve_forever, daemon=True).start()
+BASE = os.environ.get("ECOPARK_BASE_URL", f"http://127.0.0.1:{_httpd.server_address[1]}").rstrip("/")
 
 results = []
 
