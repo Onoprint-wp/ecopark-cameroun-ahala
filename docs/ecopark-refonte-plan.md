@@ -117,3 +117,10 @@ Suite à la demande d'outillage des équipes terrain d'Ahala, un module complet 
 - [x] **Étape 10 — Mise à jour finale des documents de suivi et livraison**
 - [x] **Étape 11 — Implémentation et validation du module « Assignation d'une tâche & Fiche de mission imprimable A4 » sur les 4 pôles d'exploitation d'Ahala**
 - [x] **Étape 12 — Règle « 1 Commande = 1 Fiche de Mission selon l'affectation du poste » + Centre d'Alertes & Notifications Temps Réel (`#expPostAlertsCenter`, `dispatchOrderToPostMission`, `acknowledgeMissionAlert`, plan racine `missions-commandes-alertes-plan.md`)**
+- [x] **Étape 13 — Synchronisation officielle du 04/11/2026 (ajustements du site officiel ecopark-yaounde.com)** :
+  - Intégration des canaux officiels dédiés par pôle (WhatsApp principal `+237 672 56 45 98`, Hébergement `+237 694 60 14 49`, Navettes `698 13 11 34`, Groupes `+237 677 51 03 48`, CFP `+237 675 76 34 94` et réseaux sociaux).
+  - Alignement de l'offre hôtelière sur les 3 établissements officiels (Bene, Chanthel, Ewondo/Suites Privées) totalisant 30 unités plafonnées à 30 000 FCFA.
+  - Présentation des 3 espaces de restauration « New Look » (VIP New Look, Les Boukarous, Le Château des Saveurs, plats dès 3 500 FCFA).
+  - Intégration de la fiche Balade en forêt (200 ha), location de canne à pêche (2 000 FCFA), terrains sportifs et Pack Anniversaire.
+  - Enrichissement réglementaire et financier du CFP MINEFOP (Agrément N°000418 du 25 Août 2025, Directrice Mme Zinder Binga Aïssa, bourses MINEFOP, frais techniques et équipements 185 000 FCFA).
+  - Documentation exhaustive des écarts tarifaires internes du site officiel dans `docs/ecopark-validation.md`.

@@ -33,6 +33,7 @@ async function fromMigrations() {
   await db.exec(sql('../migrations/20261028000001_admin_crud_governance.sql'));
   await db.exec(sql('../migrations/20261028000002_realtime_publication.sql'));
   await db.exec(sql('../migrations/20261028000003_publication_images.sql'));
+  await db.exec(sql('../migrations/20261104000001_sync_official_site_nov2026.sql'));
   const content = {};
   for (const t of TABLES) {
     const where = t === 'site_settings' ? 'WHERE is_public' : `WHERE status = 'PUBLISHED'`;

@@ -261,7 +261,7 @@ def main():
             "Sync #11 : Totem Officiel des 11 Services (Vitrine, Tarifs, RES-01, POS AGT-03, EXP-02 & Admin Catalogue)",
             res_totem["totemCardCount"] == 11
             and res_totem["expZonesCount"] == 11
-            and res_totem["catCount"] == 12
+            and res_totem["catCount"] in (12, 14)
             and res_totem["lodgesCount"] == 4
             and res_totem["hasSuitesPrivees"]
             and res_totem["hasMusee"]

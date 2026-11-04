@@ -1,7 +1,7 @@
 # Journal de Validation & Données Métier — ECOPARK Cameroun
 
-**Dernière mise à jour :** 2026-10-29  
-**Statut :** Refonte, Fiches de Mission A4, Dispatch Automatique Commande → Poste et Alertes Temps Réel terminés et validés à 100 % (35/35 contrôles de refonte + 333/333 tests existants réussis)
+**Dernière mise à jour :** 2026-11-04  
+**Statut :** Synchronisation officielle du site live (Novembre 2026) intégrée et validée à 100 % (Contacts dédiés par pôle, 3 hôtels / 30 unités max 30 000 FCFA, 3 espaces restauration dès 3 500 FCFA, Balade en forêt 200 ha, CFP N°000418, écarts tarifaires internes documentés, parité HTML stricte et 47/47 contrôles validés)
 
 ---
 
@@ -34,8 +34,15 @@ Les 9 tokens de départ ont été vérifiés selon la formule de luminance relat
 Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et résumés de réservation proviennent de la source unique centralisée (`window.ECOPARK_SOURCE_UNIQUE`, synchronisée avec `etape0-site-live/content-snapshot.json` et `EcoparkData`) :
 
 ### 2.1 Données confirmées et unités explicites
+- **Structure exploitante officielle** : **MPECK MULTI-SERVICES** (exploitant du complexe agro-écotouristique, hôtelier, gastronomique et du CFP **ECOPARK CAMEROUN** à Yaoundé-Ahala).
 - **Localisation** : Quartier Ahala Barrière, juste en face de la station Tradex Ahala, Route Nationale N°3 (entrée sud de Yaoundé, Cameroun). Parking intérieur gratuit et sécurisé de **150 places**. Navettes climatisées de **5, 18 et 32 places** sur réservation.
-- **Contacts officiels affichés** : `+237 697 13 62 03` (WhatsApp & réservations), `+237 675 56 26 55`, `info@ecopark-yaounde.com`.
+- **Contacts officiels affichés** :
+  - WhatsApp & Accueil général : `+237 672 56 45 98` (`https://wa.me/237672564598`).
+  - Pôle Hébergement (Réservations directes) : `+237 694 60 14 49` (`https://wa.me/237694601449`).
+  - Navettes & Transport RN3 : `+237 698 13 11 34` / `+237 677 48 69 86`.
+  - Groupes, Séminaires, Mariages & Pack Anniversaire : `+237 677 51 03 48` / `+237 670 37 73 48`, `contact@ecopark-yaounde.com`.
+  - CFP EcoPark : `+237 675 76 34 94` / `+237 658 56 41 02` / `+237 655 94 79 40`, `cfpecopark.yaounde@gmail.com`, `BP: 121 Ahala, Yaoundé`.
+  - Réseaux sociaux officiels : Facebook (`@EcoparkOfficiel`), Instagram (`@ecopark_officiel`), YouTube (`@ecopark-officiel`), TikTok (`@ecoparkofficiel`), Chaîne WhatsApp officielle.
 - **Horaires et fermetures** :
   - **Parc & activités de loisirs** : Mardi au dimanche dès **09h00** (fermeture **18h00**). **Fermé le lundi** pour maintenance hebdomadaire.
   - **Hébergements (Cités Hôtelières)** : Ouverts **7j/7** (réception 24h/24) ; arrivée (**Check-in**) dès **14h00**, départ (**Check-out**) jusqu'à **11h00**.
@@ -53,16 +60,22 @@ Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et ré
   - **Pass Découverte Nature (Zoo + Pirogue + Cheval)** : `1 500 FCFA / enfant` • `2 500 FCFA / adulte` (par personne).
   - **Pass Journée Royale (Zoo + Piscine + Pirogue + Repas chaud)** : `4 500 FCFA / enfant` • `8 500 FCFA / adulte` (par personne).
   - **Pack Escapade Couple VIP (Loge Ewondo + 2 Repas + Parc/Piscine/Pirogue)** : `45 000 FCFA` (1 nuit, forfait pour 2 adultes) / `70 000 FCFA` (2 nuits).
-- **Hébergements (par nuit)** :
-  - **Cité Bene (Standard)** : `10 000 – 15 000 FCFA / nuit`.
-  - **Cité Chanthel (Confort)** : `15 000 – 25 000 FCFA / nuit`.
-  - **Cité Ewondo (VIP Climatisé)** : `25 000 – 30 000 FCFA / nuit` (Day-Use repos journée : `15 000 FCFA`).
-  - **Suites Privées Prestige VIP** : `30 000 – 45 000 FCFA / nuit`.
-- **Restaurant Le Château des Saveurs (par plat / par menu)** :
-  - **Poisson braisé d'Ahala** : `5 000 FCFA / plat`.
-  - **Poulet DG Royal** : `6 500 FCFA / plat`.
-  - **Ndolé Royal aux crevettes** : `5 500 FCFA / plat`.
-  - **Menu Enfant Complet (< 12 ans)** : `2 500 FCFA / menu`.
+- **Hébergements (par nuit, 3 établissements — 30 unités — plafonnées à 30 000 FCFA)** :
+  - **Hôtel Bene (Standard)** : `10 000 – 15 000 FCFA / nuit` (10 chambres climatisées ou ventilées, véranda panoramique réceptions à l'étage).
+  - **Hôtel Chanthel (Confort)** : `15 000 – 25 000 FCFA / nuit` (12 chambres confort réparties en paliers 15 000 / 20 000 / 25 000 FCFA).
+  - **Hôtel Ewondo (Mini-Suites VIP & Suites Privées)** : 8 unités au total, réparties en :
+    - *Mini-Suites VIP* : `25 000 – 30 000 FCFA / nuit` (4 suites privatives, Day-Use repos journée dès `15 000 FCFA`).
+    - *Suites Privées Élégantes Prestige* : `30 000 FCFA / nuit` (4 suites exécutives de standing).
+  - *Suppression définitive de l'ancien tarif théorique de 45 000 FCFA* conformément à la grille officielle plafonnée à 30 000 FCFA.
+- **Restauration (3 espaces gastronomiques — plats dès 3 500 FCFA)** :
+  - *Restaurant VIP New Look* : salle climatisée privatisable pour déjeuners d'affaires et banquets (50 à 60 couverts).
+  - *Les Boukarous d'Ahala* : espaces extérieurs conviviaux en pleine verdure.
+  - *Le Château des Saveurs* : restaurant central traditionnel et gastronomique camerounais.
+  - Plats signatures : *Grillades & Assiette du Jour* (`3 500 FCFA`), *Poisson braisé d'Ahala* (`5 000 FCFA`), *Ndolé Royal* (`5 500 FCFA`), *Poulet DG Royal* (`6 500 FCFA`), *Menu Enfant* (`2 500 FCFA`). Mentions d'*Espace Onemble* et *Eco SNACK*.
+- **Activités & Formations complémentaires vérifiées** :
+  - *Balade en forêt (200 ha)* : `500 FCFA / enfant` • `1 000 FCFA / adulte` • `700 FCFA / pers. dès 10 pers.` (~40 min de circuit guidé et sécurisé).
+  - *Pêche récréative* : droit d'accès étangs avec location canne à pêche (`2 000 FCFA`) et sachet nutrition poissons (`500 FCFA`).
+  - *CFP EcoPark* : Agrément `N°000418/MINEFOP/SG/DFOP/SDGSF/CSACD/CBAC du 25 Août 2025`, Directrice **Mme Zinder Binga Aïssa**, partenaires hôteliers (*Hôtel La Référence*, *Djabi Hôtel Mbankomo*), bourses d'études MINEFOP. Frais scolarité : `50 000 FCFA` (inscription) + `250 000 FCFA` (scolarité en 4 tranches). Frais techniques et équipements : `185 000 FCFA` (tenue complète 60 000, ateliers pratiques 60 000, matériel didactique 30 000, assurance 20 000, écusson brodé 15 000 FCFA).
 - **Groupes & Événements** :
   - **Salle polyvalente « Menkii Essomba Anton »** : capacité vérifiée de **500 places assises** (climatisée et sonorisée).
   - **Forfait excursion scolaire** : dès `1 500 FCFA / élève` (entrée enfant protégée à `500 FCFA / élève`).
@@ -78,6 +91,21 @@ Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et ré
 1. **Témoignages visiteurs (Section D.7)** : aucune source externe d'avis authentifiés avec autorisation écrite n'étant connectée, la section `#homeBlock7Testimonials` est masquée (`display: none`) et la mention « 4.9 / 5 (128 avis vérifiés) » a été retirée des vues publiques.
 2. **Agenda hebdomadaire (Section D.6)** : alimenté par les 4 rendez-vous hebdomadaires publiés dans `content-snapshot.json` ; la fonction `syncAgendaVisibilityFromData()` masque automatiquement la section si la liste des événements publiés est vide.
 3. **Jauges de rareté simulées (Section H)** : les badges de stock simulés en temps réel (`#pubEwondoScarcityBadge`, `#simPergolaRemainingBadge`, `#simEwondoRemainingText`, `#barometerAccordion`) sont masqués en vue visiteur pour ne présenter aucune fausse donnée temps réel.
+
+### 2.2.4 Arbitrage des écarts tarifaires internes constatés sur ecopark-yaounde.com (Audit du 04/11/2026)
+Lors de la synchronisation avec les publications officielles du site `ecopark-yaounde.com` (mises à jour des 30 octobre au 03 novembre 2026), deux divergences tarifaires internes au site WordPress de référence ont été constatées entre la page générale `/nos-tarifs/` et les fiches détaillées d'activités :
+
+1. **Écart constaté sur la Piscine Semi-Olympique :**
+   - *Fiche dédiée `/espace-piscine/` (30 oct. 2026)* : affiche un tarif de **2 000 FCFA** (enfant) et **2 500 FCFA** (adulte).
+   - *Grille tarifaire `/nos-tarifs/`* : distingue le tarif semaine (**1 500 FCFA** enfant / **2 500 FCFA** adulte) du tarif week-end / jours fériés (**2 500 FCFA** enfant / **3 000 FCFA** adulte).
+   - *Arbitrage appliqué dans la Source Unique ECOPARK* : maintien de la base vérifiée **1 500 FCFA / enfant** (semaine / réservation en ligne) et **2 500 FCFA / adulte**, avec mention explicite du tarif de pointe week-end au guichet (**2 500 / 3 000 FCFA**).
+   - *Justification métier* : cet arbitrage protège l'exactitude du calculateur express pour le panier familial standard (2 adultes + 2 enfants pour le pack *Zoo + Piscine + Pirogue* à **14 000 FCFA** : 3 000 + 8 000 + 3 000 FCFA), sans surprise tarifaire pour le visiteur en prévente, tout en permettant à la Direction d'ajuster dynamiquement ce tarif en 1 clic depuis la console d'administration `/admin` (ADM-01).
+
+2. **Écart constaté sur le Musée Culturel & Patrimonial :**
+   - *Fiche dédiée `/musee/` (30 oct. 2026)* : affiche une mention forfaitaire simplifiée à **500 FCFA** pour tous les visiteurs.
+   - *Grille tarifaire `/nos-tarifs/`* : détaille **500 FCFA / enfant** et **1 000 FCFA / adulte** (tarif groupe adulte : **500 FCFA** dès 10 personnes).
+   - *Arbitrage appliqué dans la Source Unique ECOPARK* : maintien de la distinction **500 FCFA / enfant** et **1 000 FCFA / adulte** (groupe adulte à **500 FCFA**).
+   - *Justification métier* : sanctuarise le tarif d'accès enfant et scolaire à 500 FCFA tout en maintenant la cohérence du sous-total sur la fiche PUB-04 pour 2 adultes et 2 enfants (**3 000 FCFA** : 2 × 1 000 + 2 × 500 FCFA) et l'équilibre financier de l'espace culturel. L'arbitrage reste paramétrable en direct depuis la gestion du catalogue `/admin`.
 
 ---
 

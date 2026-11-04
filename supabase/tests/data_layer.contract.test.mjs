@@ -60,6 +60,7 @@ async function setupSupabase() {
   await db.exec(sql('../migrations/20261028000003_publication_images.sql'));
   await db.exec(sql('../migrations/20261029000001_operational_missions_alerts.sql'));
   await db.exec(sql('../migrations/20261030000001_accounts_rating_accounting.sql'));
+  await db.exec(sql('../migrations/20261104000001_sync_official_site_nov2026.sql'));
   for (const u of Object.values(U)) {
     await db.query('INSERT INTO auth.users (id, email) VALUES ($1, $2)', [u.id, `${u.id}@t.local`]);
     await db.query('INSERT INTO public.staff_profiles (user_id, full_name, role) VALUES ($1, $2, $3)', [u.id, u.name, u.role]);

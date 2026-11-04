@@ -1276,14 +1276,14 @@ MAIN_MEGA_NAV_HTML = r"""        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
                   <span class="v4-dropdown-item-title">Sous-rubrique Hébergements (4 catégories)</span>
                   <span class="v4-dropdown-item-sub">Cités Bene, Chanthel, Ewondo VIP &amp; Suites Privées</span>
                 </div>
-                <span class="v4-dropdown-item-price">10k à 45k FCFA / nuit</span>
+                <span class="v4-dropdown-item-price">10k à 30k FCFA / nuit</span>
               </button>
               <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('HOTEL_EWONDO')">
                 <div>
                   <span class="v4-dropdown-item-title">Fiches Cité Ewondo VIP &amp; Suites Privées</span>
                   <span class="v4-dropdown-item-sub">Loges climatisées, literie King-Size &amp; accès parc inclus</span>
                 </div>
-                <span class="v4-dropdown-item-price">25k à 45k FCFA / nuit</span>
+                <span class="v4-dropdown-item-price">25k à 30k FCFA / nuit</span>
               </button>
               <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('HOTEL_CHANTHEL')">
                 <div>
@@ -1294,10 +1294,10 @@ MAIN_MEGA_NAV_HTML = r"""        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
               </button>
               <button type="button" class="v4-dropdown-item" id="nav-SAVEURS" role="menuitem" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')">
                 <div>
-                  <span class="v4-dropdown-item-title">Sous-rubrique Restaurant — Le Château des Saveurs</span>
-                  <span class="v4-dropdown-item-sub">Carte, prix par plat, horaires et service sous pergolas</span>
+                  <span class="v4-dropdown-item-title">Sous-rubrique Restaurant — 3 Espaces Gastronomiques</span>
+                  <span class="v4-dropdown-item-sub">Restaurant VIP New Look, Boukarous &amp; Château des Saveurs</span>
                 </div>
-                <span class="v4-dropdown-item-price">2 500 à 6 500 FCFA</span>
+                <span class="v4-dropdown-item-price">Dès 3 500 FCFA</span>
               </button>
               <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('BOOK_LODGE')">
                 <div>
@@ -1331,7 +1331,7 @@ MAIN_MEGA_NAV_HTML = r"""        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
               <button type="button" class="v4-dropdown-item" role="menuitem" onclick="navigateV4SiteMenu('GROUPES_ENTREPRISES')">
                 <div>
                   <span class="v4-dropdown-item-title">Entreprises, ministères &amp; associations</span>
-                  <span class="v4-dropdown-item-sub">Séminaires, retraites, team-building • Remise dès 20 adultes</span>
+                  <span class="v4-dropdown-item-sub">Séminaires, retraites, team-building • Remise dès 10 adultes</span>
                 </div>
                 <span class="v4-dropdown-item-price">Sur devis</span>
               </button>
@@ -1507,9 +1507,9 @@ MOBILE_DRAWER_HTML = r"""    <!-- ECOPARK_V4_MOBILE_DRAWER:START -->
           <details class="v4-mob-accordion">
             <summary>2. Séjour &amp; restaurant</summary>
             <div class="v4-mob-sublist">
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTELS_COMPARATIF')"><span>Hébergements (Cités Bene, Chanthel, Ewondo)</span><small>10k – 45k F</small></button>
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_EWONDO')"><span>Fiches Cité Ewondo VIP &amp; Suites</span><small>25k – 45k F</small></button>
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')"><span>Restaurant Le Château des Saveurs</span><small>2 500 – 6 500 F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTELS_COMPARATIF')"><span>Hébergements (Cités Bene, Chanthel, Ewondo)</span><small>10k – 30k F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('HOTEL_EWONDO')"><span>Fiches Cité Ewondo VIP &amp; Suites</span><small>25k – 30k F</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')"><span>Restaurant (3 Espaces Gastronomiques)</span><small>Dès 3 500 F</small></button>
             </div>
           </details>
 
@@ -1517,7 +1517,7 @@ MOBILE_DRAWER_HTML = r"""    <!-- ECOPARK_V4_MOBILE_DRAWER:START -->
             <summary>3. Groupes &amp; événements</summary>
             <div class="v4-mob-sublist">
               <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('GROUPES_SCOLAIRES')"><span>Sorties scolaires (500 FCFA / élève)</span><small>Écoles</small></button>
-              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('GROUPES_ENTREPRISES')"><span>Entreprises, séminaires &amp; associations</span><small>Dès 20 pers.</small></button>
+              <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('GROUPES_ENTREPRISES')"><span>Entreprises, séminaires &amp; associations</span><small>Dès 10 pers.</small></button>
               <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('GROUPES_MARIAGES')"><span>Mariages &amp; Salle Menkii (500 places)</span><small>Réceptions</small></button>
               <button type="button" class="v4-mob-subbtn" onclick="navigateV4SiteMenu('GROUPES_DEVIS')"><span>Demander un devis sur mesure</span><small>Devis</small></button>
             </div>
@@ -1596,7 +1596,7 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                     </span>
                     <div>
                       <strong>Hébergements 7j/7</strong>
-                      <span>Cités Bene, Chanthel, Ewondo VIP &amp; Suites (10 000 à 45 000 FCFA / nuit)</span>
+                      <span>Cités Bene, Chanthel, Ewondo VIP &amp; Suites (10 000 à 30 000 FCFA / nuit)</span>
                     </div>
                   </button>
                   <button type="button" class="v4-hero-pillar-item" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')">
@@ -1605,7 +1605,7 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                     </span>
                     <div>
                       <strong>Le Château des Saveurs</strong>
-                      <span>Poisson braisé d'Ahala, Poulet DG Royal &amp; pergolas (2 500 à 6 500 FCFA)</span>
+                      <span>Poisson braisé d'Ahala, Poulet DG Royal &amp; pergolas (plats dès 3 500 FCFA)</span>
                     </div>
                   </button>
                   <button type="button" class="v4-hero-pillar-item" onclick="navigateV4SiteMenu('TARIFS_GROUPES')">
@@ -1824,7 +1824,7 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                       </span>
                       <h3 style="font-size:1.15rem;margin:12px 0 6px;">Séjourner</h3>
                       <p style="font-size:14.5px;color:var(--eco-text-muted);margin:0;">
-                        Chambres et suites au calme 7j/7 (Cités Bene, Chanthel, Ewondo VIP) de 10 000 à 45 000 FCFA / nuit.
+                        Chambres et suites au calme 7j/7 (Cités Bene, Chanthel, Ewondo VIP) de 10 000 à 30 000 FCFA / nuit.
                       </p>
                     </div>
                     <button type="button" class="btn-link" onclick="navigateV4SiteMenu('HOTELS_COMPARATIF')">Voir les hébergements →</button>
@@ -1958,7 +1958,7 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                     <div class="eco-card-body">
                       <div>
                         <span class="eco-cat-badge eco-cat-lodging">Hébergement • Réception 7j/7</span>
-                        <h3 style="font-size:1.4rem;margin:10px 0 8px;">Cités Hôtelières Bene, Chanthel, Ewondo &amp; Suites</h3>
+                        <h3 style="font-size:1.4rem;margin:10px 0 8px;">Cités Hôtelières Bene, Chanthel, Ewondo &amp; Suites (30 unités)</h3>
                         <p style="font-size:15.5px;color:var(--eco-text-muted);margin:0 0 12px;">
                           Reposez-vous en journée ou passez la nuit dans nos pavillons arborés avec parking intérieur gardé. Arrivée dès 14h00, départ jusqu'à 11h00.
                         </p>
@@ -1966,7 +1966,7 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                           <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Cité Bene :</strong> 10 000 – 15 000 FCFA / nuit</div>
                           <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Cité Chanthel :</strong> 15 000 – 25 000 FCFA / nuit</div>
                           <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Cité Ewondo VIP :</strong> 25 000 – 30 000 FCFA / nuit</div>
-                          <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Suites Privées :</strong> 30 000 – 45 000 FCFA / nuit</div>
+                          <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Suites Privées :</strong> 30 000 FCFA / nuit</div>
                         </div>
                       </div>
                       <div style="display:flex;gap:10px;flex-wrap:wrap;padding-top:10px;border-top:1px solid var(--eco-border);">
@@ -1976,22 +1976,22 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                     </div>
                   </article>
 
-                  <!-- Entrée 2 : Restaurant Le Château des Saveurs -->
+                  <!-- Entrée 2 : Restaurant Les 3 Espaces Restauration -->
                   <article class="eco-card" style="border-top:4px solid var(--eco-dining);">
                     <div class="eco-card-media" style="aspect-ratio:16/9;">
-                      <img src="audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png" alt="Restaurant Le Château des Saveurs et pergolas au bord du lac" />
+                      <img src="audit-assets/ecopark-real-media/restaurant-vip-new-look.jpg.png" alt="Restaurant VIP New Look et espaces gastronomiques ECOPARK" />
                     </div>
                     <div class="eco-card-body">
                       <div>
                         <span class="eco-cat-badge eco-cat-dining">Restauration • Du bassin à la braise</span>
-                        <h3 style="font-size:1.4rem;margin:10px 0 8px;">Restaurant Le Château des Saveurs</h3>
+                        <h3 style="font-size:1.4rem;margin:10px 0 8px;">Les 3 Espaces Restauration &amp; Carte Officielle</h3>
                         <p style="font-size:15.5px;color:var(--eco-text-muted);margin:0 0 12px;">
-                          Dégustez sous nos pergolas au bord du lac le poisson d'eau douce pêché dans nos étangs et braisé à la minute, le Poulet DG Royal et le Ndolé aux crevettes.
+                          Restaurant VIP New Look climatisé, Boukarous de plein air et Château des Saveurs. Plats dès 3 500 FCFA • Ouvert 7j/7 (07h00 à 23h00).
                         </p>
                         <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;font-size:14.5px;margin-bottom:8px;">
+                          <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Grillades Boukarous :</strong> dès 3 500 FCFA / plat</div>
                           <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Poisson braisé d'Ahala :</strong> 5 000 FCFA / plat</div>
                           <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Poulet DG Royal :</strong> 6 500 FCFA / plat</div>
-                          <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Ndolé Royal Crevettes :</strong> 5 500 FCFA / plat</div>
                           <div style="padding:8px 10px;background:var(--eco-bg);border-radius:8px;"><strong>Menu Enfant (&lt; 12 ans) :</strong> 2 500 FCFA / menu</div>
                         </div>
                       </div>
@@ -2115,8 +2115,8 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                     <div>
                       <strong style="display:block;font-size:1.1rem;margin-bottom:6px;">Contact officiel</strong>
                       <p style="font-size:15px;color:var(--eco-text-muted);margin:0;">
-                        <strong>Tél. / WhatsApp :</strong> <a href="https://wa.me/237697136203" target="_blank" rel="noopener noreferrer" style="color:var(--eco-brand);font-weight:700;">+237 697 13 62 03</a> / <a href="tel:+237675562655" style="color:var(--eco-brand);font-weight:700;">675 56 26 55</a><br/>
-                        <strong>Courriel :</strong> <a href="mailto:info@ecopark-yaounde.com" style="color:var(--eco-brand);">info@ecopark-yaounde.com</a>
+                        <strong>Tél. / WhatsApp :</strong> <a href="https://wa.me/237672564598" target="_blank" rel="noopener noreferrer" style="color:var(--eco-brand);font-weight:700;">+237 672 56 45 98</a> / <a href="tel:+237675562655" style="color:var(--eco-brand);font-weight:700;">675 56 26 55</a><br/>
+                        <strong>Courriel :</strong> <a href="mailto:info@ecopark-yaounde.com" style="color:var(--eco-brand);">info@ecopark-yaounde.com</a> • <strong>BP :</strong> 121 Ahala, Yaoundé
                       </p>
                     </div>
                   </div>
@@ -2220,26 +2220,159 @@ PUB04_STRUCTURED_DETAILS_HTML = r"""                <!-- GABARIT FICHE ACTIVITÉ
                 </div>"""
 
 
-SEJOUR_RESTAURANT_SUPPLEMENT_HTML = r"""            <!-- SOUS-RUBRIQUE RESTAURANT COMPLÈTE (GABARIT RESTAURANT SECTION E) -->
+PUB09_HEADER_BUTTONS_HTML = r"""              <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
+                <span class="price-pill">Check-in : 14h00 • Check-out : 11h00 • 30 unités</span>
+                <a href="https://wa.me/237694601449" target="_blank" rel="noopener noreferrer" class="btn btn-secondary btn-sm" style="display:inline-flex;align-items:center;gap:6px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>WhatsApp Hébergement : +237 694 60 14 49</a>
+                <button type="button" class="btn btn-primary btn-sm" onclick="selectTotemService('hotels')">Réserver une nuitée →</button>
+              </div>"""
+
+
+PUB09_LODGES_HTML = r"""            <!-- 4 Cartes d'Hébergement V4 (Bene, Chanthel, Ewondo VIP, Suites Privées - 30 unités max 30 000 FCFA) -->
+            <div class="grid-12" style="gap:18px;margin-bottom:24px;">
+              <!-- 1. Ewondo Mini-Suites VIP -->
+              <div class="col-3 card" style="display:flex;flex-direction:column;justify-content:space-between;padding:0;overflow:hidden;">
+                <div>
+                  <img src="audit-assets/ecopark-real-media/VIP1.jpeg" alt="Hôtel Ewondo Mini-Suites VIP ECOPARK" style="width:100%;height:175px;object-fit:cover;display:block;" />
+                  <div style="padding:16px;">
+                    <span class="status-badge badge-qr-prestige" style="margin-bottom:8px;">Hôtel Ewondo • 4 Mini-Suites VIP</span>
+                    <h3 style="font-size:1.2rem;margin-bottom:6px;">Loges &amp; Mini-Suites Ewondo</h3>
+                    <p style="font-size:13.5px;color:var(--eco-text-muted);margin-bottom:10px;">
+                      2 personnes • Climatisation • Lit King-Size • Terrasse nature • Accès Parc &amp; Zoo inclus.
+                    </p>
+                    <strong style="font-family:var(--font-heading);font-size:1.25rem;color:var(--eco-brand);display:block;">25 000 – 30 000 FCFA <small style="font-weight:400;color:var(--eco-text-muted);">/ nuit</small></strong>
+                  </div>
+                </div>
+                <div style="padding:0 16px 16px;">
+                  <button type="button" class="btn btn-primary btn-sm" style="width:100%;" onclick="selectLodgeFromV4Card('EWONDO')">Choisir Cité Ewondo →</button>
+                </div>
+              </div>
+
+              <!-- 2. Chanthel Confort -->
+              <div class="col-3 card" style="display:flex;flex-direction:column;justify-content:space-between;padding:0;overflow:hidden;">
+                <div>
+                  <img src="audit-assets/ecopark-real-media/hotel-chanthel.jpeg" alt="Hôtel Chanthel Confort ECOPARK" style="width:100%;height:175px;object-fit:cover;display:block;" />
+                  <div style="padding:16px;">
+                    <span class="status-badge status-success" style="margin-bottom:8px;">Hôtel Chanthel • 12 Chambres</span>
+                    <h3 style="font-size:1.2rem;margin-bottom:6px;">Chambres Confort Chanthel</h3>
+                    <p style="font-size:13.5px;color:var(--eco-text-muted);margin-bottom:10px;">
+                      2 personnes • Calme forestier • Salle d'eau privative • Télévision • Paliers 15k / 20k / 25k FCFA.
+                    </p>
+                    <strong style="font-family:var(--font-heading);font-size:1.25rem;color:var(--eco-brand);display:block;">15 000 – 25 000 FCFA <small style="font-weight:400;color:var(--eco-text-muted);">/ nuit</small></strong>
+                  </div>
+                </div>
+                <div style="padding:0 16px 16px;">
+                  <button type="button" class="btn btn-secondary btn-sm" style="width:100%;" onclick="selectLodgeFromV4Card('CHANTHEL')">Choisir Cité Chanthel →</button>
+                </div>
+              </div>
+
+              <!-- 3. Bene Standard -->
+              <div class="col-3 card" style="display:flex;flex-direction:column;justify-content:space-between;padding:0;overflow:hidden;">
+                <div>
+                  <img src="audit-assets/ecopark-real-media/chambre.jpeg" alt="Hôtel Bene Standard ECOPARK" style="width:100%;height:175px;object-fit:cover;display:block;" />
+                  <div style="padding:16px;">
+                    <span class="status-badge status-info" style="margin-bottom:8px;">Hôtel Bene • 10 Chambres</span>
+                    <h3 style="font-size:1.2rem;margin-bottom:6px;">Chambres Standard Bene</h3>
+                    <p style="font-size:13.5px;color:var(--eco-text-muted);margin-bottom:10px;">
+                      Day-Use ou nuitée accessible • Véranda réceptions à l'étage • Domaine verdoyant d'Ahala.
+                    </p>
+                    <strong style="font-family:var(--font-heading);font-size:1.25rem;color:var(--eco-brand);display:block;">10 000 – 15 000 FCFA <small style="font-weight:400;color:var(--eco-text-muted);">/ nuit</small></strong>
+                  </div>
+                </div>
+                <div style="padding:0 16px 16px;">
+                  <button type="button" class="btn btn-secondary btn-sm" style="width:100%;" onclick="selectLodgeFromV4Card('BENE')">Choisir Cité Bene →</button>
+                </div>
+              </div>
+
+              <!-- 4. Suites Privées Ewondo (Plafonnées à 30 000 FCFA) -->
+              <div class="col-3 card" style="display:flex;flex-direction:column;justify-content:space-between;padding:0;overflow:hidden;border:1.5px solid #C47D2B;">
+                <div>
+                  <img src="audit-assets/ecopark-real-media/VIP1.jpeg" alt="Suites Privées Prestige ECOPARK" style="width:100%;height:175px;object-fit:cover;display:block;" />
+                  <div style="padding:16px;">
+                    <span class="status-badge" style="background:#C47D2B;color:#FFFFFF;margin-bottom:8px;">Hôtel Ewondo • 4 Suites Privées</span>
+                    <h3 style="font-size:1.2rem;margin-bottom:6px;">Suites Privées Élégantes</h3>
+                    <p style="font-size:13.5px;color:var(--eco-text-muted);margin-bottom:10px;">
+                      Salon privé climatisé, service VIP Château des Saveurs et accès coupe-file Piscine &amp; Lac.
+                    </p>
+                    <strong style="font-family:var(--font-heading);font-size:1.25rem;color:#9A5B13;display:block;">30 000 FCFA <small style="font-weight:400;color:var(--eco-text-muted);">/ nuit</small></strong>
+                  </div>
+                </div>
+                <div style="padding:0 16px 16px;">
+                  <button type="button" class="btn btn-primary btn-sm" style="width:100%;background:#C47D2B;border-color:#9A5B13;" onclick="selectLodgeFromV4Card('SUITES_PRIVEES')">Choisir Suite Privée →</button>
+                </div>
+              </div>
+            </div>"""
+
+
+FOOTER_CONTACT_HTML = r"""          <div class="col-3">
+            <h4 style="margin-bottom:10px;">Horaires &amp; Contact</h4>
+            <p style="font-size:14.5px;color:var(--color-text-muted);display:grid;gap:4px;">
+              <span><strong>Mardi – Dimanche :</strong> 09h00 – 18h00</span>
+              <span><strong>Hébergement Loges :</strong> Réception 24h/24</span>
+              <span><strong>Restaurant :</strong> 7j/7 (07h00 – 23h00)</span>
+              <span><strong>WhatsApp &amp; Tél :</strong> <a href="https://wa.me/237672564598" target="_blank" rel="noopener noreferrer">+237 672 56 45 98</a> / <a href="tel:+237697136203">697 13 62 03</a></span>
+              <span><strong>Email :</strong> info@ecopark-yaounde.com</span>
+            </p>
+            <div style="margin-top:12px;display:flex;gap:10px;align-items:center;flex-wrap:wrap;">
+              <a href="https://web.facebook.com/EcoparkOfficiel" target="_blank" rel="noopener noreferrer" title="Facebook ECOPARK" style="color:var(--eco-brand);text-decoration:none;font-weight:600;font-size:13px;">Facebook</a>
+              <span style="color:var(--color-border);">•</span>
+              <a href="https://www.instagram.com/ecopark_officiel/" target="_blank" rel="noopener noreferrer" title="Instagram ECOPARK" style="color:var(--eco-brand);text-decoration:none;font-weight:600;font-size:13px;">Instagram</a>
+              <span style="color:var(--color-border);">•</span>
+              <a href="https://www.youtube.com/@ecopark-officiel" target="_blank" rel="noopener noreferrer" title="YouTube ECOPARK" style="color:var(--eco-brand);text-decoration:none;font-weight:600;font-size:13px;">YouTube</a>
+              <span style="color:var(--color-border);">•</span>
+              <a href="https://www.tiktok.com/@ecoparkofficiel" target="_blank" rel="noopener noreferrer" title="TikTok ECOPARK" style="color:var(--eco-brand);text-decoration:none;font-weight:600;font-size:13px;">TikTok</a>
+              <span style="color:var(--color-border);">•</span>
+              <a href="https://whatsapp.com/channel/0029VbE0bZCHFxOvpADPDs2c" target="_blank" rel="noopener noreferrer" title="Chaîne WhatsApp ECOPARK" style="color:var(--eco-brand);text-decoration:none;font-weight:600;font-size:13px;">Chaîne WhatsApp</a>
+            </div>
+          </div>"""
+
+
+SEJOUR_RESTAURANT_SUPPLEMENT_HTML = r"""            <!-- SOUS-RUBRIQUE RESTAURANT COMPLÈTE (GABARIT RESTAURANT 3 ESPACES SECTION E) -->
             <div class="card" id="restaurantFullTemplateCard" style="margin-top:24px;padding:24px;background:#FFFFFF;border:1px solid var(--eco-border);border-top:4px solid var(--eco-dining);">
               <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:14px;flex-wrap:wrap;margin-bottom:18px;">
                 <div>
-                  <span class="eco-cat-badge eco-cat-dining">Sous-rubrique Restaurant • Le Château des Saveurs</span>
-                  <h3 style="font-size:1.55rem;margin:10px 0 6px;">Le Château des Saveurs — Lieu, cuisine &amp; carte officielle</h3>
-                  <p style="font-size:16px;color:var(--eco-text-muted);margin:0;max-width:740px;">
-                    Situé au bord du lac d'ECOPARK Ahala, notre restaurant met à l'honneur la gastronomie camerounaise préparée à la minute (« Du bassin à la braise ») avec les poissons frais issus des étangs piscicoles du domaine.
+                  <span class="eco-cat-badge eco-cat-dining">Sous-rubrique Restauration • 3 Espaces Gastronomiques</span>
+                  <h3 style="font-size:1.55rem;margin:10px 0 6px;">Les 3 Espaces Restauration d'ECOPARK &amp; Carte Officielle</h3>
+                  <p style="font-size:16px;color:var(--eco-text-muted);margin:0;max-width:760px;">
+                    De la pause gourmande rapide aux dîners d'exception climatisés : cuisine camerounaise préparée à la minute (« Du bassin à la braise »), poissons frais d'Ahala et grillades. Plats dès <strong>3 500 FCFA</strong> • Ouvert <strong>7j/7 de 07h00 à 23h00</strong>.
                   </p>
                 </div>
                 <div style="display:flex;gap:10px;flex-wrap:wrap;">
-                  <button type="button" class="btn btn-primary" onclick="addActivityAndGo('saveurs')">Réserver un repas ou une pergola →</button>
+                  <button type="button" class="btn btn-primary" onclick="addActivityAndGo('saveurs')">Réserver une table ou pergola →</button>
                   <button type="button" class="btn btn-secondary" onclick="openQuoteModalSprint1()">Repas de groupe / banquet</button>
                 </div>
               </div>
 
+              <!-- Les 3 espaces gastronomiques -->
+              <div class="eco-grid-3" style="gap:14px;margin-bottom:20px;">
+                <div style="padding:14px;background:var(--eco-bg);border-radius:12px;border:1px solid var(--eco-border);">
+                  <img src="audit-assets/ecopark-real-media/restaurant-vip-new-look.jpg.png" alt="Restaurant VIP New Look ECOPARK" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;" />
+                  <strong style="font-size:1.1rem;display:block;margin-bottom:4px;color:var(--eco-brand);">1. Restaurant VIP New Look</strong>
+                  <p style="font-size:13.5px;color:var(--eco-text-muted);margin:0;">
+                    Salle climatisée privatisable (50–60 places) pour déjeuners d'affaires, réunions de direction et dîners d'honneur.
+                  </p>
+                </div>
+                <div style="padding:14px;background:var(--eco-bg);border-radius:12px;border:1px solid var(--eco-border);">
+                  <img src="audit-assets/ecopark-real-media/boucarous.jpg" alt="Les Boukarous de plein air ECOPARK" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;" />
+                  <strong style="font-size:1.1rem;display:block;margin-bottom:4px;color:var(--eco-dining);">2. Les Boukarous</strong>
+                  <p style="font-size:13.5px;color:var(--eco-text-muted);margin:0;">
+                    Espaces de plein air ventilés sous la canopée avec vue sur les étangs piscicoles. Grillades au feu de bois et convivialité.
+                  </p>
+                </div>
+                <div style="padding:14px;background:var(--eco-bg);border-radius:12px;border:1px solid var(--eco-border);">
+                  <img src="audit-assets/ecopark-real-media/Le-Chateau-des-Saveurs.jpeg" alt="Le Château des Saveurs au bord du lac" style="width:100%;height:140px;object-fit:cover;border-radius:8px;margin-bottom:10px;" />
+                  <strong style="font-size:1.1rem;display:block;margin-bottom:4px;color:var(--eco-brand);">3. Le Château des Saveurs</strong>
+                  <p style="font-size:13.5px;color:var(--eco-text-muted);margin:0;">
+                    Grande table lacustre avec service sous pergolas privatives face à l'eau. Poissons braisés frais et menus complets.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Carte & Modalités -->
               <div class="eco-template-grid-2">
                 <div class="eco-info-box">
-                  <h4>Carte &amp; prix affichés en Francs CFA (par plat / par menu)</h4>
+                  <h4>Carte &amp; prix officiels affichés en Francs CFA</h4>
                   <ul>
+                    <li><strong>Grillades &amp; Assiette du Jour (Boukarous / VIP) :</strong> <strong>3 500 FCFA</strong> par plat</li>
                     <li><strong>Poisson braisé d'Ahala (étang frais, miondo ou plantain) :</strong> <strong>5 000 FCFA</strong> par plat adulte</li>
                     <li><strong>Poulet DG Royal aux plantains mûrs &amp; légumes du jardin :</strong> <strong>6 500 FCFA</strong> par plat adulte</li>
                     <li><strong>Ndolé Royal aux crevettes &amp; accompagnements :</strong> <strong>5 500 FCFA</strong> par plat adulte</li>
@@ -2248,11 +2381,11 @@ SEJOUR_RESTAURANT_SUPPLEMENT_HTML = r"""            <!-- SOUS-RUBRIQUE RESTAURAN
                   </ul>
                 </div>
                 <div class="eco-info-box">
-                  <h4>Horaires, modalités de service, groupes &amp; réservation</h4>
+                  <h4>Horaires, espaces annexes, groupes &amp; réservation</h4>
                   <ul>
-                    <li><strong>Horaires de service :</strong> Mardi au dimanche de <strong>11h30 à 20h30</strong> (service continu pour les résidents des cités hôtelières 7j/7).</li>
-                    <li><strong>Modalités de service :</strong> Service à table en salle ventilée, sous les pergolas au bord de l'eau, ou en room-service dans les Cités Ewondo, Chanthel et Bene.</li>
-                    <li><strong>Précommande « Zéro attente 12h30 / 13h30 » :</strong> Choisissez votre plat lors de la réservation de votre billet QR pour être servi dès votre sortie de la piscine.</li>
+                    <li><strong>Horaires continus :</strong> Ouvert <strong>7j/7 de 07h00 à 23h00</strong> (petit-déjeuner, déjeuner, dîner et room-service résident).</li>
+                    <li><strong>Espaces annexes :</strong> <strong>Espace Onemble</strong> (célébrations festives et banquets de plein air) et <strong>Eco SNACK</strong> (rafraîchissements rapides, jus locaux et snacking en bord de lac).</li>
+                    <li><strong>Précommande « Zéro attente 12h30 / 13h30 » :</strong> Choix du plat lors de la réservation en ligne pour un service immédiat à la sortie de la piscine.</li>
                     <li><strong>Groupes, séminaires &amp; mariages :</strong> Buffets traiteur sur mesure de 20 à 500 convives (Salle Menkii Essomba Anton ou esplanade).</li>
                   </ul>
                 </div>
@@ -2272,9 +2405,9 @@ GROUPES_TEMPLATE_HTML = r"""              <!-- Pôle 5 : GABARIT COMPLET GROUPES
                       <span class="eco-cat-badge eco-cat-brand"><span class="tech-code-tag">PUB-11 • </span>Groupes &amp; événements à Yaoundé-Ahala</span>
                       <span class="price-pill">Devis sur mesure • Salle 500 places</span>
                     </div>
-                    <h2 style="margin-top:10px;font-size:1.65rem;">Sorties scolaires, séminaires d'entreprises &amp; mariages</h2>
+                    <h2 style="margin-top:10px;font-size:1.65rem;">Sorties scolaires, séminaires d'entreprises, mariages &amp; anniversaires</h2>
                     <p style="font-size:16px;color:var(--eco-text-muted);margin-top:6px;">
-                      Organisez votre projet dans un domaine sécurisé et verdoyant à l'entrée sud de Yaoundé (Ahala Barrière, face station Tradex RN3), avec espaces dédiés, service traiteur et flotte de navettes climatisées.
+                      Organisez votre projet dans un domaine sécurisé de plus de 200 hectares à l'entrée sud de Yaoundé (Ahala Barrière, face station Tradex RN3), avec espaces dédiés, traiteur officiel et flotte de navettes climatisées.
                     </p>
 
                     <div class="eco-grid-3" style="margin-top:16px;gap:14px;">
@@ -2282,43 +2415,47 @@ GROUPES_TEMPLATE_HTML = r"""              <!-- Pôle 5 : GABARIT COMPLET GROUPES
                         <h4>1. Sorties scolaires &amp; jeunesse</h4>
                         <ul>
                           <li><strong>Tarif entrée enfant protégé :</strong> <strong>500 FCFA / élève</strong> (et 0 FCFA moins de 3 ans).</li>
-                          <li><strong>Forfait excursion :</strong> Dès <strong>1 500 FCFA / élève</strong> (Parc animalier « ToTo », pisciculture, musée ou piscine surveillée).</li>
-                          <li><strong>Sécurité :</strong> Circuit balisé, maîtres-nageurs et éducateurs sur site.</li>
+                          <li><strong>Forfait excursion :</strong> Dès <strong>1 500 FCFA / élève</strong> (Parc animalier « ToTo », pisciculture, balade en forêt ou piscine surveillée).</li>
+                          <li><strong>Sécurité :</strong> Circuit balisé, éducateurs naturalistes et maîtres-nageurs diplômés.</li>
                         </ul>
                       </div>
                       <div class="eco-info-box">
-                        <h4>2. Entreprises, ministères &amp; ONG</h4>
+                        <h4>2. Entreprises &amp; séminaires</h4>
                         <ul>
-                          <li><strong>Remise groupe :</strong> Dès 20 adultes (entrée parc à <strong>700 FCFA / adulte</strong> au lieu de 1 000 FCFA).</li>
-                          <li><strong>Forfait séminaire :</strong> Dès <strong>12 500 FCFA / participant</strong> (salle équipée, pause-café, déjeuner Château des Saveurs et détente).</li>
-                          <li><strong>Hébergement :</strong> 36 chambres et suites sur place pour retraites résidentielles.</li>
+                          <li><strong>Remise groupe :</strong> Dès 10 adultes (entrée parc à <strong>700 FCFA / adulte</strong> au lieu de 1 000 FCFA).</li>
+                          <li><strong>Forfait séminaire :</strong> Dès <strong>12 500 FCFA / participant</strong> (salle équipée, pause-café, déjeuner Château des Saveurs).</li>
+                          <li><strong>Hébergement :</strong> 30 chambres et suites sur place pour retraites résidentielles au calme.</li>
                         </ul>
                       </div>
                       <div class="eco-info-box">
-                        <h4>3. Mariages, galas &amp; réceptions</h4>
+                        <h4>3. Mariages &amp; Pack Anniversaire</h4>
                         <ul>
-                          <li><strong>Salle « Menkii Essomba Anton » :</strong> Capacité vérifiée de <strong>500 places assises</strong>, climatisée et sonorisée.</li>
-                          <li><strong>Espaces plein air :</strong> Esplanade arborée et pergolas au bord du lac pour cocktails et photos.</li>
-                          <li><strong>Forfait réception :</strong> Dès <strong>15 000 FCFA / invité</strong> avec traiteur officiel.</li>
+                          <li><strong>Salle « Menkii Essomba Anton » :</strong> Capacité vérifiée de <strong>500 places</strong> assises, climatisée.</li>
+                          <li><strong>Pack Anniversaire clé en main :</strong> Accès parc, animations, goûter/gâteau et espace réservé.</li>
+                          <li><strong>Sports &amp; loisirs :</strong> Terrains de football et volley-ball en plein air.</li>
                         </ul>
                       </div>
                     </div>
 
                     <div class="eco-template-grid-2" style="margin-top:14px;">
                       <div class="eco-info-box">
-                        <h4>Espaces, capacités &amp; prestations vérifiés</h4>
+                        <h4>Espaces de réception &amp; capacités vérifiés</h4>
                         <ul>
-                          <li><strong>Salle polyvalente « Menkii Essomba Anton » :</strong> 500 places (conférence, banquet, mariage).</li>
-                          <li><strong>Transport &amp; navettes :</strong> Bus climatisés de <strong>5, 18 et 32 places</strong> avec prise en charge dans tout Yaoundé.</li>
-                          <li><strong>Stationnement :</strong> Parking intérieur gardé et gratuit de <strong>150 places</strong> (bus et véhicules particuliers).</li>
+                          <li><strong>Salle polyvalente « Menkii Essomba Anton » :</strong> 500 places (banquets, conférences, galas).</li>
+                          <li><strong>Eco Village :</strong> 100 places couvertes sous charpente traditionnelle pour ateliers et repas associatifs.</li>
+                          <li><strong>Espace pique-nique Vert :</strong> 210 places ombragées sous la canopée pour grands groupes.</li>
+                          <li><strong>Espace pique-nique Terrasse :</strong> 30 places panoramiques face au lac.</li>
+                          <li><strong>Boukarou Carré :</strong> 20 places intimistes pour réunions de direction ou réceptions privées.</li>
+                          <li><strong>Flotte transport :</strong> Bus climatisés de <strong>5, 18 et 32 places</strong> (Ligne navettes : <strong>698 13 11 34 / 677 48 69 86</strong>).</li>
                         </ul>
                       </div>
                       <div class="eco-info-box">
-                        <h4>Conditions de réservation groupe</h4>
+                        <h4>Contacts dédiés &amp; conditions de réservation</h4>
                         <ul>
-                          <li><strong>Émission de facture proforma :</strong> Immédiate en ligne (référence <code>DEV-2026-...</code>) ou sur WhatsApp.</li>
+                          <li><strong>Ligne directe Événements &amp; Devis :</strong> Tél / WhatsApp : <strong>+237 677 51 03 48 / +237 670 37 73 48</strong> • Courriel : <code>contact@ecopark-yaounde.com</code></li>
+                          <li><strong>Émission proforma :</strong> Immédiate en ligne (référence <code>DEV-2026-...</code>) ou sur WhatsApp sous 24h ouvrées.</li>
                           <li><strong>Visite de repérage :</strong> Gratuite du mardi au dimanche sur rendez-vous avec la direction d'exploitation.</li>
-                          <li><strong>Modalités :</strong> Acompte à la validation du devis ; report gratuit selon conditions météo pour les activités plein air.</li>
+                          <li><strong>Parking sécurisé :</strong> Parking intérieur gardé et gratuit de <strong>150 places</strong>.</li>
                         </ul>
                       </div>
                     </div>
@@ -2343,63 +2480,71 @@ CFP_TEMPLATE_HTML = r"""              <!-- Pôle 6 : GABARIT COMPLET FORMATIONS 
                   <div>
                     <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
                       <span class="eco-cat-badge eco-cat-cfp"><span class="tech-code-tag">PUB-12 • </span>Centre de Formation Professionnelle (CFP)</span>
-                      <span class="price-pill">Inscription 50 000 FCFA • Scolarité 250 000 FCFA</span>
+                      <span class="price-pill">Agrément MINEFOP N°000418 du 25 Août 2025</span>
                     </div>
-                    <h2 style="margin-top:10px;font-size:1.65rem;">CFP ECOPARK — 5 filières professionnelles agréées MINEFOP</h2>
-                    <p style="font-size:16px;color:var(--eco-text-muted);margin-top:6px;">
-                      Situé au cœur du complexe d'Ahala, le Centre de Formation Professionnelle ECOPARK associe enseignement théorique (30 %) et immersion pratique quotidienne (70 %) directement dans les hôtels, cuisines, jardins et bassins piscicoles du domaine.
+                    <h2 style="margin-top:10px;font-size:1.65rem;">CFP ECOPARK — 5 filières professionnelles d'excellence</h2>
+                    <p style="font-size:15px;color:var(--eco-text-muted);margin-top:4px;">
+                      <strong>Agrément N°000418/MINEFOP/SG/DFOP/SDGSF/CSACD/CBAC du 25 Août 2025</strong> • Directrice : <strong>Mme Zinder Binga Aïssa</strong>. Enseignement théorique (30 %) et immersion pratique quotidienne (70 %) sur les installations réelles du complexe.
                     </p>
 
+                    <!-- 5 Filières -->
                     <div class="eco-grid-3" style="margin-top:16px;gap:12px;">
                       <div class="eco-info-box">
                         <h4>1. Hôtellerie &amp; 2. Restauration</h4>
                         <ul>
-                          <li><strong>Objectifs &amp; programme :</strong> Accueil, gestion hôtelière, arts culinaires camerounais et internationaux, hygiène alimentaire.</li>
-                          <li><strong>Application sur site :</strong> Cités Ewondo, Chanthel, Bene et restaurant Le Château des Saveurs.</li>
-                          <li><strong>Débouchés :</strong> Hôtels, complexes touristiques, restaurants et service traiteur.</li>
+                          <li><strong>Formation :</strong> Réception, hébergement, cuisine camerounaise et internationale, service en salle.</li>
+                          <li><strong>Pratique sur site :</strong> Cités hôtelières et restaurant Le Château des Saveurs.</li>
+                          <li><strong>Partenaires stages :</strong> <em>Hôtel La Référence</em>, <em>Djabi Hôtel Mbankomo</em>.</li>
                         </ul>
                       </div>
                       <div class="eco-info-box">
                         <h4>3. Décoration événementielle</h4>
                         <ul>
-                          <li><strong>Objectifs &amp; programme :</strong> Conception scénographique, habillage floral, aménagement de salles de réception et galas.</li>
-                          <li><strong>Application sur site :</strong> Salle « Menkii Essomba Anton » (500 places) et esplanade mariage.</li>
-                          <li><strong>Débouchés :</strong> Agences événementielles, entrepreneuriat et décoration d'intérieur.</li>
+                          <li><strong>Formation :</strong> Design scénographique, art floral, habillage de salles et réceptions.</li>
+                          <li><strong>Pratique sur site :</strong> Salle « Menkii Essomba Anton » (500 places) et esplanades mariages.</li>
+                          <li><strong>Débouchés :</strong> Agences événementielles, décorateur indépendant.</li>
                         </ul>
                       </div>
                       <div class="eco-info-box">
                         <h4>4. Agropastorale &amp; 5. Pisciculture</h4>
                         <ul>
-                          <li><strong>Objectifs &amp; programme :</strong> Élevage (aviculture, porciculture, cuniculture, apiculture), gestion d'étangs piscicoles et alevinage.</li>
-                          <li><strong>Application sur site :</strong> Ferme d'application et bassins piscicoles d'Ahala.</li>
-                          <li><strong>Débouchés :</strong> Exploitations agricoles, fermes aquacoles et auto-emploi accompagné.</li>
+                          <li><strong>Formation :</strong> Élevage (aviculture, porciculture, apiculture), gestion des étangs et alevinage.</li>
+                          <li><strong>Pratique sur site :</strong> Bassins piscicoles et ferme agro-écologique d'Ahala.</li>
+                          <li><strong>Bourses :</strong> Éligible aux bourses gouvernementales MINEFOP.</li>
                         </ul>
                       </div>
                     </div>
 
+                    <!-- Admission & Frais hors accordéon -->
                     <div class="eco-template-grid-2" style="margin-top:14px;">
                       <div class="eco-info-box">
-                        <h4>Durée, diplômes &amp; conditions d'admission</h4>
+                        <h4>Admission, durée &amp; pièces requises</h4>
                         <ul>
-                          <li><strong>Durée du cursus :</strong> <strong>12 mois</strong> (année académique complète incluant les stages pratiques garantis sur site).</li>
-                          <li><strong>Titres délivrés :</strong> Diplôme de Qualification Professionnelle (<strong>DQP</strong>), Certificat de Qualification Professionnelle (<strong>CQP</strong>) et Attestation reconnue par l'État (MINEFOP).</li>
-                          <li><strong>Conditions d'admission :</strong> Accessible <strong>dès 16 ans</strong>. Pièces : fiche d'inscription, photocopie CNI ou acte de naissance, dernier bulletin ou diplôme, 4 photos 4×4.</li>
+                          <li><strong>Conditions d'accès :</strong> Accessible <strong>dès 16 ans</strong>. Niveau académique : <strong>BEPC requis</strong> pour l'examen national (DQP / CQP).</li>
+                          <li><strong>Durée :</strong> Cursus complet de <strong>12 mois</strong> incluant stages garantis.</li>
+                          <li><strong>Dossier de candidature :</strong> Demande manuscrite timbrée à Mme la Directrice, acte de naissance/CNI, 4 photos 4×4 couleur, 1 rame de papier A4, dernier diplôme.</li>
+                          <li><strong>Contacts CFP :</strong> Tél / WhatsApp : <strong>+237 675 76 34 94 / 658 56 41 02 / 655 94 79 40</strong> • Courriel : <code>cfpecopark.yaounde@gmail.com</code> • BP : 121 Ahala, Yaoundé.</li>
                         </ul>
                       </div>
                       <div class="eco-info-box">
-                        <h4>Frais vérifiés, échéancier &amp; calendrier</h4>
+                        <h4>Détail des frais : Scolarité vs Frais techniques</h4>
                         <ul>
-                          <li><strong>Frais d'inscription :</strong> <strong>50 000 FCFA</strong> à l'ouverture du dossier.</li>
-                          <li><strong>Pension / Scolarité annuelle :</strong> <strong>250 000 FCFA</strong> payable en <strong>4 tranches</strong> (100 000 FCFA + 3 × 50 000 FCFA) ou en règlement intégral (300 000 FCFA inscription incluse).</li>
-                          <li><strong>Prochaine session :</strong> Inscriptions et entretiens d'orientation ouverts du mardi au samedi au campus d'Ahala.</li>
+                          <li><strong>1. Scolarité (300 000 FCFA total) :</strong> Inscription : <strong>50 000 FCFA</strong> + Pension : <strong>250 000 FCFA</strong> payable en <strong>4 tranches</strong> (100k + 3 × 50k FCFA).</li>
+                          <li><strong>2. Frais techniques &amp; tenue (185 000 FCFA) :</strong>
+                            <br/>• Uniforme officiel de travail : <strong>60 000 FCFA</strong>
+                            <br/>• Ateliers &amp; matières d'œuvre : <strong>60 000 FCFA</strong>
+                            <br/>• Matériel individuel : <strong>30 000 FCFA</strong>
+                            <br/>• Assurance apprenant : <strong>20 000 FCFA</strong>
+                            <br/>• Écusson &amp; badge : <strong>15 000 FCFA</strong>
+                          </li>
                         </ul>
                       </div>
                     </div>
                   </div>
 
                   <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;padding-top:14px;border-top:1px solid var(--eco-border);">
-                    <button type="button" class="btn btn-primary" onclick="openCfpModalSprint1()">Déposer une demande d'information ou candidature</button>
-                    <button type="button" class="btn btn-secondary" onclick="openRdvModalSprint1('orientation_cfp')">Prendre RDV d'orientation au campus</button>
+                    <button type="button" class="btn btn-primary" onclick="openCfpModalSprint1()">Déposer une candidature CFP (50 000 FCFA)</button>
+                    <button type="button" class="btn btn-secondary" onclick="openRdvModalSprint1('orientation_cfp')">Prendre RDV d'orientation avec la Directrice</button>
                   </div>
                 </div>
               </article>"""
@@ -3125,9 +3270,46 @@ REFONTE_JS = r"""
         structureName: 'MPECK MULTI-SERVICES',
         directionArtistique: 'Canopée vivante',
         address: 'Quartier Ahala Barrière, face station Tradex Ahala, Route Nationale N°3, Yaoundé, Cameroun',
-        phones: ['+237 697 13 62 03', '+237 675 56 26 55'],
-        whatsappMain: '+237697136203',
-        email: 'info@ecopark-yaounde.com'
+        postalAddress: 'BP: 121 Ahala, Yaoundé',
+        phones: ['+237 672 56 45 98', '+237 697 13 62 03', '+237 675 56 26 55'],
+        whatsappMain: '+237672564598',
+        whatsappUrl: 'https://wa.me/237672564598',
+        email: 'info@ecopark-yaounde.com',
+        departments: {
+          hebergement: {
+            name: 'Hébergement & Cités Hôtelières',
+            phone: '+237 694 60 14 49',
+            whatsapp: '+237694601449',
+            whatsappUrl: 'https://wa.me/237694601449'
+          },
+          navettes: {
+            name: 'Navettes & Transport',
+            phones: ['+237 698 13 11 34', '+237 677 48 69 86'],
+            contactText: '698 13 11 34 / 677 48 69 86'
+          },
+          groupes: {
+            name: 'Groupes, Séminaires & Pack Anniversaire',
+            phones: ['+237 677 51 03 48', '+237 670 37 73 48'],
+            contactText: '+237 677 51 03 48 / +237 670 37 73 48',
+            whatsapp: '+237677510348',
+            whatsappUrl: 'https://wa.me/237677510348',
+            email: 'contact@ecopark-yaounde.com'
+          },
+          cfp: {
+            name: 'Centre de Formation Professionnelle (CFP EcoPark)',
+            phones: ['+237 675 76 34 94', '+237 658 56 41 02', '+237 655 94 79 40'],
+            contactText: '+237 675 76 34 94 / 658 56 41 02 / 655 94 79 40',
+            email: 'cfpecopark.yaounde@gmail.com',
+            bp: 'BP: 121 Ahala, Yaoundé'
+          }
+        },
+        socials: {
+          facebook: 'https://web.facebook.com/EcoparkOfficiel',
+          instagram: 'https://www.instagram.com/ecopark_officiel/',
+          youtube: 'https://www.youtube.com/@ecopark-officiel',
+          tiktok: 'https://www.tiktok.com/@ecoparkofficiel',
+          whatsappChannel: 'https://whatsapp.com/channel/0029VbE0bZCHFxOvpADPDs2c'
+        }
       },
       schedule: {
         parkDays: 'Mardi au Dimanche',
@@ -3136,12 +3318,13 @@ REFONTE_JS = r"""
         lodgeDays: 'Ouvert 7j/7 (Réception 24h/24)',
         checkIn: '14h00',
         checkOut: '11h00',
-        restaurantHours: 'Mardi au Dimanche de 11h30 à 20h30 (7j/7 pour résidents)'
+        restaurantDays: 'Ouvert 7j/7',
+        restaurantHours: 'Ouvert 7j/7 (07h00 – 23h00)'
       },
       ageCategories: {
         toddler: { label: 'Moins de 3 ans', priceFcfa: 0, note: 'Accès parc gratuit (0 FCFA)' },
         child: { label: 'Enfant (3 à 12 ans)', priceFcfa: 500, note: 'Tarif entrée enfant protégé à 500 FCFA même en groupe' },
-        adult: { label: 'Adulte (13 ans et +)', priceFcfa: 1000, groupPriceFcfa: 700, groupMinAdults: 20 }
+        adult: { label: 'Adulte (13 ans et +)', priceFcfa: 1000, groupPriceFcfa: 700, groupMinAdults: 10 }
       },
       bookingConditions: {
         rainGuaranteeDays: 90,
@@ -3174,11 +3357,11 @@ REFONTE_JS = r"""
           ],
           inclus: [
             'Inclus : Accès aux allées botaniques, au parc animalier et aux aires de repos ombragées.',
-            'Non inclus : Sachet nutrition poissons/tortues (+500 FCFA en option) et activités nautiques/piscine.'
+            'Non inclus : Option canne à pêche (+2 000 FCFA), sachet nutrition poissons/tortues (+500 FCFA en option) et activités nautiques/piscine.'
           ],
           conditions: [
             'Horaires : Mardi au dimanche de 09h00 à 18h00.',
-            'Tarif enfant protégé : 500 FCFA (3–12 ans) • Gratuit moins de 3 ans • Adulte : 1 000 FCFA (700 FCFA dès 20 adultes).'
+            'Tarif enfant protégé : 500 FCFA (3–12 ans) • Gratuit moins de 3 ans • Adulte : 1 000 FCFA (700 FCFA dès 10 adultes).'
           ]
         },
         piscine: {
@@ -3224,6 +3407,23 @@ REFONTE_JS = r"""
           conditions: [
             'Horaires : Mardi au dimanche de 09h30 à 17h30.',
             'Tarif : 500 FCFA / enfant • 1 000 FCFA / adulte.'
+          ]
+        },
+        balade_foret: {
+          title: 'Balade en forêt (> 200 ha)',
+          deroulement: [
+            'Départ au poste écotouristique d\'Ahala et accueil par un éco-guide naturaliste.',
+            'Circuit pédestre guidé d\'environ 40 minutes à travers le domaine préservé de plus de 200 hectares.',
+            'Observation des arbres géants et essences indigènes, halte panoramique sur les étangs et retour sécurisé.'
+          ],
+          inclus: [
+            'Inclus : Accompagnement par l\'éco-guide professionnel, sentiers balisés et entretenus.',
+            'Non inclus : Entrée générale Parc & Zoo (hors forfaits) et boissons.'
+          ],
+          conditions: [
+            'Horaires : Mardi au dimanche de 09h30 à 17h00 (départs réguliers sous réserve météo).',
+            'Tarif : 500 FCFA / enfant (3–12 ans) • 1 000 FCFA / adulte • 700 FCFA / pers. dès 10 personnes.',
+            'Conseil : Chaussures fermées recommandées.'
           ]
         }
       }
@@ -3302,7 +3502,8 @@ REFONTE_JS = r"""
       var cIn = document.getElementById('quickCalcChildren');
       var adults = Math.max(0, parseInt(aIn && aIn.value, 10) || 0);
       var children = Math.max(0, parseInt(cIn && cIn.value, 10) || 0);
-      var adultZooUnit = adults >= 20 ? 700 : 1000;
+      var groupMin = (window.ECOPARK_SOURCE_UNIQUE && window.ECOPARK_SOURCE_UNIQUE.ageCategories && window.ECOPARK_SOURCE_UNIQUE.ageCategories.adult && window.ECOPARK_SOURCE_UNIQUE.ageCategories.adult.groupMinAdults) || 10;
+      var adultZooUnit = adults >= groupMin ? 700 : 1000;
       var zooOnly = (adults * adultZooUnit) + (children * 500);
       var passDecouverte = (adults * 2500) + (children * 1500);
       var waterCombo = (adults * (adultZooUnit + 2500 + 1000)) + (children * (500 + 1500 + 500));
@@ -3327,6 +3528,23 @@ REFONTE_JS = r"""
     // =========================================================================
     // ENRICHISSEMENT DYNAMIQUE DE LA FICHE ACTIVITÉ (#sec-PUB-04)
     // =========================================================================
+    if (typeof V4_PUB04_CATALOG !== 'undefined' && !V4_PUB04_CATALOG.balade_foret) {
+      V4_PUB04_CATALOG.balade_foret = {
+        slug: 'balade_foret',
+        title: 'Balade en forêt (> 200 ha)',
+        duration: '40 min',
+        age: 'Tout public (Dès 3 ans)',
+        safety: 'Sentiers balisés & éco-guides naturalistes',
+        childFcfa: 500,
+        adultFcfa: 1000,
+        img: 'audit-assets/ecopark-real-media/zoo-1.jpeg',
+        desc: 'Parcourez un domaine boisé préservé de plus de 200 hectares à Ahala. Accompagné d\'un guide naturaliste, découvrez les essences végétales indigènes, les points de vue sur les étangs et ressourcez-vous sous la grande canopée.',
+        prog: '1. Accueil au poste écotouristique d\'Ahala (5 min) • 2. Parcours guidé sous la canopée et observation de la flore (25 min) • 3. Halte panoramique sur les étangs et retour sécurisé (10 min).',
+        savoir: 'Chaussures fermées recommandées. Tarif : 500 FCFA Enfant / 1 000 FCFA Adulte (700 FCFA dès 10 personnes). Gratuit pour les moins de 3 ans.',
+        avis: '« Un bol d\'air pur exceptionnel à quelques minutes de la ville. Les sentiers sont très bien entretenus. » — Association Les Randonneurs du Centre (Note : 4.9/5).'
+      };
+    }
+
     var origSwitchPub04Act = window.switchV4Pub04Activity;
     if (typeof origSwitchPub04Act === 'function' && !origSwitchPub04Act._refonteWrapped) {
       window.switchV4Pub04Activity = function (actKey, btnEl) {
@@ -3344,6 +3562,50 @@ REFONTE_JS = r"""
         return res;
       };
       window.switchV4Pub04Activity._refonteWrapped = true;
+    }
+
+    // =========================================================================
+    // AIGUILLAGE WHATSAPP MULTI-PÔLES & SOULAGEMENT DOPAMINERGIQUE (TÂCHE 3 & 4)
+    // =========================================================================
+    window._lastDopamineWhatsAppUrl = 'https://wa.me/237672564598?text=' + encodeURIComponent(
+      'Bonjour ECOPARK CAMEROUN (Yaounde-Ahala), je souhaite recevoir mon Pass QR Coupe-File et le point GPS face station Tradex Ahala.'
+    );
+
+    var origTriggerDopamine = window.triggerDopamineRelief;
+    if (typeof origTriggerDopamine === 'function' && !origTriggerDopamine._refonteWaWrapped) {
+      window.triggerDopamineRelief = function (channel, data) {
+        var res = origTriggerDopamine.apply(this, arguments);
+        var targetPhone = '237672564598';
+        if (channel === 'CFP') {
+          targetPhone = '237675763494';
+        } else if (channel === 'QUOTE') {
+          targetPhone = '237677510348';
+        } else if (data && ((data.summary && /lodge|chambre|hebergement/i.test(data.summary)) || (data.name && /hebergement/i.test(data.name)))) {
+          targetPhone = '237694601449';
+        }
+        var waUrl = (res && res.whatsappUrl) ? res.whatsappUrl.replace(/wa\.me\/\d+/, 'wa.me/' + targetPhone) : ('https://wa.me/' + targetPhone);
+        window._lastDopamineWhatsAppUrl = waUrl;
+        var btnEl = document.getElementById('btnDopamineWhatsAppBridge');
+        if (btnEl) btnEl.setAttribute('data-wa-url', waUrl);
+        if (res) res.whatsappUrl = waUrl;
+        return res;
+      };
+      window.triggerDopamineRelief._refonteWaWrapped = true;
+    }
+
+    // Protection nutrition pour l'événement Mercredi CFP (évite les 1 000 FCFA indus)
+    var origBookWeeklyEvent = window.bookWeeklyEventInOneClick;
+    if (typeof origBookWeeklyEvent === 'function' && !origBookWeeklyEvent._refonteNutritionGuard) {
+      window.bookWeeklyEventInOneClick = function (eventCode) {
+        var res = origBookWeeklyEvent.apply(this, arguments);
+        if (eventCode === 'EVT_MERCREDI_CFP') {
+          var chkNut = document.getElementById('chkBumpNutrition');
+          if (chkNut) chkNut.checked = false;
+          if (typeof window.recalcSimulator === 'function') window.recalcSimulator();
+        }
+        return res;
+      };
+      window.bookWeeklyEventInOneClick._refonteNutritionGuard = true;
     }
 
     // =========================================================================
@@ -6667,6 +6929,15 @@ def apply_refonte() -> None:
     if pub04_tabs_pattern.search(html):
         html = pub04_tabs_pattern.sub(lambda _: PUB04_STRUCTURED_DETAILS_HTML + "\n\n", html, count=1)
 
+    # - Add 6th filter button for balade_foret in #sec-PUB-04 if not present
+    if 'data-pub04-act="balade_foret"' not in html:
+        html = html.replace(
+            '<button type="button" class="v4-filter-pill" data-pub04-act="musee" onclick="switchV4Pub04Activity(\'musee\', this)">5. Musée &amp; Biblio. (500/1 000 F)</button>',
+            '<button type="button" class="v4-filter-pill" data-pub04-act="musee" onclick="switchV4Pub04Activity(\'musee\', this)">5. Musée &amp; Biblio. (500/1 000 F)</button>\n'
+            '                <button type="button" class="v4-filter-pill" data-pub04-act="balade_foret" onclick="switchV4Pub04Activity(\'balade_foret\', this)">6. Balade en forêt (500/1 000 F)</button>',
+            1,
+        )
+
     # - Remove hardcoded value="2026-11-15" on #v4Pub04DateInput and #visitDate
     html = html.replace(
         '<input type="date" id="v4Pub04DateInput" class="form-control" value="2026-11-15" onchange="syncV4Pub04Widget()" />',
@@ -6677,8 +6948,30 @@ def apply_refonte() -> None:
         '<input type="date" id="visitDate" class="form-control" required />',
     )
 
-    # 9. Add Restaurant full template inside #sec-PUB-09 right before <!-- ECOPARK_V4_PUB04_AND_PUB09:END -->
-    if 'id="restaurantFullTemplateCard"' not in html:
+    # 8b. Replace header action buttons in #sec-PUB-09 with WhatsApp Hébergement CTA
+    pub09_hdr_pattern = re.compile(
+        r'<div style="display:flex;gap:8px;flex-wrap:wrap;(?:align-items:center;)?"[^>]*>\s*<span class="price-pill">Check-in : 14h00 • Check-out : 11h00(?: • 30 unités)?</span>.*?(?:<a [^>]*>.*?</a>\s*)?<button type="button" class="btn btn-primary btn-sm" onclick="selectTotemService\(\'hotels\'\)">Réserver une nuitée(?: ou Day-Use)? →</button>\s*</div>',
+        re.S,
+    )
+    if pub09_hdr_pattern.search(html):
+        html = pub09_hdr_pattern.sub(lambda _: PUB09_HEADER_BUTTONS_HTML.strip(), html, count=1)
+
+    # 8c. Replace 4 lodging cards in #sec-PUB-09 with 30-unit max 30k FCFA cards
+    pub09_cards_pattern = re.compile(
+        r"<!-- 4 Cartes d'Hébergement V4.*?</div>\s*</div>\s*(?=\s*<!-- Fiche détaillée PUB-09)",
+        re.S,
+    )
+    if pub09_cards_pattern.search(html):
+        html = pub09_cards_pattern.sub(lambda _: PUB09_LODGES_HTML.strip() + "\n", html, count=1)
+
+    # 9. Add or replace Restaurant full template inside #sec-PUB-09 right before <!-- ECOPARK_V4_PUB04_AND_PUB09:END -->
+    resto_pattern = re.compile(
+        r"<!-- SOUS-RUBRIQUE RESTAURANT COMPLÈTE.*?</div>\s*(?=\s*</div>\s*</div>\s*<!-- ECOPARK_V4_PUB04_AND_PUB09:END -->)",
+        re.S,
+    )
+    if resto_pattern.search(html):
+        html = resto_pattern.sub(lambda _: SEJOUR_RESTAURANT_SUPPLEMENT_HTML.strip(), html, count=1)
+    elif 'id="restaurantFullTemplateCard"' not in html:
         html = html.replace(
             "          </div>\n        </div>\n        <!-- ECOPARK_V4_PUB04_AND_PUB09:END -->",
             "\n" + SEJOUR_RESTAURANT_SUPPLEMENT_HTML + "\n          </div>\n        </div>\n        <!-- ECOPARK_V4_PUB04_AND_PUB09:END -->",
@@ -6812,6 +7105,26 @@ def apply_refonte() -> None:
     html = html.replace(
         "<div><strong>Site :</strong> Complexe Agro-Ecotouristique ECOPARK Ahala (RN3)</div>",
         "<div><strong>Structure :</strong> MPECK MULTI-SERVICES • <strong>Site :</strong> ECOPARK Ahala (RN3)</div>",
+    )
+
+    # 13c. Topbar WhatsApp update
+    html = html.replace(
+        'WhatsApp : <a href="https://wa.me/237697136203" target="_blank" rel="noopener noreferrer" style="color:#FFFFFF;font-weight:700;">+237 697 13 62 03</a>',
+        'WhatsApp : <a href="https://wa.me/237672564598" target="_blank" rel="noopener noreferrer" style="color:#FFFFFF;font-weight:700;">+237 672 56 45 98</a>',
+    )
+
+    # 13d. Footer contact & socials update
+    footer_contact_pattern = re.compile(
+        r'<div class="col-3">\s*<h4 style="margin-bottom:10px;">Horaires & Contact</h4>.*?</div>\s*(?=\s*</div>\s*<div style="border-top:1px solid var\(--color-border\);)',
+        re.S,
+    )
+    if footer_contact_pattern.search(html):
+        html = footer_contact_pattern.sub(lambda _: FOOTER_CONTACT_HTML.strip(), html, count=1)
+
+    # 13e. bookWeeklyEventInOneClick nutrition check fix
+    html = html.replace(
+        "if (document.getElementById('chkBumpNutrition')) document.getElementById('chkBumpNutrition').checked = !!ev.nutrition;",
+        "if (document.getElementById('chkBumpNutrition')) document.getElementById('chkBumpNutrition').checked = (ev.code === 'EVT_MERCREDI_CFP') ? false : !!ev.nutrition;",
     )
 
     # 14. Inject or replace REFONTE_JS before </script>\n</body>

@@ -15,3 +15,7 @@ Thumbs.db
 
 # Tests base de donnees (PGlite)
 node_modules/
+
+
+# Journaux temporaires multi-agents
+.agents/teamwork/
