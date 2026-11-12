@@ -1,5 +1,5 @@
 // ============================================================================
-// ECOPARK — Simulations métier sur la base (scénarios réalistes de bout en bout)
+// ECOPARK - Simulations métier sur la base (scénarios réalistes de bout en bout)
 // Exécution : cd supabase/tests && node simulation_scenarios.mjs
 // Chaque scénario rejoue une situation d'exploitation réelle à Ahala et vérifie
 // le comportement de la migration « Gouvernance CRUD ».
@@ -26,8 +26,8 @@ let passed = 0;
 let failed = 0;
 const fails = [];
 const ok = (c, label, detail = '') => {
-  if (c) { passed++; console.log(`    [OK]   ${label}${detail ? ' — ' + detail : ''}`); }
-  else { failed++; fails.push(label); console.log(`    [FAIL] ${label}${detail ? ' — ' + detail : ''}`); }
+  if (c) { passed++; console.log(`    [OK]   ${label}${detail ? ' - ' + detail : ''}`); }
+  else { failed++; fails.push(label); console.log(`    [FAIL] ${label}${detail ? ' - ' + detail : ''}`); }
 };
 const step = (t) => console.log(`  > ${t}`);
 
@@ -65,7 +65,7 @@ async function main() {
   const t0 = Date.now();
 
   // --------------------------------------------------------------------------
-  console.log('\nSCÉNARIO 1 — Préparer et publier les tarifs des vacances de Pâques');
+  console.log('\nSCÉNARIO 1 - Préparer et publier les tarifs des vacances de Pâques');
   const royaleId = await idOf(db, 'sales_bundles', 'bundle_code', 'PASS_ROYALE');
   let draft;
   step("L'Exploitation duplique le « Pass Journée Royale » et y saisit le tarif de Pâques (9 000 / 5 000 FCFA)");
@@ -103,7 +103,7 @@ async function main() {
      'Historique : 2 publications, toutes signées par la Direction', pubs.map((h) => `${h.prix} FCFA`).join(' puis '));
 
   // --------------------------------------------------------------------------
-  console.log('\nSCÉNARIO 2 — Lundi de Pâques férié : ouvrir un « Grand Dimanche Royal » le lundi');
+  console.log('\nSCÉNARIO 2 - Lundi de Pâques férié : ouvrir un « Grand Dimanche Royal » le lundi');
   const dimId = await idOf(db, 'agenda_events', 'code', 'EVT_DIMANCHE_ROYAL');
   await as(db, U.exp, async (tx) => {
     const copy = (await tx.query(`SELECT public.admin_duplicate('agenda_events', $1) AS id`, [dimId])).rows[0].id;
@@ -120,7 +120,7 @@ async function main() {
   });
 
   // --------------------------------------------------------------------------
-  console.log("\nSCÉNARIO 3 — Samedi de forte affluence : jauge piscine réduite et anti-surbooking");
+  console.log("\nSCÉNARIO 3 - Samedi de forte affluence : jauge piscine réduite et anti-surbooking");
   const piscineId = await idOf(db, 'catalog_activities', 'slug', 'piscine');
   const samedi = (await db.query(`SELECT (CURRENT_DATE + ((6 - EXTRACT(DOW FROM CURRENT_DATE)::int + 7) % 7 + 7))::date AS d`)).rows[0].d;
   step(`Maintenance d'un bassin : l'Exploitation ramène la jauge piscine de 300 à 60 places le ${samedi.toISOString().slice(0, 10)}`);
@@ -155,7 +155,7 @@ async function main() {
   ok(leak === 0, "Le visiteur obtient les disponibilités sans voir aucune réservation (noms, téléphones)");
 
   // --------------------------------------------------------------------------
-  console.log('\nSCÉNARIO 4 — Deux responsables modifient la même fiche en même temps (verrou optimiste)');
+  console.log('\nSCÉNARIO 4 - Deux responsables modifient la même fiche en même temps (verrou optimiste)');
   const menuId = await idOf(db, 'menu_items', 'sku', 'MNU-POISSON-BRAISE');
   const v = (await db.query('SELECT version FROM public.menu_items WHERE id = $1', [menuId])).rows[0].version;
   step(`Les deux ouvrent la fiche « Poisson Braisé » en version ${v}`);
@@ -169,7 +169,7 @@ async function main() {
   ok(final.price_fcfa === 5000 && final.version === v + 1, 'Aucune modification perdue silencieusement', `prix ${final.price_fcfa}, v${final.version}`);
 
   // --------------------------------------------------------------------------
-  console.log('\nSCÉNARIO 5 — Rupture du poisson à 14h et retour en stock');
+  console.log('\nSCÉNARIO 5 - Rupture du poisson à 14h et retour en stock');
   await as(db, U.exp, (tx) => tx.query('UPDATE public.menu_items SET in_stock = FALSE WHERE id = $1', [menuId]));
   let pub = await as(db, ANON, async (tx) => (await tx.query('SELECT in_stock FROM public.menu_items WHERE id = $1', [menuId])).rows[0]);
   ok(pub.in_stock === false, 'Le site voit le plat « en rupture » (il pourra être grisé dans la précommande)');
@@ -178,7 +178,7 @@ async function main() {
   ok(pub.in_stock === true, 'Retour en stock visible immédiatement');
 
   // --------------------------------------------------------------------------
-  console.log("\nSCÉNARIO 6 — Agent guichet suspendu en cours de journée");
+  console.log("\nSCÉNARIO 6 - Agent guichet suspendu en cours de journée");
   const ok1 = await refused(as(db, U.gui, (tx) => tx.query(
     `INSERT INTO public.bookings (reference_code, visitor_name, visitor_phone, visit_date, total_fcfa)
      VALUES ('ECP-G-01', 'Walk-in', '+237 6', CURRENT_DATE, 2000)`)));
@@ -193,7 +193,7 @@ async function main() {
   ok(susp.actor_name === U.adm.name && susp.avant === 'true' && susp.apres === 'false', 'La suspension est tracée avec son auteur (avant → après)');
 
   // --------------------------------------------------------------------------
-  console.log('\nSCÉNARIO 7 — Tentatives de contournement');
+  console.log('\nSCÉNARIO 7 - Tentatives de contournement');
   const tries = [
     ['Exploitation : baisser le prix du Zoo en ligne sans validation', as(db, U.exp, (tx) => tx.query(
       `UPDATE public.catalog_activities SET adult_price_fcfa = 100 WHERE slug = 'zoo'`)), 'ECOPARK_PUBLISHED_PRICE_LOCKED'],
@@ -205,17 +205,17 @@ async function main() {
   ];
   for (const [label, p, needle] of tries) {
     const msg = await refused(p);
-    ok(msg?.includes(needle), `Bloqué — ${label}`, msg ? msg.split('\n')[0] : 'NON BLOQUÉ');
+    ok(msg?.includes(needle), `Bloqué - ${label}`, msg ? msg.split('\n')[0] : 'NON BLOQUÉ');
   }
   // Sans MFA, la Direction n'a plus de droit d'écriture : la RLS filtre la ligne (0 ligne modifiée, pas d'erreur).
   const zooBefore = (await db.query(`SELECT adult_price_fcfa FROM public.catalog_activities WHERE slug = 'zoo'`)).rows[0].adult_price_fcfa;
   const noMfa = await as(db, U.dir, (tx) => tx.query(`UPDATE public.catalog_activities SET adult_price_fcfa = 1100 WHERE slug = 'zoo'`));
   const zooAfter = (await db.query(`SELECT adult_price_fcfa FROM public.catalog_activities WHERE slug = 'zoo'`)).rows[0].adult_price_fcfa;
   ok(noMfa.affectedRows === 0 && zooAfter === zooBefore,
-     'Bloqué — Direction sans double authentification : modifier un prix', `0 ligne modifiée, prix inchangé (${zooAfter} FCFA)`);
+     'Bloqué - Direction sans double authentification : modifier un prix', `0 ligne modifiée, prix inchangé (${zooAfter} FCFA)`);
 
   // --------------------------------------------------------------------------
-  console.log('\nSCÉNARIO 8 — Montée en charge du journal (500 modifications de jauge)');
+  console.log('\nSCÉNARIO 8 - Montée en charge du journal (500 modifications de jauge)');
   const tLoad = Date.now();
   const zooId = await idOf(db, 'catalog_activities', 'slug', 'zoo');
   await as(db, U.exp, async (tx) => {

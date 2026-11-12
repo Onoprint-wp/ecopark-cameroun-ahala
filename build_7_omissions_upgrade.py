@@ -178,7 +178,7 @@ HTML_TESTIMONIALS_SECTION = """
                 </div>
                 <div class="testimonial-author">
                   <div>
-                    <strong style="color:var(--color-brand-deep);display:block;">DRH — ONG &amp; Partenaires</strong>
+                    <strong style="color:var(--color-brand-deep);display:block;">DRH - ONG &amp; Partenaires</strong>
                     <span style="color:var(--color-text-muted);">Séminaire B2B &amp; Suites Cité Ewondo VIP</span>
                   </div>
                   <span class="status-badge badge-qr-prestige">Client Corporate</span>
@@ -217,9 +217,9 @@ HTML_KITCHEN_AND_SHUTTLE_SUBPANELS = """
                       <div>
                         <label class="form-label" for="simMealSlotSelect" style="font-size:12px;margin-bottom:2px;">Heure de service à table garantie</label>
                         <select id="simMealSlotSelect" class="form-control" style="min-height:32px;padding:3px 8px;font-size:12.5px;" onchange="recalcSimulator()">
-                          <option value="Service 12h30" selected>12h30 — Zéro attente (Prioritaire)</option>
-                          <option value="Service 13h30">13h30 — Cœur de journée</option>
-                          <option value="Service 15h00">15h00 — Après-midi au bord du lac</option>
+                          <option value="Service 12h30" selected>12h30 - Zéro attente (Prioritaire)</option>
+                          <option value="Service 13h30">13h30 - Cœur de journée</option>
+                          <option value="Service 15h00">15h00 - Après-midi au bord du lac</option>
                         </select>
                       </div>
                     </div>
@@ -278,7 +278,7 @@ HTML_ACC_SEARCH_BOX = """
 """
 
 HTML_RESCHEDULE_AND_PRINT_MODALS = """
-    <!-- OMISSION #3 : MODALE DE REPORT DE DATE SANS FRAIS — GARANTIE MÉTÉO YAOUNDÉ (ACC-05) -->
+    <!-- OMISSION #3 : MODALE DE REPORT DE DATE SANS FRAIS - GARANTIE MÉTÉO YAOUNDÉ (ACC-05) -->
     <div id="modalRescheduleBox" class="card" style="display:none;max-width:520px;width:100%;background:#FFFFFF;padding:28px;">
       <div style="display:flex;justify-content:space-between;align-items:center;">
         <span class="eyebrow eyebrow-hospitality" style="margin:0;">Garantie Météo &amp; Flexibilité Ahala (ACC-05)</span>
@@ -316,7 +316,7 @@ HTML_RESCHEDULE_AND_PRINT_MODALS = """
     <div id="modalOfficialPrintBox" class="card" style="display:none;max-width:680px;width:100%;background:#FFFFFF;padding:28px;max-height:92vh;overflow-y:auto;">
       <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid var(--color-brand-deep);padding-bottom:12px;">
         <div>
-          <strong style="font-family:var(--font-heading);font-size:1.35rem;color:var(--color-brand-deep);display:block;" id="officialPrintTitle">DOCUMENT OFFICIEL — ECOPARK CAMEROUN (YAOUNDÉ-AHALA)</strong>
+          <strong style="font-family:var(--font-heading);font-size:1.35rem;color:var(--color-brand-deep);display:block;" id="officialPrintTitle">DOCUMENT OFFICIEL - ECOPARK CAMEROUN (YAOUNDÉ-AHALA)</strong>
           <span style="font-size:12.5px;color:var(--color-text-muted);">Route Nationale N°3, Ahala Barrière (Face Station Tradex Ahala) • Tél / WhatsApp : +237 697 13 62 03</span>
         </div>
         <button type="button" class="btn btn-secondary btn-sm" onclick="closeSprint1Modals()">Fermer</button>
@@ -597,7 +597,7 @@ JS_OMISSIONS_UPGRADE = """
         const dateStr = (document.getElementById('ticketDate') || {}).textContent || 'Valable 09h00 – 18h00';
         const itemsStr = (document.getElementById('ticketItems') || {}).textContent || 'Entrée Parc & Zoo, Piscine, Pirogue';
         const totalStr = (document.getElementById('grandTotalFCFA') || {}).textContent || '14 000 FCFA';
-        if (titleEl) titleEl.textContent = `E-BILLET OFFICIEL COUPE-FILE — ${ref}`;
+        if (titleEl) titleEl.textContent = `E-BILLET OFFICIEL COUPE-FILE - ${ref}`;
         bodyEl.innerHTML = `
           <div style="padding:14px;background:var(--color-surface-soft);border:2px solid var(--color-brand-deep);border-radius:12px;">
             <div style="font-size:1.2rem;font-weight:700;color:var(--color-brand-deep);margin-bottom:6px;">Code Référence : ${ref} • Total TTC : ${totalStr}</div>
@@ -690,7 +690,7 @@ JS_OMISSIONS_UPGRADE = """
               <tr data-dossier-kind="RDV">
                 <td><strong>${r.reference}</strong></td>
                 <td>${r.date} (${r.slot})</td>
-                <td>RDV : ${r.purposeLabel} (${r.visitorName} — ${r.org})</td>
+                <td>RDV : ${r.purposeLabel} (${r.visitorName} - ${r.org})</td>
                 <td><strong>Accueil Gratuit</strong></td>
                 <td><span class="status-badge status-success">${r.status}</span></td>
                 <td style="display:flex;gap:4px;flex-wrap:wrap;">

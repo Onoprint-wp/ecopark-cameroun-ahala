@@ -1,4 +1,4 @@
-# Resolve — command, flags, reuse, adopt, inventory
+# Resolve - command, flags, reuse, adopt, inventory
 
 ```bash
 npx hyperframes media-use resolve --type <type> --intent "<description>" --project <dir>
@@ -38,7 +38,7 @@ npx hyperframes media-use resolve --type image --intent "gradient tech backgroun
 npx hyperframes media-use resolve --type icon --intent "rocket" --project .
 # → resolved icon_001 → .media/images/icon_001.png (icon, transparent)
 
-# Brand logo (official mark — never redrawn by hand)
+# Brand logo (official mark - never redrawn by hand)
 npx hyperframes media-use resolve --type logo --entity linkedin --intent "LinkedIn logo" --project .
 # → resolved logo_001 → .media/images/logo_001.svg (logo, official mark)
 
@@ -73,7 +73,7 @@ npx hyperframes media-use resolve --type lut --intent "teal orange blockbuster" 
 
 ## Reuse before you resolve
 
-Before resolving bgm/sfx/image/icon/logo/grade/lut, **check what already exists and reuse it when it fits.** media-use does not semantically match for you — you are the judge. It surfaces candidates; you decide.
+Before resolving bgm/sfx/image/icon/logo/grade/lut, **check what already exists and reuse it when it fits.** media-use does not semantically match for you - you are the judge. It surfaces candidates; you decide.
 
 ```bash
 npx hyperframes media-use resolve --type bgm --intent "upbeat tech launch" --candidates --project .
@@ -83,36 +83,36 @@ npx hyperframes media-use resolve --type bgm --intent "upbeat tech launch" --can
 #           --reuse 06e052c075fd2b80
 ```
 
-Read the list and judge semantic fit yourself — "upbeat tech launch" ≈ "energetic tech intro" is a call only you can make from the descriptions. Then:
+Read the list and judge semantic fit yourself - "upbeat tech launch" ≈ "energetic tech intro" is a call only you can make from the descriptions. Then:
 
 - **A project candidate fits** → just reference its path in your composition. Nothing else to run.
 - **A global candidate fits** → `resolve --type bgm --reuse <sha>` copies it into this project (self-contained render) and records it.
 - **Nothing fits** → resolve fresh (`--type ... --intent ...`).
 
-**Trust guardrail — when unsure, resolve fresh.** A redundant download is cheap; shipping the wrong asset is not. Judge fit from description + prompt + type + duration/dims. For **brand/entity** assets, reuse a _global_ candidate only when the entity matches exactly — the global cache aggregates every project you have worked on, so a `--candidates` list can surface another client's brand mark and its prompt text. Never reuse a cross-project brand asset on a loose match.
+**Trust guardrail - when unsure, resolve fresh.** A redundant download is cheap; shipping the wrong asset is not. Judge fit from description + prompt + type + duration/dims. For **brand/entity** assets, reuse a _global_ candidate only when the entity matches exactly - the global cache aggregates every project you have worked on, so a `--candidates` list can surface another client's brand mark and its prompt text. Never reuse a cross-project brand asset on a loose match.
 
-The deterministic floor still runs automatically: an identical (case/whitespace-insensitive) repeat auto-reuses with no `--candidates` step. `--candidates` is only for the semantic layer above that floor — and a fuzzy match is **never** auto-applied; reuse is always your explicit call. On a resolve that misses the floor and is about to fetch, media-use prints a one-line stderr hint when similar cached assets exist, pointing you back here.
+The deterministic floor still runs automatically: an identical (case/whitespace-insensitive) repeat auto-reuses with no `--candidates` step. `--candidates` is only for the semantic layer above that floor - and a fuzzy match is **never** auto-applied; reuse is always your explicit call. On a resolve that misses the floor and is about to fetch, media-use prints a one-line stderr hint when similar cached assets exist, pointing you back here.
 
 ## How it works
 
 `resolve` runs an automatic floor, then falls through to fetching:
 
-1. Check project `.media/manifest.jsonl` for a prompt match (case- and whitespace-insensitive) — auto-reuse
+1. Check project `.media/manifest.jsonl` for a prompt match (case- and whitespace-insensitive) - auto-reuse
 2. Scan existing `assets/` directory for unregistered files that share a word with the need
-3. Check global cache `~/.media/` for a reusable asset matched on the same normalized prompt — auto-reuse
+3. Check global cache `~/.media/` for a reusable asset matched on the same normalized prompt - auto-reuse
 4. Search via provider (HeyGen audio catalog, HeyGen asset search), or resolve color locally
 5. Freeze file to `.media/<type>/`, register in manifest, regenerate `index.md`, auto-promote to `~/.media/`
 
-Steps 1 and 3 are the **deterministic floor**: they only auto-reuse an exact-normalized match, never a fuzzy one. Semantic reuse ("close enough") is the agent's explicit call via [Reuse before you resolve](#reuse-before-you-resolve) — it never happens automatically. The agent gets back **one line**; candidates, scores, provenance stay on disk.
+Steps 1 and 3 are the **deterministic floor**: they only auto-reuse an exact-normalized match, never a fuzzy one. Semantic reuse ("close enough") is the agent's explicit call via [Reuse before you resolve](#reuse-before-you-resolve) - it never happens automatically. The agent gets back **one line**; candidates, scores, provenance stay on disk.
 
 ## Stamping provenance when mounting a resolved video
 
-`resolve` never writes composition HTML itself — mounting a `<video>` element
+`resolve` never writes composition HTML itself - mounting a `<video>` element
 into a composition is always the agent's own edit. When the mounted video's
 manifest record has `provenance.provider === "heygen.video"` (check
 `.media/manifest.jsonl` or the one-line resolve output for the provider name),
 add `data-media-source="heygen"` to that `<video>` tag. Leave the attribute off
-entirely for every other provider (`ltx.local`, an adopted/local file, etc.) —
+entirely for every other provider (`ltx.local`, an adopted/local file, etc.) -
 this is not a general provider taxonomy, just the one signal render telemetry
 tracks today.
 
@@ -147,4 +147,4 @@ icon_001   icon   -     200×200    .media/images/icon_001.png    rocket
 
 Assets are cached automatically on resolve. Every resolved/ingested asset is auto-promoted to the global cache at `~/.media/`, so subsequent resolves for the same (or near-identical) prompt, in any project, hit the cache with no re-download and no provider call.
 
-For a _semantically_ similar (not identical) need in another project, the exact-match floor won't fire — use [Reuse before you resolve](#reuse-before-you-resolve): `--candidates` lists the global assets, and `--reuse <sha>` imports the one you pick. This is how a track resolved in one project gets reused in the next when the wording differs.
+For a _semantically_ similar (not identical) need in another project, the exact-match floor won't fire - use [Reuse before you resolve](#reuse-before-you-resolve): `--candidates` lists the global assets, and `--reuse <sha>` imports the one you pick. This is how a track resolved in one project gets reused in the next when the wording differs.

@@ -297,7 +297,7 @@ GALLERY_MOSAIC_NEW = f"""              <!-- Galerie Photographique Immersive Ple
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
                   <div>
                     <span class="eyebrow eyebrow-hospitality" style="margin-bottom:4px;">Immersion Visuelle Haute Définition</span>
-                    <h3><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span> <span class="tech-code-tag">PUB-14 à PUB-22 — </span>L'Expérience ECOPARK Yaoundé-Ahala en Grand Format</h3>
+                    <h3><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14.5 4h-5L7 7H4a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2h-3l-2.5-3z"/><circle cx="12" cy="13" r="3"/></svg></span> <span class="tech-code-tag">PUB-14 à PUB-22 - </span>L'Expérience ECOPARK Yaoundé-Ahala en Grand Format</h3>
                   </div>
                   <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center;">
                     <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" onclick="openEcoparkLightbox(1)">{ZOOM_ICON_SVG} Ouvrir la Visionneuse Plein Écran (10 Photos)</button>
@@ -446,7 +446,7 @@ LIGHTBOX_JS = """
       },
       {
         src: 'audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png',
-        title: 'Le Château des Saveurs — Gastronomie Camerounaise',
+        title: 'Le Château des Saveurs - Gastronomie Camerounaise',
         price: 'Plats 3 500 – 8 500 FCFA',
         desc: 'Poisson d\\'eau douce braisé d\\'Ahala, poulet DG, Ndolè et jus naturels.'
       },

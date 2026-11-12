@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase 4 — Test navigateur de la console d'administration (mode démo, vrais clics).
+Phase 4 - Test navigateur de la console d'administration (mode démo, vrais clics).
 Prérequis : `npm run dev` (http://localhost:3000).
 Lancement : python scripts/test_admin_console.py   (captures dans audit-assets/qa-etape0-live/)
 """
@@ -28,7 +28,7 @@ shots = []
 
 def check(cond, label, detail=""):
     results.append(bool(cond))
-    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' — ' + str(detail)) if detail else ''}")
+    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' - ' + str(detail)) if detail else ''}")
 
 
 def shot(page, name, selector=None):

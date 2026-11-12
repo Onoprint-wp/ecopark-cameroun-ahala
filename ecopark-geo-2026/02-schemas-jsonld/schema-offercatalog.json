@@ -1,0 +1,62 @@
+{
+  "@context": "https://schema.org",
+  "@type": "OfferCatalog",
+  "@id": "https://ecopark-cameroun-ahala.vercel.app/#offercatalog",
+  "name": "Grille Tarifaire Officielle ECOPARK CAMEROUN (FCFA)",
+  "itemListElement": [
+    {
+      "@type": "Offer",
+      "name": "Entree Parc & Jardin Zoologique (Adulte)",
+      "price": "1000",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Entree Parc & Jardin Zoologique (Enfant / Scolaire)",
+      "price": "500",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pass Decouverte Nature Coupe-File",
+      "price": "3000",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pass Journee Royale Tout-Inclus",
+      "price": "8500",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Pack Escapade Couple VIP Cite Ewondo (1 nuit)",
+      "price": "45000",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Hebergement Cite Bene (Chambre Nature)",
+      "price": "10000",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Hebergement Cite Chanthel (Pavillon Confort)",
+      "price": "15000",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Hebergement Hotel Ewondo (Mini-Suite VIP)",
+      "price": "25000",
+      "priceCurrency": "XAF"
+    },
+    {
+      "@type": "Offer",
+      "name": "Hebergement Hotel Ewondo (Suite Privee)",
+      "price": "30000",
+      "priceCurrency": "XAF"
+    }
+  ]
+}

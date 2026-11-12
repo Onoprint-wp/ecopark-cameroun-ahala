@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase 3 — Intégration de la couche d'accès aux données (EcoparkData) dans le site.
+Phase 3 - Intégration de la couche d'accès aux données (EcoparkData) dans le site.
 
 Met à jour etape0-site-live/index.html ET Prototype_Interactif_ECOPARK_NEW_LOOK.html
 (de façon identique, comme les autres scripts build_*.py) :

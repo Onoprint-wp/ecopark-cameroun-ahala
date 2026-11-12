@@ -2,7 +2,7 @@
 
 What the skill explicitly cannot translate, separated from the
 blocker-list (which is enforced by `lint_source.py`). These are
-_known_ gaps — surface them to the user as translation notes
+_known_ gaps - surface them to the user as translation notes
 when translating the surrounding composition.
 
 ## React patterns the skill refuses
@@ -15,7 +15,7 @@ a bow-out:
 - async `calculateMetadata`
 - Third-party React UI libraries (MUI, Chakra, Mantine, antd, shadcn, Radix, NextUI)
 
-`@remotion/lambda` is no longer in this list — it's a warning, not a
+`@remotion/lambda` is no longer in this list - it's a warning, not a
 blocker, because Lambda config is orthogonal to composition rendering.
 The skill drops the imports and `renderMediaOnLambda(...)` calls and
 writes a `TRANSLATION_NOTES.md` entry. See
@@ -35,7 +35,7 @@ HF ramps volume with a `data-automation` volume lane on the `<audio>`
 (form in `/media-use` → `references/mixing.md`).
 Translation: write the lane from the `interpolate` points, OR bake the ramp
 into the audio file with `ffmpeg afade`. The dropped-ramp path produces audibly different
-output but visually-identical video, so SSIM passes — just flag it.
+output but visually-identical video, so SSIM passes - just flag it.
 
 ### `<Loop>` with stateful children
 
@@ -71,7 +71,7 @@ const customPresentation: PresentationComponent = ({ children, presentationProgr
 
 Pure presentations (transform/filter/opacity computed from progress)
 translate to GSAP tweens cleanly. Presentations that read
-`useCurrentFrame()` internally or have stateful children don't —
+`useCurrentFrame()` internally or have stateful children don't -
 bow out.
 
 ### Code-split components (`React.lazy`)
@@ -103,12 +103,12 @@ just include all the code upfront.
 
 These are out-of-scope by design:
 
-- **HDR rendering** — HF supports HDR but Remotion doesn't, so there's
+- **HDR rendering** - HF supports HDR but Remotion doesn't, so there's
   nothing to translate from.
-- **Variable frame rate** — both tools assume constant fps.
-- **Multi-composition `<Composition>` lists** — translate one at a
+- **Variable frame rate** - both tools assume constant fps.
+- **Multi-composition `<Composition>` lists** - translate one at a
   time. The skill prompts the user to choose which composition.
-- **Remotion Studio props panel** — visual prop editing in HF Studio
+- **Remotion Studio props panel** - visual prop editing in HF Studio
   needs different infrastructure; out of scope.
 
 ## Reporting gaps to the user
@@ -125,7 +125,7 @@ The following Remotion patterns were translated with caveats:
   `data-automation` volume lane (see the media-use skill's mixing reference); the
   ffmpeg `afade` bake-in is the alternative.
 - `<HeavyChart>` (line 30): translated as inline HTML. The original
-  React.lazy boundary was dropped — bundle size unchanged because HF
+  React.lazy boundary was dropped - bundle size unchanged because HF
   serves a single HTML file.
 
 If any of these caveats matter, consider the runtime interop pattern

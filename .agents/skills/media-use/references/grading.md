@@ -1,4 +1,4 @@
-# Color grading — grade blocks and LUTs
+# Color grading - grade blocks and LUTs
 
 Use `grade` when you need a canonical HyperFrames grading/effects payload for
 an `<img>` or `<video>`. Core presets and params-backed LUT entries resolve

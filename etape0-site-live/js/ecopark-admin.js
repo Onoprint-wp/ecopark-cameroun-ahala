@@ -1,5 +1,5 @@
 /*!
- * ECOPARK — Console d'administration CRUD (Phase 4, ADM-01 à ADM-08)
+ * ECOPARK - Console d'administration CRUD (Phase 4, ADM-01 à ADM-08)
  * ---------------------------------------------------------------------------
  * Branchée exclusivement sur window.EcoparkData : fonctionne à l'identique en
  * mode démonstration (localStorage) et en production (Supabase + RLS).
@@ -168,12 +168,12 @@
     staff_profiles: { role: 'agent_guichet', matricule: 'MAT-GUI-02', assigned_pole: 'GUICHET_CAISSE' }
   };
   var DEMO_STAFF = [
-    { user_id: 'demo-dir', full_name: 'Dr Christophe FOÉ NDI', matricule: 'MAT-DIR-01', assigned_pole: 'DIRECTION_GENERALE', post_label: 'Promoteur — Direction générale', role: 'direction', is_active: true },
+    { user_id: 'demo-dir', full_name: 'Dr Christophe FOÉ NDI', matricule: 'MAT-DIR-01', assigned_pole: 'DIRECTION_GENERALE', post_label: 'Promoteur - Direction générale', role: 'direction', is_active: true },
     { user_id: 'demo-gerant', full_name: 'M. Daryl MGBATOU', matricule: 'MAT-DIR-02', assigned_pole: 'DIRECTION_GENERALE', post_label: 'Gérant délégué', role: 'direction', is_active: true },
     { user_id: 'demo-exp', full_name: "Chef d'exploitation Ahala", matricule: 'MAT-EXP-01', assigned_pole: 'HEBERGEMENT', post_label: 'Réception, Château des Saveurs et loges', role: 'responsable_exploitation', is_active: true },
     { user_id: 'demo-cpt', full_name: 'M. Paul ETOUNDI', matricule: 'MAT-CPT-01', assigned_pole: 'FINANCE_COMPTA', post_label: 'Comptabilité générale OHADA et analytique', role: 'comptable', is_active: true },
-    { user_id: 'demo-gui', full_name: 'Mme Clarisse ATANGANA', matricule: 'MAT-GUI-01', assigned_pole: 'GUICHET_CAISSE', post_label: 'Caissière principale — Guichet #1 (RN3)', role: 'agent_guichet', is_active: true },
-    { user_id: 'demo-ctl', full_name: 'Brigade contrôle portail', matricule: 'MAT-CTL-01', assigned_pole: 'CONTROLE_QR', post_label: 'Scanner QR — Entrée principale', role: 'agent_controle', is_active: true },
+    { user_id: 'demo-gui', full_name: 'Mme Clarisse ATANGANA', matricule: 'MAT-GUI-01', assigned_pole: 'GUICHET_CAISSE', post_label: 'Caissière principale - Guichet #1 (RN3)', role: 'agent_guichet', is_active: true },
+    { user_id: 'demo-ctl', full_name: 'Brigade contrôle portail', matricule: 'MAT-CTL-01', assigned_pole: 'CONTROLE_QR', post_label: 'Scanner QR - Entrée principale', role: 'agent_controle', is_active: true },
     { user_id: 'demo-adm', full_name: 'Administrateur plateforme', matricule: 'MAT-ADM-01', assigned_pole: 'DIRECTION_GENERALE', post_label: 'Support technique ONOGRAPH', role: 'administrateur_plateforme', is_active: true }
   ];
   var DEMO_GATEWAYS = [
@@ -372,11 +372,11 @@
           return '<option value="' + r + '"' + (r === S.role ? ' selected' : '') + '>' + esc(ROLE_LABELS[r]) + '</option>';
         }).join('') + '</select>' + mfaBadge + '</label>';
     } else {
-      right = '<span class="adm-who">' + esc(S.profileName || 'Session') + ' — ' + esc(ROLE_LABELS[S.role] || S.role) +
+      right = '<span class="adm-who">' + esc(S.profileName || 'Session') + ' - ' + esc(ROLE_LABELS[S.role] || S.role) +
         mfaBadge + '</span>';
     }
     var mode = isDemo()
-      ? '<span class="adm-badge adm-badge-draft">Mode démonstration — données de ce navigateur uniquement</span>'
+      ? '<span class="adm-badge adm-badge-draft">Mode démonstration - données de ce navigateur uniquement</span>'
       : '<span class="adm-badge adm-badge-live">Connecté à la base ECOPARK</span>';
     var rights = canEdit()
       ? (S.role === 'direction' ? 'Vous pouvez préparer, publier et archiver les tarifs.'
@@ -404,14 +404,14 @@
     }
     if (entity === 'sales_bundles') {
       return '<div class="adm-prices"><span>Adulte <b>' + esc(fcfa(r.adult_bundle_price_fcfa)) + '</b></span><span>Enfant <b>' +
-        esc(fcfa(r.child_bundle_price_fcfa)) + '</b></span><span>Inclus : ' + esc((r.included_slugs || []).join(', ') || '—') + '</span></div>';
+        esc(fcfa(r.child_bundle_price_fcfa)) + '</b></span><span>Inclus : ' + esc((r.included_slugs || []).join(', ') || '-') + '</span></div>';
     }
     return '<div class="adm-prices"><span>De <b>' + esc(fcfa(r.min_price_fcfa)) + '</b> à <b>' + esc(fcfa(r.max_price_fcfa)) + '</b> / nuit</span></div>';
   }
   function capacityCell(entity, r) {
     if (entity === 'catalog_activities') return esc(r.daily_capacity) + ' places / jour';
     if (entity === 'lodge_cities') return esc(r.available_rooms) + ' libres sur ' + esc(r.total_rooms);
-    return r.is_featured ? 'Mise en avant' : '—';
+    return r.is_featured ? 'Mise en avant' : '-';
   }
   function lifecycleActions(entity, r, opts) {
     opts = opts || {};
@@ -576,7 +576,7 @@
   };
   /** Rend lisible une ligne du journal : noms de tables et codes techniques traduits */
   function humanizeAudit(text) {
-    var s = String(text == null ? '' : text).replace(/^(GUARD_REJECT|EXPORT_CSV|GATEWAY_TEST|PRINT_REPORT|LOGIN|LOGOUT)\s+—\s+/, '');
+    var s = String(text == null ? '' : text).replace(/^(GUARD_REJECT|EXPORT_CSV|GATEWAY_TEST|PRINT_REPORT|LOGIN|LOGOUT)\s+-\s+/, '');
     return s.replace(/\b(catalog_activities|sales_bundles|lodge_cities|agenda_events|menu_items|site_settings|staff_profiles|daily_quotas|gateway_health|audit_logs|bookings|group_quotes|cfp_applications|appointments|weather_banner)\b/g,
       function (m) { return TABLE_LABELS[m] || m; });
   }
@@ -686,7 +686,7 @@
         '<div class="adm-field-err" id="' + id + '_err"></div></div>';
     }).join('');
 
-    var title = row ? 'Modifier — ' + (row[TITLE_FIELD[entity]] || '') : 'Ajouter — ' + ENTITY_LABEL[entity];
+    var title = row ? 'Modifier - ' + (row[TITLE_FIELD[entity]] || '') : 'Ajouter - ' + ENTITY_LABEL[entity];
     var footerLeft = '';
     if (row && entity !== 'staff_profiles') {
       footerLeft = (entity !== 'lodge_cities' ? '<button type="button" class="btn btn-secondary btn-sm" id="admEdDup"' + (canEdit() ? '' : ' disabled') + '>Dupliquer cette fiche</button>' : '') +
@@ -1181,6 +1181,15 @@
     },
     render: render,
     state: S,
+    validateUploadMagicBytes: function (bytes) {
+      if (!bytes || bytes.length < 4) return { valid: false, mime: 'unknown' };
+      var b0 = bytes[0], b1 = bytes[1], b2 = bytes[2], b3 = bytes[3];
+      if (b0 === 0xFF && b1 === 0xD8 && b2 === 0xFF) return { valid: true, mime: 'image/jpeg' };
+      if (b0 === 0x89 && b1 === 0x50 && b2 === 0x4E && b3 === 0x47) return { valid: true, mime: 'image/png' };
+      if (b0 === 0x52 && b1 === 0x49 && b2 === 0x46 && b3 === 0x46) return { valid: true, mime: 'image/webp' };
+      if (b0 === 0x25 && b1 === 0x50 && b2 === 0x44 && b3 === 0x46) return { valid: true, mime: 'application/pdf' };
+      return { valid: false, mime: 'rejected_magic_bytes' };
+    },
     _test: { openEditor: openEditor, duplicate: duplicate, publish: publish, removeFlow: removeFlow, exportCsv: exportCsv }
   };
   root.EcoparkAdmin = EcoparkAdmin;

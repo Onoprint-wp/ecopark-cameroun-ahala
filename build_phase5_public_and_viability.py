@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase 5 & Viabilité Terrain — Raccordement du site public à EcoparkData et résolution des 5 anomalies critiques.
+Phase 5 & Viabilité Terrain - Raccordement du site public à EcoparkData et résolution des 5 anomalies critiques.
 
 Met à jour de façon identique et idempotente :
   - etape0-site-live/index.html
@@ -42,7 +42,7 @@ PHASE5_JS_END = "// ECOPARK_PHASE5_INTEGRATION:END"
 
 PRINT_CSS = PRINT_CSS_START + r"""
     /* ========================================================================
-       IMPRESSION OFFICIELLE (@media print) — Billets, Proformas & PV de Caisse
+       IMPRESSION OFFICIELLE (@media print) - Billets, Proformas & PV de Caisse
        ======================================================================== */
     @media print {
       body {
@@ -262,7 +262,7 @@ PHASE5_JS = PHASE5_JS_START + r"""
         return escHtml(l.name.replace(/\(.*\)/, '').trim()) + ' (' + Math.round(l.min_price_fcfa / 1000) + 'k-' + Math.round(l.max_price_fcfa / 1000) + 'k)';
       });
       html += '<tr>' +
-        '<td><strong>Hébergement — Cités Bene, Chanthel & Ewondo</strong></td>' +
+        '<td><strong>Hébergement - Cités Bene, Chanthel & Ewondo</strong></td>' +
         '<td colspan="2"><strong>' + lodgeParts.join(' • ') + ' FCFA</strong></td>' +
         '<td style="font-size:13.5px;color:var(--color-text-muted);">Repos en journée (Day-use) ou nuitée complète avec accès parc.</td>' +
         '<td><button class="btn btn-secondary btn-sm" onclick="navigateFamily(\'RES\', \'RES-01\')">Réserver</button></td>' +

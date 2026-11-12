@@ -1,8 +1,8 @@
 # SYNTHÈSE EXÉCUTIVE & PROCÈS-VERBAL DE RÉCEPTION 360° (1 PAGE A4)
 **Projet :** Refonte Digitale, Billetterie QR Anti-Fraude, Back-Office Comptable & Charte Print **ECOPARK CAMEROUN**  
-**Localisation :** Route Nationale N°3, Quartier Ahala Barrière (Face Station Tradex Ahala), Yaoundé — Cameroun  
+**Localisation :** Route Nationale N°3, Quartier Ahala Barrière (Face Station Tradex Ahala), Yaoundé - Cameroun  
 **Maître d'Ouvrage :** **Dr Christophe FOE NDI** (Promoteur) & **M. Mgbatou Daryl** (Directeur Délégué)  
-**Maître d'Œuvre :** **Onoprint — Ingénierie Digitale & Imprimerie Grand Format**  
+**Maître d'Œuvre :** **Onoprint - Ingénierie Digitale & Imprimerie Grand Format**  
 **URL de Production :** [`https://ecopark-cameroun-ahala.vercel.app`](https://ecopark-cameroun-ahala.vercel.app)
 
 ---
@@ -45,6 +45,6 @@
 
 Fait à Yaoundé (Ahala Barrière), le \_\_\_\_ / \_\_\_\_ / 2026, en deux (02) exemplaires originaux.
 
-| Pour le Maître d'Ouvrage — **ECOPARK YAOUNDÉ** | Pour la Direction Opérationnelle — **ECOPARK** | Pour le Maître d'Œuvre — **ONOPRINT** |
+| Pour le Maître d'Ouvrage - **ECOPARK YAOUNDÉ** | Pour la Direction Opérationnelle - **ECOPARK** | Pour le Maître d'Œuvre - **ONOPRINT** |
 | :--- | :--- | :--- |
 | **Dr Christophe FOE NDI**<br>Promoteur & Président Directeur Général<br><br>*Signature & Cachet :*<br><br><br> | **M. Mgbatou Daryl**<br>Gérant / Directeur Délégué<br><br>*Signature :*<br><br><br> | **Direction de Projet & Ingénierie 360°**<br>Onoprint Web & Print Solutions<br><br>*Signature & Cachet :*<br><br><br> |

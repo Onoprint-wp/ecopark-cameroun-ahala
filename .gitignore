@@ -19,3 +19,21 @@ node_modules/
 
 # Journaux temporaires multi-agents
 .agents/teamwork/
+
+# Variables d'environnement et secrets API (ne jamais versionner)
+.env
+.env.*
+!.env.example
+
+# Sorties brutes de generation Higgsfield (versionner uniquement les medias retenus)
+audit-assets/higgsfield-outputs/
+
+# === GUARDRAILS T0 (AUTO-PROTECTION) ===
+.env.local
+.env.*.local
+.env.vercel*
+.env.production*
+*.db
+*.db-journal
+_ARCHIVE_DEBUG/
+00_BRIEF_ET_INTRANTS/_COFFRE_ACCES_HORS_GIT/

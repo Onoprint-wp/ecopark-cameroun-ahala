@@ -133,7 +133,7 @@ RDV_SECTION_HTML = """
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">
                   <div>
                     <span class="eyebrow eyebrow-hospitality" style="margin-bottom:4px;">Accueil Personnalisé • Direction, Événementiel &amp; CFP</span>
-                    <h3><span class="icon-medallion medallion-hospitality"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg></span> <span class="tech-code-tag">PUB-18 — </span>Prendre Rendez-Vous à ECOPARK Yaoundé-Ahala</h3>
+                    <h3><span class="icon-medallion medallion-hospitality"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/><path d="M8 14h.01"/><path d="M12 14h.01"/><path d="M16 14h.01"/><path d="M8 18h.01"/><path d="M12 18h.01"/><path d="M16 18h.01"/></svg></span> <span class="tech-code-tag">PUB-18 - </span>Prendre Rendez-Vous à ECOPARK Yaoundé-Ahala</h3>
                     <p style="font-size:15px;color:var(--color-text-muted);margin-top:4px;max-width:780px;">
                       Réservez un créneau dédié avec notre équipe du Mardi au Dimanche (09h30 à 17h00) pour une <strong>visite guidée de repérage</strong> (mariage, séminaire en Salle « Menkii Essomba Anton », sortie d'école) ou un <strong>entretien d'orientation au CFP ECOPARK</strong>.
                     </p>
@@ -288,9 +288,9 @@ RDV_JS = """
     // MODULE INTERACTIF DE PRISE DE RENDEZ-VOUS (REPÉRAGE, B2B, ÉCOLES & CFP)
     // ========================================================================
     const RDV_PURPOSE_LABELS = {
-      reperage_mariage: "Visite de repérage — Mariage, Gala & Salle Menkii Essomba Anton",
-      seminaire_b2b: "Rendez-vous B2B — Séminaire Ministère / ONG / Entreprise & Loges",
-      visite_ecole: "Visite préparatoire — Excursion Scolaire (Zoo ToTo, Piscine, Pirogues)",
+      reperage_mariage: "Visite de repérage - Mariage, Gala & Salle Menkii Essomba Anton",
+      seminaire_b2b: "Rendez-vous B2B - Séminaire Ministère / ONG / Entreprise & Loges",
+      visite_ecole: "Visite préparatoire - Excursion Scolaire (Zoo ToTo, Piscine, Pirogues)",
       orientation_cfp: "Entretien d'Orientation & Visite du Campus CFP ECOPARK (5 filières)"
     };
 
@@ -405,7 +405,7 @@ RDV_JS = """
       const sumEl = document.getElementById('rdvConfirmSummary');
       if (refEl) refEl.textContent = ref;
       if (sumEl) {
-        sumEl.innerHTML = `<strong>${visitorName} (${org})</strong> — <em>${purposeLabel}</em><br/>Date : <strong>${date}</strong> • Créneau : <strong>${slot}</strong> • Format : ${mode}`;
+        sumEl.innerHTML = `<strong>${visitorName} (${org})</strong> - <em>${purposeLabel}</em><br/>Date : <strong>${date}</strong> • Créneau : <strong>${slot}</strong> • Format : ${mode}`;
       }
       if (passEl) {
         passEl.classList.add('open');
@@ -438,7 +438,7 @@ RDV_JS = """
         `- Objet : ${purposeLabel}`,
         `- Date & Créneau : ${date} (${slot})`,
         `- Format : ${mode}`,
-        `- Contact : ${visitorName} (${org}) — ${phone}`,
+        `- Contact : ${visitorName} (${org}) - ${phone}`,
         `Merci de me confirmer la disponibilité de l'équipe d'accueil.`
       ].join('\\n');
       const url = 'https://wa.me/237697136203?text=' + encodeURIComponent(msg);
@@ -476,7 +476,7 @@ RDV_JS = """
         if (rows.length >= 3) {
           rows[2].innerHTML = `
             <td><code>EXP-07</code> Agenda RDV</td>
-            <td>${latestRdv.visitorName} — ${latestRdv.org} (${latestRdv.reference})</td>
+            <td>${latestRdv.visitorName} - ${latestRdv.org} (${latestRdv.reference})</td>
             <td>${latestRdv.purposeLabel} • ${latestRdv.date} (${latestRdv.slot})</td>
             <td><span class="status-badge status-success">${latestRdv.status}</span></td>
           `;

@@ -17,7 +17,7 @@ globalThis.fetch = (url, init) => serve(String(url), init);
 
 // Offline SFX resolution: the bundled library may ship manifest.json
 // without the actual mp3s. The old code copied only when the source existed but
-// pushed the sfx entry unconditionally — producing a dangling reference that
+// pushed the sfx entry unconditionally - producing a dangling reference that
 // silently dropped downstream ("not on disk"). These tests lock in the loud
 // behavior: a present file is copied + referenced; a missing file yields an
 // anomaly and NO dangling entry.
@@ -257,7 +257,7 @@ test("openverse: a failed download falls back to the bundled file with an anomal
         sfx.map(({ file, source }) => [file, source]),
         [["assets/sfx/whoosh.mp3", "local"]],
       );
-      assert.match(anomalies[0], /Openverse download failed — download HTTP 404/);
+      assert.match(anomalies[0], /Openverse download failed - download HTTP 404/);
     } finally {
       serve = offline;
     }

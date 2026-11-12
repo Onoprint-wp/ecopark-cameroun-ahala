@@ -1,5 +1,5 @@
 -- ============================================================================
--- ECOPARK CAMEROUN (Yaoundé-Ahala) — Migration 5 : Fiches de Mission A4,
+-- ECOPARK CAMEROUN (Yaoundé-Ahala) - Migration 5 : Fiches de Mission A4,
 -- Gouvernance des 3 Visas Interactifs & Centre d'Alertes de Poste Temps Réel
 --
 --  1. Table public.operational_missions (Règle « 1 Commande = 1 Fiche de Mission
@@ -364,7 +364,7 @@ INSERT INTO public.operational_missions (
     'MSN-2026-104', 'EPK-2026-8839', 'Mme NGONO Nadine (Repas Saveurs & Pergola)', 45000,
     'Pack Couple Cité Ewondo VIP + 2 Repas Chauds Château des Saveurs + Pergola',
     'CUISINE_SAVEURS', 'Cuisine Le Château des Saveurs & Pergolas', 'eco-cat-dining', ARRAY[]::TEXT[],
-    'Chef Jean-Baptiste MBIDA', 'MAT-CUI-04', 'Chef de Cuisine — Le Château des Saveurs',
+    'Chef Jean-Baptiste MBIDA', 'MAT-CUI-04', 'Chef de Cuisine - Le Château des Saveurs',
     CURRENT_DATE, '11h30 – 20h30 (Service Midi & Soir)', 'HAUTE', 'TERMINEE',
     'Mise en place Braises, Précommandes 13h00 & Dressage Pergolas du Lac',
     'Restaurant Le Château des Saveurs + 10 Pergolas Privées Bord du Lac',

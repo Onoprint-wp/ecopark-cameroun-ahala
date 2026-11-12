@@ -1,4 +1,4 @@
-# ECOPARK CAMEROUN (Yaoundé-Ahala) — Plateforme Digitale 360° & Billetterie QR
+# ECOPARK CAMEROUN (Yaoundé-Ahala) - Plateforme Digitale 360° & Billetterie QR
 
 [![Production Live Vercel](https://img.shields.io/badge/Production_Vercel-En_Ligne_200_OK-1D490D?style=for-the-badge)](https://ecopark-cameroun-ahala.vercel.app)
 [![Couverture Contractuelle](https://img.shields.io/badge/Écrans_Contractuels-77%2F77_Validés-C47D2B?style=for-the-badge)](./MATRICE_COUVERTURE_77_ECRANS_ECOPARK.md)
@@ -40,7 +40,7 @@ Plateforme web officielle, simulateur budgétaire en **Francs CFA (FCFA)**, bill
 - [`etape0-site-live/index.html`](./etape0-site-live/index.html) & [`Prototype_Interactif_ECOPARK_NEW_LOOK.html`](./Prototype_Interactif_ECOPARK_NEW_LOOK.html) : Bundle de production autonome déployé sur Vercel (`77/77` écrans + `ADM-09` Inbox Leads 1-clic, `Schema.org` JSON-LD 4 entités, `0` caractère `> U+25FF`, parité stricte 100 %).
 - [`etape0-site-live/vercel.json`](./etape0-site-live/vercel.json) : Configuration du routage propre Vercel et des en-têtes de cache.
 - [`supabase/migrations/20261026000001_ecopark_schema_rls.sql`](./supabase/migrations/20261026000001_ecopark_schema_rls.sql) : Schéma PostgreSQL / Supabase complet avec politiques **Row Level Security (RLS)** et chaîne d'audit SHA-256.
-- [`DESIGN.md`](./DESIGN.md) : Documentation officielle du Design System *« Canopée vivante — Le cercle du vivant »* (Triade 60-30-10 + Ocre Bronze `#C47D2B`, typographies, grilles Bento et animations HyperFrames).
+- [`DESIGN.md`](./DESIGN.md) : Documentation officielle du Design System *« Canopée vivante - Le cercle du vivant »* (Triade 60-30-10 + Ocre Bronze `#C47D2B`, typographies, grilles Bento et animations HyperFrames).
 - [`MATRICE_COUVERTURE_77_ECRANS_ECOPARK.md`](./MATRICE_COUVERTURE_77_ECRANS_ECOPARK.md) : Matrice de traçabilité des 77 écrans contractuels (`DS`, `PUB`, `RES`, `ACC`, `AGT`, `EXP`, `DIR`, `ADM`).
 - [`GUIDE_DEMO_CLOSING_DR_FOE_NDI.md`](./GUIDE_DEMO_CLOSING_DR_FOE_NDI.md) : Protocole de démonstration live en 7 minutes (5 actes) pour la présentation exécutive.
 - [`verify_live_monochrome_prod.py`](./verify_live_monochrome_prod.py) & [`scripts/test_phase7_orchestration_360.py`](./scripts/test_phase7_orchestration_360.py) : Suites de tests E2E automatisés Playwright (`369/369` contrôles validés sur 9 bancs de tests).
@@ -50,13 +50,13 @@ Plateforme web officielle, simulateur budgétaire en **Francs CFA (FCFA)**, bill
 ## 3. Exécution des Tests E2E & Bancs de Recette (369 Contrôles)
 
 ```powershell
-npm run test:db          # 69/69  — PostgreSQL / Supabase RLS, garde-fou 500 FCFA & audit SHA-256
-npm run test:data        # 98/98  — Contrat EcoparkData (LocalDemoDriver & PGlite SQL)
-npm run test:browser     # 19/19  — Hydratation navigateur & repli hors-ligne RN3
-npm run test:admin       # 51/51  — Console d'administration ADM-01..08 & photothèque
-npm run test:responsive  # 20/20  — Non-débordement 1440px -> 390px
-npm run test:phase5      # 18/18  — Vrai QR matriciel, @media print, verrouillage Lundi, caméra
-npm run test:phase6      # 20/20  — Billetage contradictoire FCFA, seuil 2 000 FCFA & scan hors-ligne
-npm run test:phase7      # 22/22  — Orchestration 360°, Schema.org JSON-LD, Inbox Leads 1-clic & Anti-XSS
-npm run test:e2e:local   # 52/52  — Audit intégral des 12 routes, 77 écrans & double scan anti-fraude
+npm run test:db          # 69/69  - PostgreSQL / Supabase RLS, garde-fou 500 FCFA & audit SHA-256
+npm run test:data        # 98/98  - Contrat EcoparkData (LocalDemoDriver & PGlite SQL)
+npm run test:browser     # 19/19  - Hydratation navigateur & repli hors-ligne RN3
+npm run test:admin       # 51/51  - Console d'administration ADM-01..08 & photothèque
+npm run test:responsive  # 20/20  - Non-débordement 1440px -> 390px
+npm run test:phase5      # 18/18  - Vrai QR matriciel, @media print, verrouillage Lundi, caméra
+npm run test:phase6      # 20/20  - Billetage contradictoire FCFA, seuil 2 000 FCFA & scan hors-ligne
+npm run test:phase7      # 22/22  - Orchestration 360°, Schema.org JSON-LD, Inbox Leads 1-clic & Anti-XSS
+npm run test:e2e:local   # 52/52  - Audit intégral des 12 routes, 77 écrans & double scan anti-fraude
 ```

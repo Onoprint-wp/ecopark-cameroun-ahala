@@ -1,18 +1,18 @@
-# 04 — RAPPORT DE RECETTE, D'AUDIT QUALITÉ, SEO & SÉCURITÉ FINALE (360°)
-## Projet : Plateforme Digitale 360°, Billetterie QR Anti-Coulage & Gouvernance Back-Office — ECOPARK CAMEROUN (Yaoundé-Ahala)
+# 04 - RAPPORT DE RECETTE, D'AUDIT QUALITÉ, SEO & SÉCURITÉ FINALE (360°)
+## Projet : Plateforme Digitale 360°, Billetterie QR Anti-Coulage & Gouvernance Back-Office - ECOPARK CAMEROUN (Yaoundé-Ahala)
 
-- **Maître d'Ouvrage :** **ECOPARK YAOUNDÉ** — Route Nationale N°3, Quartier Ahala Barrière (Face Station Tradex Ahala), Yaoundé, Cameroun
+- **Maître d'Ouvrage :** **ECOPARK YAOUNDÉ** - Route Nationale N°3, Quartier Ahala Barrière (Face Station Tradex Ahala), Yaoundé, Cameroun
   - **Promoteur :** Dr Christophe FOE NDI
   - **Gérant Délégué :** M. Mgbatou Daryl
 - **Audit Réalisé Par :** Sous-Agent 7 (Ingénieur Assurance Qualité, Auditeur SEO & RSSI) sous supervision du Lead Orchestrator
 - **Date de Recette :** 28 Octobre 2026
-- **Verdict Global :** **CONFORME A 100 % — BON POUR EXPLOITATION & CLOSING EXÉCUTIF (`369 / 369` assertions automatisées validées, `0` anomalie)**
+- **Verdict Global :** **CONFORME A 100 % - BON POUR EXPLOITATION & CLOSING EXÉCUTIF (`369 / 369` assertions automatisées validées, `0` anomalie)**
 
 ---
 
 ## 1. Synthèse Exécutive de l'Orchestration Multi-Agents 360°
 
-En partant du socle existant d'**ECOPARK CAMEROUN** (77 écrans contractuels, Design System *« Canopée vivante — Le cercle du vivant »*, couche de données Supabase RLS, caisse contradictoire et mode hors-ligne RN3), l'exécution complète du **Protocole Opérationnel d'Orchestration Multi-Agents 360°** en **4 vagues** a permis de produire et d'intégrer sans aucun conflit de fichiers l'ensemble des livrables stratégiques, contractuels, graphiques et techniques :
+En partant du socle existant d'**ECOPARK CAMEROUN** (77 écrans contractuels, Design System *« Canopée vivante - Le cercle du vivant »*, couche de données Supabase RLS, caisse contradictoire et mode hors-ligne RN3), l'exécution complète du **Protocole Opérationnel d'Orchestration Multi-Agents 360°** en **4 vagues** a permis de produire et d'intégrer sans aucun conflit de fichiers l'ensemble des livrables stratégiques, contractuels, graphiques et techniques :
 
 | Vague | Sous-Agent Responsable | Livrable(s) Produit(s) | Taille / Volume | Statut Recette |
 | :--- | :--- | :--- | :---: | :---: |
@@ -59,10 +59,10 @@ Le bloc `<script type="application/ld+json" id="ecoparkSchemaJsonLd">` injecté 
 3. **`Restaurant`** (`#chateau-des-saveurs`) :
    - *Le Château des Saveurs*, cuisine camerounaise (Poisson braisé des étangs d'Ahala, Poulet DG Royal, Ndolè), `3 500 – 8 500 FCFA`, réservation de pergolas active.
 4. **`EducationalOrganization`** (`#cfp-minefop`) :
-   - *Centre de Formation Professionnelle (CFP) ECOPARK — Agréé MINEFOP*, 5 filières DQP/CQP, inscription `50 000 FCFA` + scolarité `250 000 FCFA` en 4 tranches.
+   - *Centre de Formation Professionnelle (CFP) ECOPARK - Agréé MINEFOP*, 5 filières DQP/CQP, inscription `50 000 FCFA` + scolarité `250 000 FCFA` en 4 tranches.
 
 ### 3.2 Balises Meta & Partage Social WhatsApp (`fr_CM`)
-- `<title>` : *ECOPARK CAMEROUN — Parc de Loisirs, Nature, Restauration, Hébergement & Formation à Yaoundé-Ahala* (remplace l'ancien `<title>-</title>`).
+- `<title>` : *ECOPARK CAMEROUN - Parc de Loisirs, Nature, Restauration, Hébergement & Formation à Yaoundé-Ahala* (remplace l'ancien `<title>-</title>`).
 - `og:locale` : `fr_CM` | `og:type` : `website` | `og:image` : `balade_pirogue3.jpg` (`1200×630`).
 - Toutes les **12 routes** (`/`, `/nos-tarifs`, `/restaurant`, `/hotellerie`, `/formation`, `/agenda`, `/reserver`, `/rdv`, `/guichet`, `/direction`, `/admin`, `/favicon.ico`) répondent en **HTTP 200 OK**.
 
@@ -75,7 +75,7 @@ Le bloc `<script type="application/ld+json" id="ecoparkSchemaJsonLd">` injecté 
 2. **Carte de Soulagement Dopaminergique & Pont Direct WhatsApp 1-Clic (`#dopamineReliefCard`)** :
    - Synchronisée en temps réel avec les 4 tunnels de conversion (`BOOKING`, `QUOTE`, `RDV`, `CFP`).
    - Dès la validation d'un formulaire, le badge de référence (`ECP-2026-XXXXX`, `DEV-2026-XXXX`, `RDV-2026-XXXX`, `CFP-2026-XXXX`), le message de réassurance et le bouton `#btnDopamineWhatsAppBridge` sont mis à jour avec un lien profond `https://wa.me/237697136203?text=...` pré-rempli sans ressaisie.
-3. **Module Back-Office « Inbox Unifiée des Leads & Dossiers — Statuts en 1 Clic » (`ADM-09` / `#admLeadsInboxCard`)** :
+3. **Module Back-Office « Inbox Unifiée des Leads & Dossiers - Statuts en 1 Clic » (`ADM-09` / `#admLeadsInboxCard`)** :
    - Agrège en temps réel les réservations QR, les demandes de proforma B2B/Écoles, les prises de RDV et les candidatures CFP.
    - Permet de filtrer par canal (`ALL`, `BOOKING`, `QUOTE`, `RDV`, `CFP`), de rechercher instantanément un contact ou une référence, de basculer le statut d'un dossier en **1 clic** (`Attente` $\rightarrow$ `Confirmer` $\rightarrow$ `Clôturer`) avec persistance immédiate dans `loadDB()` et inscription automatique au **Journal d'Audit (`ADM-08`)**, et de relancer le client sur WhatsApp en 1 clic.
 
@@ -88,14 +88,14 @@ Le bloc `<script type="application/ld+json" id="ecoparkSchemaJsonLd">` injecté 
 | **Assainissement Anti-XSS (`sanitizeEcoparkInput`)** | Injection de `<script>window.__xss_triggered=true</script><img src=x onerror="window.__xss_triggered=true">Dr FOE NDI` dans les formulaires | Balises `<script>` et attributs `onerror=` intégralement purgés avant stockage et rendu DOM (`window.__xss_triggered === false`, valeur stockée : `'Dr FOE NDI'`). | **CONFORME** |
 | **Validation du Contrat JSON Schema (`validateEcoparkLeadContract`)** | Soumission d'un payload malformé (`reference: 'BAD-REF'`, `phone: '123'`, `totalFcfa: 100`) | Rejet immédiat avec liste structurée d'erreurs contractuelles conformes à `lead-and-ticket-schema.json`. | **CONFORME** |
 | **Absence de Secrets Exposés (`ADM-06/07`)** | Inspection du code source client et du DOM | `0` clé privée (`SUPABASE_SERVICE_ROLE_KEY`, clé privée MoMo/OM) présente dans le bundle navigateur ; aucune saisie de code PIN Mobile Money (`RES-08`). | **CONFORME** |
-| **Anti-Fraude au Tourniquet (`AGT-05`)** | Double scan consécutif d'un même billet QR (`ECP-2026-XXXXX`) en ligne et hors-ligne | 1er scan : `1/7 • BILLET VALIDE — AUTORISER L'ENTRÉE` (Vert).<br/>2e scan : `2/7 • BILLET DÉJÀ UTILISÉ — REFUSER L'ENTRÉE` (Rouge + horodatage). | **CONFORME** |
+| **Anti-Fraude au Tourniquet (`AGT-05`)** | Double scan consécutif d'un même billet QR (`ECP-2026-XXXXX`) en ligne et hors-ligne | 1er scan : `1/7 • BILLET VALIDE - AUTORISER L'ENTRÉE` (Vert).<br/>2e scan : `2/7 • BILLET DÉJÀ UTILISÉ - REFUSER L'ENTRÉE` (Rouge + horodatage). | **CONFORME** |
 | **Intégrité du Journal d'Audit (`ADM-08`)** | Tentative de modification/suppression d'une ligne d'audit en base | `UPDATE`, `DELETE` et `TRUNCATE` bloqués par déclencheur PostgreSQL ; chaîne SHA-256 vérifiée sur 58 entrées. | **CONFORME** |
 | **Invariants Graphiques & Parité** | Audit Unicode & Diff binaire | `0` caractère `> U+25FF` (`0` emoji OS), `0` fuite de code technique en mode visiteur, `etape0-site-live/index.html` et `Prototype_Interactif_ECOPARK_NEW_LOOK.html` strictement identiques (`712 454 octets`). | **CONFORME** |
 
 
 ---
 
-## 6. Phase 9 — Design System V4 « Canopée immersive » & Clôture des 24 Anomalies (`A-001` à `A-024` + `ADM-09`)
+## 6. Phase 9 - Design System V4 « Canopée immersive » & Clôture des 24 Anomalies (`A-001` à `A-024` + `ADM-09`)
 
 L'intégration de la **Direction Artistique V4 « Canopée immersive »** (`build_phase9_v4_canopee_immersive_and_recette.py`) et la clôture intégrale du **Cahier de Recette (`relooking/ECOPARK_Cahier_Recette.xlsx`)** ont été validées par le banc de test dédié `npm run test:phase9` (`13 / 13 PASS`) :
 

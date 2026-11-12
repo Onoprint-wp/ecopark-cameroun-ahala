@@ -1,10 +1,10 @@
 # CAHIER DES CHARGES TECHNIQUE, FONCTIONNEL & CRÉATIF (CDC)
-## Projet : Refonte Digitale 360°, Billetterie Mobile Money & Concierge IA — « ECOPARK NEW LOOK »
+## Projet : Refonte Digitale 360°, Billetterie Mobile Money & Concierge IA - « ECOPARK NEW LOOK »
 
-- **Maître d'Ouvrage (Client) :** **ECOPARK YAOUNDÉ** — Quartier Ahala Barrière (Face Station Tradex), Yaoundé
+- **Maître d'Ouvrage (Client) :** **ECOPARK YAOUNDÉ** - Quartier Ahala Barrière (Face Station Tradex), Yaoundé
   - **Promoteur :** Dr Christophe FOE NDI
   - **Gérant Délégué (« ECOPARK NEW LOOK ») :** M. Mgbatou Daryl
-- **Maître d'Œuvre (Agence) :** **ONOGRAPH SARL** (*« L'Architecte Invisible de l'Influence Visible »*) — Simbock, Yaoundé (`www.onograph.online` | `+237 6 70 72 80 87` | `info@onograph.online`)
+- **Maître d'Œuvre (Agence) :** **ONOGRAPH SARL** (*« L'Architecte Invisible de l'Influence Visible »*) - Simbock, Yaoundé (`www.onograph.online` | `+237 6 70 72 80 87` | `info@onograph.online`)
 - **Référence Document :** `CDC-ONO-ECOPARK-2026-10`
 - **Prototype Associé :** [`Prototype_Interactif_ECOPARK_NEW_LOOK.html`](file:///c:/Users/PcGamerCm/Downloads/ECO-PARK/Prototype_Interactif_ECOPARK_NEW_LOOK.html)
 
@@ -33,7 +33,7 @@ Le présent **Cahier des Charges (CDC)** définit les spécifications exactes qu
 
 ## 2. PÉRIMÈTRE FONCTIONNEL EN 6 LOTS OPÉRATIONNELS
 
-### LOT 1 — Refonte de l'Architecture Web & Rédaction des 21+ Pages Vides (35 Pages)
+### LOT 1 - Refonte de l'Architecture Web & Rédaction des 21+ Pages Vides (35 Pages)
 1. **Correction chirurgicale immédiate (Sous 48h) :**
    - Suppression du lien `http://localhost/ecopark/#`, du compteur `00:00:00:00`, du texte *« Saisissez ici votre paragraphe »* et du template anglais/USD sur `/restaurant/`.
    - Fermeture et nettoyage des commentaires parasites sur les pages statiques (`/contact/`).
@@ -47,7 +47,7 @@ Le présent **Cahier des Charges (CDC)** définit les spécifications exactes qu
 
 ---
 
-### LOT 2 — Moteur de Billetterie, Calculateur de Budget & Paiement Mobile Money (`/nos-tarifs/`)
+### LOT 2 - Moteur de Billetterie, Calculateur de Budget & Paiement Mobile Money (`/nos-tarifs/`)
 1. **Grille Tarifaire Officielle Interactive (100 % en FCFA) :**
    - Affichage clair des tarifs **Enfants**, **Adultes** et **Groupes (dès 10 personnes)**.
 2. **Calculateur Dynamique de Sortie :**
@@ -59,7 +59,7 @@ Le présent **Cahier des Charges (CDC)** définit les spécifications exactes qu
 
 ---
 
-### LOT 3 — Module Gastronomie (*Le Château des Saveurs*) & Réservation des 3 Hôtels
+### LOT 3 - Module Gastronomie (*Le Château des Saveurs*) & Réservation des 3 Hôtels
 1. **Carte Digitale Interactive du Restaurant `/restaurant/` :**
    - Suppression complète des éléments américains en dollars (`$4.50`, `$3.80`).
    - Catalogue filtrable en **FCFA** : *Poissons frais des étangs d'Ahala braisés*, *Poulet DG*, *Grillades & Brochettes*, *Boissons & Rafraîchissements*, *Formules Buffets Groupes & Mariages*.
@@ -72,7 +72,7 @@ Le présent **Cahier des Charges (CDC)** définit les spécifications exactes qu
 
 ---
 
-### LOT 4 — Configurateur Devis B2B / Écoles & Portail Digital du CFP d'Ecopark
+### LOT 4 - Configurateur Devis B2B / Écoles & Portail Digital du CFP d'Ecopark
 1. **Configurateur de Devis Instantané B2B & Scolaire :**
    - Calculateur de devis proforma pour les **Séminaires d'Entreprises, Ministères et ONG** (location de la **Salle de conférence *Menkii Essomba Anton***, pauses-café, déjeuner au *Château des Saveurs*, activités Team Building).
    - Calculateur pour les **Sorties Scolaires** (forfait élève + réservation des bus navettes de **5, 18 ou 32 places**).
@@ -83,7 +83,7 @@ Le présent **Cahier des Charges (CDC)** définit les spécifications exactes qu
 
 ---
 
-### LOT 5 — Guichet Unique & Concierge IA WhatsApp 24/7 (« ONOGRAPH IA Inside »)
+### LOT 5 - Guichet Unique & Concierge IA WhatsApp 24/7 (« ONOGRAPH IA Inside »)
 1. **Unification des 5 Numéros Téléphoniques :**
    - Centralisation des 5 numéros actuels derrière un **Guichet Unique WhatsApp Business** et un widget web actif 24h/24 et 7j/7.
 2. **Entraînement sur la Base de Connaissances Officielle (`ecopark-context`) :**
@@ -92,7 +92,7 @@ Le présent **Cahier des Charges (CDC)** définit les spécifications exactes qu
 
 ---
 
-### LOT 6 — Design System « Nature & Prestige », Performances & Rebranding Print
+### LOT 6 - Design System « Nature & Prestige », Performances & Rebranding Print
 1. **Charte Graphique & UI Mobile-First (`ecopark-design-system`) :**
    - Palette officielle : Vert Canopée (`#0D5C3A`), Or Savane (`#D97706`), Bleu Lagon (`#0284C7`), Terre Cacao (`#5A1830`), Fond Crème (`#F8FAFC`).
    - Lisibilité maximale en plein soleil sur smartphone (contraste WCAG AA/AAA) et grilles photos haute définition `16:10` / `4:3` (suppression des découpes en pilules qui écrasent les visuels).

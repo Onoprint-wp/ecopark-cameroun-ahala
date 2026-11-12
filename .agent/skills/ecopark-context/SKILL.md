@@ -37,9 +37,9 @@ description: Base de connaissances officielle, contexte métier, catalogue des 1
 | **Balade à Cheval** | 500 FCFA | 1 000 FCFA | 700 FCFA / pers. | Initiation et promenade équestre encadrée. |
 | **Balade en Forêt** | 500 FCFA | 1 000 FCFA | 700 FCFA / pers. | Sentiers botaniques, biodiversité et sylvothérapie sur plusieurs hectares. |
 | **Espace Jeux Enfants & Sport** | 250 FCFA (< 5 ans)<br>500 FCFA (5+ ans) | 500 FCFA | Inclus dans packs | Manèges, aires de jeux, terrains de Football et Volley-ball. |
-| **Pêche Ludique & Pisciculture** | — | — | Location canne : **2 000 FCFA**<br>Nutrition poissons : **500 FCFA/sachet** | Découverte de l'aquaculture et pêche récréative sur les étangs. |
+| **Pêche Ludique & Pisciculture** | - | - | Location canne : **2 000 FCFA**<br>Nutrition poissons : **500 FCFA/sachet** | Découverte de l'aquaculture et pêche récréative sur les étangs. |
 | **Musée Ecopark** | 500 FCFA | 1 000 FCFA | 500 FCFA / pers. | Patrimoine culturel, artistique et naturel du Cameroun. |
-| **Bibliothèque Ecopark** | 500 FCFA | 1 000 FCFA | — | Ouvrages jeunesse, romans, bandes dessinées, livres scientifiques. |
+| **Bibliothèque Ecopark** | 500 FCFA | 1 000 FCFA | - | Ouvrages jeunesse, romans, bandes dessinées, livres scientifiques. |
 
 ### B. Hébergement Hôtelier (3 Hôtels sur site)
 | Établissement | Capacité & Typologie | Tarifs / Nuitée | Positionnement |

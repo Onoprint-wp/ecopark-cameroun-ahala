@@ -1,4 +1,4 @@
-// sfx.mjs — sound effects for the media audio engine. Each cue is searched on
+// sfx.mjs - sound effects for the media audio engine. Each cue is searched on
 // Openverse (CC0 / CC BY only, see openverse.mjs). A cue Openverse cannot answer,
 // and every cue after Openverse is unreachable or rate limited, resolves against
 // the bundled 21-file library (assets/sfx/manifest.json) instead.
@@ -67,7 +67,7 @@ export async function resolveSfx({ cues, hyperframesDir, sfxLibDir = BUNDLED_SFX
   let openverseDown = false;
   let library;
 
-  // Dedupe identical (id,name) cues — the same effect named twice in one line
+  // Dedupe identical (id,name) cues - the same effect named twice in one line
   // downloads/copies once.
   const seen = new Set();
   const uniq = cues.filter((c) => {
@@ -90,7 +90,7 @@ export async function resolveSfx({ cues, hyperframesDir, sfxLibDir = BUNDLED_SFX
       try {
         await downloadTo(sound.url, join(hyperframesDir, file));
       } catch (e) {
-        anomalies.push(`sfx "${name}" (id ${id}): Openverse download failed — ${e.message}`);
+        anomalies.push(`sfx "${name}" (id ${id}): Openverse download failed - ${e.message}`);
         return null;
       }
       fileFor.set(key, file);
@@ -110,7 +110,7 @@ export async function resolveSfx({ cues, hyperframesDir, sfxLibDir = BUNDLED_SFX
   function fromBundled({ id, name }) {
     library ??= loadBundledLibrary(sfxLibDir);
     if (library.error) {
-      anomalies.push(`sfx "${name}" (id ${id}): ${library.error} — skipped`);
+      anomalies.push(`sfx "${name}" (id ${id}): ${library.error} - skipped`);
       return null;
     }
     const { byKey } = library;
@@ -118,7 +118,7 @@ export async function resolveSfx({ cues, hyperframesDir, sfxLibDir = BUNDLED_SFX
     if (!hit) {
       const known = [...new Set([...byKey.values()].map((v) => v.key))].slice(0, 8).join(", ");
       anomalies.push(
-        `sfx "${name}" (id ${id}): not in bundled library — skipped (have: ${known}…)`,
+        `sfx "${name}" (id ${id}): not in bundled library - skipped (have: ${known}…)`,
       );
       return null;
     }
@@ -146,7 +146,7 @@ export async function resolveSfx({ cues, hyperframesDir, sfxLibDir = BUNDLED_SFX
     } else if (!existsSync(dest)) {
       anomalies.push(
         `sfx "${name}" (id ${id}): bundled file ${hit.file} missing from the offline ` +
-          `library (${sfxLibDir}) — skipped. Reinstall the media-use skill to ` +
+          `library (${sfxLibDir}) - skipped. Reinstall the media-use skill to ` +
           `restore assets/sfx/*.mp3.`,
       );
       return null;

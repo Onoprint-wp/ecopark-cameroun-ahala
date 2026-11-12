@@ -1,5 +1,5 @@
 -- ============================================================================
--- ECOPARK CAMEROUN (Yaoundé-Ahala) — Migration 6 :
+-- ECOPARK CAMEROUN (Yaoundé-Ahala) - Migration 6 :
 --   1. 8e Rôle Utilisateur « comptable » & Rattachement Pôle/Matricule (ADM-05)
 --   2. Notation Objective (/60) + Managériale (/40) des Agents de Terrain au Visa #3
 --   3. RPC de Comptabilité Générale SYSCOHADA & Comptabilité Analytique (6 Pôles)

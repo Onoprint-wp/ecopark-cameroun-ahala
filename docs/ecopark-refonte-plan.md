@@ -1,4 +1,4 @@
-# Plan de Refonte ECOPARK Cameroun — Architecture de l'Information, Système Graphique & Parcours
+# Plan de Refonte ECOPARK Cameroun - Architecture de l'Information, Système Graphique & Parcours
 
 **Dernière mise à jour :** 2026-10-29  
 **Statut global :** Implémentation et vérifications terminées (Étapes I.1 à I.10 complètes à 100 %)
@@ -60,22 +60,22 @@
 
 | Route / URL entrante | Type | Cible dans l'application | Comportement / Redirection logique |
 | :--- | :--- | :--- | :--- |
-| `/` | Canonique | Accueil (`view-PUB` — `ACCUEIL`) | Restructuré selon l'ordre strict en 8 blocs (Section D) |
-| `/decouvrir` | Nouvelle canonique | Découvrir le parc (`view-PUB` — `PUB-03`) | Présentation du domaine + Catalogue des 8 activités |
-| `/activites` | Ancienne (conservée) | Découvrir le parc (`view-PUB` — `PUB-03`) | Maintenue et résolue vers « Découvrir le parc » |
-| `/fiche-activite` | Conservée | Fiche détaillée activité (`view-PUB` — `PUB-04`) | Gabarit complet Fiche Activité (déroulement, inclus/non inclus, conditions, activités complémentaires) |
-| `/sejour-restaurant` | Nouvelle canonique | Séjour & restaurant (`view-PUB` — `PUB-09`) | Sous-rubrique Hébergements (4 cités) + Sous-rubrique Restaurant Le Château des Saveurs |
-| `/hebergements`, `/hotellerie` | Anciennes (conservées) | Séjour & restaurant (`view-PUB` — `PUB-09`) | Ouvre « Séjour & restaurant » sur les 4 Cités Hôtelières |
-| `/restaurant` | Ancienne (conservée) | Séjour & restaurant (`view-PUB` — `PUB-07` / `PUB-09`) | Ouvre « Séjour & restaurant » sur le Restaurant Le Château des Saveurs |
-| `/groupes-evenements` | Nouvelle canonique | Groupes & événements (`view-PUB` — `PUB-11`) | Sorties scolaires, Entreprises, Mariages (Salle Menkii 500 places) & Devis |
-| `/pack-ecole`, `/pack-entreprise` | Anciennes (conservées) | Groupes & événements (`view-PUB` — `PUB-11`) | Ouvre le gabarit Groupes & événements et accès devis |
-| `/formations`, `/formation` | Canonique & Ancienne | Formations CFP (`view-PUB` — `PUB-12`) | Gabarit complet CFP MINEFOP (5 filières, 12 mois, dès 16 ans, frais, candidature) |
-| `/preparer-ma-visite` | Nouvelle canonique | Préparer ma visite (`view-PUB` — `PUB-10`) | Calculateur express, Tarifs & pass, Horaires, Accès RN3, Agenda, FAQ |
-| `/nos-tarifs`, `/tarifs` | Anciennes (conservées) | Préparer ma visite (`view-PUB` — `PUB-10`) | Ouvre « Préparer ma visite » sur la grille tarifaire et le calculateur |
-| `/agenda`, `/evenements` | Anciennes (conservées) | Préparer ma visite (`view-PUB` — `PUB-16`) | Ouvre l'agenda hebdomadaire |
-| `/contact`, `/rdv`, `/rendez-vous` | Anciennes (conservées) | Préparer ma visite (`view-PUB` — `PUB-13` / `PUB-18`) | Ouvre Accès RN3, Contact & Rendez-vous |
-| `/mes-reservations`, `/mon-espace` | Nouvelle & Ancienne | Mes réservations (`view-ACC` — `ACC-02`) | Réservations, billets QR, demandes de devis et statuts |
-| `/reserver` | Canonique | Parcours de réservation (`view-RES` — `RES-01`) | 4 parcours distincts + stepper 5 étapes |
+| `/` | Canonique | Accueil (`view-PUB` - `ACCUEIL`) | Restructuré selon l'ordre strict en 8 blocs (Section D) |
+| `/decouvrir` | Nouvelle canonique | Découvrir le parc (`view-PUB` - `PUB-03`) | Présentation du domaine + Catalogue des 8 activités |
+| `/activites` | Ancienne (conservée) | Découvrir le parc (`view-PUB` - `PUB-03`) | Maintenue et résolue vers « Découvrir le parc » |
+| `/fiche-activite` | Conservée | Fiche détaillée activité (`view-PUB` - `PUB-04`) | Gabarit complet Fiche Activité (déroulement, inclus/non inclus, conditions, activités complémentaires) |
+| `/sejour-restaurant` | Nouvelle canonique | Séjour & restaurant (`view-PUB` - `PUB-09`) | Sous-rubrique Hébergements (4 cités) + Sous-rubrique Restaurant Le Château des Saveurs |
+| `/hebergements`, `/hotellerie` | Anciennes (conservées) | Séjour & restaurant (`view-PUB` - `PUB-09`) | Ouvre « Séjour & restaurant » sur les 4 Cités Hôtelières |
+| `/restaurant` | Ancienne (conservée) | Séjour & restaurant (`view-PUB` - `PUB-07` / `PUB-09`) | Ouvre « Séjour & restaurant » sur le Restaurant Le Château des Saveurs |
+| `/groupes-evenements` | Nouvelle canonique | Groupes & événements (`view-PUB` - `PUB-11`) | Sorties scolaires, Entreprises, Mariages (Salle Menkii 500 places) & Devis |
+| `/pack-ecole`, `/pack-entreprise` | Anciennes (conservées) | Groupes & événements (`view-PUB` - `PUB-11`) | Ouvre le gabarit Groupes & événements et accès devis |
+| `/formations`, `/formation` | Canonique & Ancienne | Formations CFP (`view-PUB` - `PUB-12`) | Gabarit complet CFP MINEFOP (5 filières, 12 mois, dès 16 ans, frais, candidature) |
+| `/preparer-ma-visite` | Nouvelle canonique | Préparer ma visite (`view-PUB` - `PUB-10`) | Calculateur express, Tarifs & pass, Horaires, Accès RN3, Agenda, FAQ |
+| `/nos-tarifs`, `/tarifs` | Anciennes (conservées) | Préparer ma visite (`view-PUB` - `PUB-10`) | Ouvre « Préparer ma visite » sur la grille tarifaire et le calculateur |
+| `/agenda`, `/evenements` | Anciennes (conservées) | Préparer ma visite (`view-PUB` - `PUB-16`) | Ouvre l'agenda hebdomadaire |
+| `/contact`, `/rdv`, `/rendez-vous` | Anciennes (conservées) | Préparer ma visite (`view-PUB` - `PUB-13` / `PUB-18`) | Ouvre Accès RN3, Contact & Rendez-vous |
+| `/mes-reservations`, `/mon-espace` | Nouvelle & Ancienne | Mes réservations (`view-ACC` - `ACC-02`) | Réservations, billets QR, demandes de devis et statuts |
+| `/reserver` | Canonique | Parcours de réservation (`view-RES` - `RES-01`) | 4 parcours distincts + stepper 5 étapes |
 | `/guichet`, `/direction`, `/admin` | Back-office (conservées) | `view-AGT`, `view-DIR`, `view-ADM`, `view-EXP` | Outils d'exploitation, d'assignation de missions A4 et d'administration 100 % opérationnels |
 
 ---
@@ -86,10 +86,10 @@ Suite à la demande d'outillage des équipes terrain d'Ahala, un module complet 
 - **Exploitation Terrain (`#view-EXP` → `#sec-EXP-MISSIONS`)** :
   - Bandeau de suivi temps réel : nombre de missions du jour (fuseau `Africa/Douala`), missions actives (`En cours sur poste`), missions validées (`Terminées & Validées`) et couverture des **4 pôles terrain**.
   - **4 modèles métiers pré-configurés en 1 clic** respectant les tokens graphiques « Canopée vivante » :
-    1. **Guichet & Caisse (`GUICHET_CAISSE` — `#527A35`)** : Caisse Entrée RN3, fond de caisse `50 000 FCFA`, encaissement Espèces/MoMo sans code PIN, clôture contradictoire.
-    2. **Contrôle QR Piscine & Lac (`CONTROLE_QR` — `#176B80`)** : Scan QR hors-ligne 7 états au tourniquet piscine et embarcadère pirogues, port obligatoire du gilet homologué.
-    3. **Hébergements 3 Cités (`HEBERGEMENT` — `#A45138`)** : Cités Ewondo VIP, Chanthel Confort & Bene Standard, Check-in `14h00` / Check-out `11h00`, réception `7j/7`.
-    4. **Cuisine Le Château des Saveurs (`CUISINE_SAVEURS` — `#946015`)** : Mise en place des précommandes `12h30`, Poisson braisé d'Ahala (`5 000 FCFA`), Poulet DG Royal (`6 500 FCFA`), service « Zéro Attente » `13h00`.
+    1. **Guichet & Caisse (`GUICHET_CAISSE` - `#527A35`)** : Caisse Entrée RN3, fond de caisse `50 000 FCFA`, encaissement Espèces/MoMo sans code PIN, clôture contradictoire.
+    2. **Contrôle QR Piscine & Lac (`CONTROLE_QR` - `#176B80`)** : Scan QR hors-ligne 7 états au tourniquet piscine et embarcadère pirogues, port obligatoire du gilet homologué.
+    3. **Hébergements 3 Cités (`HEBERGEMENT` - `#A45138`)** : Cités Ewondo VIP, Chanthel Confort & Bene Standard, Check-in `14h00` / Check-out `11h00`, réception `7j/7`.
+    4. **Cuisine Le Château des Saveurs (`CUISINE_SAVEURS` - `#946015`)** : Mise en place des précommandes `12h30`, Poisson braisé d'Ahala (`5 000 FCFA`), Poulet DG Royal (`6 500 FCFA`), service « Zéro Attente » `13h00`.
   - Formulaire complet d'assignation (`#expMissionAssignForm`) avec choix du pôle, de l'agent (matricule & fonction), de la date (`Africa/Douala`), du créneau horaire, de la priorité, de l'intitulé, de la zone d'affectation, de la dotation matériel, des objectifs et des points de contrôle (check-list).
   - Registre filtrable des missions (`#expMissionsTable`) avec progression de statut en 1 clic (`Assignée` → `En cours sur poste` → `Terminée & Validée`) et journalisation dans `db.auditLogs`.
 - **Guichet & Contrôle (`#view-AGT` → `#agtActiveMissionBanner`)** : bandeau permanent affichant la mission active du caissier/contrôleur avec accès direct en 1 clic à sa **Fiche de Mission A4** et au panneau d'exploitation.
@@ -105,19 +105,19 @@ Suite à la demande d'outillage des équipes terrain d'Ahala, un module complet 
 
 ## 4. Étapes d'exécution et état d'avancement
 
-- [x] **Étape 1 — Audit des routes, composants, contenus, données et intégrations**
-- [x] **Étape 2 — Installation des règles persistantes (`.agents/rules/ecopark-*.md`)**
-- [x] **Étape 3 — Rédaction du plan et du document de validation (`docs/ecopark-*.md`)**
-- [x] **Étape 4 — Centralisation des tokens graphiques (`tokens.json`, CSS `:root`) et de la source unique (`window.ECOPARK_SOURCE_UNIQUE`)**
-- [x] **Étape 5 — Refonte de la navigation principale (5 rubriques + utilitaires) et des routes Vercel (`etape0-site-live/vercel.json`)**
-- [x] **Étape 6 — Restructuration de l'Accueil (`/`) en 8 sections ordonnées avec un seul `<h1>` et suppression du jargon de développement**
-- [x] **Étape 7 — Application des gabarits métier complets (Fiche activité, Hébergement, Restaurant, Groupes & événements, Formation CFP, Préparer ma visite, Mes réservations)**
-- [x] **Étape 8 — Restructuration des parcours de réservation (`/reserver`) en 4 parcours et 5 étapes sans billet confirmé prématuré ni date figée `2026-11-15`**
-- [x] **Étape 9 — Vérifications multi-écrans (`360px`, `390px`, `768px`, `1280px`, `1440px`), tests automatisés (10 suites, 368 assertions validées à 100 %) et captures**
-- [x] **Étape 10 — Mise à jour finale des documents de suivi et livraison**
-- [x] **Étape 11 — Implémentation et validation du module « Assignation d'une tâche & Fiche de mission imprimable A4 » sur les 4 pôles d'exploitation d'Ahala**
-- [x] **Étape 12 — Règle « 1 Commande = 1 Fiche de Mission selon l'affectation du poste » + Centre d'Alertes & Notifications Temps Réel (`#expPostAlertsCenter`, `dispatchOrderToPostMission`, `acknowledgeMissionAlert`, plan racine `missions-commandes-alertes-plan.md`)**
-- [x] **Étape 13 — Synchronisation officielle du 04/11/2026 (ajustements du site officiel ecopark-yaounde.com)** :
+- [x] **Étape 1 - Audit des routes, composants, contenus, données et intégrations**
+- [x] **Étape 2 - Installation des règles persistantes (`.agents/rules/ecopark-*.md`)**
+- [x] **Étape 3 - Rédaction du plan et du document de validation (`docs/ecopark-*.md`)**
+- [x] **Étape 4 - Centralisation des tokens graphiques (`tokens.json`, CSS `:root`) et de la source unique (`window.ECOPARK_SOURCE_UNIQUE`)**
+- [x] **Étape 5 - Refonte de la navigation principale (5 rubriques + utilitaires) et des routes Vercel (`etape0-site-live/vercel.json`)**
+- [x] **Étape 6 - Restructuration de l'Accueil (`/`) en 8 sections ordonnées avec un seul `<h1>` et suppression du jargon de développement**
+- [x] **Étape 7 - Application des gabarits métier complets (Fiche activité, Hébergement, Restaurant, Groupes & événements, Formation CFP, Préparer ma visite, Mes réservations)**
+- [x] **Étape 8 - Restructuration des parcours de réservation (`/reserver`) en 4 parcours et 5 étapes sans billet confirmé prématuré ni date figée `2026-11-15`**
+- [x] **Étape 9 - Vérifications multi-écrans (`360px`, `390px`, `768px`, `1280px`, `1440px`), tests automatisés (10 suites, 368 assertions validées à 100 %) et captures**
+- [x] **Étape 10 - Mise à jour finale des documents de suivi et livraison**
+- [x] **Étape 11 - Implémentation et validation du module « Assignation d'une tâche & Fiche de mission imprimable A4 » sur les 4 pôles d'exploitation d'Ahala**
+- [x] **Étape 12 - Règle « 1 Commande = 1 Fiche de Mission selon l'affectation du poste » + Centre d'Alertes & Notifications Temps Réel (`#expPostAlertsCenter`, `dispatchOrderToPostMission`, `acknowledgeMissionAlert`, plan racine `missions-commandes-alertes-plan.md`)**
+- [x] **Étape 13 - Synchronisation officielle du 04/11/2026 (ajustements du site officiel ecopark-yaounde.com)** :
   - Intégration des canaux officiels dédiés par pôle (WhatsApp principal `+237 672 56 45 98`, Hébergement `+237 694 60 14 49`, Navettes `698 13 11 34`, Groupes `+237 677 51 03 48`, CFP `+237 675 76 34 94` et réseaux sociaux).
   - Alignement de l'offre hôtelière sur les 3 établissements officiels (Bene, Chanthel, Ewondo/Suites Privées) totalisant 30 unités plafonnées à 30 000 FCFA.
   - Présentation des 3 espaces de restauration « New Look » (VIP New Look, Les Boukarous, Le Château des Saveurs, plats dès 3 500 FCFA).

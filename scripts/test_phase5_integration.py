@@ -27,7 +27,7 @@ results = []
 
 def check(cond, label, detail=""):
     results.append(bool(cond))
-    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' — ' + str(detail)) if detail else ''}")
+    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' - ' + str(detail)) if detail else ''}")
 
 
 def main():

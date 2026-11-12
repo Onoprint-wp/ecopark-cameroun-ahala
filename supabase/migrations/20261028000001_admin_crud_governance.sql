@@ -1,5 +1,5 @@
 -- ============================================================================
--- ECOPARK CAMEROUN (Yaoundé-Ahala) — Migration 2 : Gouvernance CRUD de l'Administration
+-- ECOPARK CAMEROUN (Yaoundé-Ahala) - Migration 2 : Gouvernance CRUD de l'Administration
 -- Phase 1 du plan d'implémentation (ADM-01 à ADM-08)
 --
 --  1. Corrections du schéma Sprint 1 (CHECK lodge_city, colonne client)
@@ -29,7 +29,7 @@ DO $$ BEGIN
     CHECK (lodge_city IS NULL OR lodge_city IN ('EWONDO', 'CHANTHEL', 'BENE'));
 EXCEPTION WHEN duplicate_object THEN NULL; END $$;
 
--- Rattachement optionnel d'une réservation à un compte client (ACC — Mon Espace)
+-- Rattachement optionnel d'une réservation à un compte client (ACC - Mon Espace)
 ALTER TABLE public.bookings
   ADD COLUMN IF NOT EXISTS customer_user_id UUID REFERENCES auth.users(id) ON DELETE SET NULL;
 
@@ -113,7 +113,7 @@ EXCEPTION WHEN duplicate_object OR duplicate_table THEN NULL; END $$;
 -- 3. NOUVELLES TABLES
 -- ============================================================================
 
--- 3.1 Agenda de la semaine (/agenda — PUB-15 / PUB-16, ADM-04)
+-- 3.1 Agenda de la semaine (/agenda - PUB-15 / PUB-16, ADM-04)
 --     Structure calquée sur WEEKLY_AGENDA_CATALOG du site live.
 CREATE TABLE IF NOT EXISTS public.agenda_events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -197,7 +197,7 @@ CREATE TABLE IF NOT EXISTS public.staff_profiles (
   user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   full_name TEXT NOT NULL,
   role ecopark_role NOT NULL CHECK (role NOT IN ('visiteur_anonyme', 'client_connecte')),
-  post_label TEXT NOT NULL DEFAULT '',            -- ex : « Guichet #1 — Entrée principale »
+  post_label TEXT NOT NULL DEFAULT '',            -- ex : « Guichet #1 - Entrée principale »
   is_active BOOLEAN NOT NULL DEFAULT TRUE,
   last_seen_at TIMESTAMPTZ,
   created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
@@ -206,7 +206,7 @@ CREATE TABLE IF NOT EXISTS public.staff_profiles (
   version INTEGER NOT NULL DEFAULT 1
 );
 
--- 3.6 Santé des passerelles (ADM-06 / ADM-07) — AUCUN SECRET n'est stocké ici.
+-- 3.6 Santé des passerelles (ADM-06 / ADM-07) - AUCUN SECRET n'est stocké ici.
 --     Écriture réservée aux Edge Functions (service_role).
 CREATE TABLE IF NOT EXISTS public.gateway_health (
   provider TEXT PRIMARY KEY CHECK (provider IN ('ORANGE_MONEY', 'MTN_MOMO', 'WHATSAPP_BUSINESS')),
@@ -463,7 +463,7 @@ BEGIN
 
   PERFORM public.ecopark_write_audit(
     v_op, TG_TABLE_NAME, v_id, v_before, v_after,
-    v_verb || ' — ' || TG_TABLE_NAME || ' « ' || COALESCE(v_label, '?') || ' »');
+    v_verb || ' - ' || TG_TABLE_NAME || ' « ' || COALESCE(v_label, '?') || ' »');
 
   RETURN COALESCE(NEW, OLD);
 END $$;
@@ -1005,8 +1005,8 @@ CREATE POLICY "bookings_ops_update" ON public.bookings
   FOR UPDATE TO authenticated
   USING (public.ecopark_has_role(ARRAY['agent_guichet','responsable_exploitation','direction','administrateur_plateforme']::ecopark_role[]))
   WITH CHECK (public.ecopark_has_role(ARRAY['agent_guichet','responsable_exploitation','direction','administrateur_plateforme']::ecopark_role[]));
--- Les réservations en ligne passeront par la RPC create_booking() (recalcul serveur du total) — Phase 5.
--- Le scan QR (agent_controle) passera par la RPC scan_ticket() — Phase 6.
+-- Les réservations en ligne passeront par la RPC create_booking() (recalcul serveur du total) - Phase 5.
+-- Le scan QR (agent_controle) passera par la RPC scan_ticket() - Phase 6.
 
 -- 8.8 Devis, candidatures CFP, rendez-vous : dépôt public, traitement par l'Exploitation
 DO $$
@@ -1051,7 +1051,7 @@ DO $$ BEGIN
 EXCEPTION WHEN undefined_object THEN NULL; END $$;
 
 -- ============================================================================
--- 9. DONNÉES INITIALES (reprises du site live — etape0-site-live/index.html)
+-- 9. DONNÉES INITIALES (reprises du site live - etape0-site-live/index.html)
 -- ============================================================================
 INSERT INTO public.agenda_events (code, day_filter, target_weekday, badge, title, short_label, price_text,
   from_price_fcfa, spots_text, description, schedule, bundle_code, dish, meal_slot, pergola, nutrition,

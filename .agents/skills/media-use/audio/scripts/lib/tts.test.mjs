@@ -42,7 +42,7 @@ test("parseFfmpegDurationBanner returns NaN when there is no Duration line", () 
 });
 
 // Regression for the actual bug: ffprobeDuration used to collapse "ffprobe
-// binary is missing" (ENOENT — the "essentials"-style Windows ffmpeg build
+// binary is missing" (ENOENT - the "essentials"-style Windows ffmpeg build
 // with no ffprobe.exe) and "file is genuinely unreadable" into the same NaN,
 // giving audio.mjs no way to tell "measure differently" from "give up".
 //
@@ -72,7 +72,7 @@ test("ffprobeDuration returns NaN when neither ffprobe nor ffmpeg resolve", () =
   const dir = mkdtempSync(join(tmpdir(), "tts-no-binaries-"));
   const originalPath = process.env.PATH;
   try {
-    process.env.PATH = dir; // empty directory — nothing resolves
+    process.env.PATH = dir; // empty directory - nothing resolves
     assert.ok(Number.isNaN(ffprobeDuration("/does/not/matter.wav")));
   } finally {
     process.env.PATH = originalPath;
@@ -85,7 +85,7 @@ test("synthesizeOne(elevenlabs) creates the output dir before writing", async ()
   const wavAbs = join(dir, "assets", "voice", "line-0.wav"); // nested, not yet created
   const savedKey = process.env.ELEVENLABS_API_KEY;
   try {
-    // Unset the key so the Python side fails fast — the mkdir must run before
+    // Unset the key so the Python side fails fast - the mkdir must run before
     // the spawn regardless, which is what this guards.
     delete process.env.ELEVENLABS_API_KEY;
     await synthesizeOne({

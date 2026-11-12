@@ -1,4 +1,4 @@
-# Audio engine — voiceover, music, SFX, captions, transcription
+# Audio engine - voiceover, music, SFX, captions, transcription
 
 For a full audio pass (TTS voiceover + background music + sound effects in one
 shot), use the shared engine at `audio/scripts/audio.mjs`. It takes a neutral

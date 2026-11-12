@@ -8,7 +8,7 @@ description: Identité de marque, grille tarifaire en XAF, méthodologie en 6 é
 ## 1. Identité Officielle de l'Agence ONOGRAPH
 - **Raison sociale** : ONOGRAPH SARL (`https://www.onograph.online/`)
 - **Signature / Baseline** : *« L'Architecte Invisible de l'Influence Visible »*
-- **Positionnement** : *« Stratégie · Branding · Web · IA — Communication Stratégique Augmentée par l'IA en zone CEMAC »*
+- **Positionnement** : *« Stratégie · Branding · Web · IA - Communication Stratégique Augmentée par l'IA en zone CEMAC »*
 - **Siège social** : RF8G+86X, Chapelle Simbock (avant le carrefour des sœurs), Yaoundé, Cameroun.
 - **Contacts officiels** :
   - Téléphone principal : `+237 6 70 72 80 87`
@@ -32,12 +32,12 @@ description: Identité de marque, grille tarifaire en XAF, méthodologie en 6 é
 - **Ton éditorial** : Chirurgical, orienté preuves (*Evidence-Based*), axé sur le retour sur investissement (ROI) et parfaitement adapté aux réalités socio-culturelles du Cameroun et de la CEMAC.
 
 ## 3. Les 6 Pôles d'Expertise & Grille de Référence ONOGRAPH (XAF)
-1. **Pôle 1 — Stratégie & Branding** : Audit Express (`500 000 XAF`), Plateforme de Marque (`1 500 000 XAF`), Stratégie 360° (`3 000 000+ XAF`).
-2. **Pôle 2 — Contenus & Design Visuel (+ Atelier Onoprint)** : Logo (`150 000 XAF`), Identité Visuelle Complète (`750 000 XAF`), Production Vidéo (`800 000+ XAF`), Supports Print & Signalétique.
-3. **Pôle 3 — Web & Expériences Numériques** : Site Vitrine (`400 000 XAF`), Plateforme E-commerce / Billetterie Mobile Money (`1 500 000 XAF`), Application Mobile MVP (`3 000 000+ XAF`).
-4. **Pôle 4 — Influence, Marketing & RP** : Social Media 3 réseaux (`200 000 XAF/mois`), Veille E-réputation (`150 000 XAF/mois`), Campagne Influence 5–10 créateurs (`800 000+ XAF`).
-5. **Pôle 5 — Formations & Consulting** : Session 1 jour (`200 000 XAF`), Formation 3 jours certifiante (`500 000 XAF`), Consulting mensuel (`800 000 XAF/mois`).
-6. **Pôle 6 — Solutions IA Inside** : Kit IA Ready (`150 000 XAF`), Observatoire Lite (`500 000 XAF/an`), Chatbot & Automatisation IA sur mesure.
+1. **Pôle 1 - Stratégie & Branding** : Audit Express (`500 000 XAF`), Plateforme de Marque (`1 500 000 XAF`), Stratégie 360° (`3 000 000+ XAF`).
+2. **Pôle 2 - Contenus & Design Visuel (+ Atelier Onoprint)** : Logo (`150 000 XAF`), Identité Visuelle Complète (`750 000 XAF`), Production Vidéo (`800 000+ XAF`), Supports Print & Signalétique.
+3. **Pôle 3 - Web & Expériences Numériques** : Site Vitrine (`400 000 XAF`), Plateforme E-commerce / Billetterie Mobile Money (`1 500 000 XAF`), Application Mobile MVP (`3 000 000+ XAF`).
+4. **Pôle 4 - Influence, Marketing & RP** : Social Media 3 réseaux (`200 000 XAF/mois`), Veille E-réputation (`150 000 XAF/mois`), Campagne Influence 5–10 créateurs (`800 000+ XAF`).
+5. **Pôle 5 - Formations & Consulting** : Session 1 jour (`200 000 XAF`), Formation 3 jours certifiante (`500 000 XAF`), Consulting mensuel (`800 000 XAF/mois`).
+6. **Pôle 6 - Solutions IA Inside** : Kit IA Ready (`150 000 XAF`), Observatoire Lite (`500 000 XAF/an`), Chatbot & Automatisation IA sur mesure.
 
 ### Forfaits Packagés Phares
 - **Pack Brand Boost** : `375 000 XAF`

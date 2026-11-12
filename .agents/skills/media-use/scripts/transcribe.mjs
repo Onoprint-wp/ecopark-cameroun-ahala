@@ -27,7 +27,7 @@ import { resolveNpxInvocation } from "./lib/npx-sync.mjs";
 // Parakeet v3 covers English + 25 European languages. For other languages, or
 // when parakeet-mlx is not installed, it falls back to whisper.cpp via
 // `hyperframes transcribe` (99 languages; the CLI resolves/builds whisper.cpp
-// on first use — it is not bundled). `--engine` forces one.
+// on first use - it is not bundled). `--engine` forces one.
 
 const { values: args } = parseArgs({
   options: {
@@ -123,13 +123,13 @@ function runParakeet(runner) {
   }
 }
 
-// The hyperframes CLI (its Parakeet, else whisper.cpp built on first use — see
+// The hyperframes CLI (its Parakeet, else whisper.cpp built on first use - see
 // SKILL.md): writes transcript.json into --dir; relocate to --out.
 function runCli(cliEngine) {
   const workDir = mkdtempSync(join(tmpdir(), "media-use-whisper-"));
   try {
     // On Windows a bare "npx" is npx.cmd, which execFileSync cannot exec
-    // (spawnSync npx ENOENT) — resolveNpxInvocation reroutes it through
+    // (spawnSync npx ENOENT) - resolveNpxInvocation reroutes it through
     // node + npx-cli.js (and throws actionably when it can't), same
     // mechanism as the audio engine's TTS spawns.
     // Under auto or parakeet the CLI may run its own Parakeet; --json says which engine ran.

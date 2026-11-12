@@ -1,18 +1,18 @@
-# LIVRABLE STRATÉGIQUE 00 — INTELLIGENCE ÉCONOMIQUE, STRATÉGIE ÉCOTOURISTIQUE & SOCIAL LISTENING 360°
-## Projet : ECOPARK CAMEROUN — « ECOPARK NEW LOOK » (Yaoundé-Ahala, RN3)
+# LIVRABLE STRATÉGIQUE 00 - INTELLIGENCE ÉCONOMIQUE, STRATÉGIE ÉCOTOURISTIQUE & SOCIAL LISTENING 360°
+## Projet : ECOPARK CAMEROUN - « ECOPARK NEW LOOK » (Yaoundé-Ahala, RN3)
 
-- **Maître d'Ouvrage :** **ECOPARK CAMEROUN** — Route Nationale N°3 (RN3), Quartier Ahala Barrière, face Station Tradex Ahala, Yaoundé (Cameroun)
+- **Maître d'Ouvrage :** **ECOPARK CAMEROUN** - Route Nationale N°3 (RN3), Quartier Ahala Barrière, face Station Tradex Ahala, Yaoundé (Cameroun)
 - **Haute Gouvernance :**
   - **Promoteur :** Dr Christophe FOE NDI
   - **Directeur du Parc / Gérant Délégué (« ECOPARK NEW LOOK ») :** M. Mgbatou Daryl
-- **Cellule Stratégique :** Consultant Senior en Intelligence Économique, Stratégie Écotouristique & Social Listening (Sous-Agent 1 — Architecture 360°)
+- **Cellule Stratégique :** Consultant Senior en Intelligence Économique, Stratégie Écotouristique & Social Listening (Sous-Agent 1 - Architecture 360°)
 - **Référence Livrable :** `ECP-2026-STRAT-00`
 - **Plateforme de Production :** [`https://ecopark-cameroun-ahala.vercel.app`](https://ecopark-cameroun-ahala.vercel.app) (`77/77` écrans contractuels actifs)
-- **Devise de Référence :** **100 % Franc CFA (FCFA / XAF)** — Zone CEMAC
+- **Devise de Référence :** **100 % Franc CFA (FCFA / XAF)** - Zone CEMAC
 
 ---
 
-## 1. ANALYSE PESTEL COMPLÈTE (YAOUNDÉ & CAMEROUN — HORIZON 2026)
+## 1. ANALYSE PESTEL COMPLÈTE (YAOUNDÉ & CAMEROUN - HORIZON 2026)
 
 L'implantation d'ECOPARK à l'entrée Sud de Yaoundé (**Ahala Barrière, axe lourd Yaoundé–Douala sur la RN3**) place le complexe au carrefour de flux démographiques, institutionnels et économiques uniques. L'analyse PESTEL ci-dessous synthétise les déterminants macro-environnementaux de Yaoundé en 2026 et leur traduction directe dans l'architecture digitale et opérationnelle d'ECOPARK.
 
@@ -35,7 +35,7 @@ L'implantation d'ECOPARK à l'entrée Sud de Yaoundé (**Ahala Barrière, axe lo
 | Réalité Socioculturelle Camerounaise | Impact sur l'Expérience Visiteur à Ahala | Réponse Stratégique & Fonctionnelle Déployée |
 | :--- | :--- | :--- |
 | **Rituel de la Sortie Familiale du Dimanche Après-Midi** | À Yaoundé, le dimanche entre 12h30 et 18h30 est le moment privilégié des sorties multi-générationnelles. Le pic d'affluence de 13h00 crée traditionnellement un goulot d'étranglement au restaurant (jusqu'à 1h30 d'attente pour un poisson braisé ou un Poulet DG). | Module de **Précommande Cuisine Service 13h30** intégré au tunnel de réservation (`RES-05`) permettant de réserver son plat et sa **Pergola privée au bord du lac** avant même d'arriver à Ahala. |
-| **Attachement à la Gastronomie Terroir Camerounaise** | Les visiteurs viennent à Ahala pour déguster le **poisson frais pêché dans les étangs d'Ecopark et braisé au feu de bois**, le **Poulet DG Royal au plantain mûr**, le **Ndolè Royal** et les grillades — et non un *« Velvet Flat White \$4.50 »* américain. | Refonte intégrale de la carte du **Château des Saveurs (`/restaurant` - `PUB-07`)** 100 % en FCFA (`Poisson Braisé des Étangs d'Ahala`, `Poulet DG Royal`, `Ndolè Royal`, `Buffets Groupes & Mariages`). |
+| **Attachement à la Gastronomie Terroir Camerounaise** | Les visiteurs viennent à Ahala pour déguster le **poisson frais pêché dans les étangs d'Ecopark et braisé au feu de bois**, le **Poulet DG Royal au plantain mûr**, le **Ndolè Royal** et les grillades - et non un *« Velvet Flat White \$4.50 »* américain. | Refonte intégrale de la carte du **Château des Saveurs (`/restaurant` - `PUB-07`)** 100 % en FCFA (`Poisson Braisé des Étangs d'Ahala`, `Poulet DG Royal`, `Ndolè Royal`, `Buffets Groupes & Mariages`). |
 | **Célébrations, Mariages, Dots & Réunions d'Associations (Tontines)** | Les grandes familles, élites et associations de Yaoundé recherchent des cadres verdoyants sécurisés avec salle climatisée et hébergement sur place pour leurs mariages civils/coutumiers, galas et assemblées générales. | Valorisation de la **Salle Polyvalente *Menkii Essomba Anton*** couplée aux **3 Cités Hôtelières (Ewondo, Chanthel, Bene)** et au module `/rdv` pour planifier un créneau de repérage VIP sur site. |
 
 ### 1.4. Dimension Technologique (T)
@@ -47,7 +47,7 @@ L'implantation d'ECOPARK à l'entrée Sud de Yaoundé (**Ahala Barrière, axe lo
 ### 1.5. Dimension Environnementale & Météorologique (E)
 | Facteur Climatique & Écologique (Yaoundé) | Impact sur la Fréquentation d'ECOPARK | Levier Stratégique Activé |
 | :--- | :--- | :--- |
-| **Climat Équatorial de Type Guinéen (4 Saisons & Averses Tropicales Soudaines)** | À Yaoundé (ville aux 7 collines, altitude ~750 m), une averse soudaine le samedi ou le dimanche matin à 10h00 décourage les familles d'acheter leurs billets à l'avance par peur de perdre leur argent s'il pleut sur Ahala. | **Levier Majeur de Conversion : « Garantie Météo / Pluie Yaoundé — Report gratuit 90 jours en 1 clic »** (`ACC-05` + bandeau météo temps réel d'Ahala en haut de page). Le client réserve sans aucune crainte financière : en cas de pluie, son billet QR est reporté gratuitement en 1 clic sur la date de son choix dans les 90 jours. |
+| **Climat Équatorial de Type Guinéen (4 Saisons & Averses Tropicales Soudaines)** | À Yaoundé (ville aux 7 collines, altitude ~750 m), une averse soudaine le samedi ou le dimanche matin à 10h00 décourage les familles d'acheter leurs billets à l'avance par peur de perdre leur argent s'il pleut sur Ahala. | **Levier Majeur de Conversion : « Garantie Météo / Pluie Yaoundé - Report gratuit 90 jours en 1 clic »** (`ACC-05` + bandeau météo temps réel d'Ahala en haut de page). Le client réserve sans aucune crainte financière : en cas de pluie, son billet QR est reporté gratuitement en 1 clic sur la date de son choix dans les 90 jours. |
 | **Gestion Biologique de la Faune & des Étangs d'Ahala** | Le bien-être des pensionnaires du parc animalier (dont le gorille emblématique **« ToTo »**, les chevaux et la faune aquatique) ainsi que la maintenance écologique du site imposent une journée de fermeture hebdomadaire. | **Fermeture hebdomadaire du public le Lundi (Repos Biologique des Animaux & Maintenance Écologique)** clairement affichée dans l'agenda (`/agenda`) et bloquée nativement dans les sélecteurs de dates B2C, tout en maintenant l'accueil des séminaires résidentiels et du CFP du **Mardi au Dimanche dès 09h00**. |
 
 ### 1.6. Dimension Légale & Réglementaire (L)
@@ -63,8 +63,8 @@ L'implantation d'ECOPARK à l'entrée Sud de Yaoundé (**Ahala Barrière, axe lo
 
 Cette section consolide l'écoute terrain réalisée sur les canaux digitaux d'ECOPARK (commentaires publics laissés sur l'ancien site WordPress `ecopark-yaounde.com`, retours WhatsApp des familles de Yaoundé, objections des organisateurs de séminaires et attentes des candidats au CFP). Chaque verbatim est directement rattaché à la **réponse fonctionnelle exacte** déployée en production et aux optimisations neuro-cognitives de la Phase 7.
 
-### Verbatim #1 — L'Opacité Tarifaire sur `/contact/` (Cas Réel Documenté)
-> **Source :** Commentaire public réel relevé sur `https://ecopark-yaounde.com/contact/` (Anomalie #5 du CDC) — **Mme Charlotte Manuella**, mère de famille à Yaoundé :
+### Verbatim #1 - L'Opacité Tarifaire sur `/contact/` (Cas Réel Documenté)
+> **Source :** Commentaire public réel relevé sur `https://ecopark-yaounde.com/contact/` (Anomalie #5 du CDC) - **Mme Charlotte Manuella**, mère de famille à Yaoundé :
 > *« Bonjour, j'essaie de voir vos prix sur la page Nos Tarifs mais rien ne s'affiche, la page est toute blanche ! Je veux venir dimanche avec mes 4 enfants et mon mari depuis Mendong. Combien coûte l'entrée pour les enfants, la piscine et le tour en pirogue ? S'il vous plaît donnez-nous les vrais prix en FCFA ! »*
 
 - **Diagnostic de Friction :** Balise `<img class="wp-image-987">` cassée sans attribut `src` sur l'ancienne page `/nos-tarifs/`, forçant une cliente prête à payer à mendier l'information en commentaire public sans recevoir de réponse immédiate.
@@ -74,8 +74,8 @@ Cette section consolide l'écoute terrain réalisée sur les canaux digitaux d'E
 
 ---
 
-### Verbatim #2 — L'Incompréhension face aux Prix Américains en Dollars (`$4.50`)
-> **Source :** Retour Visiteur / Audit UX sur l'ancienne page `/restaurant/` (Anomalie #4 du CDC) — **M. Jean-Paul N., Cadre à Bastos** :
+### Verbatim #2 - L'Incompréhension face aux Prix Américains en Dollars (`$4.50`)
+> **Source :** Retour Visiteur / Audit UX sur l'ancienne page `/restaurant/` (Anomalie #4 du CDC) - **M. Jean-Paul N., Cadre à Bastos** :
 > *« J'ai ouvert la page du restaurant Le Château des Saveurs pour réserver un déjeuner en famille à Ahala, et je tombe sur "Velvet Flat White \$4.50", "Butter Croissant \$3.80" et une adresse "5th and Main" en anglais ! On est à Yaoundé sur la RN3 ou à New York ? Du coup j'ai cru que le site était piraté ou abandonné, nous sommes partis manger ailleurs à Mbalmayo. »*
 
 - **Diagnostic de Friction :** Template WordPress américain non nettoyé détruisant instantanément la confiance (effet de dissonance cognitive et suspicion de site factice).
@@ -85,8 +85,8 @@ Cette section consolide l'écoute terrain réalisée sur les canaux digitaux d'E
 
 ---
 
-### Verbatim #3 — La Frustration des 21 Pages Vides du Menu Principal
-> **Source :** Audit Parcours Client (Anomalie #3 du CDC) — **Mme Clarisse E., Responsable Vie Scolaire d'un Complexe Bilingue à Nsam** :
+### Verbatim #3 - La Frustration des 21 Pages Vides du Menu Principal
+> **Source :** Audit Parcours Client (Anomalie #3 du CDC) - **Mme Clarisse E., Responsable Vie Scolaire d'un Complexe Bilingue à Nsam** :
 > *« Dans le menu du site, on voit "Pack École", "Pack Entreprise", "Transport", "Hôtellerie", "Notre Histoire"... Mais quand on clique dessus, ce sont 21 pages complètement vides ! Comment voulez-vous que je présente un dossier sérieux au Principal de notre établissement pour faire sortir 120 élèves si même la page Transport et la page Pack École sont blanches ? »*
 
 - **Diagnostic de Friction :** Plus de 60 % de l'arborescence de l'ancien site renvoyait des conteneurs HTML vides (`<div class="wp-block-column"></div>`), brisant net tout parcours de prospection scolaire ou institutionnel.
@@ -96,8 +96,8 @@ Cette section consolide l'écoute terrain réalisée sur les canaux digitaux d'E
 
 ---
 
-### Verbatim #4 — Le Goulot d'Étranglement de 13h00 le Dimanche en Cuisine
-> **Source :** Social Listening Terrain (Dimanche après-midi au *Château des Saveurs*, Ahala) — **M. Samuel B., Père de famille venu d'Odza** :
+### Verbatim #4 - Le Goulot d'Étranglement de 13h00 le Dimanche en Cuisine
+> **Source :** Social Listening Terrain (Dimanche après-midi au *Château des Saveurs*, Ahala) - **M. Samuel B., Père de famille venu d'Odza** :
 > *« Le cadre d'Ahala est magnifique et les enfants adorent le gorille ToTo et les pédalos. Mais le dimanche, quand tout le monde commande le poisson braisé ou le Poulet DG à 13h00 en même temps, on attend parfois 1h30 avant d'être servi ! Avec des enfants en bas âge qui ont faim après la piscine, c'est très difficile à gérer. »*
 
 - **Diagnostic de Friction :** Pic de commandes simultanées non anticipées en cuisine entre 12h45 et 14h15 le dimanche, dégradant l'expérience client et plafonnant la rotation des tables et pergolas.
@@ -107,8 +107,8 @@ Cette section consolide l'écoute terrain réalisée sur les canaux digitaux d'E
 
 ---
 
-### Verbatim #5 — La Peur de Trouver les Loges Hôtelières Complètes après 45 Min sur la RN3
-> **Source :** Social Listening WhatsApp (Clients Hôtellerie Week-end & Couples) — **M. Patrick M. & Épouse, arrivant de Bastos/Tsinga** :
+### Verbatim #5 - La Peur de Trouver les Loges Hôtelières Complètes après 45 Min sur la RN3
+> **Source :** Social Listening WhatsApp (Clients Hôtellerie Week-end & Couples) - **M. Patrick M. & Épouse, arrivant de Bastos/Tsinga** :
 > *« Quitter le centre-ville le vendredi soir ou le samedi après-midi en traversant les embouteillages du Carrefour Mvan et de la sortie Sud sur la RN3 prend parfois 45 minutes. Notre plus grande crainte, c'est d'arriver devant la station Tradex Ahala Barrière et qu'on nous dise à la réception que toutes les suites climatisées de la Cité Ewondo ou les chambres de Chanthel sont déjà prises ! »*
 
 - **Diagnostic de Friction :** Absence de visibilité en temps réel sur le stock restant des 3 cités hôtelières (**Ewondo**, **Chanthel**, **Bene**) et des pergolas, générant une anxiété de déplacement sur l'axe routier RN3.
@@ -118,19 +118,19 @@ Cette section consolide l'écoute terrain réalisée sur les canaux digitaux d'E
 
 ---
 
-### Verbatim #6 — L'Urgence d'une Facture Proforma Normalisée pour Ministères, ONG & Écoles
-> **Source :** Retour B2B / Administrations de Yaoundé — **Mme Solange A., Chargée de Logistique dans une ONG Internationale à Bastos** :
+### Verbatim #6 - L'Urgence d'une Facture Proforma Normalisée pour Ministères, ONG & Écoles
+> **Source :** Retour B2B / Administrations de Yaoundé - **Mme Solange A., Chargée de Logistique dans une ONG Internationale à Bastos** :
 > *« Pour valider notre retraite annuelle de 60 personnes dans votre Salle Menkii Essomba Anton avec pause-café, buffet et navette 32 places, ma Direction Financière exige une Facture Proforma officielle en FCFA dans l'heure. Si je dois appeler 5 numéros différents et attendre 4 jours un devis manuscrit scanné sur WhatsApp, je suis obligée de rabattre le séminaire sur un hôtel classique du centre-ville. »*
 
 - **Diagnostic de Friction :** Éparpillement historique entre 5 numéros de téléphone et lenteur de production des devis proforma B2B, faisant perdre à ECOPARK des contrats institutionnels à haute valeur ajoutée en semaine (Mardi–Vendredi).
 - **Réponse Fonctionnelle ECOPARK (Déployée & Optimisée) :**
   1. **Configurateur de Devis Groupe & Générateur de Facture Proforma PDF en 2 Minutes (`RES-10` / `/rdv`)** : calcul automatique selon l'effectif, l'option Salle *Menkii Essomba Anton*, la restauration et la navette climatisée (`5`, `18` ou `32 places`), avec bouton **`Imprimer / PDF Proforma`** immédiat.
-  2. **Phase 7 — Inbox Leads 1-Clic (`EXP-07`) & Soulagement Dopaminergique Post-Formulaire** : dès la génération de la proforma, le décideur B2B reçoit son numéro de dossier unique, un récapitulatif structuré et l'équipe d'exploitation peut lui envoyer la confirmation sur WhatsApp en 1 seul clic.
+  2. **Phase 7 - Inbox Leads 1-Clic (`EXP-07`) & Soulagement Dopaminergique Post-Formulaire** : dès la génération de la proforma, le décideur B2B reçoit son numéro de dossier unique, un récapitulatif structuré et l'équipe d'exploitation peut lui envoyer la confirmation sur WhatsApp en 1 seul clic.
 
 ---
 
-### Verbatim #7 — Les Coquilles et le Flou d'Inscription au CFP Agréé MINEFOP
-> **Source :** Audit du Formulaire `/preinscription/` (Anomalies #2 et #7 du CDC) — **M. Ibrahim T., Parent d'un bachelier de 18 ans à Ahala/Nsam** :
+### Verbatim #7 - Les Coquilles et le Flou d'Inscription au CFP Agréé MINEFOP
+> **Source :** Audit du Formulaire `/preinscription/` (Anomalies #2 et #7 du CDC) - **M. Ibrahim T., Parent d'un bachelier de 18 ans à Ahala/Nsam** :
 > *« Je veux inscrire mon fils en Pisciculture ou en Production Agropastorale au CFP d'Ecopark parce que c'est près de chez nous à Ahala et qu'il y a 70 % de pratique sur les étangs et les fermes du parc. Mais sur l'ancien site, l'affiche écrivait "Centre de Fomation" et "Agropostale", le formulaire demandait "naissance Filière de" avec un bouton "Submit" en anglais, et on ne savait pas comment payer les 50 000 FCFA d'inscription ni comment fonctionnent les 4 tranches des 250 000 FCFA ! »*
 
 - **Diagnostic de Friction :** Dissonance grave entre la qualité réelle des infrastructures agropastorales/hôtelières d'Ahala et l'amateurisme du formulaire web d'admission.
@@ -153,7 +153,7 @@ Ce benchmark positionne l'offre officielle d'**ECOPARK CAMEROUN (Ahala Barrière
 | **3. Restauration (*Le Château des Saveurs*) & Packs Journée** | Grillades de rue : `1 500 à 3 000 FCFA` (hygiène et cadre limités). | Plats : `4 000 à 8 000 FCFA` (attente fréquente > 1h30 le dimanche). | Restaurants d'hôtels : `12 000 à 25 000 FCFA` par personne hors boissons. | • **Plats Terroir & Grillades : `3 500 à 7 500 FCFA`** (*Poisson frais des étangs d'Ahala braisé, Poulet DG Royal, Ndolè Royal*)<br>• **Pass Journée Royale (Entrée + Activités + Repas inclus) : `8 500 FCFA` (Adulte) / `4 500 FCFA` (Enfant)** | **Circuit court halieutique** (poisson issu des étangs d'Ahala) + **Précommande Service 13h30** supprimant l'attente dominicale + Pergolas privées sur le lac. |
 | **4. Hébergement (Les 3 Cités Hôtelières d'Ahala)** | Auberges de passage : `5 000 à 8 000 FCFA` (confort sommaire, bruit routier). | Hôtels périphériques : `15 000 à 30 000 FCFA` (offre mono-gamme sans activités de loisirs). | Hôtels d'affaires centre-ville : `55 000 à 150 000 FCFA / nuitée`. | **Segmentation Tri-Cités au cœur de la verdure :**<br>• **Cité BENE (Séjour Nature Accessible) : `10 000 – 15 000 FCFA / nuitée`**<br>• **Cité CHANTHEL (Standing Confort - 12 chambres) : `15 000 / 20 000 / 25 000 FCFA / nuitée`**<br>• **Cité EWONDO (Standing Prestige VIP - 4 Suites + 4 Mini-suites climatisées) : `25 000 – 30 000 FCFA / nuitée`** | Couverture complète des 3 budgets (économique, confort, suite VIP) dans un domaine écotouristique gardé 24h/24, à 5 à 10 fois moins cher qu'un hôtel 4★ urbain. |
 | **5. Séminaires B2B, Mariages & Excursions Scolaires** | Salles de quartier non climatisées : `50 000 à 100 000 FCFA` (sans restauration ni parking sécurisé). | Salles polyvalentes périurbaines : `150 000 à 350 000 FCFA` (sans navettes propres ni devis instantané). | Salles de conférence d'hôtels urbains : `400 000 à 1 500 000 FCFA / jour` + forfaits séminaristes élevés. | • **Salle Polyvalente *Menkii Essomba Anton*** (Séminaires Ministères/ONG, Mariages, Galas)<br>• **Forfaits Séminaires B2B & Team Building sur mesure**<br>• **Flotte interne de Navettes Climatisées : `5 places`, `18 places` et `32 places`**<br>• **Facture Proforma PDF générée en 2 min** | Intégration verticale unique : **Transport (Navettes 5/18/32 places) + Salle *Menkii Essomba Anton* + Buffet *Château des Saveurs* + Hébergement 3 Cités + Team Building**. |
-| **6. Formation Professionnelle (CFP Agréé MINEFOP)** | Centres informels non agréés : `75 000 à 150 000 FCFA` (aucune valeur légale du diplôme, pas de plateau technique). | Instituts privés théoriques en ville : `300 000 à 450 000 FCFA` (cours en salle sans hôtel ni ferme d'application). | Grandes écoles hôtelières privées / internationales : `600 000 à 1 200 000 FCFA / an`. | **CFP d'Ecopark (Agréé MINEFOP — DQP/CQP 12 mois) :**<br>• **5 Filières :** *Hôtellerie, Restauration, Décoration, Production Agropastorale, Pisciculture*<br>• **Frais d'inscription : `50 000 FCFA`**<br>• **Scolarité totale : `250 000 FCFA` payable en 4 tranches** (`100 000` + `50 000` + `50 000` + `50 000 FCFA`) | **70 % de pratique réelle in situ** : les apprenants pratiquent tous les jours dans les 3 hôtels (*Ewondo, Chanthel, Bene*), les cuisines du *Château des Saveurs*, les étangs piscicoles et les fermes d'Ahala. |
+| **6. Formation Professionnelle (CFP Agréé MINEFOP)** | Centres informels non agréés : `75 000 à 150 000 FCFA` (aucune valeur légale du diplôme, pas de plateau technique). | Instituts privés théoriques en ville : `300 000 à 450 000 FCFA` (cours en salle sans hôtel ni ferme d'application). | Grandes écoles hôtelières privées / internationales : `600 000 à 1 200 000 FCFA / an`. | **CFP d'Ecopark (Agréé MINEFOP - DQP/CQP 12 mois) :**<br>• **5 Filières :** *Hôtellerie, Restauration, Décoration, Production Agropastorale, Pisciculture*<br>• **Frais d'inscription : `50 000 FCFA`**<br>• **Scolarité totale : `250 000 FCFA` payable en 4 tranches** (`100 000` + `50 000` + `50 000` + `50 000 FCFA`) | **70 % de pratique réelle in situ** : les apprenants pratiquent tous les jours dans les 3 hôtels (*Ewondo, Chanthel, Bene*), les cuisines du *Château des Saveurs*, les étangs piscicoles et les fermes d'Ahala. |
 
 ### 3.2. Synthèse de la Stratégie de Prix (« Yield & Volume Ahala »)
 1. **Produit d'Appel Irrésistible (B2C Familles) :** Le maintien de l'entrée enfant à **`500 FCFA`** et adulte à **`1 000 FCFA`** lève toute barrière psychologique à l'entrée du parc, générant un flux massif qui consomme ensuite sur les activités (`1 000 FCFA`), la piscine (`1 500 / 2 500 FCFA`) et la restauration (`3 500 – 8 500 FCFA`).
@@ -164,7 +164,7 @@ Ce benchmark positionne l'offre officielle d'**ECOPARK CAMEROUN (Ahala Barrière
 
 ## 4. DIAGNOSTIC DE L'EXISTANT (PHASES 1 À 6) & MATRICE D'OPTIMISATION 360° (PHASE 7)
 
-### 4.1. Bilan des Actifs Déjà en Place (Phases 1 à 6 — Socle de Production Actuel)
+### 4.1. Bilan des Actifs Déjà en Place (Phases 1 à 6 - Socle de Production Actuel)
 
 L'audit du dépôt actuel et de la production live (`https://ecopark-cameroun-ahala.vercel.app`) confirme que les **Phases 1 à 6 du Cahier des Charges initial sont intégralement construites, livrées et vérifiées** :
 
@@ -178,7 +178,7 @@ L'audit du dépôt actuel et de la production live (`https://ecopark-cameroun-ah
 
 ---
 
-### 4.2. Matrice d'Optimisation Stratégique 360° (Phase 7 — Les 5 Leviers de Surperformance)
+### 4.2. Matrice d'Optimisation Stratégique 360° (Phase 7 - Les 5 Leviers de Surperformance)
 
 Sur la base de ce socle robuste, la **Phase 7** vise à hisser la plateforme au niveau d'excellence neuro-ergonomique, algorithmique (SEO/GEO), contractuelle (Data Schema) et sécuritaire. Le tableau ci-dessous définit les **5 leviers d'optimisation Phase 7** et leur impact mesurable sur le chiffre d'affaires du Dr Christophe FOE NDI et l'efficacité opérationnelle de M. Mgbatou Daryl :
 
@@ -194,6 +194,6 @@ Sur la base de ce socle robuste, la **Phase 7** vise à hisser la plateforme au 
 
 ## 5. SYNTHÈSE EXÉCUTIVE POUR LA DIRECTION GÉNÉRALE D'ECOPARK
 
-1. **Ancrage Local Irréprochable :** Chaque écran, chaque prix et chaque argumentaire de la plateforme parle désormais le langage réel des familles et des décideurs de **Yaoundé-Ahala (RN3, face station Tradex Ahala Barrière)** — du poisson braisé des étangs au gorille « ToTo », des loges *Ewondo/Chanthel/Bene* à la Salle *Menkii Essomba Anton*, et des 5 filières du CFP agréé MINEFOP.
+1. **Ancrage Local Irréprochable :** Chaque écran, chaque prix et chaque argumentaire de la plateforme parle désormais le langage réel des familles et des décideurs de **Yaoundé-Ahala (RN3, face station Tradex Ahala Barrière)** - du poisson braisé des étangs au gorille « ToTo », des loges *Ewondo/Chanthel/Bene* à la Salle *Menkii Essomba Anton*, et des 5 filières du CFP agréé MINEFOP.
 2. **Souveraineté Financière en FCFA :** La sanctuarisation du tarif enfant à **`500 FCFA`** assure l'attractivité populaire du parc, tandis que le **Scanner QR à 7 verdicts (`AGT-05`)** et le **PV de Clôture Contradictoire (`DIR-05`)** verrouillent 100 % des recettes au portail.
 3. **Continuité d'Exploitation Tous Temps & Tous Réseaux :** Le couple **Billet PNG Hors-Ligne + Cache Guichet RN3** neutralise les aléas réseau, et la **Garantie Météo (Report gratuit 90 jours en 1 clic)** transforme les averses équatoriales de Yaoundé en avantage concurrentiel décisif.

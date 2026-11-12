@@ -1294,7 +1294,7 @@ MAIN_MEGA_NAV_HTML = r"""        <!-- ECOPARK_V4_MAIN_MEGA_NAV:START -->
               </button>
               <button type="button" class="v4-dropdown-item" id="nav-SAVEURS" role="menuitem" onclick="navigateV4SiteMenu('RESTAURANT_SAVEURS')">
                 <div>
-                  <span class="v4-dropdown-item-title">Sous-rubrique Restaurant — 3 Espaces Gastronomiques</span>
+                  <span class="v4-dropdown-item-title">Sous-rubrique Restaurant - 3 Espaces Gastronomiques</span>
                   <span class="v4-dropdown-item-sub">Restaurant VIP New Look, Boukarous &amp; Château des Saveurs</span>
                 </div>
                 <span class="v4-dropdown-item-price">Dès 3 500 FCFA</span>
@@ -2004,7 +2004,7 @@ HERO_STAGE_HTML = r"""            <!-- ECOPARK_V4_HERO_STAGE:START -->
                 </div>
               </section>
 
-              <!-- 6. AGENDA (UNIQUEMENT LES ÉVÉNEMENTS RENSEIGNÉS — MASQUÉ SI VIDE) -->
+              <!-- 6. AGENDA (UNIQUEMENT LES ÉVÉNEMENTS RENSEIGNÉS - MASQUÉ SI VIDE) -->
               <section class="eco-home-section" id="homeBlock6Agenda" aria-labelledby="homeHeadingAgenda">
                 <div class="eco-section-head">
                   <div>
@@ -2397,7 +2397,7 @@ GROUPES_TEMPLATE_HTML = r"""              <!-- Pôle 5 : GABARIT COMPLET GROUPES
               <article class="col-7 bento-card bento-wide" id="sec-PUB-11" style="border-top:4px solid var(--eco-brand);">
                 <div class="card-media-wrapper">
                   <img src="audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg" alt="Groupe et événement culturel à ECOPARK Yaoundé" />
-                  <span class="media-origin-badge media-real">Photo réelle ECOPARK — Groupes &amp; Événements</span>
+                  <span class="media-origin-badge media-real">Photo réelle ECOPARK - Groupes &amp; Événements</span>
                 </div>
                 <div class="bento-card-body">
                   <div>
@@ -2474,7 +2474,7 @@ CFP_TEMPLATE_HTML = r"""              <!-- Pôle 6 : GABARIT COMPLET FORMATIONS 
                 <div class="card-media-wrapper" onclick="openEcoparkLightbox(6)">
                   <span class="photo-zoom-pill">Agrandir</span>
                   <img src="audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png" alt="Centre de Formation Professionnelle CFP ECOPARK" />
-                  <span class="media-origin-badge media-real">Photo réelle ECOPARK — Campus CFP</span>
+                  <span class="media-origin-badge media-real">Photo réelle ECOPARK - Campus CFP</span>
                 </div>
                 <div class="bento-card-body">
                   <div>
@@ -2482,7 +2482,7 @@ CFP_TEMPLATE_HTML = r"""              <!-- Pôle 6 : GABARIT COMPLET FORMATIONS 
                       <span class="eco-cat-badge eco-cat-cfp"><span class="tech-code-tag">PUB-12 • </span>Centre de Formation Professionnelle (CFP)</span>
                       <span class="price-pill">Agrément MINEFOP N°000418 du 25 Août 2025</span>
                     </div>
-                    <h2 style="margin-top:10px;font-size:1.65rem;">CFP ECOPARK — 5 filières professionnelles d'excellence</h2>
+                    <h2 style="margin-top:10px;font-size:1.65rem;">CFP ECOPARK - 5 filières professionnelles d'excellence</h2>
                     <p style="font-size:15px;color:var(--eco-text-muted);margin-top:4px;">
                       <strong>Agrément N°000418/MINEFOP/SG/DFOP/SDGSF/CSACD/CBAC du 25 Août 2025</strong> • Directrice : <strong>Mme Zinder Binga Aïssa</strong>. Enseignement théorique (30 %) et immersion pratique quotidienne (70 %) sur les installations réelles du complexe.
                     </p>
@@ -2674,11 +2674,11 @@ AGT_ACTIVE_MISSION_BANNER_HTML = r"""            <!-- ECOPARK_AGT_ACTIVE_MISSION
                   <div>
                     <label for="agtShiftMatriculeInput" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;color:var(--eco-text);">Matricule agent</label>
                     <select id="agtShiftMatriculeInput" class="form-control" style="min-height:38px;padding:4px 10px;font-size:13px;">
-                      <option value="MAT-GUI-01" selected>MAT-GUI-01 — Mme Clarisse ATANGANA</option>
-                      <option value="MAT-CTL-02">MAT-CTL-02 — M. Samuel MBARGA</option>
-                      <option value="MAT-HTL-03">MAT-HTL-03 — Mme Chantal NGO BIYONG</option>
-                      <option value="MAT-RES-04">MAT-RES-04 — Chef Patrice ESSOMBA</option>
-                      <option value="MAT-CPT-01">MAT-CPT-01 — M. Paul ETOUNDI (Comptable)</option>
+                      <option value="MAT-GUI-01" selected>MAT-GUI-01 - Mme Clarisse ATANGANA</option>
+                      <option value="MAT-CTL-02">MAT-CTL-02 - M. Samuel MBARGA</option>
+                      <option value="MAT-HTL-03">MAT-HTL-03 - Mme Chantal NGO BIYONG</option>
+                      <option value="MAT-RES-04">MAT-RES-04 - Chef Patrice ESSOMBA</option>
+                      <option value="MAT-CPT-01">MAT-CPT-01 - M. Paul ETOUNDI (Comptable)</option>
                     </select>
                   </div>
                   <div>
@@ -2933,9 +2933,9 @@ EXP_MISSIONS_MODULE_HTML = r"""            <!-- ECOPARK_EXP_MISSIONS_MODULE:STAR
                   <div class="col-2 form-group" style="margin:0;">
                     <label class="form-label" for="missionPrioritySelect">Priorité</label>
                     <select id="missionPrioritySelect" class="form-control">
-                      <option value="HAUTE" selected>Haute — Affluence / Groupe</option>
-                      <option value="NORMALE">Normale — Exploitation standard</option>
-                      <option value="URGENTE">Urgente — Sécurité / VIP</option>
+                      <option value="HAUTE" selected>Haute - Affluence / Groupe</option>
+                      <option value="NORMALE">Normale - Exploitation standard</option>
+                      <option value="URGENTE">Urgente - Sécurité / VIP</option>
                     </select>
                   </div>
 
@@ -2946,7 +2946,7 @@ EXP_MISSIONS_MODULE_HTML = r"""            <!-- ECOPARK_EXP_MISSIONS_MODULE:STAR
 
                   <div class="col-6 form-group" style="margin:0;">
                     <label class="form-label" for="missionLocationInput">Poste &amp; Zone d'affectation sur le site d'Ahala</label>
-                    <input type="text" id="missionLocationInput" class="form-control" value="Portail Principal RN3 (Face Station Tradex Ahala) — Guichet #1" />
+                    <input type="text" id="missionLocationInput" class="form-control" value="Portail Principal RN3 (Face Station Tradex Ahala) - Guichet #1" />
                   </div>
 
                   <div class="col-6 form-group" style="margin:0;">
@@ -3017,10 +3017,10 @@ EXP_MISSIONS_MODULE_HTML = r"""            <!-- ECOPARK_EXP_MISSIONS_MODULE:STAR
                     <div>
                       <label for="expRateMissionSelect" style="font-size:11.5px;font-weight:700;display:block;margin-bottom:2px;">Mission à clôturer / noter</label>
                       <select id="expRateMissionSelect" class="form-control" style="min-height:36px;padding:4px 8px;font-size:12.5px;">
-                        <option value="MSN-2026-101">MSN-2026-101 — Mme Clarisse ATANGANA</option>
-                        <option value="MSN-2026-102">MSN-2026-102 — M. Samuel MBARGA</option>
-                        <option value="MSN-2026-103">MSN-2026-103 — Mme Chantal NGO BIYONG</option>
-                        <option value="MSN-2026-104">MSN-2026-104 — Chef Patrice ESSOMBA</option>
+                        <option value="MSN-2026-101">MSN-2026-101 - Mme Clarisse ATANGANA</option>
+                        <option value="MSN-2026-102">MSN-2026-102 - M. Samuel MBARGA</option>
+                        <option value="MSN-2026-103">MSN-2026-103 - Mme Chantal NGO BIYONG</option>
+                        <option value="MSN-2026-104">MSN-2026-104 - Chef Patrice ESSOMBA</option>
                       </select>
                     </div>
                     <div>
@@ -3261,7 +3261,7 @@ REFONTE_JS = r"""
   // ECOPARK_REFONTE_CANOPEE_JS:START
   (function () {
     // =========================================================================
-    // F — SOURCE UNIQUE DES INFORMATIONS (CENTRALISATION MÉTIER & TARIFS FCFA)
+    // F - SOURCE UNIQUE DES INFORMATIONS (CENTRALISATION MÉTIER & TARIFS FCFA)
     // =========================================================================
     window.ECOPARK_SOURCE_UNIQUE = {
       brand: {
@@ -3430,7 +3430,7 @@ REFONTE_JS = r"""
     };
 
     // =========================================================================
-    // GESTION DES DATES RÉELLES (FUSEAU AFRICA/DOUALA — ZÉRO DATE FIXE 2026-11-15)
+    // GESTION DES DATES RÉELLES (FUSEAU AFRICA/DOUALA - ZÉRO DATE FIXE 2026-11-15)
     // =========================================================================
     window.getDefaultOpenVisitDateIso = function (allowMonday) {
       var now = new Date();
@@ -3541,7 +3541,7 @@ REFONTE_JS = r"""
         desc: 'Parcourez un domaine boisé préservé de plus de 200 hectares à Ahala. Accompagné d\'un guide naturaliste, découvrez les essences végétales indigènes, les points de vue sur les étangs et ressourcez-vous sous la grande canopée.',
         prog: '1. Accueil au poste écotouristique d\'Ahala (5 min) • 2. Parcours guidé sous la canopée et observation de la flore (25 min) • 3. Halte panoramique sur les étangs et retour sécurisé (10 min).',
         savoir: 'Chaussures fermées recommandées. Tarif : 500 FCFA Enfant / 1 000 FCFA Adulte (700 FCFA dès 10 personnes). Gratuit pour les moins de 3 ans.',
-        avis: '« Un bol d\'air pur exceptionnel à quelques minutes de la ville. Les sentiers sont très bien entretenus. » — Association Les Randonneurs du Centre (Note : 4.9/5).'
+        avis: '« Un bol d\'air pur exceptionnel à quelques minutes de la ville. Les sentiers sont très bien entretenus. » - Association Les Randonneurs du Centre (Note : 4.9/5).'
       };
     }
 
@@ -3801,7 +3801,7 @@ REFONTE_JS = r"""
     }
 
     // =========================================================================
-    // C — ARCHITECTURE DE L'INFORMATION : ROUTES CANONIQUES & CORRESPONDANCES
+    // C - ARCHITECTURE DE L'INFORMATION : ROUTES CANONIQUES & CORRESPONDANCES
     // =========================================================================
     if (typeof V4_MENU_ACTIONS !== 'undefined' || window.navigateV4SiteMenu) {
       var extraActions = {
@@ -4063,7 +4063,7 @@ REFONTE_JS = r"""
         shift: '08h30 – 18h00 (Journée complète)',
         priority: 'HAUTE',
         title: 'Ouverture Guichet Principal #1, contrôle fond de caisse 50 000 FCFA & accueil Groupes',
-        location: 'Portail Principal RN3 (Face Station Tradex Ahala) — Guichet #1',
+        location: 'Portail Principal RN3 (Face Station Tradex Ahala) - Guichet #1',
         objective: 'Assurer l\'encaissement fluide des visiteurs walk-in (Espèces FCFA et Mobile Money sans saisie de code PIN), protéger le tarif enfant à 500 FCFA et maintenir un écart de caisse inférieur ou égal à 2 000 FCFA à la clôture contradictoire de 18h00.',
         equipment: 'Fond de caisse 50 000 FCFA, Terminal Caisse Rapide AGT-03, Rouleau thermique QR, Talkie-walkie Canal 1',
         checklist: [
@@ -4099,7 +4099,7 @@ REFONTE_JS = r"""
         shift: '14h00 – 11h00 J+1 (Garde Hôtelière 24h)',
         priority: 'HAUTE',
         title: 'Préparation Suites Cité Ewondo VIP, Chambres Chanthel & Bene (Check-in 14h00 / Check-out 11h00)',
-        location: 'Réception Hôtelière 7j/7 — Cités Ewondo VIP, Chanthel Confort & Bene Standard',
+        location: 'Réception Hôtelière 7j/7 - Cités Ewondo VIP, Chanthel Confort & Bene Standard',
         objective: 'Superviser la remise en blanc des chambres avant 13h30, accueillir les résidents à partir de 14h00, contrôler l\'état des Suites Privées (30 000 – 45 000 FCFA / nuit) et libérer le stock au Check-out de 11h00.',
         equipment: 'Registre Réception Hôtelière 7j/7, Passe-partout électronique Cités Ewondo/Chanthel/Bene, Kit linge & accueil VIP, Téléphone d\'astreinte Réception',
         checklist: [
@@ -4200,7 +4200,7 @@ REFONTE_JS = r"""
           orderRef: 'ECP-2026-84922',
           orderCustomer: 'Dr. Armand MBIDA (Couple VIP)',
           orderTotalFcfa: 45000,
-          orderSummary: 'Pack Escapade Couple VIP — 1 Nuit Cité Ewondo VIP + 2 Repas + Parc',
+          orderSummary: 'Pack Escapade Couple VIP - 1 Nuit Cité Ewondo VIP + 2 Repas + Parc',
           secondaryPoles: ['Cuisine Le Château des Saveurs', 'Contrôle QR Piscine & Lac'],
           pole: 'HEBERGEMENT',
           poleLabel: MISSION_POLE_PRESETS.HEBERGEMENT.poleLabel,
@@ -4282,7 +4282,7 @@ REFONTE_JS = r"""
           badgeClass: 'eco-cat-dining',
           agentName: 'Chef Patrice ESSOMBA',
           agentMatricule: 'MAT-RES-04',
-          title: 'Mise en place Cuisine & Pergolas — Commande DEV-2026-3104 (60 participants)',
+          title: 'Mise en place Cuisine & Pergolas - Commande DEV-2026-3104 (60 participants)',
           createdAt: dIso + ' 09:00 (Africa/Douala)',
           acknowledged: false
         },
@@ -4298,7 +4298,7 @@ REFONTE_JS = r"""
           badgeClass: 'eco-cat-nature',
           agentName: 'Mme Clarisse ATANGANA',
           agentMatricule: 'MAT-AGT-01',
-          title: 'Encaissement Guichet & Remise Bracelets — Commande ECP-2026-84920 (14 000 FCFA)',
+          title: 'Encaissement Guichet & Remise Bracelets - Commande ECP-2026-84920 (14 000 FCFA)',
           createdAt: dIso + ' 08:15 (Africa/Douala)',
           acknowledged: false
         }
@@ -4386,7 +4386,7 @@ REFONTE_JS = r"""
       feedEl.innerHTML = alerts.slice(0, 6).map(function (a) {
         var stBadge = a.acknowledged
           ? '<span class="status-badge status-success" style="font-size:11px;">ACQUITTÉE PAR LE POSTE</span>'
-          : '<span class="status-badge status-warning" style="font-size:11px;">NOUVELLE ALERTE POSTE — À PRENDRE EN CHARGE</span>';
+          : '<span class="status-badge status-warning" style="font-size:11px;">NOUVELLE ALERTE POSTE - À PRENDRE EN CHARGE</span>';
 
         var ackBtn = a.acknowledged
           ? ''
@@ -4549,7 +4549,7 @@ REFONTE_JS = r"""
       var missionTitle = '';
       var customChecklist = [];
       if (poleKey === 'HEBERGEMENT') {
-        missionTitle = 'Préparation Loge & Accueil Séjour — Commande ' + ref + ' (' + customer + ')';
+        missionTitle = 'Préparation Loge & Accueil Séjour - Commande ' + ref + ' (' + customer + ')';
         customChecklist = [
           'Préparer et contrôler la chambre avant 13h30 pour la commande ' + ref + ' (' + summary + ')',
           'Accueillir ' + customer + ' au Check-in dès 14h00 et remettre les bracelets résidents',
@@ -4557,7 +4557,7 @@ REFONTE_JS = r"""
           'Valider l\'état des lieux au Check-out avant 11h00'
         ];
       } else if (poleKey === 'CUISINE_SAVEURS') {
-        missionTitle = 'Mise en place Cuisine & Pergola — Commande ' + ref + ' (' + customer + ')';
+        missionTitle = 'Mise en place Cuisine & Pergola - Commande ' + ref + ' (' + customer + ')';
         customChecklist = [
           'Enregistrer le bon de production Cuisine pour la commande ' + ref + ' (' + summary + ')',
           'Calibrer les portions (Poisson braisé d\'Ahala / Poulet DG / Menus) pour un montant de ' + fmt(amount),
@@ -4565,7 +4565,7 @@ REFONTE_JS = r"""
           'Émarger la livraison des plats chauds et la satisfaction client'
         ];
       } else if (poleKey === 'GUICHET_CAISSE') {
-        missionTitle = 'Accueil Guichet, Encaissement & Bracelets — Commande ' + ref + ' (' + fmt(amount) + ')';
+        missionTitle = 'Accueil Guichet, Encaissement & Bracelets - Commande ' + ref + ' (' + fmt(amount) + ')';
         customChecklist = [
           'Vérifier la référence ' + ref + ' (' + customer + ') à l\'arrivée au Portail RN3 Ahala',
           'Contrôler ou encaisser le montant de ' + fmt(amount) + ' (Espèces FCFA ou Mobile Money sans PIN)',
@@ -4573,7 +4573,7 @@ REFONTE_JS = r"""
           'Orienter le visiteur vers les pôles d\'activité (' + (routing.secondaryPoles.join(', ') || 'Parc & Loisirs') + ')'
         ];
       } else {
-        missionTitle = 'Contrôle QR 7 États & Sécurité Bassin/Lac — Commande ' + ref + ' (' + customer + ')';
+        missionTitle = 'Contrôle QR 7 États & Sécurité Bassin/Lac - Commande ' + ref + ' (' + customer + ')';
         customChecklist = [
           'Scanner et valider le billet QR ' + ref + ' (' + customer + ') au tourniquet',
           'Vérifier les effectifs et prestations autorisées : ' + summary,
@@ -4604,7 +4604,7 @@ REFONTE_JS = r"""
         status: 'ASSIGNEE',
         title: missionTitle,
         location: preset.location,
-        objective: 'Exécution opérationnelle de la commande ' + ref + ' (' + customer + ' — ' + fmt(amount) + ' • ' + summary + '). ' + preset.objective,
+        objective: 'Exécution opérationnelle de la commande ' + ref + ' (' + customer + ' - ' + fmt(amount) + ' • ' + summary + '). ' + preset.objective,
         equipment: preset.equipment,
         guardrail: preset.guardrail,
         checklist: customChecklist.map(function (t) { return { text: t, done: false }; }),
@@ -4649,7 +4649,7 @@ REFONTE_JS = r"""
           db.auditLogs.unshift({
             time: stamp,
             actor: 'Dispatch Automatique (Commande → Poste)',
-            action: 'Commande ' + ref + ' convertie en Fiche de Mission ' + newMissionId + ' (' + preset.poleLabel + ' — ' + agentName + ') + Alerte ' + newAlert.alertId
+            action: 'Commande ' + ref + ' convertie en Fiche de Mission ' + newMissionId + ' (' + preset.poleLabel + ' - ' + agentName + ') + Alerte ' + newAlert.alertId
           });
           if (typeof saveDB === 'function') saveDB(db);
         }
@@ -4816,8 +4816,8 @@ REFONTE_JS = r"""
     }
 
     function formatMissionPriorityLabel(priority) {
-      if (priority === 'URGENTE') return 'Urgente — Sécurité / VIP';
-      if (priority === 'HAUTE') return 'Haute — Affluence / Groupe';
+      if (priority === 'URGENTE') return 'Urgente - Sécurité / VIP';
+      if (priority === 'HAUTE') return 'Haute - Affluence / Groupe';
       return 'Normale';
     }
 
@@ -5292,12 +5292,12 @@ REFONTE_JS = r"""
           var visaCount = window.countMissionVisas(m);
 
           if (titleEl) {
-            titleEl.textContent = 'FICHE DE MISSION & ORDRE D\'AFFECTATION POSTE — ' + m.id;
+            titleEl.textContent = 'FICHE DE MISSION & ORDRE D\'AFFECTATION POSTE - ' + m.id;
           }
 
           var stLabel = m.status === 'TERMINEE'
             ? 'TERMINÉE & VALIDÉE (' + visaCount + '/3 VISAS)'
-            : (m.status === 'EN_COURS' ? 'EN COURS SUR POSTE (' + visaCount + '/3 VISAS)' : 'ASSIGNÉE — PRISE DE POSTE À POINTER (' + visaCount + '/3 VISAS)');
+            : (m.status === 'EN_COURS' ? 'EN COURS SUR POSTE (' + visaCount + '/3 VISAS)' : 'ASSIGNÉE - PRISE DE POSTE À POINTER (' + visaCount + '/3 VISAS)');
 
           var checklistHtml = (m.checklist || []).map(function (c, idx) {
             var checkedAttr = c.done ? 'checked' : '';
@@ -5335,7 +5335,7 @@ REFONTE_JS = r"""
             + '    <div style="padding:12px 14px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:10px;">'
             + '      <span style="font-size:11.5px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;margin-bottom:4px;">1. Agent Affecté &amp; Responsable</span>'
             + '      <div><strong>Nom &amp; Prénom :</strong> ' + esc(m.agentName) + '</div>'
-            + '      <div><strong>Matricule &amp; Fonction :</strong> ' + esc(m.agentMatricule) + ' — ' + esc(m.agentRole) + '</div>'
+            + '      <div><strong>Matricule &amp; Fonction :</strong> ' + esc(m.agentMatricule) + ' - ' + esc(m.agentRole) + '</div>'
             + '      <div><strong>Autorité d\'affectation :</strong> ' + esc(m.assignedBy || 'Chef d\'Exploitation Ahala') + '</div>'
             + '    </div>'
             + '    <div style="padding:12px 14px;background:var(--eco-bg);border:1px solid var(--eco-border);border-radius:10px;">'
@@ -5402,7 +5402,7 @@ REFONTE_JS = r"""
             + '  </div>'
             + '  <div id="a4MissionRatingSection" style="margin-top:8px;padding:12px 14px;background:' + (v3Signed ? '#F0FDF4' : 'var(--eco-bg)') + ';border:1.5px solid ' + (v3Signed ? '#86EFAC' : 'var(--eco-border-strong)') + ';border-radius:10px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;">'
             + '    <div>'
-            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;">6. Notation de Fin de Vacation Agent (Visa #3 — Barème sur 100 pts)</span>'
+            + '      <span style="font-size:11px;font-weight:700;text-transform:uppercase;color:var(--eco-brand);display:block;">6. Notation de Fin de Vacation Agent (Visa #3 - Barème sur 100 pts)</span>'
             + '      <div style="font-size:13px;color:var(--eco-text);margin-top:2px;">'
             + '        <strong>Score Objectif (/60) :</strong> ' + (m.ratingAuto60 != null ? m.ratingAuto60 : (v3Signed ? 58 : 'En cours')) + ' pts • '
             + '        <strong>Score Superviseur (/40) :</strong> ' + (m.ratingSupervisor40 != null ? m.ratingSupervisor40 : (v3Signed ? 38 : 'À évaluer')) + ' pts'
@@ -6083,7 +6083,7 @@ REFONTE_JS = r"""
     }
 
     // =========================================================================
-    // K — GESTION DES 8 COMPTES, AUTHENTIFICATION 3 PROFILS, NOTATION AGENTS
+    // K - GESTION DES 8 COMPTES, AUTHENTIFICATION 3 PROFILS, NOTATION AGENTS
     //     (/100 & /5) & COMPTABILITÉ SYSCOHADA + ANALYTIQUE (6 CENTRES ANA-01..06)
     // =========================================================================
 
@@ -6226,7 +6226,7 @@ REFONTE_JS = r"""
       var badge = document.getElementById('agtShiftAuthStatusBadge');
       if (badge) {
         badge.className = 'status-badge status-success';
-        badge.textContent = 'Session active : ' + mat + ' — ' + info.name + ' (' + pole + ')';
+        badge.textContent = 'Session active : ' + mat + ' - ' + info.name + ' (' + pole + ')';
       }
 
       var missions = window.loadOperationalMissions();
@@ -6251,14 +6251,14 @@ REFONTE_JS = r"""
           db.auditLogs.unshift({
             time: window._activeShiftSession.openedAt,
             actor: info.name + ' (' + mat + ')',
-            action: 'Ouverture de vacation sur terminal partagé — Pôle ' + pole
+            action: 'Ouverture de vacation sur terminal partagé - Pôle ' + pole
           });
           if (typeof saveDB === 'function') saveDB(db);
         }
       } catch (e) {}
 
       if (typeof showToastSprint1 === 'function') {
-        showToastSprint1('• Vacation ouverte : ' + info.name + ' (' + mat + ' — ' + pole + ').');
+        showToastSprint1('• Vacation ouverte : ' + info.name + ' (' + mat + ' - ' + pole + ').');
       }
       return window._activeShiftSession;
     };
@@ -6275,7 +6275,7 @@ REFONTE_JS = r"""
       var badge = document.getElementById('agtShiftAuthStatusBadge');
       if (badge) {
         badge.className = 'status-badge status-warning';
-        badge.textContent = 'Poste verrouillé en pause (' + prev.matricule + ') — Cliquez sur Activer prise de poste';
+        badge.textContent = 'Poste verrouillé en pause (' + prev.matricule + ') - Cliquez sur Activer prise de poste';
       }
       if (typeof showToastSprint1 === 'function') {
         showToastSprint1('• Session du poste ' + prev.pole + ' verrouillée temporairement (' + prev.matricule + ').');
@@ -6317,7 +6317,7 @@ REFONTE_JS = r"""
       if (mSel && list.length > 0) {
         var curVal = mSel.value;
         mSel.innerHTML = list.map(function (m) {
-          return '<option value="' + m.id + '"' + (m.id === curVal ? ' selected' : '') + '>' + m.id + ' — ' + m.agentName + ' (' + m.poleLabel + ')</option>';
+          return '<option value="' + m.id + '"' + (m.id === curVal ? ' selected' : '') + '>' + m.id + ' - ' + m.agentName + ' (' + m.poleLabel + ')</option>';
         }).join('');
       }
 
@@ -6436,7 +6436,7 @@ REFONTE_JS = r"""
         'ANA-03': {
           code: 'ANA-03',
           poleCode: 'RESTAURATION',
-          label: '3. Pôle Restauration — Le Château des Saveurs & Pergolas',
+          label: '3. Pôle Restauration - Le Château des Saveurs & Pergolas',
           badgeClass: 'eco-cat-dining',
           ohadaAccount: '7011 / 7063',
           ruleText: '100 % Carte & Pergolas • 45 % Pass Journée Royale • 30 % Pack Couple Ewondo',
@@ -6448,7 +6448,7 @@ REFONTE_JS = r"""
         'ANA-04': {
           code: 'ANA-04',
           poleCode: 'HEBERGEMENT',
-          label: '4. Pôle Hébergement — Cités Hôtelières (Bene, Chanthel, Ewondo VIP)',
+          label: '4. Pôle Hébergement - Cités Hôtelières (Bene, Chanthel, Ewondo VIP)',
           badgeClass: 'eco-cat-lodging',
           ohadaAccount: '7064',
           ruleText: '100 % Nuitées Cités & Suites • 55 % Pack Couple Ewondo VIP',
@@ -6472,7 +6472,7 @@ REFONTE_JS = r"""
         'ANA-06': {
           code: 'ANA-06',
           poleCode: 'FORMATION_CFP',
-          label: '6. Pôle Formation Professionnelle — CFP Agréé MINEFOP (5 filières)',
+          label: '6. Pôle Formation Professionnelle - CFP Agréé MINEFOP (5 filières)',
           badgeClass: 'eco-cat-cfp',
           ohadaAccount: '7066',
           ruleText: '100 % Frais d\'inscription (50 000 FCFA) & 4 tranches de scolarité (250 000 FCFA)',
@@ -6597,7 +6597,7 @@ REFONTE_JS = r"""
         var iso = toIso(b.date);
         var ref = b.reference || 'EPK-2026-000';
         var holder = b.holder || 'Visiteur ECOPARK';
-        var label = ref + ' — ' + holder + ' (' + (b.paxSummary || 'Visite') + ')';
+        var label = ref + ' - ' + holder + ' (' + (b.paxSummary || 'Visite') + ')';
 
         if (sum.indexOf('PACK COUPLE') !== -1 || (b.lodgeCity && sum.indexOf('COUPLE') !== -1)) {
           postAnalyticalSplit(iso, ref, label, amt, b.payMethod, [
@@ -6676,7 +6676,7 @@ REFONTE_JS = r"""
         } else if (String(c.status || '').toUpperCase().indexOf('100') !== -1) {
           fee = 150000;
         }
-        postAnalyticalSplit(todayMinIso, c.reference || 'CFP-2026-100', 'Frais CFP MINEFOP — ' + (c.name || 'Apprenant'), fee, 'MOMO', [
+        postAnalyticalSplit(todayMinIso, c.reference || 'CFP-2026-100', 'Frais CFP MINEFOP - ' + (c.name || 'Apprenant'), fee, 'MOMO', [
           { axis: 'ANA-06', weight: 1.0, rule: '100 % Inscription & Scolarité CFP MINEFOP' }
         ], false);
       });
@@ -7080,7 +7080,7 @@ def apply_refonte() -> None:
     # 13b. Official operating structure name: "MPECK MULTI-SERVICES"
     html = html.replace(
         "Complexe ECOPARK CAMEROUN (Yaoundé-Ahala Barrière, face station Tradex RN3).",
-        "Complexe ECOPARK CAMEROUN — Structure exploitante : MPECK MULTI-SERVICES (Yaoundé-Ahala Barrière, face station Tradex RN3).",
+        "Complexe ECOPARK CAMEROUN - Structure exploitante : MPECK MULTI-SERVICES (Yaoundé-Ahala Barrière, face station Tradex RN3).",
     )
     html = html.replace(
         '<div style="font-size:13.5px;color:var(--color-text-muted);">Complexe Agro-Écotouristique, Loisirs, Hébergement & Formation</div>',
@@ -7088,11 +7088,11 @@ def apply_refonte() -> None:
     )
     html = html.replace(
         "<span>© 2026 ECOPARK CAMEROUN (Yaoundé-Ahala). Tous droits réservés.</span>",
-        "<span>© 2026 MPECK MULTI-SERVICES — ECOPARK CAMEROUN (Yaoundé-Ahala). Tous droits réservés.</span>",
+        "<span>© 2026 MPECK MULTI-SERVICES - ECOPARK CAMEROUN (Yaoundé-Ahala). Tous droits réservés.</span>",
     )
     html = html.replace(
         "<div><strong>1. Identité & Exploitation :</strong> Le site officiel ECOPARK Cameroun est exploité par ECOPARK Yaoundé-Ahala (Route Nationale N°3, Face Station Tradex Ahala Barrière, Yaoundé). Contact officiel : +237 697 13 62 03 / +237 670 00 00 00.</div>",
-        "<div><strong>1. Identité & Exploitation :</strong> Le site officiel et le complexe ECOPARK Cameroun sont exploités par la structure <strong>MPECK MULTI-SERVICES</strong> — ECOPARK Yaoundé-Ahala (Route Nationale N°3, Face Station Tradex Ahala Barrière, Yaoundé). Contact officiel : +237 697 13 62 03 / +237 675 56 26 55.</div>",
+        "<div><strong>1. Identité & Exploitation :</strong> Le site officiel et le complexe ECOPARK Cameroun sont exploités par la structure <strong>MPECK MULTI-SERVICES</strong> - ECOPARK Yaoundé-Ahala (Route Nationale N°3, Face Station Tradex Ahala Barrière, Yaoundé). Contact officiel : +237 697 13 62 03 / +237 675 56 26 55.</div>",
     )
     html = html.replace(
         '<span style="font-size:12.5px;color:var(--color-text-muted);">Route Nationale N°3, Ahala Barrière (Face Station Tradex Ahala) • Tél / WhatsApp : +237 697 13 62 03</span>',
@@ -7100,7 +7100,7 @@ def apply_refonte() -> None:
     )
     html = html.replace(
         "<div><strong>Client / Institution :</strong> ${escHtml(org)}<br/><strong>Objet :</strong> ${escHtml(type)}</div>",
-        "<div><strong>Structure émettrice :</strong> MPECK MULTI-SERVICES — ECOPARK CAMEROUN<br/><strong>Client / Institution :</strong> ${escHtml(org)}<br/><strong>Objet :</strong> ${escHtml(type)}</div>",
+        "<div><strong>Structure émettrice :</strong> MPECK MULTI-SERVICES - ECOPARK CAMEROUN<br/><strong>Client / Institution :</strong> ${escHtml(org)}<br/><strong>Objet :</strong> ${escHtml(type)}</div>",
     )
     html = html.replace(
         "<div><strong>Site :</strong> Complexe Agro-Ecotouristique ECOPARK Ahala (RN3)</div>",

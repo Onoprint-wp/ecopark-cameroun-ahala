@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Étape 0 (Corrigée après vérification HTTP) — Construction et vérification du bundle « Site Normal » (etape0-site-live/)
+Étape 0 (Corrigée après vérification HTTP) - Construction et vérification du bundle « Site Normal » (etape0-site-live/)
 Corrections intégrées :
 1. Routage SPA complet dans vercel.json (sans conflit cleanUrls) pour que toutes les URLs historiques (/nos-tarifs, /restaurant, /hotellerie, /formation, /pack-ecole, /pack-entreprise, /contact, /reserver) répondent en HTTP 200 OK.
 2. Détection automatique du pathname dans index.html pour ouvrir directement la bonne section métier lorsque le client visite une sous-URL.

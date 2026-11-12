@@ -1,7 +1,7 @@
 -- ============================================================================
--- ECOPARK CAMEROUN (Yaoundé-Ahala) — Schéma PostgreSQL / Supabase & Règles RLS
+-- ECOPARK CAMEROUN (Yaoundé-Ahala) - Schéma PostgreSQL / Supabase & Règles RLS
 -- Sprint 1 : Socle de Données, Règles Métier FCFA & Sécurité des 7 Rôles
--- Direction validée : « Canopée vivante — Le cercle du vivant »
+-- Direction validée : « Canopée vivante - Le cercle du vivant »
 -- ============================================================================
 
 CREATE EXTENSION IF NOT EXISTS "pgcrypto";
@@ -71,14 +71,14 @@ VALUES
   ('piscine', 'Piscine Semi-Olympique', 'EAU_PLEIN_AIR', 'Baignade surveillée avec maître-nageur sauveteur.', 1500, 2500, 2000, 1500, 300),
   ('pirogue', 'Balade en Pirogue / Pédalo sur le Lac', 'EAU_PLEIN_AIR', 'Traversée commentée du lac d''Ahala avec gilet de sauvetage fourni.', 500, 1000, 800, 500, 250),
   ('cheval', 'Équitation (Tour à Cheval) & Manèges', 'EAU_PLEIN_AIR', 'Initiation équestre encadrée et manèges enfants.', 500, 1000, 800, 500, 200),
-  ('saveurs', 'Repas — Le Château des Saveurs', 'RESTAURATION', 'Gastronomie camerounaise : poisson braisé d''Ahala, poulet DG, Ndolè, plantains mûrs.', 2500, 5000, 4500, 2500, 400),
+  ('saveurs', 'Repas - Le Château des Saveurs', 'RESTAURATION', 'Gastronomie camerounaise : poisson braisé d''Ahala, poulet DG, Ndolè, plantains mûrs.', 2500, 5000, 4500, 2500, 400),
   ('nutrition_poissons', 'Sachet Nutrition Poissons & Tortues (Order Bump)', 'NATURE_FAUNE', 'Sachet d''aliment piscicole pour nourrir les poissons des étangs d''Ahala avec les enfants.', 500, 500, 500, 500, 800),
   ('pergola_lac', 'Pergola Privée Bord du Lac & Service Prioritaire 13h', 'RESTAURATION', 'Réservation garantie d''une pergola ombragée au bord de l''eau avec précommande cuisine sans attente.', 0, 5000, 5000, 0, 25),
-  ('navette_yaounde', 'Navette Climatisée A/R Yaoundé — Ahala', 'GROUPES_B2B', 'Prise en charge aller-retour depuis le centre de Yaoundé (flotte 5, 18 et 32 places).', 1000, 1500, 1200, 1000, 180)
+  ('navette_yaounde', 'Navette Climatisée A/R Yaoundé - Ahala', 'GROUPES_B2B', 'Prise en charge aller-retour depuis le centre de Yaoundé (flotte 5, 18 et 32 places).', 1000, 1500, 1200, 1000, 180)
 ON CONFLICT (slug) DO NOTHING;
 
 -- ============================================================================
--- 2B. Formules Packagées (« Pass Tout-Inclus » — Stratégie Panier Moyen & Coupe-File)
+-- 2B. Formules Packagées (« Pass Tout-Inclus » - Stratégie Panier Moyen & Coupe-File)
 -- ============================================================================
 CREATE TABLE IF NOT EXISTS public.sales_bundles (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),

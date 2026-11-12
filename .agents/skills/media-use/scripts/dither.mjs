@@ -32,7 +32,7 @@ const { values: args } = parseArgs({
 });
 
 if (args.help) {
-  console.log(`media-use dither — exact cached error-diffusion for image or MP4 media
+  console.log(`media-use dither - exact cached error-diffusion for image or MP4 media
 
 Usage:
   node dither.mjs --input in.mp4 --out out.mp4 [options]

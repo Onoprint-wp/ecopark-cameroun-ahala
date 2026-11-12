@@ -26,7 +26,7 @@ def check(cond, label, detail=""):
     status = "OK" if cond else "FAIL"
     msg = f"  [{status}] {label}"
     if detail:
-        msg += f" — {detail}"
+        msg += f" - {detail}"
     print(msg)
 
 

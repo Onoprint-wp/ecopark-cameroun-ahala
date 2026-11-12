@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Remembered defaults CLI — the lightweight tier of HyperFrames user memory.
+ * Remembered defaults CLI - the lightweight tier of HyperFrames user memory.
  *
  *   node prefs.mjs get --hyperframes . [--json]
  *     Print the merged view (project `.media/preferences.json` over user
@@ -12,7 +12,7 @@
  *     confirmed in two different projects promotes the key to the user tier.
  *
  * Consumption rule (references/memory.md): a remembered value becomes the
- * recommended option with a receipt — it never skips a question.
+ * recommended option with a receipt - it never skips a question.
  */
 import { parseArgs } from "node:util";
 import { mergedPreferences, recordPreference } from "./lib/prefs-store.mjs";

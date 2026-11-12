@@ -18,11 +18,11 @@ import { mergedPreferences } from "./prefs-store.mjs";
 const NON_ASCII_SAFE_DIR_COPY = { recursive: true, force: true, filter: () => true };
 
 /**
- * Recipes — the heavyweight tier of HyperFrames user memory.
+ * Recipes - the heavyweight tier of HyperFrames user memory.
  *
  * A recipe is the full confirmed bundle for one video type: the frozen design
  * spec (`frame.md`), the storyboard skeleton (structure with the content
- * blanked), and the confirmed brief values — frozen after the run's final
+ * blanked), and the confirmed brief values - frozen after the run's final
  * approval, reused to start the next video of the same type from everything
  * already approved.
  *
@@ -31,13 +31,13 @@ const NON_ASCII_SAFE_DIR_COPY = { recursive: true, force: true, filter: () => tr
  * the version and archives the old folder as `<name>@v<N>`. Two tiers, same
  * split as everything else in media-use: project `.media/recipes/<name>/`
  * (committed) and user `~/.media/recipes/<name>/` (a freeze is already a
- * confirmed bundle, so it promotes immediately — no two-project rule here).
+ * confirmed bundle, so it promotes immediately - no two-project rule here).
  */
 
 /** Frontmatter keys that describe THIS video, not the reusable type. */
 const FRONTMATTER_CONTENT_KEYS = new Set(["message", "audience", "mode"]);
 
-/** BRIEF.md frontmatter keys that describe this run, not the reusable type —
+/** BRIEF.md frontmatter keys that describe this run, not the reusable type -
  * a recipe never locks the run's shape, so these are always asked again. */
 const BRIEF_CONTENT_KEYS = new Set(["flow", "storyboard", "message", "audience"]);
 
@@ -77,7 +77,7 @@ export function slugifyRecipeName(name) {
 }
 
 function frameTitle(headingLine) {
-  const dash = headingLine.split(/\s+—\s+/)[1];
+  const dash = headingLine.split(/\s+-\s+/)[1];
   if (dash && dash.trim()) return dash.trim();
   return headingLine.replace(/^#+\s*/, "").trim();
 }
@@ -99,7 +99,7 @@ function skeletonFrontmatter(lines, out, contentKeys = FRONTMATTER_CONTENT_KEYS)
   return i;
 }
 
-/** One line inside a frame section — returns the replacement lines (may be none). */
+/** One line inside a frame section - returns the replacement lines (may be none). */
 function skeletonFrameLine(line, state, out) {
   const bulletKey = line.match(/^-\s+(\w+)\s*:/)?.[1]?.toLowerCase();
   if (bulletKey) {
@@ -114,7 +114,7 @@ function skeletonFrameLine(line, state, out) {
   // Frame prose: one placeholder per frame in place of the narrative.
   if (!state.proseReplaced) {
     out.push(
-      `<fill in: this video's content for the "${state.title}" beat — keep the layout role, replace the words.>`,
+      `<fill in: this video's content for the "${state.title}" beat - keep the layout role, replace the words.>`,
     );
     state.proseReplaced = true;
   }
@@ -142,7 +142,7 @@ export function skeletonizeBrief(source) {
     if (heading) {
       out.push(lines[i], "");
       out.push(
-        `<fill in: this video's ${heading[1].trim().toLowerCase()} — the recipe keeps the shape, this run supplies the specifics.>`,
+        `<fill in: this video's ${heading[1].trim().toLowerCase()} - the recipe keeps the shape, this run supplies the specifics.>`,
       );
       out.push("");
     }
@@ -170,7 +170,7 @@ export function skeletonizeStoryboard(source) {
   return out.join("\n").replace(/\n{3,}/g, "\n\n");
 }
 
-/** The run's workflow as BRIEF.md records it — the source of truth a freeze
+/** The run's workflow as BRIEF.md records it - the source of truth a freeze
  * must not contradict. Undefined when no BRIEF.md (or no `workflow:`) exists. */
 function briefWorkflow(root) {
   const brief = join(root, "BRIEF.md");
@@ -203,7 +203,7 @@ function prefValue(prefs, key) {
 /**
  * Freeze the current project's approved run as a named recipe. Writes the
  * project-tier folder + a manifest record, then copies to the user tier (a
- * freeze is already confirmed — it promotes immediately).
+ * freeze is already confirmed - it promotes immediately).
  */
 export function freezeRecipe({ projectDir, name, workflow, blocks }) {
   const slug = slugifyRecipeName(name);
@@ -213,11 +213,11 @@ export function freezeRecipe({ projectDir, name, workflow, blocks }) {
   // BRIEF.md decides; the flag only covers projects briefed before it existed.
   const resolvedWorkflow = fromBrief ?? fromFlag;
   if (!resolvedWorkflow) {
-    throw new Error("no workflow found — BRIEF.md names none and no --workflow was given");
+    throw new Error("no workflow found - BRIEF.md names none and no --workflow was given");
   }
   const frameSpec = join(root, "frame.md");
   const storyboard = join(root, "STORYBOARD.md");
-  if (!existsSync(frameSpec)) throw new Error("no frame.md to freeze — run the design step first");
+  if (!existsSync(frameSpec)) throw new Error("no frame.md to freeze - run the design step first");
   if (!existsSync(storyboard)) throw new Error("no STORYBOARD.md to freeze");
 
   const dir = join(projectRecipesDir(root), slug);
@@ -256,7 +256,7 @@ export function freezeRecipe({ projectDir, name, workflow, blocks }) {
     `${skeletonizeStoryboard(readFileSync(storyboard, "utf8")).trimEnd()}\n`,
   );
 
-  // Best-effort fourth artifact — projects briefed before BRIEF.md existed
+  // Best-effort fourth artifact - projects briefed before BRIEF.md existed
   // (or by workflows that don't write one) freeze fine without it.
   const brief = join(root, "BRIEF.md");
   const briefSkeleton = existsSync(brief);
@@ -278,7 +278,7 @@ export function freezeRecipe({ projectDir, name, workflow, blocks }) {
   });
   regenerateIndex(root);
 
-  // User tier — best-effort, like every other promotion.
+  // User tier - best-effort, like every other promotion.
   try {
     const userDir = join(userRecipesDir(), slug);
     mkdirSync(userDir, { recursive: true });
@@ -363,7 +363,7 @@ export function useRecipe({ projectDir, name }) {
     dir,
     frameSpecPath: "frame.md",
     skeletonPath: `.media/recipes/${slug}/storyboard-skeleton.md`,
-    // Recipes frozen before BRIEF.md existed have no brief skeleton — degrade.
+    // Recipes frozen before BRIEF.md existed have no brief skeleton - degrade.
     briefSkeletonPath: existsSync(join(dir, "brief-skeleton.md"))
       ? `.media/recipes/${slug}/brief-skeleton.md`
       : undefined,

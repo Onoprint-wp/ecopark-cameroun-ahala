@@ -29,7 +29,7 @@ function posthogHost() {
   if (override && !warnedNonDefaultHost && !isTestOrCiContext()) {
     warnedNonDefaultHost = true;
     console.error(
-      `media-use: telemetry is redirected to a non-default host via MEDIA_USE_TELEMETRY_HOST (${override}) — unset it unless this is intentional.`,
+      `media-use: telemetry is redirected to a non-default host via MEDIA_USE_TELEMETRY_HOST (${override}) - unset it unless this is intentional.`,
     );
   }
   return override || POSTHOG_HOST;
@@ -89,7 +89,7 @@ function updateSharedConfig(patch) {
 
 // Adopt a pre-existing media-use-only id (~/.media/anon-id from before this
 // change) so upgraders keep their PostHog persona instead of resetting to a new
-// one — otherwise cross-surface continuity would start over on upgrade.
+// one - otherwise cross-surface continuity would start over on upgrade.
 function legacyMediaAnonId() {
   try {
     const file = join(globalMediaDir(), "anon-id");
@@ -131,7 +131,7 @@ function heygenAccountDistinctId() {
     if (!user || typeof user !== "object" || Array.isArray(user)) return null;
     const id = typeof user.email === "string" && user.email.trim() ? user.email : user.username;
     // Lowercased so this joins with the CLI's own identify call regardless of
-    // the account's stored email casing — two different-case distinct ids
+    // the account's stored email casing - two different-case distinct ids
     // would otherwise split one person across two PostHog profiles.
     return typeof id === "string" && id.trim() ? id.trim().toLowerCase() : null;
   } catch {

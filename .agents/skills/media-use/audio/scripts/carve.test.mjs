@@ -82,11 +82,11 @@ test("an empty group attribute is not a group", () => {
 // check and are about the bed and the group attributes alone. `members` is a
 // required argument: with `[]` the `mixed` refusal cannot fire, so a default
 // would let a call that forgot it return the group form and silently undo the
-// widening fix — see the wiring test at the bottom of this file.
+// widening fix - see the wiring test at the bottom of this file.
 
 test("a bed inside the voices' group keeps clip ids, so it is never its own source", () => {
   // `resolveCarveSourceIds` expands a group to every CURRENT member, and it gets
-  // no host element to exclude — so naming a group the bed belongs to puts the
+  // no host element to exclude - so naming a group the bed belongs to puts the
   // bed in its own voice list on the next analysis, and it is carved against
   // itself. This run cannot see it (main sums the detected voices directly), so
   // the check has to happen here.
@@ -103,7 +103,7 @@ test("an ungrouped bed leaves the group form alone", () => {
   assert.deepEqual(carveSources([voice("vo1", "voiceover")], bed("bgm"), []), ["voiceover"]);
 });
 
-test("a VIDEO bed is immune — group membership is audio-only", () => {
+test("a VIDEO bed is immune - group membership is audio-only", () => {
   // `data-audio-group` on a <video> is ignored by core, so expanding the group
   // can never pull this bed in and declining would be a false positive.
   const voices = [voice("vo1", "mix"), voice("vo2", "mix")];
@@ -114,7 +114,7 @@ test("an sfx member of the voices' group blocks the group form", () => {
   // The group resolves wider than the analysis: `resolveCarveSourceIds` expands
   // it to every current member and `resolveCarveVoices` keeps any audio with a
   // src, so an sfx clip sharing the voice group enters the sidechain on the next
-  // analysis and ducks the bed under a whoosh. This run cannot see it — it sums
+  // analysis and ducks the bed under a whoosh. This run cannot see it - it sums
   // the voices `detectTracks` returned, which correctly excluded the sfx.
   const voices = [voice("vo1", "voiceover"), voice("vo2", "voiceover")];
   const members = [
@@ -149,7 +149,7 @@ test("a voice member this run did NOT analyse keeps the group form", () => {
 
 test("an unclassifiable member keeps the group form", () => {
   // `unknown` is what `detectTracks` itself treats as a possible voice, so it is
-  // not evidence of a non-voice member — loose in the safe direction, same as
+  // not evidence of a non-voice member - loose in the safe direction, same as
   // detection.
   const voices = [voice("vo1", "voiceover")];
   const members = [member("vo1", "voiceover", "voice"), member("track7", "voiceover", "unknown")];
@@ -237,7 +237,7 @@ test("members is required, so dropping it cannot silently restore the group form
   // test runs `main()` (the symlink test stops at the usage error, a real run
   // needs ffmpeg). With `members = []` defaulted, a refactor that dropped the
   // third argument would return the group form again with the whole suite green
-  // — the same signature as the bug itself: first pass correct, persisted
+  // - the same signature as the bug itself: first pass correct, persisted
   // attribute wrong, nothing red. Omitting it now throws instead.
   const voices = [voice("vo1", "voiceover"), voice("vo2", "voiceover")];
   assert.throws(() => carveSources(voices, bed("bgm", "music")), TypeError);
@@ -247,7 +247,7 @@ test("members is required, so dropping it cannot silently restore the group form
 test("the default strength is 0.8, and --strength still overrides it", () => {
   // 0.25 left the bed audibly fighting the voice on narrated builds; a carve at
   // the default has to already be a finished mix. Pinned so it cannot drift back
-  // unnoticed — core pins its own DEFAULT_CARVE the same way.
+  // unnoticed - core pins its own DEFAULT_CARVE the same way.
   assert.equal(DEFAULT_STRENGTH, 0.8);
   assert.equal(parseArgs(["--comp", "x.html"]).strength, 0.8);
   assert.equal(parseArgs(["--comp", "x.html", "--strength", "0.25"]).strength, 0.25);

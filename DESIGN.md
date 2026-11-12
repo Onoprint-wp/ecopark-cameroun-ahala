@@ -1,5 +1,5 @@
-# DESIGN SYSTEM ECOPARK V4 — DOCUMENTATION OFFICIELLE (DS-01 à DS-08)
-## Direction artistique validée : « Direction A : Canopée immersive — Le cercle du vivant » (V4)
+# DESIGN SYSTEM ECOPARK V4 - DOCUMENTATION OFFICIELLE (DS-01 à DS-08)
+## Direction artistique validée : « Direction A : Canopée immersive - Le cercle du vivant » (V4)
 
 - **Marque :** **ECOPARK** (Yaoundé–Ahala, Cameroun)
 - **Proposition créative centrale V4 :** **« Prenez le frais. Vivez la nature. »**
@@ -10,7 +10,7 @@
 
 ---
 
-## DS-01 — Vue Générale de la Marque, Concept & Règles du Logo
+## DS-01 - Vue Générale de la Marque, Concept & Règles du Logo
 
 ### 1.1 Concept Graphique : « Le cercle du vivant »
 - **Principe fondateur :** Construire l'ensemble du système visuel à partir de la **rosette végétale du logo original** :
@@ -29,7 +29,7 @@
 
 ---
 
-## DS-02 — Architecture des Tokens à 3 Niveaux & États Sémantiques
+## DS-02 - Architecture des Tokens à 3 Niveaux & États Sémantiques
 
 ### Niveau 1 : Tokens Primitifs (Valeurs Brutes)
 ```css
@@ -77,12 +77,12 @@
 - **Bouton Principal :** `--btn-primary-bg: var(--color-action-primary)` (`#1D490D`), `--btn-primary-text: #FFFFFF`. *(Aucun bouton principal jaune).*
 - **Bouton Secondaire :** `--btn-secondary-bg: #FFFFFF`, `--btn-secondary-text: #1D490D`, `--btn-secondary-border: 1.5px solid #1D490D`.
 - **Séparation Statut de Paiement vs Disponibilité :**
-  - *Disponibilité prestation :* `Disponible` (Icône `✓` + Vert), `Capacité limitée` (Icône `◔` + Ambre), `Complet / Fermé` (Icône `✕` + Gris/Erreur — non réservable).
+  - *Disponibilité prestation :* `Disponible` (Icône `✓` + Vert), `Capacité limitée` (Icône `◔` + Ambre), `Complet / Fermé` (Icône `✕` + Gris/Erreur - non réservable).
   - *Statut transactionnel :* `En attente de confirmation` (Icône `⏳` + Bleu/Ambre), `Confirmé` (Icône `✔` + Vert), `Échoué` (Icône `⚠` + Rouge fonctionnel), `Annulé` / `Expiré`.
 
 ---
 
-## DS-03 — Typographies, Grille, Motifs & Photographie en Contexte Local
+## DS-03 - Typographies, Grille, Motifs & Photographie en Contexte Local
 
 ### 3.1 Typographies
 - **Titres (`Barlow Semi Condensed`, graisses `600` et `700`) :**
@@ -102,26 +102,26 @@
 - **Motif radial :** Fragments légers et espacés inspirés de la géométrie radiale des feuilles du logo (`opacity: 0.04`), uniquement en bordure de section (jamais sous un bloc de texte courant).
 
 ### 3.3 Photographie en Contexte Local Camerounais (Yaoundé–Ahala)
-- **Priorité 1 — Photographies réelles du site d'Ahala (`audit-assets/ecopark-real-media/`) :**
+- **Priorité 1 - Photographies réelles du site d'Ahala (`audit-assets/ecopark-real-media/`) :**
   - `balade_pirogue3.jpg` (Étang et pirogue à ECOPARK Ahala)
   - `chimpanze.jpeg` (Faune du parc animalier d'ECOPARK)
   - `chambre.jpeg` (Hébergement sur site)
   - `IMG-20260713-WA0051_043420.jpg`, `IMG_20260829_172016-1-scaled.jpg`, `IMG-20260809-WA0009.jpg` (Vues réelles du site et des espaces d'Ahala)
-- **Priorité 2 — Visuels de démonstration en contexte local camerounais (`audit-assets/stitch-canopee-vivante/`) :**
+- **Priorité 2 - Visuels de démonstration en contexte local camerounais (`audit-assets/stitch-canopee-vivante/`) :**
   - Familles camerounaises, élèves et enseignants camerounais en excursion, étudiants camerounais en formation pratique CFP, gastronomie locale (poisson braisé, plantains) sous les pergolas.
   - **Règle de transparence :** Tout visuel conceptuel ou temporaire porte explicitement le badge `Visuel de démonstration (Contexte local Cameroun)`.
 
 
 ---
 
-## DS-04 à DS-08 — Évolutions Production « Apple-Grade », Ocre Bronze, SVG Monochromes & HyperFrames
+## DS-04 à DS-08 - Évolutions Production « Apple-Grade », Ocre Bronze, SVG Monochromes & HyperFrames
 
 ### 4.1 Règle Chromatique 60-30-10 & 3e Couleur d'Accent « Ocre Bronze / Terre Dorée »
-- **60 % — Surfaces Lumineuses :** `#FFFFFF` (`--color-white`) et `#FAFDF8` (Fond principal avec filigrane botanique SVG subtil).
-- **30 % — Structure Canopée & Sauge :** `#EDF4E7` (`--color-surface-soft`), `#1D490D` (`--color-brand-deep`) et `#1E281B` (`--color-text`).
-- **10 % — Accent Chaleureux Hospitalité & Prestige (« Ocre Bronze ») :**
+- **60 % - Surfaces Lumineuses :** `#FFFFFF` (`--color-white`) et `#FAFDF8` (Fond principal avec filigrane botanique SVG subtil).
+- **30 % - Structure Canopée & Sauge :** `#EDF4E7` (`--color-surface-soft`), `#1D490D` (`--color-brand-deep`) et `#1E281B` (`--color-text`).
+- **10 % - Accent Chaleureux Hospitalité & Prestige (« Ocre Bronze ») :**
   - `--color-accent-ochre: #C47D2B` (Bordures d'accent, barres de progression HyperFrames, filets de prestige).
-  - `--color-accent-ochre-deep: #9A5B13` (Texte haute lisibilité sur fond parchemin — ratio WCAG AA `5.42:1`).
+  - `--color-accent-ochre-deep: #9A5B13` (Texte haute lisibilité sur fond parchemin - ratio WCAG AA `5.42:1`).
   - `--color-accent-ochre-soft: #FBF5EC` (Fond teinté parchemin pour les badges `.price-pill`, les offres d'hébergement *Ewondo / Chanthel / Bene*, les boutons `.btn-ochre-outline` et le Pass QR).
 
 ### 4.2 Iconographie 100 % Vectorielle SVG Linéaire Monochrome (`0` Emoji OS)

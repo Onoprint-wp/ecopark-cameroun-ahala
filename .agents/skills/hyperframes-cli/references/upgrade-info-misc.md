@@ -10,7 +10,7 @@ npx hyperframes info ./my-video        # specific project
 npx hyperframes info --json
 ```
 
-Prints **project** metadata: name, resolution, duration, element counts by type, track count, and total project size. Project-level — not environment. For environment health use `doctor`.
+Prints **project** metadata: name, resolution, duration, element counts by type, track count, and total project size. Project-level - not environment. For environment health use `doctor`.
 
 ## upgrade
 
@@ -23,7 +23,7 @@ npx hyperframes upgrade --yes          # print upgrade commands without promptin
 
 Compares the installed CLI version against npm latest.
 
-`--project [dir]` bumps a **project's** pinned scripts instead of the global install: it rewrites every `npx …hyperframes@<version>…` in `<dir>/package.json` (default cwd) to npm-latest. Always invoke it unpinned (`npx hyperframes@latest upgrade --project`) — a project scaffolded on an old CLI stays frozen otherwise. `--project . --check` reports the delta without writing; add `--json` for `{ changed, from, to, path }`. Pass the dir explicitly whenever another flag follows `--project` — on older releases a bare `--project` consumes the next flag as its directory value.
+`--project [dir]` bumps a **project's** pinned scripts instead of the global install: it rewrites every `npx …hyperframes@<version>…` in `<dir>/package.json` (default cwd) to npm-latest. Always invoke it unpinned (`npx hyperframes@latest upgrade --project`) - a project scaffolded on an old CLI stays frozen otherwise. `--project . --check` reports the delta without writing; add `--json` for `{ changed, from, to, path }`. Pass the dir explicitly whenever another flag follows `--project` - on older releases a bare `--project` consumes the next flag as its directory value.
 
 ## timeline
 
@@ -50,7 +50,7 @@ audio (1)
 - With no `data-duration`/`data-end`, a media row still gets a resolved length and says where it came from: `duration=media` means ffprobe measured the source (with playback start and rate applied); `duration=default` means an `img` got the 3s default; `duration=inferred` means a composition host summed its children; `pending: <reason>` (dotted bar, `duration` 0) means the source could not be probed (missing file, remote `src`, ffprobe error). A non-media leaf with nothing to resolve prints no source.
 - `lanes unreadable: ...` means the clip's `data-automation` or `data-fx-chain` did not parse; fix the attribute.
 
-`--json` prints `{ timeline: { duration, tracks: [{ kind, rows: [...] }] } }`. A track's `rows` are every clip of that kind, nested ones included, by `absStart`; read them, never only the top level. Each row has `id`, `kind` (tag), `trackKind`, `start`, `duration`, `end` (local to the row's own file), **`absStart`, `absEnd`, `file`** (main-timeline time and the project-relative file that declares the clip — use these, not `start`/`end`, to compare clips across nesting), `trackIndex`, `src`, `sourceFile`, `volume`, `lanes`, `playbackRate`, `audioGroup`, `durationAuthored`, **`durationSource`** (`"authored" | "media" | "default" | "inner" | "pending"`, or `null` for a non-media leaf with nothing to resolve), **`pendingReason`** (why nothing resolved; `null` unless `durationSource` is `"pending"`), `laneError`, **`index`** (the row's position in its kind's `rows`; a position, not an id), **`nested`** (declared inside a sub-composition), **`host`** (plain id of the row that hosts a nested clip, else `null`), **`hostRow`** (`{kind, index}` of that host row), and `children` (`{kind, index}` pointers to the sub-composition's clips, one level; every clip is already a full row in its kind's `rows`, so nothing needs following).
+`--json` prints `{ timeline: { duration, tracks: [{ kind, rows: [...] }] } }`. A track's `rows` are every clip of that kind, nested ones included, by `absStart`; read them, never only the top level. Each row has `id`, `kind` (tag), `trackKind`, `start`, `duration`, `end` (local to the row's own file), **`absStart`, `absEnd`, `file`** (main-timeline time and the project-relative file that declares the clip - use these, not `start`/`end`, to compare clips across nesting), `trackIndex`, `src`, `sourceFile`, `volume`, `lanes`, `playbackRate`, `audioGroup`, `durationAuthored`, **`durationSource`** (`"authored" | "media" | "default" | "inner" | "pending"`, or `null` for a non-media leaf with nothing to resolve), **`pendingReason`** (why nothing resolved; `null` unless `durationSource` is `"pending"`), `laneError`, **`index`** (the row's position in its kind's `rows`; a position, not an id), **`nested`** (declared inside a sub-composition), **`host`** (plain id of the row that hosts a nested clip, else `null`), **`hostRow`** (`{kind, index}` of that host row), and `children` (`{kind, index}` pointers to the sub-composition's clips, one level; every clip is already a full row in its kind's `rows`, so nothing needs following).
 
 ### Query one-liners (jq, node fallback if jq is absent)
 
@@ -84,7 +84,7 @@ npx hyperframes docs rendering         # print one topic inline in the terminal
 
 `compositions` lists every `data-composition-id` in the project (including sub-comps) with duration, resolution, and element count.
 
-`docs` prints inline documentation **in the terminal** — it does not open a browser. Topics: `data-attributes`, `examples`, `rendering`, `gsap`, `troubleshooting`, `compositions`. Run without a topic to see the list.
+`docs` prints inline documentation **in the terminal** - it does not open a browser. Topics: `data-attributes`, `examples`, `rendering`, `gsap`, `troubleshooting`, `compositions`. Run without a topic to see the list.
 
 ## benchmark
 
@@ -95,7 +95,7 @@ npx hyperframes benchmark --runs 5     # repeat each config N times (default 3)
 npx hyperframes benchmark --json
 ```
 
-Renders the project with 5 preset configurations — `30fps draft 2w`, `30fps standard 2w`, `30fps high 2w`, `30fps standard 4w`, `60fps standard 4w` — and prints a comparison of render speed and output file size. Use it to find the fastest acceptable preset for your machine. Not a single-render-with-stage-breakdown.
+Renders the project with 5 preset configurations - `30fps draft 2w`, `30fps standard 2w`, `30fps high 2w`, `30fps standard 4w`, `60fps standard 4w` - and prints a comparison of render speed and output file size. Use it to find the fastest acceptable preset for your machine. Not a single-render-with-stage-breakdown.
 
 ## telemetry
 
@@ -107,7 +107,7 @@ npx hyperframes telemetry enable      # re-enable telemetry
 
 Telemetry is anonymous usage counters only. Disable globally with `HYPERFRAMES_NO_TELEMETRY=1` if env-var control is preferred over the subcommand.
 
-Events include two fingerprint properties used to distinguish managed-sandbox runs from real laptops — no PII, no env-var **values**, only existence checks:
+Events include two fingerprint properties used to distinguish managed-sandbox runs from real laptops - no PII, no env-var **values**, only existence checks:
 
 - **`sandbox_runtime`**: `gvisor` / `firecracker` / `docker` / `kvm` / `wsl` / `null`. gVisor via kernel string + `/proc/version`. Firecracker via `/dev/vsock` + DMI sys_vendor. Docker via `/.dockerenv` + cgroup.
 - **`agent_runtime`**: `claude_code` / `codex` / `cursor` / `copilot_agent` / `jules` / `replit` / `devin` / `aider` / `gemini_cli` / `hermes` / `openclaw` / `null`. Detected by the existence of well-known vendor env vars; the values themselves are never read.

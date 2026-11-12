@@ -383,14 +383,14 @@ NEW_VIEW_ADM_HTML = """      <!-- ==============================================
             </div>
 
             <!-- ==============================================================
-                 BLOC 1 : ADM-01 & ADM-02 — GESTIONNAIRE CRUD DU CATALOGUE & TARIFS FCFA
+                 BLOC 1 : ADM-01 & ADM-02 - GESTIONNAIRE CRUD DU CATALOGUE & TARIFS FCFA
                  ============================================================== -->
             <div class="grid-12" style="margin-bottom:22px;" id="sec-ADM-01">
               <div class="col-12 card" id="sec-ADM-02">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:10px;">
                   <div>
                     <span class="eyebrow" style="margin-bottom:2px;"><span class="tech-code-tag">ADM-01 &amp; ADM-02 • </span>Moteur CRUD du Catalogue Officiel &amp; Verrouillage Tarifaire SQL</span>
-                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> <span class="tech-code-tag">ADM-01 &amp; ADM-02 — </span>Catalogue des Prestations (Ajouter, Modifier, Dupliquer, Supprimer) &amp; Protection 500 FCFA</h3>
+                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="11" x="3" y="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span> <span class="tech-code-tag">ADM-01 &amp; ADM-02 - </span>Catalogue des Prestations (Ajouter, Modifier, Dupliquer, Supprimer) &amp; Protection 500 FCFA</h3>
                   </div>
                   <div style="display:flex;gap:8px;flex-wrap:wrap;">
                     <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" id="btnTestChildGuard" onclick="admTestChildPriceViolation()">
@@ -460,7 +460,7 @@ NEW_VIEW_ADM_HTML = """      <!-- ==============================================
               <!-- ADM-03 : Quotas, Capacités & Météo Ahala -->
               <div class="col-5 card" id="sec-ADM-03">
                 <span class="eyebrow" style="margin-bottom:2px;"><span class="tech-code-tag">ADM-03 • </span>Pilotage des Capacités &amp; Bandeau Météo RN3</span>
-                <h3 style="margin-top:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><circle cx="12" cy="12" r="4"/></svg></span> <span class="tech-code-tag">ADM-03 — </span>Quotas, Stocks Loges &amp; Météo Directe</h3>
+                <h3 style="margin-top:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><circle cx="12" cy="12" r="4"/></svg></span> <span class="tech-code-tag">ADM-03 - </span>Quotas, Stocks Loges &amp; Météo Directe</h3>
 
                 <div style="margin-bottom:12px;padding:12px;border-radius:12px;background:#FBF5EC;border:1px solid rgba(196,125,43,0.35);">
                   <label class="form-label" for="admWeatherPresetSelect" style="font-size:13px;color:#8E5617;margin-bottom:6px;">
@@ -516,7 +516,7 @@ NEW_VIEW_ADM_HTML = """      <!-- ==============================================
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
                   <div>
                     <span class="eyebrow" style="margin-bottom:2px;"><span class="tech-code-tag">ADM-04 • </span>Mini-CMS CRUD « Zéro Code HTML » (Agenda &amp; Saveurs)</span>
-                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span> <span class="tech-code-tag">ADM-04 — </span>Gérer l'Agenda (/agenda) &amp; la Carte du Château des Saveurs</h3>
+                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="18" height="18" x="3" y="4" rx="2" ry="2"/><line x1="16" x2="16" y1="2" y2="6"/><line x1="8" x2="8" y1="2" y2="6"/><line x1="3" x2="21" y1="10" y2="10"/></svg></span> <span class="tech-code-tag">ADM-04 - </span>Gérer l'Agenda (/agenda) &amp; la Carte du Château des Saveurs</h3>
                   </div>
                   <button type="button" class="btn btn-primary btn-sm" onclick="admAddCmsItemPrompt()">+ Ajouter Événement / Plat</button>
                 </div>
@@ -551,7 +551,7 @@ NEW_VIEW_ADM_HTML = """      <!-- ==============================================
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;">
                   <div>
                     <span class="eyebrow" style="margin-bottom:2px;"><span class="tech-code-tag">ADM-05 • </span>Gestion CRUD des Comptes Internes &amp; 7 Rôles (RBAC PostgreSQL)</span>
-                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> <span class="tech-code-tag">ADM-05 — </span>Comptes Nominatifs Équipe Ahala (Ajouter, Dupliquer Poste, Suspendre)</h3>
+                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span> <span class="tech-code-tag">ADM-05 - </span>Comptes Nominatifs Équipe Ahala (Ajouter, Dupliquer Poste, Suspendre)</h3>
                   </div>
                   <button type="button" class="btn btn-secondary btn-sm btn-ochre-outline" onclick="admAddStaffMemberQuick()">+ Nouvel Agent / Compte</button>
                 </div>
@@ -576,7 +576,7 @@ NEW_VIEW_ADM_HTML = """      <!-- ==============================================
               <div class="col-5 card" id="sec-ADM-06">
                 <div id="sec-ADM-07">
                   <span class="eyebrow" style="margin-bottom:2px;"><span class="tech-code-tag">ADM-06 &amp; ADM-07 • </span>Passerelles Marchandes &amp; Intégrations Serveur</span>
-                  <h3 style="margin-top:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> <span class="tech-code-tag">ADM-06 &amp; ADM-07 — </span>MTN MoMo, Orange Money &amp; WhatsApp (0 Secret Exposé)</h3>
+                  <h3 style="margin-top:0;"><span class="icon-medallion"><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg></span> <span class="tech-code-tag">ADM-06 &amp; ADM-07 - </span>MTN MoMo, Orange Money &amp; WhatsApp (0 Secret Exposé)</h3>
 
                   <div class="adm-gateway-card">
                     <div>
@@ -618,14 +618,14 @@ NEW_VIEW_ADM_HTML = """      <!-- ==============================================
             </div>
 
             <!-- ==============================================================
-                 BLOC 4 : ADM-08 — JOURNAL D'AUDIT IMMUABLE (PLEINE LARGEUR)
+                 BLOC 4 : ADM-08 - JOURNAL D'AUDIT IMMUABLE (PLEINE LARGEUR)
                  ============================================================== -->
             <div class="grid-12" id="sec-ADM-08">
               <div class="col-12 card">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:10px;">
                   <div>
                     <span class="eyebrow" style="margin-bottom:2px;"><span class="tech-code-tag">ADM-08 • </span>Traçabilité Comptable &amp; Opérationnelle Immuable</span>
-                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span> <span class="tech-code-tag">ADM-08 — </span>Journal d'Audit Immuable (Créations, Modifications, Duplications, Suppressions &amp; Scans QR)</h3>
+                    <h3 style="margin:0;"><span class="icon-medallion"><svg class="svg-mono" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/><path d="m9 12 2 2 4-4"/></svg></span> <span class="tech-code-tag">ADM-08 - </span>Journal d'Audit Immuable (Créations, Modifications, Duplications, Suppressions &amp; Scans QR)</h3>
                   </div>
                   <div class="adm-audit-filter-bar" style="margin-bottom:0;">
                     <button type="button" class="btn btn-secondary btn-sm" onclick="admFilterAuditLogs('ALL')">Tout afficher</button>
@@ -824,7 +824,7 @@ ADMIN_CONSOLE_JS = r"""
       },
       {
         id: 'CAT-EWONDO',
-        title: 'Cité Hôtelière Ewondo — Suite VIP Climatisée',
+        title: 'Cité Hôtelière Ewondo - Suite VIP Climatisée',
         subtitle: 'Hébergement Haut Standing • Petit-déjeuner & accès parc inclus',
         pole: 'HEBERGEMENT',
         img: 'audit-assets/ecopark-real-media/chambre.jpeg',
@@ -1070,7 +1070,7 @@ ADMIN_CONSOLE_JS = r"""
       const copyId = 'CAT-COPY-' + Math.floor(100 + Math.random() * 899);
       const clone = {
         id: copyId,
-        title: src.title + ' (Copie — Promo Vacances)',
+        title: src.title + ' (Copie - Promo Vacances)',
         subtitle: src.subtitle,
         pole: src.pole,
         img: src.img,
@@ -1393,7 +1393,7 @@ ADMIN_CONSOLE_JS = r"""
       const clone = {
         id: 'USR-' + Math.floor(100 + Math.random() * 899),
         name: src.name + ' (Poste Renfort #2)',
-        title: src.title + ' — Vacation Week-end',
+        title: src.title + ' - Vacation Week-end',
         role: src.role,
         scope: src.scope,
         status: 'Guichet #2 Actif'

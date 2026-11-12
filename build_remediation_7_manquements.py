@@ -120,7 +120,7 @@ def apply_remediations():
                     <label style="display:flex;justify-content:space-between;align-items:center;padding:10px 12px;background:#FFFFFF;border:1px solid var(--color-border);border-radius:8px;cursor:pointer;">
                       <span style="font-size:14px;">
                         <input type="checkbox" id="chkBumpNavette" onchange="recalcSimulator()" />
-                        <strong style="margin-left:6px;">Navette Climatisée A/R Yaoundé — Ahala</strong> (Adulte : 1 500 FCFA • Enfant : 1 000 FCFA)
+                        <strong style="margin-left:6px;">Navette Climatisée A/R Yaoundé - Ahala</strong> (Adulte : 1 500 FCFA • Enfant : 1 000 FCFA)
                       </span>
                       <span class="price-pill" id="subBumpNavette">0 FCFA</span>
                     </label>
@@ -912,7 +912,7 @@ def apply_remediations():
         const extras = [];
         if (calc.hallCost > 0) extras.push(`+ Salle Menkii Essomba Anton (${formatFCFA(calc.hallCost)})`);
         if (calc.shuttleCost > 0) extras.push(`+ Navette A/R (${formatFCFA(calc.shuttleCost)})`);
-        brkEl.textContent = `${calc.pax} participants × ${formatFCFA(calc.unitRate)} — ${calc.rateDesc}${extras.length ? ' ' + extras.join(' ') : ''}.`;
+        brkEl.textContent = `${calc.pax} participants × ${formatFCFA(calc.unitRate)} - ${calc.rateDesc}${extras.length ? ' ' + extras.join(' ') : ''}.`;
       }
     }
 
@@ -1034,7 +1034,7 @@ def apply_remediations():
         `Bonjour CFP ECOPARK CAMEROUN (Yaoundé-Ahala),`,
         `Je souhaite valider mon dossier d'admission au Centre de Formation Professionnelle agréé MINEFOP :`,
         `- N° Dossier : ${ref}`,
-        `- Candidat(e) : ${name} (${age} ans) — ${phone}`,
+        `- Candidat(e) : ${name} (${age} ans) - ${phone}`,
         `- Filière choisie : ${track} (Stage garanti au sein d'ECOPARK)`,
         `- Modalité choisie : Inscription 50 000 FCFA + ${plan}`,
         `- Diplômes visés : DQP / CQP / Attestation reconnue par l'État`,

@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-# ECOPARK Cameroun — Règles Graphiques & Accessibilité (Canopée Vivante)
+# ECOPARK Cameroun - Règles Graphiques & Accessibilité (Canopée Vivante)
 
 ## 1. Palette sémantique et rôles des couleurs
 Tokens de départ obligatoires (vérifier et maintenir les contrastes WCAG AA >= 4,5:1 texte courant, >= 3:1 grand texte) :

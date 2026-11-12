@@ -9,7 +9,7 @@ import { recordInManifest } from "./lib/media-record.mjs";
 import { resolveSfx } from "./lib/sfx.mjs";
 
 // Proves the relocated engine (skills/media-use/audio/) still resolves its
-// bundled SFX library from the moved location — the path most likely to break
+// bundled SFX library from the moved location - the path most likely to break
 // on a subtree move. Openverse is unreachable unless a test serves it.
 const offline = async () => {
   throw new TypeError("fetch failed");

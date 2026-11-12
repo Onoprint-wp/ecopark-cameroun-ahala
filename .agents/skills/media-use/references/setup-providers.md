@@ -1,6 +1,6 @@
-# Setup and providers — install, auth, RAM ladders, forcing a provider
+# Setup and providers - install, auth, RAM ladders, forcing a provider
 
-## Setup — install heygen first (free-usage path)
+## Setup - install heygen first (free-usage path)
 
 Install the HeyGen CLI through its [verified release instructions](https://developers.heygen.com/cli), then run:
 
@@ -9,7 +9,7 @@ heygen update             # free usage needs the OAuth-capable CLI (v0.3.0+)
 heygen auth login --oauth # OAuth = free subscription credits; --api-key bills API credits
 ```
 
-This unlocks the FREE path for bgm/image/icon catalog search, TTS (voice), and avatar videos. Sign in with `--oauth` — the free allowance rides on the OAuth session (an API key bills API credits instead). **media-use requires heygen >= v0.3.0 uniformly** (the OAuth free-usage path needs it), so `--doctor` nudges older CLIs to update even for API-key-only use. Before resolving anything, verify setup with:
+This unlocks the FREE path for bgm/image/icon catalog search, TTS (voice), and avatar videos. Sign in with `--oauth` - the free allowance rides on the OAuth session (an API key bills API credits instead). **media-use requires heygen >= v0.3.0 uniformly** (the OAuth free-usage path needs it), so `--doctor` nudges older CLIs to update even for API-key-only use. Before resolving anything, verify setup with:
 
 ```bash
 npx hyperframes media-use resolve --doctor
@@ -53,7 +53,7 @@ in `references/operations.md`).
 Local Kokoro (voice), mflux (image), and LTX (video) run on-device (free,
 private, offline once cached). The `codex` CLI remains the ChatGPT-sub image
 upsell. Cost rule (X4): the agent confirms before an agent-initiated paid call;
-a user-requested one just runs — `heygen.video` is flagged paid (metered free
+a user-requested one just runs - `heygen.video` is flagged paid (metered free
 allowance) so an agent-initiated `resolve --type video` confirms first.
 
 To force a specific generator (e.g. a user says "make this image with codex"),
@@ -77,7 +77,7 @@ private, on-device path instead of or ahead of HeyGen for that type. Only
 | Tool               | Serves                                                                      | Install                                                                                                                                                                                     |
 | ------------------ | --------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `ffmpeg`/`ffprobe` | adopt probing, smart-grade signalstats, cut, duck bake, loudnorm            | system package (`brew install ffmpeg`)                                                                                                                                                      |
-| `heygen`           | catalog (bgm/image/icon) + TTS (voice) + avatar video — the free-usage path | install through [verified HeyGen release instructions](https://developers.heygen.com/cli), then `heygen auth login --oauth` (needs >= v0.3.0)                                               |
+| `heygen`           | catalog (bgm/image/icon) + TTS (voice) + avatar video - the free-usage path | install through [verified HeyGen release instructions](https://developers.heygen.com/cli), then `heygen auth login --oauth` (needs >= v0.3.0)                                               |
 | `mflux-generate`   | local image gen (FLUX), best-for-RAM                                        | `uv venv ~/.venvs/mflux && VIRTUAL_ENV=~/.venvs/mflux uv pip install mflux==0.9.6`                                                                                                          |
 | `codex`            | image gen upsell (ChatGPT sub)                                              | Codex CLI, logged in via ChatGPT (owns its own auth)                                                                                                                                        |
 | `parakeet-mlx`     | local transcription (default ASR, best) on Apple Silicon                    | `uv venv ~/.venvs/parakeet && VIRTUAL_ENV=~/.venvs/parakeet uv pip install parakeet-mlx`                                                                                                    |

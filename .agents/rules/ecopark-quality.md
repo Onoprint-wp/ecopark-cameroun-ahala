@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-# ECOPARK Cameroun — Règles de Qualité, Vérification & Interdictions Strictes
+# ECOPARK Cameroun - Règles de Qualité, Vérification & Interdictions Strictes
 
 ## 1. Interdictions absolues (Anti-patterns)
 1. Ne pas corriger le site uniquement par un changement de palette CSS.

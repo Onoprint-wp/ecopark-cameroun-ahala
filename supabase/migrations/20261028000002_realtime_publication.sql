@@ -1,5 +1,5 @@
 -- ============================================================================
--- ECOPARK — Migration 3 : diffusion temps réel (Phase 3, couche d'accès aux données)
+-- ECOPARK - Migration 3 : diffusion temps réel (Phase 3, couche d'accès aux données)
 -- Ajoute les tables de contenu public et d'exploitation à la publication
 -- « supabase_realtime ». La RLS s'applique aussi aux événements temps réel :
 -- un visiteur ne reçoit que les lignes qu'il a le droit de lire.

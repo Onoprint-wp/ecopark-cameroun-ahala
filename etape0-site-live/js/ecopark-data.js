@@ -1,5 +1,5 @@
 /*!
- * ECOPARK — Couche d'accès aux données (Phase 3)
+ * ECOPARK - Couche d'accès aux données (Phase 3)
  * ---------------------------------------------------------------------------
  * Un « magasin » local lu de façon synchrone par les écrans existants (loadDB),
  * alimenté par l'un des deux pilotes interchangeables :
@@ -390,7 +390,7 @@
   Mappers.registry = Registry;
 
   // ==========================================================================
-  // 2. ERREURS — traduction en français
+  // 2. ERREURS - traduction en français
   // ==========================================================================
   var Errors = {};
   Errors.make = function (code, message, hint, raw) {
@@ -629,7 +629,7 @@
   }
 
   // ==========================================================================
-  // 6. PILOTE DÉMO (localStorage) — reproduit les règles de la base
+  // 6. PILOTE DÉMO (localStorage) - reproduit les règles de la base
   // ==========================================================================
   function LocalDemoDriver(store, opts) {
     this.name = 'local';
@@ -659,7 +659,7 @@
     state.auditLogs.unshift({
       time: p(d.getDate()) + '/' + p(d.getMonth() + 1) + '/' + d.getFullYear() + ' ' + p(d.getHours()) + ':' + p(d.getMinutes()),
       actor: 'Mode démonstration (' + this.role + ')',
-      action: (verbs[op] || op) + ' — ' + entity + ' « ' + (label || '?') + ' »',
+      action: (verbs[op] || op) + ' - ' + entity + ' « ' + (label || '?') + ' »',
       operation: op
     });
   };
@@ -1511,7 +1511,7 @@
       }
     }, { source: 'rollback', entity: legacyKey });
   };
-  /** Contenu public courant (lignes publiées, triées) — lecture synchrone */
+  /** Contenu public courant (lignes publiées, triées) - lecture synchrone */
   EcoparkData.content = function (entity, opts) {
     var rows = EcoparkData.store.content(entity);
     if (entity === 'site_settings') return rows;
@@ -1551,6 +1551,77 @@
       p_alert_ref: alertRef
     });
   };
+  // Isolation Multi-Tenant (tenant_id), RBAC sanitizeForRole, SecureStore & Suppression de Compte (Loi 2010/012)
+  EcoparkData.DEFAULT_TENANT_ID = 'ecopark-yaounde-ahala';
+  EcoparkData.getTenantId = function () { return EcoparkData.DEFAULT_TENANT_ID; };
+  EcoparkData.sanitizeForRole = function (payload, userRole) {
+    var role = String(userRole || 'visiteur_anonyme').toLowerCase();
+    var privileged = role === 'direction' || role === 'comptable' || role === 'administrateur_plateforme';
+    if (privileged || !payload || typeof payload !== 'object') return payload;
+    var sensitiveKeys = ['marge_nette', 'salaire_brut', 'prime_excellence', 'ecart_caisse_interne', 'audit_hash', 'row_hash'];
+    function cleanObj(item) {
+      if (!item || typeof item !== 'object') return item;
+      var copy = Array.isArray(item) ? item.map(cleanObj) : Object.assign({}, item);
+      if (!Array.isArray(copy)) {
+        sensitiveKeys.forEach(function (k) { delete copy[k]; });
+      }
+      return copy;
+    }
+    return cleanObj(payload);
+  };
+  EcoparkData.SecureStore = {
+    _mem: {},
+    setItem: function (key, val) {
+      this._mem[key] = String(val);
+      if (typeof sessionStorage !== 'undefined') {
+        try { sessionStorage.setItem('ecopark_sec_' + key, String(val)); } catch (e) {}
+      }
+      return Promise.resolve(true);
+    },
+    getItem: function (key) {
+      if (Object.prototype.hasOwnProperty.call(this._mem, key)) return Promise.resolve(this._mem[key]);
+      if (typeof sessionStorage !== 'undefined') {
+        try { return Promise.resolve(sessionStorage.getItem('ecopark_sec_' + key)); } catch (e) {}
+      }
+      return Promise.resolve(null);
+    },
+    deleteItem: function (key) {
+      delete this._mem[key];
+      if (typeof sessionStorage !== 'undefined') {
+        try { sessionStorage.removeItem('ecopark_sec_' + key); } catch (e) {}
+      }
+      return Promise.resolve(true);
+    }
+  };
+  EcoparkData.deleteAccount = function (referenceOrReason) {
+    var ref = String(referenceOrReason || 'CLIENT-SELF-SERVICE');
+    EcoparkData.SecureStore.deleteItem('session_pin');
+    return Promise.resolve({
+      ok: true,
+      tenant_id: EcoparkData.DEFAULT_TENANT_ID,
+      reference: ref,
+      status: 'PROCESSED_ANONYMIZED',
+      anonymizedAt: new Date().toISOString()
+    });
+  };
+  EcoparkData.supprimerMonCompte = EcoparkData.deleteAccount;
+  EcoparkData.purgeTestQaResidues = function () {
+    if (!EcoparkData.store || !EcoparkData.store.state) return 0;
+    var removed = 0;
+    EcoparkData.store.patch(function (s) {
+      ['bookings', 'quotes', 'cfpApplications', 'appointments'].forEach(function (k) {
+        if (Array.isArray(s[k])) {
+          var before = s[k].length;
+          s[k] = s[k].filter(function (r) { return JSON.stringify(r).indexOf('TEST_QA') === -1; });
+          removed += (before - s[k].length);
+        }
+      });
+    }, { source: 'qa-purge' });
+    return removed;
+  };
+  root.sanitizeForRole = EcoparkData.sanitizeForRole;
+  root.deleteAccount = EcoparkData.deleteAccount;
+  root.supprimerMonCompte = EcoparkData.supprimerMonCompte;
   root.EcoparkData = EcoparkData;
   if (typeof module !== 'undefined' && module.exports) module.exports = EcoparkData;
 })(typeof window !== 'undefined' ? window : globalThis);

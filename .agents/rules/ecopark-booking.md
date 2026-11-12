@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-# ECOPARK Cameroun — Règles des Parcours de Réservation & Intégrité Transactionnelle
+# ECOPARK Cameroun - Règles des Parcours de Réservation & Intégrité Transactionnelle
 
 ## 1. Parcours distincts par nature de besoin
 Ne jamais mélanger estimation, demande de devis, candidature, paiement et confirmation dans un formulaire unique confus. Implémenter 4 parcours adaptés :

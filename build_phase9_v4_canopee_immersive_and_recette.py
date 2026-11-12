@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-PHASE 9 — DESIGN SYSTEM V4 « CANOPÉE IMMERSIVE » & CLÔTURE CAHIER DE RECETTE (A-001 à A-024 + ADM-09)
+PHASE 9 - DESIGN SYSTEM V4 « CANOPÉE IMMERSIVE » & CLÔTURE CAHIER DE RECETTE (A-001 à A-024 + ADM-09)
 ====================================================================================================
 Ce script applique de manière idempotente :
 1. La Direction Artistique V4 « Canopée immersive » conformément aux 3 planches de référence :
@@ -101,7 +101,7 @@ V4_CSS_BLOCK = """    /* ECOPARK_V4_CANOPEE_CSS:START */
       transition: none !important;
     }
 
-    /* V4 Canopee Immersive — Hero Cinematique (Planche Desktop 01 & Mobile 01) */
+    /* V4 Canopee Immersive - Hero Cinematique (Planche Desktop 01 & Mobile 01) */
     .v4-canopy-hero-stage {
       position: relative;
       border-radius: 24px;
@@ -282,7 +282,7 @@ V4_CSS_BLOCK = """    /* ECOPARK_V4_CANOPEE_CSS:START */
       color: rgba(237, 244, 231, 0.86);
     }
 
-    /* V4 Catalogue des Activites — Barre de Filtres & Grille 4 Colonnes (Planche Desktop 02 & Mobile 02) */
+    /* V4 Catalogue des Activites - Barre de Filtres & Grille 4 Colonnes (Planche Desktop 02 & Mobile 02) */
     .v4-filter-pills-row {
       display: flex;
       flex-wrap: wrap;
@@ -1503,7 +1503,7 @@ V4_CATALOG_FILTER_AND_CARDS_HTML = """            <!-- ECOPARK_V4_CATALOG_GRID:S
 
 
 V4_PUB04_AND_PUB09_SECTIONS_HTML = """        <!-- ECOPARK_V4_PUB04_AND_PUB09:START -->
-        <!-- SECTION AUTONOME PUB-04 : FICHE DÉTAIL D'UNE ACTIVITÉ (PLANCHE DESKTOP 03 & MOBILE 03 — CORRIGE A-019) -->
+        <!-- SECTION AUTONOME PUB-04 : FICHE DÉTAIL D'UNE ACTIVITÉ (PLANCHE DESKTOP 03 & MOBILE 03 - CORRIGE A-019) -->
         <div class="section" id="sec-PUB-04" style="padding-top:28px;padding-bottom:28px;background:#FFFFFF;border-top:1px solid rgba(29,73,13,0.10);">
           <div class="container">
             <nav class="v4-breadcrumb" aria-label="Fil d'Ariane Fiche Activité">
@@ -1539,7 +1539,7 @@ V4_PUB04_AND_PUB09_SECTIONS_HTML = """        <!-- ECOPARK_V4_PUB04_AND_PUB09:ST
               <div class="col-7">
                 <div class="v4-detail-gallery-main" onclick="openEcoparkLightbox(0)">
                   <img id="v4Pub04MainImg" src="audit-assets/ecopark-real-media/balade_pirogue3.jpg" alt="Balade en pirogue sur le lac d'ECOPARK à Yaoundé-Ahala" />
-                  <span class="media-origin-badge media-real" style="position:absolute;bottom:12px;left:12px;">Photo réelle ECOPARK — Lac d'Ahala</span>
+                  <span class="media-origin-badge media-real" style="position:absolute;bottom:12px;left:12px;">Photo réelle ECOPARK - Lac d'Ahala</span>
                 </div>
                 <div class="v4-detail-thumbs-row">
                   <button type="button" class="v4-detail-thumb-btn active" onclick="setV4Pub04MainPhoto('audit-assets/ecopark-real-media/balade_pirogue3.jpg', this)">
@@ -1657,7 +1657,7 @@ V4_PUB04_AND_PUB09_SECTIONS_HTML = """        <!-- ECOPARK_V4_PUB04_AND_PUB09:ST
           </div>
         </div>
 
-        <!-- SECTION AUTONOME PUB-09 : HÉBERGEMENT V4 & FICHE DÉTAIL LOGE EWONDO VIP (PLANCHE DESKTOP 04 — CORRIGE A-019) -->
+        <!-- SECTION AUTONOME PUB-09 : HÉBERGEMENT V4 & FICHE DÉTAIL LOGE EWONDO VIP (PLANCHE DESKTOP 04 - CORRIGE A-019) -->
         <div class="section section-soft" id="sec-PUB-09" style="padding-top:28px;padding-bottom:28px;">
           <div class="container">
             <div class="section-header" style="display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:12px;">
@@ -1791,7 +1791,7 @@ V4_PUB04_AND_PUB09_SECTIONS_HTML = """        <!-- ECOPARK_V4_PUB04_AND_PUB09:ST
 
 
 V4_SYSTEM_PAGES_PUB20_22_HTML = """              <!-- ECOPARK_V4_SYSTEM_PAGES:START -->
-              <!-- Sections autonomes PUB-20 (Mentions légales & CGV), PUB-21 (Page 404) et PUB-22 (Maintenance) — Corrige A-019 -->
+              <!-- Sections autonomes PUB-20 (Mentions légales & CGV), PUB-21 (Page 404) et PUB-22 (Maintenance) - Corrige A-019 -->
               <div class="col-4 card" id="sec-PUB-20" style="padding:18px;">
                 <span class="eyebrow"><span class="tech-code-tag">PUB-20 • </span>Cadre Légal &amp; Confidentialité</span>
                 <h3 style="font-size:1.15rem;margin:4px 0 8px;">Mentions Légales, CGV &amp; Données (+237)</h3>
@@ -1803,7 +1803,7 @@ V4_SYSTEM_PAGES_PUB20_22_HTML = """              <!-- ECOPARK_V4_SYSTEM_PAGES:ST
 
               <div class="col-4 card" id="sec-PUB-21" style="padding:18px;">
                 <span class="eyebrow"><span class="tech-code-tag">PUB-21 • </span>Écran Système d'Orientation</span>
-                <h3 style="font-size:1.15rem;margin:4px 0 8px;">Page 404 — Sentier Introuvable</h3>
+                <h3 style="font-size:1.15rem;margin:4px 0 8px;">Page 404 - Sentier Introuvable</h3>
                 <p style="font-size:13.5px;color:var(--color-text-muted);margin-bottom:10px;">
                   Vous semblez avoir quitté les sentiers balisés d'Ahala. Revenez en 1 clic vers l'accueil, la grille tarifaire officielle en FCFA ou votre billet QR.
                 </p>
@@ -2367,7 +2367,7 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
         SCREENS_77.push({
           id: 'ADM-09',
           family: 'ADM',
-          title: 'Inbox unifiée des leads et réservations — Statuts en 1 clic (Extension Phase 7)'
+          title: 'Inbox unifiée des leads et réservations - Statuts en 1 clic (Extension Phase 7)'
         });
       }
       if (typeof renderInspectorPills === 'function') {
@@ -2461,7 +2461,7 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
         desc: 'Embarquez pour une traversée paisible en pirogue traditionnelle sécurisée sur le lac d\'ECOPARK à Yaoundé-Ahala. Accompagné d\'un guide-pagayeur expérimenté, vous longez la végétation tropicale, observez les oiseaux d\'eau et profitez d\'une brise rafraîchissante loin du tumulte urbain.',
         prog: '1. Accueil à l\'embarcadère de la Zone C & remise des gilets homologués (5 min) • 2. Navigation commentée le long de la palmeraie et des bassins (30 min) • 3. Pause photo panoramique face aux pergolas du Château des Saveurs (10 min).',
         savoir: 'Port du gilet de sauvetage obligatoire pour adultes et enfants (inclus dans le tarif de 500 / 1 000 FCFA). En cas de pluie sur Ahala, votre billet bénéficie du report gratuit pendant 90 jours.',
-        avis: '« Traversée apaisante et très sécurisée pour nos deux enfants (facturés 500 FCFA chacun comme annoncé). Le pagayeur connaît parfaitement l\'histoire du lac d\'Ahala ! » — Famille MBARGA (Note : 4.9/5).'
+        avis: '« Traversée apaisante et très sécurisée pour nos deux enfants (facturés 500 FCFA chacun comme annoncé). Le pagayeur connaît parfaitement l\'histoire du lac d\'Ahala ! » - Famille MBARGA (Note : 4.9/5).'
       },
       zoo: {
         slug: 'zoo',
@@ -2475,7 +2475,7 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
         desc: 'Parcourez notre jardin zoologique et botanique ombragé à Ahala : rencontrez notre gorille emblématique « ToTo », les chimpanzés, tortues géantes, paons, oiseaux et reptiles, avec accès aux sentiers forestiers.',
         prog: '1. Entrée Coupe-File QR au portail RN3 • 2. Allée des primates et rencontre avec « ToTo » • 3. nourrissage pédagogique des tortues et poissons (sachet 500 FCFA en option) • 4. Détente sous la canopée.',
         savoir: 'Le tarif enfant (3 à 12 ans) est strictement sanctuarisé à 500 FCFA, y compris pour les groupes scolaires. Gratuité pour les moins de 3 ans.',
-        avis: '« Un vrai poumon vert à 15 minutes de Yaoundé. Les enfants ont adoré observer ToTo et les tortues géantes. » — École Bilingue Les Palmiers (Note : 4.9/5).'
+        avis: '« Un vrai poumon vert à 15 minutes de Yaoundé. Les enfants ont adoré observer ToTo et les tortues géantes. » - École Bilingue Les Palmiers (Note : 4.9/5).'
       },
       piscine: {
         slug: 'piscine',
@@ -2489,7 +2489,7 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
         desc: 'Profitez d\'un bassin semi-olympique cristallin entouré de palmiers et de pergolas à Yaoundé-Ahala, sous la surveillance constante de nos maîtres-nageurs diplômés.',
         prog: '1. Contrôle du bracelet d\'accès Piscine • 2. Douche savonnée obligatoire avant baignade • 3. Détente sur les transats et service rafraîchissements au bord de l\'eau.',
         savoir: 'Maillot de bain réglementaire exigé. Tarif prévente en ligne / semaine : Enfant 1 500 FCFA, Adulte 2 500 FCFA.',
-        avis: '« Eau très propre et maîtres-nageurs attentifs aux enfants. Le combo Piscine + Poisson braisé à midi est imbattable. » — M. & Mme ESSOMBA (Note : 4.8/5).'
+        avis: '« Eau très propre et maîtres-nageurs attentifs aux enfants. Le combo Piscine + Poisson braisé à midi est imbattable. » - M. & Mme ESSOMBA (Note : 4.8/5).'
       },
       cheval: {
         slug: 'cheval',
@@ -2503,7 +2503,7 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
         desc: 'Initiez vos enfants et toute la famille aux joies de l\'équitation en douceur dans notre enceinte verdoyante encadrée par un moniteur professionnel.',
         prog: '1. Prise de contact avec les chevaux et équipement sécurité • 2. Tour accompagné sur la piste cavalière d\'Ahala • 3. Photo souvenir.',
         savoir: 'Chaussures fermées recommandées. Tarif unique accessible : 500 FCFA Enfant / 1 000 FCFA Adulte.',
-        avis: '« Mon fils de 6 ans a fait son premier tour à cheval pour 500 FCFA avec un encadrant très patient. » — Clarisse N. (Note : 4.9/5).'
+        avis: '« Mon fils de 6 ans a fait son premier tour à cheval pour 500 FCFA avec un encadrant très patient. » - Clarisse N. (Note : 4.9/5).'
       },
       musee: {
         slug: 'musee',
@@ -2517,7 +2517,7 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
         desc: 'Découvrez la collection patrimoniale camerounaise (masques, instruments traditionnels, artisanat) et profitez de la bibliothèque éducative d\'ECOPARK Ahala au calme sous la canopée.',
         prog: '1. Accueil par le médiateur culturel • 2. Visite commentée des salles d\'exposition patrimoniale (40 min) • 3. Temps calme et lecture à la bibliothèque jeunesse & chercheurs (20 min).',
         savoir: 'Tarif éducatif accessible : 500 FCFA Enfant (protégé pour les sorties scolaires) / 1 000 FCFA Adulte.',
-        avis: '« Une halte culturelle passionnante après la visite du Zoo ToTo. Les élèves ont beaucoup appris. » — Collège Vogt (Note : 4.9/5).'
+        avis: '« Une halte culturelle passionnante après la visite du Zoo ToTo. Les élèves ont beaucoup appris. » - Collège Vogt (Note : 4.9/5).'
       }
     };
 
@@ -2820,7 +2820,7 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
     }
     if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.LODGES) {
       VISUAL_APPRECIATION_CATALOG.LODGES.SUITES_PRIVEES = {
-        title: 'Suites Privées Prestige VIP — Salon & Jacuzzi / Terrasse Privée',
+        title: 'Suites Privées Prestige VIP - Salon & Jacuzzi / Terrasse Privée',
         rate: '30 000 – 45 000 FCFA / nuit',
         desc: 'Suite Privée Prestige VIP climatisée avec salon privé, literie King-Size, room-service prioritaire Château des Saveurs et accès complet Piscine & Zoo.',
         src: 'audit-assets/ecopark-real-media/chambre.jpeg',
@@ -2903,8 +2903,8 @@ V4_JS_BLOCK = r"""// ECOPARK_PHASE9_V4_AND_RECETTE:START
           tr.children[2].innerHTML = '<span class="price-pill">5 000 à 6 500 FCFA</span>';
         } else if (html.indexOf('Piscine Semi-Olympique') !== -1 && tr.children.length >= 2) {
           tr.children[1].innerHTML = '<span class="price-pill">1 500 FCFA (Prévente/Sem.) • 2 500 FCFA (Guichet WE)</span>';
-        } else if (html.indexOf('Hébergement — Cités Bene, Chanthel') !== -1 && tr.children.length >= 1) {
-          tr.children[0].innerHTML = '<strong>Hébergement — Cités Bene, Chanthel, Ewondo &amp; Suites Privées</strong>';
+        } else if (html.indexOf('Hébergement - Cités Bene, Chanthel') !== -1 && tr.children.length >= 1) {
+          tr.children[0].innerHTML = '<strong>Hébergement - Cités Bene, Chanthel, Ewondo &amp; Suites Privées</strong>';
         }
       });
     };
@@ -3555,27 +3555,27 @@ def apply_phase9_v4(html: str) -> str:
         }
         if (optEw) {
           optEw.textContent = inv.ewondoFree > 0
-            ? `Cité Ewondo VIP — ${formatFCFA(ewUnit)}/nuit (${inv.ewondoFree}/8 libre${inv.ewondoFree > 1 ? 's' : ''})`
-            : 'Cité Ewondo VIP — Complet (0/8 libre)';
+            ? `Cité Ewondo VIP - ${formatFCFA(ewUnit)}/nuit (${inv.ewondoFree}/8 libre${inv.ewondoFree > 1 ? 's' : ''})`
+            : 'Cité Ewondo VIP - Complet (0/8 libre)';
           optEw.disabled = (inv.ewondoFree <= 0);
         }
         if (optSp) {
           const spFree = Math.max(1, Math.min(4, inv.ewondoFree));
           optSp.textContent = inv.ewondoFree > 0
-            ? `Suites Privées Prestige VIP — ${formatFCFA(spUnit)}/nuit (${spFree}/4 libre${spFree > 1 ? 's' : ''})`
-            : 'Suites Privées Prestige VIP — Complet (0/4 libre)';
+            ? `Suites Privées Prestige VIP - ${formatFCFA(spUnit)}/nuit (${spFree}/4 libre${spFree > 1 ? 's' : ''})`
+            : 'Suites Privées Prestige VIP - Complet (0/4 libre)';
           optSp.disabled = (inv.ewondoFree <= 0);
         }
         if (optCh) {
           optCh.textContent = inv.chanthelFree > 0
-            ? `Cité Chanthel Confort — ${formatFCFA(chUnit)}/nuit (${inv.chanthelFree}/12 libre${inv.chanthelFree > 1 ? 's' : ''})`
-            : 'Cité Chanthel Confort — Complet (0/12 libre)';
+            ? `Cité Chanthel Confort - ${formatFCFA(chUnit)}/nuit (${inv.chanthelFree}/12 libre${inv.chanthelFree > 1 ? 's' : ''})`
+            : 'Cité Chanthel Confort - Complet (0/12 libre)';
           optCh.disabled = (inv.chanthelFree <= 0);
         }
         if (optBe) {
           optBe.textContent = inv.beneFree > 0
-            ? `Cité Bene Standard — ${formatFCFA(beUnit)}/nuit (${inv.beneFree}/10 libre${inv.beneFree > 1 ? 's' : ''})`
-            : 'Cité Bene Standard — Complet à cette date (0/10)';
+            ? `Cité Bene Standard - ${formatFCFA(beUnit)}/nuit (${inv.beneFree}/10 libre${inv.beneFree > 1 ? 's' : ''})`
+            : 'Cité Bene Standard - Complet à cette date (0/10)';
           optBe.disabled = (inv.beneFree <= 0);
         }"""
     html = old_lodge_sync_pattern.sub(new_lodge_sync_code, html, count=1)
@@ -3709,14 +3709,14 @@ def apply_phase9_v4(html: str) -> str:
         ),
         ('<td>Plats : <strong>3 500 à 8 500 FCFA</strong></td>', '<td>Plats : <strong>5 000 à 6 500 FCFA</strong></td>'),
         (
-            '<td><strong>Hébergement — Cités Bene, Chanthel & Ewondo</strong></td>\n                    <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo)</td>',
-            '<td><strong>Hébergement — Cités Bene, Chanthel, Ewondo &amp; Suites Privées</strong></td>\n                    <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo) • <strong>30 000 à 45 000 FCFA</strong> (Suites Privées)</td>'
+            '<td><strong>Hébergement - Cités Bene, Chanthel & Ewondo</strong></td>\n                    <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo)</td>',
+            '<td><strong>Hébergement - Cités Bene, Chanthel, Ewondo &amp; Suites Privées</strong></td>\n                    <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo) • <strong>30 000 à 45 000 FCFA</strong> (Suites Privées)</td>'
         ),
         ('<span class="price-pill" style="font-size:11.5px;padding:2px 8px;">Dès 3 500 FCFA</span>', '<span class="price-pill" style="font-size:11.5px;padding:2px 8px;">Dès 2 500 FCFA</span>'),
         ("price: '1 500 – 8 500 FCFA'", "price: '1 500 – 6 500 FCFA'"),
         (
-            "title: 'Zone E — Cités Hôtelières (Bene, Chanthel, Ewondo) & Campus CFP',\n        desc: 'Pavillons de séjour au calme (10 000 à 30 000 FCFA) et Centre de Formation Professionnelle agréé MINEFOP.',\n        price: '10 000 – 30 000 FCFA'",
-            "title: 'Zone E — Cités Hôtelières (Bene, Chanthel, Ewondo, Suites Privées) & Campus CFP',\n        desc: 'Pavillons de séjour au calme (10 000 à 45 000 FCFA) et Centre de Formation Professionnelle agréé MINEFOP.',\n        price: '10 000 – 45 000 FCFA'"
+            "title: 'Zone E - Cités Hôtelières (Bene, Chanthel, Ewondo) & Campus CFP',\n        desc: 'Pavillons de séjour au calme (10 000 à 30 000 FCFA) et Centre de Formation Professionnelle agréé MINEFOP.',\n        price: '10 000 – 30 000 FCFA'",
+            "title: 'Zone E - Cités Hôtelières (Bene, Chanthel, Ewondo, Suites Privées) & Campus CFP',\n        desc: 'Pavillons de séjour au calme (10 000 à 45 000 FCFA) et Centre de Formation Professionnelle agréé MINEFOP.',\n        price: '10 000 – 45 000 FCFA'"
         ),
         (
             '<strong style="margin-left:8px;">Repas au Château des Saveurs</strong> (Enfant : 2 500 FCFA • Adulte : 5 000 FCFA)',
@@ -3724,7 +3724,7 @@ def apply_phase9_v4(html: str) -> str:
         ),
         (
             '<option value="Poisson Braisé d\'Ahala (Étang frais)" selected>Poisson Braisé d\'Ahala (Étang frais)</option>\n                          <option value="Poulet DG Royal Plantain Mûr">Poulet DG Royal &amp; Plantain Mûr</option>\n                          <option value="Ndolé Royal Crevettes & Miondo">Ndolé Royal Crevettes &amp; Miondo</option>\n                          <option value="Menu Enfant & Grillades Douces">Menu Enfant &amp; Grillades Douces</option>',
-            '<option value="Poisson Braisé d\'Ahala (Étang frais)" selected>Poisson Braisé d\'Ahala — 5 000 FCFA (Étang frais)</option>\n                          <option value="Poulet DG Royal Plantain Mûr">Poulet DG Royal &amp; Plantain Mûr — 6 500 FCFA</option>\n                          <option value="Ndolé Royal Crevettes & Miondo">Ndolé Royal Crevettes &amp; Miondo — 5 500 FCFA</option>\n                          <option value="Menu Enfant & Grillades Douces">Menu Enfant &amp; Grillades Douces — 2 500 FCFA</option>'
+            '<option value="Poisson Braisé d\'Ahala (Étang frais)" selected>Poisson Braisé d\'Ahala - 5 000 FCFA (Étang frais)</option>\n                          <option value="Poulet DG Royal Plantain Mûr">Poulet DG Royal &amp; Plantain Mûr - 6 500 FCFA</option>\n                          <option value="Ndolé Royal Crevettes & Miondo">Ndolé Royal Crevettes &amp; Miondo - 5 500 FCFA</option>\n                          <option value="Menu Enfant & Grillades Douces">Menu Enfant &amp; Grillades Douces - 2 500 FCFA</option>'
         ),
         (
             '<option value="Navette Standard Climatisée" selected>Places en Navette Climatisée (18 / 32 pl.)</option>\n                          <option value="Véhicule VIP 5 places">Navette Privée VIP (5 places)</option>',

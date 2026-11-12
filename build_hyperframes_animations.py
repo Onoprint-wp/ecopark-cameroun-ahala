@@ -2,9 +2,9 @@
 """
 Implémentation des 3 animations HyperFrames (heygen-com/hyperframes + Apple Motion Design)
 sur ECOPARK Cameroun (Yaoundé-Ahala) :
-1. Animation 1 — « HyperFrames Scene Reel » sur le Hero (#sec-PUB-01, window.__timelines["ecopark-hero-reel"])
-2. Animation 2 — « Staggered Bento Reveal & Tracé Vectoriel SVG du Parc (Zones A -> E) » (#sec-PUB-03 & #sec-PUB-13, window.__timelines["ecopark-ahala-map"])
-3. Animation 3 — « Kinetic FCFA Odometer & Apple Wallet QR Pass 3D Reveal » (#sec-RES-03 & #sec-RES-09, window.__timelines["ecopark-qr-pass"])
+1. Animation 1 - « HyperFrames Scene Reel » sur le Hero (#sec-PUB-01, window.__timelines["ecopark-hero-reel"])
+2. Animation 2 - « Staggered Bento Reveal & Tracé Vectoriel SVG du Parc (Zones A -> E) » (#sec-PUB-03 & #sec-PUB-13, window.__timelines["ecopark-ahala-map"])
+3. Animation 3 - « Kinetic FCFA Odometer & Apple Wallet QR Pass 3D Reveal » (#sec-RES-03 & #sec-RES-09, window.__timelines["ecopark-qr-pass"])
 """
 import pathlib
 
@@ -313,7 +313,7 @@ HYPERFRAMES_JS = """
       const meta = HERO_REEL_META[idx] || HERO_REEL_META[0];
       const capText = document.getElementById('heroSceneCaptionText');
       if (capText) {
-        capText.textContent = `${meta.label} — ${meta.price}`;
+        capText.textContent = `${meta.label} - ${meta.price}`;
       }
       const capPill = document.getElementById('heroSceneCaptionPill');
       if (capPill && capPill.animate) {
@@ -411,27 +411,27 @@ HYPERFRAMES_JS = """
     // --- ANIMATION 2 : STAGGERED BENTO REVEAL & TRACÉ VECTORIEL SVG AHALA ---
     const AHALA_ZONES_INFO = [
       {
-        title: 'Zone A — Entrée, Parking 150 places & Guichets QR',
+        title: 'Zone A - Entrée, Parking 150 places & Guichets QR',
         desc: 'Accès direct depuis la Nationale N°3 (Ahala Barrière, après Tradex). Contrôle rapide des billets électroniques QR.',
         price: 'Parking Gratuit'
       },
       {
-        title: 'Zone B — Cœur Vert : Jardin Zoologique & Allées Botaniques',
+        title: 'Zone B - Cœur Vert : Jardin Zoologique & Allées Botaniques',
         desc: 'Observation des primates (chimpanzés, singes), tortues géantes, paons, autruches et antilopes sous la canopée.',
         price: '500 / 1 000 FCFA'
       },
       {
-        title: "Zone C — Lac Naturel d'Ahala, Pirogues & Équitation",
+        title: "Zone C - Lac Naturel d'Ahala, Pirogues & Équitation",
         desc: 'Embarcadère sécurisé avec gilets de sauvetage fournis, traversée en pirogue/pédalo et carrière équestre.',
         price: '500 / 1 000 FCFA'
       },
       {
-        title: 'Zone D — Piscine Semi-Olympique & Le Château des Saveurs',
+        title: 'Zone D - Piscine Semi-Olympique & Le Château des Saveurs',
         desc: 'Baignade surveillée par maître-nageur (1 500 / 2 500 FCFA) et gastronomie camerounaise (poisson braisé, poulet DG).',
         price: '1 500 – 8 500 FCFA'
       },
       {
-        title: 'Zone E — Cités Hôtelières (Bene, Chanthel, Ewondo) & Campus CFP',
+        title: 'Zone E - Cités Hôtelières (Bene, Chanthel, Ewondo) & Campus CFP',
         desc: 'Pavillons de séjour au calme (10 000 à 30 000 FCFA) et Centre de Formation Professionnelle agréé MINEFOP.',
         price: '10 000 – 30 000 FCFA'
       }
@@ -683,7 +683,7 @@ def apply_hyperframes(path: pathlib.Path):
     new_hero_frame = """                <div class="hero-showcase-frame clip" id="heroShowcaseFrame" data-composition-id="ecopark-hero-reel" data-start="0" data-duration="24" data-track-index="1" onclick="openEcoparkLightbox(window._currentHeroSlideIdx || 0)">
                   <span class="hero-scene-caption-pill clip" id="heroSceneCaptionPill" data-start="0" data-duration="6" data-track-index="2">
                     <span class="hero-scene-caption-dot"></span>
-                    <span id="heroSceneCaptionText">Scène 1/4 • Lac &amp; Pirogues — 500 / 1 000 FCFA</span>
+                    <span id="heroSceneCaptionText">Scène 1/4 • Lac &amp; Pirogues - 500 / 1 000 FCFA</span>
                   </span>
                   <span class="photo-zoom-pill"><svg class="svg-mono" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" x2="16.65" y1="21" y2="16.65"/><line x1="11" x2="11" y1="8" y2="14"/><line x1="8" x2="14" y1="11" y2="11"/></svg> Plein écran HD</span>
                   <img id="heroShowcaseImg" src="audit-assets/ecopark-real-media/balade_pirogue3.jpg" alt="Balade en pirogue sur le lac verdoyant d'ECOPARK à Yaoundé-Ahala" />

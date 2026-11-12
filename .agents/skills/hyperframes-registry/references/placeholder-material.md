@@ -129,11 +129,11 @@ variable migration.
 The ban is on **hue-carrying fills**, not on the CSS function. These are material, not
 placeholder, and flattening them breaks the thing the item exists to do:
 
-- **Physical surfaces** — device bezels, brushed metal, glass, a screen's inner vignette.
-- **Sheens and sweeps** — `linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent)`
+- **Physical surfaces** - device bezels, brushed metal, glass, a screen's inner vignette.
+- **Sheens and sweeps** - `linear-gradient(90deg, transparent, rgba(255,255,255,0.75), transparent)`
   driven across an element. That is motion, not decoration.
-- **Scrims and vignettes** — `rgba(0,0,0,α)` ramps that buy text contrast over media.
-- **Effects whose subject is the gradient** — aurora, liquid glass, chromatic aberration,
+- **Scrims and vignettes** - `rgba(0,0,0,α)` ramps that buy text contrast over media.
+- **Effects whose subject is the gradient** - aurora, liquid glass, chromatic aberration,
   grain fields, shader transitions. The gradient is the product.
 
 All four are achromatic or physically motivated. If a gradient is neither, it is placeholder

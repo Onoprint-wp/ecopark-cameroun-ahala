@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Générateur de l'aperçu visuel « Apple-Grade × Canopée Vivante » (Version v3 — Finition chirurgicale)
+Générateur de l'aperçu visuel « Apple-Grade × Canopée Vivante » (Version v3 - Finition chirurgicale)
 Corrections v3 :
 1. En-tête Liquid Glass strictement sur 1 seule ligne horizontale sur Desktop (@media min-width: 1080px).
 2. Masquage global en mode visiteur normal de toutes les barres techniques .subnav-bar et de tous les codes (RES-01, PUB-05, etc.) entourés ou non de backticks.

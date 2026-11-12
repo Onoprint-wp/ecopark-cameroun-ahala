@@ -25,7 +25,7 @@ const { values: args } = parseArgs({
 });
 
 if (args.help) {
-  console.log(`media-use audio-duck — generate a volume ducking lane (data-automation)
+  console.log(`media-use audio-duck - generate a volume ducking lane (data-automation)
 
 Usage:
   node audio-duck.mjs --meta audio_meta.json --target "#bgm"

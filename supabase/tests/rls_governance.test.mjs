@@ -1,5 +1,5 @@
 // ============================================================================
-// ECOPARK — Tests de la migration « Gouvernance CRUD » (RLS, RPC, audit immuable)
+// ECOPARK - Tests de la migration « Gouvernance CRUD » (RLS, RPC, audit immuable)
 // Exécution : cd supabase/tests && npm install && npm test
 // Moteur : PGlite (PostgreSQL en WebAssembly) + émulation du schéma auth Supabase.
 // ============================================================================

@@ -1,0 +1,28 @@
+{
+  "name": "ECOPARK CAMEROUN - Yaoundé Ahala",
+  "short_name": "ECOPARK",
+  "description": "Complexe éco-touristique, parc animalier, piscine, 4 cités hôtelières, restaurant Le Château des Saveurs, billetterie QR Coupe-File et CFP MINEFOP à Yaoundé-Ahala (RN3).",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#F7F5EF",
+  "theme_color": "#254B28",
+  "lang": "fr-CM",
+  "dir": "ltr",
+  "categories": ["travel", "Tourism", "hospitality", "education", "business"],
+  "icons": [
+    {
+      "src": "/audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

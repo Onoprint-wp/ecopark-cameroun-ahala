@@ -1,18 +1,18 @@
-// bake-basemap.mjs — bake a real-imagery map camera move for a composition (references/film.md, "Maps").
+// bake-basemap.mjs - bake a real-imagery map camera move for a composition (references/film.md, "Maps").
 //
 // WHAT IT DOES (and why baking at all): drives MapLibre in headless Chrome to record ONLY the
 // real-imagery basemap as an MP4 (camera zoom→hold), and projects each requested country's border
 // to SCREEN coordinates at the held view. The HF composition then plays the MP4 on track 0 and
 // animates a *live* SVG overlay (border draw-on, colour-block / flag fills, labels, pins) from the
-// exported `<NAME>-coords.json`. Borders/fills are NOT baked into the video — they stay editable in HF.
+// exported `<NAME>-coords.json`. Borders/fills are NOT baked into the video - they stay editable in HF.
 //
 // Why bake the imagery at all (this is the real reason, not "smoothness"): HF forbids render-time
 // network and requires deterministic output. Live raster tiles re-fetch every render and can change
 // → non-deterministic. Baking FREEZES the imagery into pixels = deterministic + offline-reproducible.
 // (Exposing the engine's per-frame `onBeforeCapture` hook would let MapLibre run live and smooth, but
-// it would NOT remove the need to freeze tiles for determinism — so this bake step stays relevant.)
+// it would NOT remove the need to freeze tiles for determinism - so this bake step stays relevant.)
 //
-// PARAMETRIC — drive everything by env. Example (Brazil + Argentina on satellite):
+// PARAMETRIC - drive everything by env. Example (Brazil + Argentina on satellite):
 //   NAME=br-ar STYLE=satellite COUNTRIES="Brazil:#22d3ee,Argentina:#f59e0b" \
 //   CENTER="-60,-25" ZSTART=2.4 ZEND=3.4 FPS=30 DUR=5 node bake-basemap.mjs
 // From space down to a street (globe, starfield, a turn from FROM to CENTER, then the dive):
@@ -89,7 +89,7 @@ const PROJECTION = process.env.PROJECTION === "globe" ? "globe" : "mercator";
 const FROM = process.env.FROM ? process.env.FROM.split(",").map(Number) : null; // pan start; null = no pan
 const PAN = +(process.env.PAN || 0.35); // p at which the pan from FROM reaches CENTER
 const MARGIN = (process.env.KEEPMARGIN || "16,13").split(",").map(Number); // [lon°,lat°] keep-box around each country's mainland
-// COUNTRIES="Name:#hex,Name:#hex" — borders to project (optional; omit for a pure zoom-to / pin shot)
+// COUNTRIES="Name:#hex,Name:#hex" - borders to project (optional; omit for a pure zoom-to / pin shot)
 const COUNTRIES = (process.env.COUNTRIES || "")
   .split(",")
   .map((s) => s.trim())
@@ -99,7 +99,7 @@ const COUNTRIES = (process.env.COUNTRIES || "")
     return { name, color: color || "#38bdf8" };
   });
 
-// fail fast on bad numeric env — otherwise NaN silently bakes zero/garbage frames and still prints "done"
+// fail fast on bad numeric env - otherwise NaN silently bakes zero/garbage frames and still prints "done"
 for (const [k, v] of Object.entries({
   "CENTER.lng": CENTER[0],
   "CENTER.lat": CENTER[1],
@@ -115,11 +115,11 @@ for (const [k, v] of Object.entries({
 }))
   if (!Number.isFinite(v))
     throw new Error(
-      `bad numeric env: ${k}=${v} — check CENTER="lng,lat" / ZSTART / ZEND / FPS / DUR`,
+      `bad numeric env: ${k}=${v} - check CENTER="lng,lat" / ZSTART / ZEND / FPS / DUR`,
     );
 
 // IMPORTANT: tileSize:256 matches Esri/CARTO raster endpoints. MapLibre's INTERNAL world width is
-// 512·2^zoom regardless — a 512px (@2x/retina/vector) tile source needs tileSize:512 or every zoom
+// 512·2^zoom regardless - a 512px (@2x/retina/vector) tile source needs tileSize:512 or every zoom
 // level is off by one. Keep 256 for these raster sources.
 const TILES =
   {
@@ -172,7 +172,7 @@ function camAt(p){
   return {center:c, zoom:ZSTART+(ZEND-ZSTART)*t, pitch:PITCH*t, bearing:BEARING*t}; }
 function ringCentroid(r){ var sx=0,sy=0; for(var k=0;k<r.length;k++){sx+=r[k][0];sy+=r[k][1];} return [sx/r.length, sy/r.length]; }
 // Keep the polygons in a lon/lat box around the country's MAINLAND (the vertex-richest polygon),
-// dropping far-flung overseas territories that would blow up the bbox. Generalizes per subject —
+// dropping far-flung overseas territories that would blow up the bbox. Generalizes per subject -
 // no continent-specific constant. Keeps near islands (Corsica, Sicily); drops Guiana, Alaska, Hawaii.
 function mainland(f){
   if(!f) return f;
@@ -200,7 +200,7 @@ window.__ready=new Promise(function(res){ map.on("load", function(){
       if(!f){ window.__warn.push("country not found in world-atlas: "+want.name); return; }
       f=mainland(f);
       unwrapLon(f, CENTER[0]); // antimeridian: unwrap lons around the camera ref (CENTER must be near the subject) before projecting
-      if(lonSpan(f)>180) window.__warn.push(want.name+" spans >180° lon even after unwrap — projection may still smear.");
+      if(lonSpan(f)>180) window.__warn.push(want.name+" spans >180° lon even after unwrap - projection may still smear.");
       FEATS.push({name:want.name, color:want.color, f:f});
     });
     res();
@@ -258,7 +258,7 @@ try {
     const timedOut = await page.evaluate((ms) => window.__waitIdle(ms), 9000);
     if (timedOut) {
       timeouts.push(i);
-      console.warn(`[${NAME}] idle TIMEOUT at frame ${i} — tiles may be incomplete`);
+      console.warn(`[${NAME}] idle TIMEOUT at frame ${i} - tiles may be incomplete`);
     }
     await page.screenshot({
       path: join(framesDir, `f${String(i).padStart(4, "0")}.png`),
@@ -302,7 +302,7 @@ try {
   if (ff.status === 0) console.log(`[${NAME}] encoded → ${mp4}`);
   else
     console.warn(
-      `[${NAME}] ffmpeg unavailable (status ${ff.status}) — encode manually:\n  ffmpeg -y -framerate ${FPS} -i ${pat} -c:v libx264 -pix_fmt yuv420p -g 1 -crf 16 -movflags +faststart ${mp4}`,
+      `[${NAME}] ffmpeg unavailable (status ${ff.status}) - encode manually:\n  ffmpeg -y -framerate ${FPS} -i ${pat} -c:v libx264 -pix_fmt yuv420p -g 1 -crf 16 -movflags +faststart ${mp4}`,
     );
   if (coords) {
     writeFileSync(join(OUT, NAME + "-coords.json"), JSON.stringify(coords));
@@ -311,13 +311,13 @@ try {
     );
   }
   if (timeouts.length) {
-    // FAIL LOUD: the asset exists but is suspect — don't let a half-loaded bake pass silently
+    // FAIL LOUD: the asset exists but is suspect - don't let a half-loaded bake pass silently
     console.error(
       `[${NAME}] ${timeouts.length}/${N} frame(s) hit the idle timeout (frames ${timeouts.slice(0, 8).join(",")}${timeouts.length > 8 ? "…" : ""}). The basemap MP4 may have INCOMPLETE tiles. Re-run with a slower zoom / larger timeout / check the tile server.`,
     );
     process.exitCode = 1;
   } else {
-    console.log(`[${NAME}] done — all ${N} frames reached map idle (complete tiles).`);
+    console.log(`[${NAME}] done - all ${N} frames reached map idle (complete tiles).`);
   }
 } finally {
   await browser.close();

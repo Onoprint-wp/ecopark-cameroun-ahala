@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 """
 Générateur du Prototype Interactif Complet ECOPARK Yaoundé-Ahala
-Direction artistique validée : « Canopée vivante — Le cercle du vivant »
+Direction artistique validée : « Canopée vivante - Le cercle du vivant »
 Couverture : 77 écrans contractuels (DS-01..08, PUB-01..22, RES-01..12, ACC-01..06, AGT-01..09, EXP-01..07, DIR-01..05, ADM-01..08)
 Contexte visuel : 100 % Cameroun (Photos réelles ECOPARK Ahala + Illustrations locales Cameroun badgées)
 """
@@ -15,13 +15,13 @@ HTML_CONTENT = r"""<!DOCTYPE html>
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ECOPARK CAMEROUN — Parc de Loisirs, Nature, Restauration, Hébergement & Formation à Yaoundé-Ahala</title>
+  <title>ECOPARK CAMEROUN - Parc de Loisirs, Nature, Restauration, Hébergement & Formation à Yaoundé-Ahala</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Semi+Condensed:wght@600;700&family=Source+Sans+3:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
   <style>
     :root {
-      /* Palette officielle proposée — « Canopée vivante — Le cercle du vivant » */
+      /* Palette officielle proposée - « Canopée vivante - Le cercle du vivant » */
       --color-white: #FFFFFF;
       --color-brand-deep: #1D490D;
       --color-brand-leaf: #1F880B;
@@ -706,8 +706,8 @@ HTML_CONTENT = r"""<!DOCTYPE html>
   <aside class="review-inspector-shell" aria-label="Outil de revue du prototype et des 77 écrans">
     <div class="review-inspector-top">
       <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
-        <span class="review-badge">Outil de Revue — 77/77 Écrans</span>
-        <span>Direction : <strong>Canopée vivante — Le cercle du vivant</strong></span>
+        <span class="review-badge">Outil de Revue - 77/77 Écrans</span>
+        <span>Direction : <strong>Canopée vivante - Le cercle du vivant</strong></span>
       </div>
       <div class="review-controls">
         <label for="roleSelector" style="font-size:12.5px;">Rôle (7) :</label>
@@ -778,7 +778,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
       <div class="active-screen-indicator-inner">
         <div>
           <span class="screen-id-code" id="currentScreenCode">PUB-01</span>
-          <strong id="currentScreenTitle">Accueil — Site Public ECOPARK CAMEROUN</strong>
+          <strong id="currentScreenTitle">Accueil - Site Public ECOPARK CAMEROUN</strong>
           <span id="currentScreenFamilyLabel" style="color:var(--color-text-muted);margin-left:8px;">(Famille 2 : Site Public)</span>
         </div>
         <div style="display:flex;align-items:center;gap:12px;">
@@ -880,7 +880,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               <div class="col-5">
                 <div class="leaf-photo-frame" style="aspect-ratio:4/3;">
                   <img src="audit-assets/ecopark-real-media/balade_pirogue3.jpg" alt="Balade en pirogue sur le lac verdoyant d'ECOPARK à Yaoundé-Ahala" />
-                  <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Lac d'Ahala</span>
+                  <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK - Lac d'Ahala</span>
                 </div>
               </div>
             </div>
@@ -904,7 +904,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 <div>
                   <div class="card-media-wrapper">
                     <img src="audit-assets/ecopark-real-media/chimpanze.jpeg" alt="Chimpanzé du jardin zoologique d'ECOPARK Cameroun" />
-                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Zoo</span>
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK - Zoo</span>
                   </div>
                   <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
                     <span class="eyebrow" style="margin:0;">PUB-05 • Nature & Faune</span>
@@ -926,7 +926,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 <div>
                   <div class="card-media-wrapper">
                     <img src="audit-assets/stitch-canopee-vivante/local_cameroon_pool_pirogue.png" alt="Piscine semi-olympique et lac de pirogues à ECOPARK" />
-                    <span class="media-origin-badge media-local-temp">🎨 Illustration temporaire — Contexte local Cameroun</span>
+                    <span class="media-origin-badge media-local-temp">🎨 Illustration temporaire - Contexte local Cameroun</span>
                   </div>
                   <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
                     <span class="eyebrow" style="margin:0;">PUB-06 • Eau & Plein Air</span>
@@ -948,7 +948,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 <div>
                   <div class="card-media-wrapper">
                     <img src="audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png" alt="Gastronomie camerounaise au Château des Saveurs ECOPARK" />
-                    <span class="media-origin-badge media-local-temp">🎨 Illustration temporaire — Gastronomie Cameroun</span>
+                    <span class="media-origin-badge media-local-temp">🎨 Illustration temporaire - Gastronomie Cameroun</span>
                   </div>
                   <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
                     <span class="eyebrow" style="margin:0;">PUB-07 • Restauration</span>
@@ -970,7 +970,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 <div>
                   <div class="card-media-wrapper">
                     <img src="audit-assets/ecopark-real-media/chambre.jpeg" alt="Chambre des Loges d'hébergement ECOPARK Yaoundé" />
-                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Loges</span>
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK - Loges</span>
                   </div>
                   <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
                     <span class="eyebrow" style="margin:0;">PUB-08/09 • Hébergement</span>
@@ -992,7 +992,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 <div>
                   <div class="card-media-wrapper">
                     <img src="audit-assets/ecopark-real-media/IMG-20260809-WA0009.jpg" alt="Groupe et événement culturel à ECOPARK Yaoundé" />
-                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — Groupes</span>
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK - Groupes</span>
                   </div>
                   <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
                     <span class="eyebrow" style="margin:0;">PUB-11 • Écoles & B2B</span>
@@ -1013,7 +1013,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 <div>
                   <div class="card-media-wrapper">
                     <img src="audit-assets/ecopark-real-media/1786968889976.jpg" alt="Centre de Formation Professionnelle CFP ECOPARK" />
-                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK — CFP</span>
+                    <span class="media-origin-badge media-real">📷 Photo réelle ECOPARK - CFP</span>
                   </div>
                   <div style="margin-top:14px;display:flex;justify-content:space-between;align-items:center;">
                     <span class="eyebrow" style="margin:0;">PUB-12 • Formation MINEFOP</span>
@@ -1084,14 +1084,14 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                     <td><button class="btn btn-secondary btn-sm" onclick="addActivityAndGo('cheval')">Sélectionner</button></td>
                   </tr>
                   <tr>
-                    <td><strong>Restauration — Le Château des Saveurs</strong></td>
+                    <td><strong>Restauration - Le Château des Saveurs</strong></td>
                     <td>Menu Enfant : <strong>2 500 FCFA</strong></td>
                     <td>Plats : <strong>3 500 à 8 500 FCFA</strong></td>
                     <td>Buffets groupes, mariages et séminaires sur devis personnalisé.</td>
                     <td><button class="btn btn-secondary btn-sm" onclick="navigateFamily('RES', 'RES-03')">Estimer</button></td>
                   </tr>
                   <tr>
-                    <td><strong>Hébergement — Cités Bene, Chanthel & Ewondo</strong></td>
+                    <td><strong>Hébergement - Cités Bene, Chanthel & Ewondo</strong></td>
                     <td colspan="2"><strong>10 000 à 15 000 FCFA</strong> (Bene) • <strong>15 000 à 25 000 FCFA</strong> (Chanthel) • <strong>25 000 à 30 000 FCFA</strong> (Ewondo)</td>
                     <td>Repos en journée (Day-use) ou nuitée complète avec accès parc.</td>
                     <td><button class="btn btn-secondary btn-sm" onclick="navigateFamily('RES', 'RES-01')">Réserver</button></td>
@@ -1118,7 +1118,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
 
             <div class="grid-12">
               <div class="col-6 card">
-                <h3>🗺️ PUB-02 & PUB-13 — Plan d'Orientation & Accès Ahala</h3>
+                <h3>🗺️ PUB-02 & PUB-13 - Plan d'Orientation & Accès Ahala</h3>
                 <p style="font-size:15px;color:var(--color-text-muted);">
                   Situé sur l'axe lourd Yaoundé–Douala (Nationale N°3), quartier <strong>Ahala Barrière</strong>, juste après la station-service Tradex. Parking intérieur sécurisé et gratuit (capacité 150 véhicules et bus scolaires).
                 </p>
@@ -1132,7 +1132,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               </div>
 
               <div class="col-6 card">
-                <h3>❓ PUB-17 & PUB-19 — Recherche Globale & Questions Fréquentes</h3>
+                <h3>❓ PUB-17 & PUB-19 - Recherche Globale & Questions Fréquentes</h3>
                 <div class="form-group" style="margin-bottom:10px;">
                   <label class="form-label" for="globalSearchInput">Rechercher une activité, un tarif ou une information (PUB-19) :</label>
                   <input id="globalSearchInput" type="search" class="form-control" placeholder="Ex : piscine, pirogue, tarif enfant, loge Ewondo, CFP..." oninput="filterFAQSearch(this.value)" />
@@ -1148,7 +1148,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                   </div>
                   <div style="padding:10px;background:var(--color-surface-soft);border-radius:8px;">
                     <strong>Les photos présentées sur ce prototype sont-elles réelles ?</strong><br/>
-                    Chaque visuel porte un badge explicite : <em>Photo réelle ECOPARK</em> (prise à Ahala) ou <em>Illustration temporaire — Contexte local Cameroun</em> dans l'attente de nouvelles prises de vue.
+                    Chaque visuel porte un badge explicite : <em>Photo réelle ECOPARK</em> (prise à Ahala) ou <em>Illustration temporaire - Contexte local Cameroun</em> dans l'attente de nouvelles prises de vue.
                   </div>
                 </div>
               </div>
@@ -1156,7 +1156,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               <!-- Aperçu des écrans PUB-14, PUB-15/16, PUB-18, PUB-20, PUB-21, PUB-22 -->
               <div class="col-12 card">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
-                  <h3>📸 PUB-14 à PUB-22 — Galerie Contexte Local, Actualités, Contact, Mentions Légales, 404 & Maintenance</h3>
+                  <h3>📸 PUB-14 à PUB-22 - Galerie Contexte Local, Actualités, Contact, Mentions Légales, 404 & Maintenance</h3>
                   <div style="display:flex;gap:6px;flex-wrap:wrap;">
                     <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-14')">PUB-14 Galerie</button>
                     <button class="btn btn-secondary btn-sm" onclick="inspectScreen('PUB-15')">PUB-15/16 Actualités</button>
@@ -1348,7 +1348,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
 
                   <!-- Paiement Mobile Money en mode démonstration sans saisie de code PIN (RES-07, RES-08, RES-11) -->
                   <div style="background:var(--color-white);padding:14px;border-radius:var(--radius-sm);border:1px solid var(--color-border);">
-                    <strong style="display:block;margin-bottom:8px;">Mode de règlement (`RES-07` / `RES-08` — Mode Démonstration) :</strong>
+                    <strong style="display:block;margin-bottom:8px;">Mode de règlement (`RES-07` / `RES-08` - Mode Démonstration) :</strong>
                     <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;">
                       <label style="display:inline-flex;align-items:center;gap:6px;font-size:14.5px;">
                         <input type="radio" name="payMethod" value="OM" checked /> <strong>Orange Money Cameroun</strong>
@@ -1374,7 +1374,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                       </select>
                     </div>
                     <div id="momoStateFeedback" class="status-badge status-success" style="margin-top:10px;width:100%;justify-content:center;">
-                      ✅ Paiement de démonstration confirmé — Référence : OM-CM-2026-99412
+                      ✅ Paiement de démonstration confirmé - Référence : OM-CM-2026-99412
                     </div>
                   </div>
 
@@ -1388,7 +1388,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 <div class="card" id="demoTicketCard">
                   <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:2px dashed var(--color-border-strong);padding-bottom:10px;">
                     <div>
-                      <span class="status-badge status-warning" style="font-weight:700;">BILLET DÉMONSTRATION — PROTOTYPE</span>
+                      <span class="status-badge status-warning" style="font-weight:700;">BILLET DÉMONSTRATION - PROTOTYPE</span>
                       <h3 style="margin-top:6px;">Pass Journée ECOPARK Ahala (`RES-09`)</h3>
                     </div>
                     <div style="text-align:right;">
@@ -1450,12 +1450,12 @@ HTML_CONTENT = r"""<!DOCTYPE html>
           <div class="container">
             <div class="section-header">
               <span class="eyebrow">ACC-01 à ACC-06 • Espace Personnel Visiteur & Responsable de Groupe</span>
-              <h2>Bonjour M. Jean-Paul MBARGA — Vos visites et dossiers ECOPARK</h2>
+              <h2>Bonjour M. Jean-Paul MBARGA - Vos visites et dossiers ECOPARK</h2>
             </div>
 
             <div class="grid-12">
               <div class="col-4 card">
-                <h3>🔐 ACC-01 & ACC-06 — Accès Rapide & Profil</h3>
+                <h3>🔐 ACC-01 & ACC-06 - Accès Rapide & Profil</h3>
                 <p style="font-size:14.5px;color:var(--color-text-muted);">
                   Compte vérifié par code SMS / WhatsApp sur le <strong>+237 694 12 34 56</strong>.
                 </p>
@@ -1468,7 +1468,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               </div>
 
               <div class="col-8 card">
-                <h3>🎟️ ACC-02, ACC-03 & ACC-05 — Mes Réservations et Billets Actifs</h3>
+                <h3>🎟️ ACC-02, ACC-03 & ACC-05 - Mes Réservations et Billets Actifs</h3>
                 <div class="table-responsive">
                   <table>
                     <thead>
@@ -1540,7 +1540,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
             <div class="grid-12">
               <!-- Vente rapide au guichet (AGT-03, AGT-04) -->
               <div class="col-6 card">
-                <h3>⚡ AGT-03 & AGT-04 — Vente Rapide au Guichet (Walk-in)</h3>
+                <h3>⚡ AGT-03 & AGT-04 - Vente Rapide au Guichet (Walk-in)</h3>
                 <p style="font-size:14.5px;color:var(--color-text-muted);">
                   Touches directes sans saisie complexe pour fluidifier la file d'attente du week-end à l'entrée d'Ahala :
                 </p>
@@ -1571,7 +1571,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
 
               <!-- Contrôle des entrées & 7 verdicts de scan QR (AGT-05, AGT-06, AGT-07) -->
               <div class="col-6 card">
-                <h3>🔍 AGT-05, AGT-06 & AGT-07 — Contrôle QR & Simulation des 7 États</h3>
+                <h3>🔍 AGT-05, AGT-06 & AGT-07 - Contrôle QR & Simulation des 7 États</h3>
                 <div class="form-group" style="margin-bottom:8px;">
                   <label class="form-label" for="qrScanInput">Scanner un QR ou saisir la référence / téléphone (`AGT-05` / `AGT-07`) :</label>
                   <div style="display:flex;gap:8px;">
@@ -1592,7 +1592,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
                 </div>
 
                 <div id="scanResultBox" style="padding:18px;border-radius:10px;background:var(--color-success-bg);color:var(--color-success-text);border:2px solid var(--color-success-border);margin-top:8px;">
-                  <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:700;" id="scanResultTitle">✅ BILLET VALIDE — AUTORISER L'ENTRÉE</div>
+                  <div style="font-family:var(--font-heading);font-size:1.4rem;font-weight:700;" id="scanResultTitle">✅ BILLET VALIDE - AUTORISER L'ENTRÉE</div>
                   <p style="font-size:15px;margin-top:4px;" id="scanResultDesc">
                     Référence <strong>ECP-2026-84920</strong> • Titulaire : M. Jean-Paul MBARGA (2 Adultes, 2 Enfants, 1 Tout-petit). Prestations autorisées : Entrée Parc & Zoo, Piscine, Pirogue.
                   </p>
@@ -1602,7 +1602,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               <!-- Journal de session et clôture de caisse (AGT-08, AGT-09) -->
               <div class="col-12 card">
                 <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-                  <h3>🧾 AGT-08 & AGT-09 — Journal de Session & Clôture de Caisse Contradictoire</h3>
+                  <h3>🧾 AGT-08 & AGT-09 - Journal de Session & Clôture de Caisse Contradictoire</h3>
                   <span class="status-badge status-info">Écart constaté : 0 FCFA (Caisse conforme)</span>
                 </div>
                 <div class="grid-12" style="gap:12px;">
@@ -1652,7 +1652,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
 
             <div class="grid-12">
               <div class="col-6 card">
-                <h3>🏨 EXP-04 — Disponibilités des 3 Cités Hôtelières</h3>
+                <h3>🏨 EXP-04 - Disponibilités des 3 Cités Hôtelières</h3>
                 <div class="table-responsive">
                   <table>
                     <thead>
@@ -1688,7 +1688,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               </div>
 
               <div class="col-6 card">
-                <h3>🎓 EXP-03, EXP-06 & EXP-07 — Devis Écoles, Candidatures CFP & Support</h3>
+                <h3>🎓 EXP-03, EXP-06 & EXP-07 - Devis Écoles, Candidatures CFP & Support</h3>
                 <div class="table-responsive">
                   <table>
                     <thead>
@@ -1803,7 +1803,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
 
             <div class="grid-12">
               <div class="col-6 card">
-                <h3>🔒 ADM-02 & ADM-07 — Verrouillage Tarifaire & Passerelles (Sans Secrets Exposés)</h3>
+                <h3>🔒 ADM-02 & ADM-07 - Verrouillage Tarifaire & Passerelles (Sans Secrets Exposés)</h3>
                 <ul style="padding-left:20px;font-size:15px;display:grid;gap:8px;">
                   <li><strong>Règle `ADM-02` (Protection Tarif Enfant) :</strong> Verrouillage actif empêchant toute règle promotionnelle de remplacer le tarif enfant (`500 FCFA`) par un tarif groupe adulte (`700 FCFA`).</li>
                   <li><strong>Passerelle Orange Money WebPay (`ADM-07`) :</strong> Clé API Marchand <code>••••••••••••••9F2A</code> (Masquée côté client, stockée en variable d'environnement serveur).</li>
@@ -1812,7 +1812,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               </div>
 
               <div class="col-6 card">
-                <h3>🛡️ ADM-08 — Journal d'Audit des Actions Sensibles</h3>
+                <h3>🛡️ ADM-08 - Journal d'Audit des Actions Sensibles</h3>
                 <div class="table-responsive">
                   <table>
                     <thead>
@@ -1865,7 +1865,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
         <div class="section">
           <div class="container">
             <div class="section-header">
-              <span class="eyebrow">DS-01 à DS-08 • Fondations « Canopée vivante — Le cercle du vivant »</span>
+              <span class="eyebrow">DS-01 à DS-08 • Fondations « Canopée vivante - Le cercle du vivant »</span>
               <h2>Design System Complet ECOPARK & Planches Google Stitch MCP</h2>
               <p style="color:var(--color-text-muted);margin-top:6px;">
                 Synchronisé avec le projet Google Stitch <code>522000543872634848</code> et documenté dans <code>DESIGN.md</code> et <code>MATRICE_COUVERTURE_77_ECRANS_ECOPARK.md</code>.
@@ -1874,7 +1874,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
 
             <div class="grid-12" style="margin-bottom:32px;">
               <div class="col-4 card">
-                <h3>DS-01 — Logo Original sur Disque Blanc</h3>
+                <h3>DS-01 - Logo Original sur Disque Blanc</h3>
                 <div style="display:flex;align-items:center;gap:16px;padding:14px;background:var(--color-surface-soft);border-radius:12px;">
                   <div class="brand-logo-disc" style="width:84px;height:84px;">
                     <img src="audit-assets/ecopark-real-media/cropped-LOGO-ECOPARK-Youtube.png" alt="Logo original EcoPark CAMEROUN" />
@@ -1890,7 +1890,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
               </div>
 
               <div class="col-8 card">
-                <h3>DS-02 — Palette Validée & Contrastes WCAG AA/AAA</h3>
+                <h3>DS-02 - Palette Validée & Contrastes WCAG AA/AAA</h3>
                 <div class="grid-12" style="gap:10px;">
                   <div class="col-3" style="padding:12px;border:1px solid var(--color-border);border-radius:8px;background:#FFFFFF;">
                     <strong>#FFFFFF</strong><br/><span style="font-size:13px;">--color-white (Surface dominante)</span>
@@ -2040,7 +2040,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
       { id: 'PUB-18', family: 'PUB', title: "Contact et localisation à Yaoundé-Ahala" },
       { id: 'PUB-19', family: 'PUB', title: "Recherche globale et résultats" },
       { id: 'PUB-20', family: 'PUB', title: "Pages légales : mentions légales, confidentialité, CGV et cookies" },
-      { id: 'PUB-21', family: 'PUB', title: "Page 404 — Page introuvable" },
+      { id: 'PUB-21', family: 'PUB', title: "Page 404 - Page introuvable" },
       { id: 'PUB-22', family: 'PUB', title: "Page maintenance ou service momentanément indisponible" },
       // Famille 3 : RES (12)
       { id: 'RES-01', family: 'RES', title: "Assistant « Préparer ma visite »" },
@@ -2113,7 +2113,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
           const btn = document.createElement('button');
           btn.type = 'button';
           btn.className = 'screen-pill' + (s.id === currentScreenId ? ' active' : '');
-          btn.textContent = `${s.id} — ${s.title}`;
+          btn.textContent = `${s.id} - ${s.title}`;
           btn.onclick = () => navigateFamily(s.family, s.id);
           grid.appendChild(btn);
         });
@@ -2259,7 +2259,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
     function updatePaymentDemoState(state) {
       const box = document.getElementById('momoStateFeedback');
       const map = {
-        CONFIRMED: { cls: 'status-badge status-success', text: '✅ Paiement de démonstration confirmé — Billet QR ECP-2026-84920 actif' },
+        CONFIRMED: { cls: 'status-badge status-success', text: '✅ Paiement de démonstration confirmé - Billet QR ECP-2026-84920 actif' },
         PENDING: { cls: 'status-badge status-info', text: '⏳ En attente : composez #150# (Orange) ou *126# (MTN) sur votre téléphone pour valider' },
         FAILED: { cls: 'status-badge status-error', text: '❌ Paiement échoué (Solde insuffisant). Votre panier reste sauvegardé (RES-11)' },
         EXPIRED: { cls: 'status-badge status-warning', text: '⌛ Délai de confirmation expiré. Cliquez pour relancer une notification ou payer au guichet' },
@@ -2301,7 +2301,7 @@ HTML_CONTENT = r"""<!DOCTYPE html>
     }
 
     function emitPosTicket(method) {
-      alert(`Ticket Guichet émis (${method}) — Impression thermique avec QR Code unique enregistrée dans le journal de session (AGT-08).`);
+      alert(`Ticket Guichet émis (${method}) - Impression thermique avec QR Code unique enregistrée dans le journal de session (AGT-08).`);
     }
 
     // Contrôle des entrées : 7 verdicts (AGT-06)
@@ -2314,12 +2314,12 @@ HTML_CONTENT = r"""<!DOCTYPE html>
       const verdicts = {
         VALID: {
           bg: 'var(--color-success-bg)', color: 'var(--color-success-text)', border: 'var(--color-success-border)',
-          title: '1/7 • ✅ BILLET VALIDE — AUTORISER L\'ENTRÉE',
+          title: '1/7 • ✅ BILLET VALIDE - AUTORISER L\'ENTRÉE',
           desc: 'Référence ECP-2026-84920 • M. Jean-Paul MBARGA (2 Adultes, 2 Enfants). Prestations : Zoo + Piscine + Pirogue.'
         },
         USED: {
           bg: 'var(--color-error-bg)', color: 'var(--color-error-text)', border: 'var(--color-error-border)',
-          title: '2/7 • ⛔ BILLET DÉJÀ UTILISÉ — REFUSER L\'ENTRÉE',
+          title: '2/7 • ⛔ BILLET DÉJÀ UTILISÉ - REFUSER L\'ENTRÉE',
           desc: 'Ce code QR a déjà été scanné aujourd\'hui à 10h14 au Tourniquet Principal par Mme Clarisse ATANGANA.'
         },
         WRONG_DATE: {

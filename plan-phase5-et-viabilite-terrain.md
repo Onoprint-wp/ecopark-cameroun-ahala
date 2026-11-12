@@ -1,4 +1,4 @@
-# Plan — Phase 5 : Raccordement du Site Public & Viabilité Terrain ECOPARK
+# Plan - Phase 5 : Raccordement du Site Public & Viabilité Terrain ECOPARK
 
 ## Goal
 Raccorder les pages publiques (`/nos-tarifs`, `/reserver`, `/agenda`, `/restaurant`) aux données gérées en temps réel par `EcoparkData`, tout en intégrant les 5 correctifs critiques indispensables pour le fonctionnement réel à Ahala (vrai QR code scannable, impression propre `@media print`, verrouillage du lundi, validation des numéros camerounais et mentions légales/CGV).
@@ -39,7 +39,7 @@ Raccorder les pages publiques (`/nos-tarifs`, `/reserver`, `/agenda`, `/restaura
   Intégrer la lecture par caméra via l'API Web standard `navigator.mediaDevices.getUserMedia` dans la vue du contrôleur d'entrée `AGT-05`, avec sélecteur de caméra (avant/arrière), boîte de visée et déclenchement automatique du verdict de validation.
   → *Verify :* Ouvrir `AGT-05`, autoriser la caméra, viser l'écran d'un autre appareil affichant un billet et constater la validation automatique immédiate.
 
-- [ ] **Task 9 : Phase X — Suite de tests automatisés & non-régression**
+- [ ] **Task 9 : Phase X - Suite de tests automatisés & non-régression**
   Créer le script de vérification automatisée `scripts/test_phase5_integration.py` couvrant : décodage QR, aperçu print, blocage du lundi, validation téléphone, et synchronisation admin → public. Exécuter l'ensemble de la suite (`npm test`).
   → *Verify :* Exécuter `python scripts/test_phase5_integration.py` et `npm test` ; obtenir 100 % de succès avec 0 régression.
 

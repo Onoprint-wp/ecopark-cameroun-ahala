@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Banc de test automatisé E2E — Phase 7 : Orchestration Multi-Agents 360° & Optimisation (ECOPARK Yaoundé-Ahala)
+Banc de test automatisé E2E - Phase 7 : Orchestration Multi-Agents 360° & Optimisation (ECOPARK Yaoundé-Ahala)
 
 Vérifie :
   1. Livrables Vagues 1 & 2 (00_STRATEGIE, 01_NEURO_COPYWRITING, 02_SUITE_CONTRACTUELLE_6_CDC,
@@ -36,7 +36,7 @@ def check(cond, label, detail=""):
     status = "OK" if cond else "FAIL"
     msg = f"  [{status}] {label}"
     if detail:
-        msg += f" — {detail}"
+        msg += f" - {detail}"
     print(msg)
 
 
@@ -211,7 +211,7 @@ def main():
             neuro_audit["dopAfterBooking"],
         )
 
-        # 2C. Audit Back-Office : Inbox Unifiée des Leads & Dossiers (Statuts en 1 Clic — ADM-09)
+        # 2C. Audit Back-Office : Inbox Unifiée des Leads & Dossiers (Statuts en 1 Clic - ADM-09)
         print("\n4. Audit Back-Office : Inbox Unifiee des Leads & Statuts en 1 Clic (ADM-09)")
         inbox_audit = page.evaluate("""(quoteRef) => {
             navigateFamily('ADM', 'ADM-01');

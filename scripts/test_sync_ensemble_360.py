@@ -18,7 +18,7 @@ def main():
 
     def check(label, cond, detail=""):
         status = "PASS" if cond else "FAIL"
-        print(f"  [{status}] {label}" + (f" — {detail}" if detail else ""))
+        print(f"  [{status}] {label}" + (f" - {detail}" if detail else ""))
         checks.append((label, bool(cond)))
 
     with sync_playwright() as p:

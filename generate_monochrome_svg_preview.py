@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Générateur de la version « 100 % Iconographie SVG Monochrome & Pureté Chromatique 60-30-10 » (v2 — Sans préfixes techniques en mode visiteur)
+Générateur de la version « 100 % Iconographie SVG Monochrome & Pureté Chromatique 60-30-10 » (v2 - Sans préfixes techniques en mode visiteur)
 """
 
 import pathlib
@@ -137,18 +137,18 @@ def build_monochrome_html():
         html, n_alert = old_alert_pattern.subn(new_alert_html, html, count=1)
         assert n_alert == 1, "Encadré #childPriceProtectionAlert introuvable"
 
-    # 3. Passer le badge "BILLET DÉMONSTRATION — PROTOTYPE" en monochrome végétal
+    # 3. Passer le badge "BILLET DÉMONSTRATION - PROTOTYPE" en monochrome végétal
     html = html.replace(
-        '<span class="status-badge status-warning" style="font-weight:700;">BILLET DÉMONSTRATION — PROTOTYPE</span>',
+        '<span class="status-badge status-warning" style="font-weight:700;">BILLET DÉMONSTRATION - PROTOTYPE</span>',
         f'<span class="status-badge status-neutral" style="font-weight:600;">{ICONS["qr"]} Billet Électronique ECOPARK</span>'
     )
 
     # 4. Encapsuler tous les préfixes techniques restants dans les titres H3 / Eyebrows (avant <script>)
     parts = html.split("<script>", 1)
-    parts[0] = parts[0].replace("(`RES-07` / `RES-08` — Mode Démonstration)", '<span class="tech-code-tag">(RES-07 / RES-08)</span>')
+    parts[0] = parts[0].replace("(`RES-07` / `RES-08` - Mode Démonstration)", '<span class="tech-code-tag">(RES-07 / RES-08)</span>')
     if '<span class="tech-code-tag">PUB-02 & </span>' not in parts[0]:
         parts[0] = re.sub(
-            r'((?:PUB|RES|ACC|AGT|EXP|DIR|ADM|DS)-\d{2}(?:\s*(?:&|à|,)\s*(?:PUB|RES|ACC|AGT|EXP|DIR|ADM|DS)-\d{2})*\s*(?:—|•)\s*)',
+            r'((?:PUB|RES|ACC|AGT|EXP|DIR|ADM|DS)-\d{2}(?:\s*(?:&|à|,)\s*(?:PUB|RES|ACC|AGT|EXP|DIR|ADM|DS)-\d{2})*\s*(?:-|•)\s*)',
             r'<span class="tech-code-tag">\1</span>',
             parts[0]
         )

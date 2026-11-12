@@ -4,7 +4,7 @@
 `--provider` or `--words` flag. For HeyGen audio plus word timestamps, use the
 bundled `heygen-tts.mjs` script below.
 
-> **Run the Preflight first — no credential is not a green light to silently use the local voice.** Before generating a voiceover, complete the sign-in **Preflight** (see `../../SKILL.md` → Preflight): run `npx hyperframes auth status`, recommend signing in, and **STOP for the user's choice** (sign in for HeyGen voices, or continue offline with local Kokoro). This applies to a one-off "generate a voiceover" request just as much as inside a full workflow.
+> **Run the Preflight first - no credential is not a green light to silently use the local voice.** Before generating a voiceover, complete the sign-in **Preflight** (see `../../SKILL.md` → Preflight): run `npx hyperframes auth status`, recommend signing in, and **STOP for the user's choice** (sign in for HeyGen voices, or continue offline with local Kokoro). This applies to a one-off "generate a voiceover" request just as much as inside a full workflow.
 
 ## Narrating a HyperFrames docs video
 
@@ -13,7 +13,7 @@ does not sound like two products.
 
 |                |                                                |
 | -------------- | ---------------------------------------------- |
-| Voice          | **River** — "Relaxed, Neutral, Informative"    |
+| Voice          | **River** - "Relaxed, Neutral, Informative"    |
 | Provider       | ElevenLabs                                     |
 | `voice_id`     | `SAz9YHcvj6GT2YYXdXww`                         |
 | Model          | `eleven_multilingual_v2`                       |
@@ -28,7 +28,7 @@ curl -s -X POST "https://api.elevenlabs.io/v1/text-to-speech/SAz9YHcvj6GT2YYXdXw
 
 This is the voice every user-journey film on the docs site already uses. Falling
 back to local Kokoro because a key was not to hand produces a film that sounds
-wrong beside the others — three docs videos were built that way and had to be
+wrong beside the others - three docs videos were built that way and had to be
 re-voiced. If you cannot reach ElevenLabs, say so and stop rather than
 substituting a different voice.
 
@@ -51,14 +51,14 @@ to HeyGen sign-in. Read the Gemini section for its credential requirement.
 npx hyperframes tts "Welcome to HyperFrames" -o narration.wav
 ```
 
-## Self-contained HeyGen (no CLI) — `scripts/heygen-tts.mjs`
+## Self-contained HeyGen (no CLI) - `scripts/heygen-tts.mjs`
 
 The published `hyperframes tts` CLI synthesizes locally with Kokoro only. When you
-want HeyGen specifically — best quality **plus** word timestamps in one call — use
+want HeyGen specifically - best quality **plus** word timestamps in one call - use
 the skill's bundled script, which calls the HeyGen v3 REST API directly and needs
 no CLI provider plumbing:
 
-The script resolves a HeyGen credential the same way the CLI does — first source
+The script resolves a HeyGen credential the same way the CLI does - first source
 wins: a host-injected OAuth `$HEYGEN_ACCESS_TOKEN` → `$HEYGEN_API_KEY` →
 `$HYPERFRAMES_API_KEY` → a project `.env` (auto-loaded,
 walks up ≤5 dirs) → `~/.heygen/credentials` (shared with heygen-cli;
@@ -86,7 +86,7 @@ node skills/media-use/audio/scripts/heygen-tts.mjs --list   # public starfish vo
 - **Words:** `--words <path>` writes the flat `[{id,text,start,end}]` shape below, drop-in for the captions pipeline. HeyGen's `<start>`/`<end>` boundary sentinels are filtered out and ids are re-contiguous.
 - **Non-English:** `--lang <code>` (anything but `en`) is sent as the request `language`.
 
-## Cloned voices — `scripts/heygen-voice.mjs`
+## Cloned voices - `scripts/heygen-voice.mjs`
 
 Clone a voice from an mp3 or wav recording, then pass the printed id to
 `heygen-tts.mjs --voice`. Same credential resolution as above. Any API refusal
@@ -231,10 +231,10 @@ Non-English phonemization requires `espeak-ng` system-wide (`brew install espeak
 
 ## Speed
 
-- `0.7-0.8` — tutorial, complex content, accessibility
-- `1.0` — natural pace (default)
-- `1.1-1.2` — intros, transitions, upbeat content
-- `1.5+` — rarely appropriate, test carefully
+- `0.7-0.8` - tutorial, complex content, accessibility
+- `1.0` - natural pace (default)
+- `1.1-1.2` - intros, transitions, upbeat content
+- `1.5+` - rarely appropriate, test carefully
 
 The `hyperframes tts` command honors `--speed` for Kokoro. Provider-specific
 helpers document their own pacing controls.
@@ -245,7 +245,7 @@ Past a few paragraphs, write the text to a `.txt` file and pass the path. Inputs
 
 ## HeyGen word-timestamp shape
 
-When `--words <path>` is passed to a HeyGen call, the file is written in the same flat shape `transcribe` produces — drop-in compatible with the captions pipeline:
+When `--words <path>` is passed to a HeyGen call, the file is written in the same flat shape `transcribe` produces - drop-in compatible with the captions pipeline:
 
 ```json
 [

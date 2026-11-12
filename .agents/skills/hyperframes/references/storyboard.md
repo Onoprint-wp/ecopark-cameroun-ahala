@@ -1,4 +1,4 @@
-# Storyboard recipe — plan a video as stills the person approves
+# Storyboard recipe - plan a video as stills the person approves
 
 Use it whenever a run makes or changes a storyboard: when the person asks for one, or when you want their go on the shots before animating. This file owns **how to make the board**; `storyboard-format.md` owns the `STORYBOARD.md` file the tools parse.
 

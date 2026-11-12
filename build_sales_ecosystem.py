@@ -47,7 +47,7 @@ PUB10_BUNDLES_HTML = """            <div class="section-header">
                 <button type="button" class="btn btn-secondary" style="width:100%;" onclick="applySalesBundle('PASS_DECOUVERTE', true)">Choisir le Pass Découverte</button>
               </div>
 
-              <!-- Pass 2 : Pass Journée Royale (Le Plus Choisi — Ancrage Central) -->
+              <!-- Pass 2 : Pass Journée Royale (Le Plus Choisi - Ancrage Central) -->
               <div class="col-4 card" style="display:flex;flex-direction:column;justify-content:space-between;border:2px solid #C47D2B;background:linear-gradient(180deg, #FBF5EC 0%, #FFFFFF 48%);box-shadow:0 16px 36px rgba(196,125,43,0.14);">
                 <div>
                   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;gap:8px;flex-wrap:wrap;">

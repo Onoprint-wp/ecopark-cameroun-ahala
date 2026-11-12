@@ -33,7 +33,7 @@ for _stream in (sys.stdout, sys.stderr):
 # ---------------------------------------------------------------------------
 # FFT parameters
 #
-# A 4096-sample window gives ~10.8 Hz per bin at 44100Hz — enough to resolve
+# A 4096-sample window gives ~10.8 Hz per bin at 44100Hz - enough to resolve
 # low-frequency bands cleanly. The per-frame audio slice (44100/30 = 1470
 # samples at 30fps) is too small and causes low bands to map to the same bins.
 #

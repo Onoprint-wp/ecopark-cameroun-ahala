@@ -1,4 +1,4 @@
-# Journal de Validation & Données Métier — ECOPARK Cameroun
+# Journal de Validation & Données Métier - ECOPARK Cameroun
 
 **Dernière mise à jour :** 2026-11-04  
 **Statut :** Synchronisation officielle du site live (Novembre 2026) intégrée et validée à 100 % (Contacts dédiés par pôle, 3 hôtels / 30 unités max 30 000 FCFA, 3 espaces restauration dès 3 500 FCFA, Balade en forêt 200 ha, CFP N°000418, écarts tarifaires internes documentés, parité HTML stricte et 47/47 contrôles validés)
@@ -18,8 +18,8 @@ Les 9 tokens de départ ont été vérifiés selon la formule de luminance relat
 | **Restauration** | `--eco-dining` | `#946015` | **5,13 : 1** | **4,71 : 1** | Conforme AA | Restaurant Le Château des Saveurs & Pergolas |
 | **Formation (CFP)** | `--eco-cfp` / `--eco-training` | `#4D5685` | **6,63 : 1** | **6,09 : 1** | Conforme AA | Campus CFP agréé MINEFOP (5 filières) |
 | **Texte principal** | `--eco-text` | `#242824` | **14,82 : 1** | **13,61 : 1** | Conforme AAA | Titres, prix, corps de texte (>= 16 px) |
-| **Fond clair** | `--eco-bg` | `#F7F5EF` | — | — | Surface neutre principale | Fond général du site et des pages transversales |
-| **Surfaces** | `--eco-surface` | `#FFFFFF` | — | — | Cartes, panneaux, formulaires | Surfaces neutres majoritaires |
+| **Fond clair** | `--eco-bg` | `#F7F5EF` | - | - | Surface neutre principale | Fond général du site et des pages transversales |
+| **Surfaces** | `--eco-surface` | `#FFFFFF` | - | - | Cartes, panneaux, formulaires | Surfaces neutres majoritaires |
 
 **Couleurs de statut (strictement distinctes des couleurs de catégorie et toujours accompagnées d'un libellé explicite) :**
 - **Succès / Confirmé** : `--status-success-text: #1B5E20` sur `--status-success-bg: #EAF5EC` (bordure `#A5D6A7`, contraste > 7,5:1).
@@ -60,14 +60,14 @@ Toutes les données affichées sur les cartes, fiches, tableaux de tarifs et ré
   - **Pass Découverte Nature (Zoo + Pirogue + Cheval)** : `1 500 FCFA / enfant` • `2 500 FCFA / adulte` (par personne).
   - **Pass Journée Royale (Zoo + Piscine + Pirogue + Repas chaud)** : `4 500 FCFA / enfant` • `8 500 FCFA / adulte` (par personne).
   - **Pack Escapade Couple VIP (Loge Ewondo + 2 Repas + Parc/Piscine/Pirogue)** : `45 000 FCFA` (1 nuit, forfait pour 2 adultes) / `70 000 FCFA` (2 nuits).
-- **Hébergements (par nuit, 3 établissements — 30 unités — plafonnées à 30 000 FCFA)** :
+- **Hébergements (par nuit, 3 établissements - 30 unités - plafonnées à 30 000 FCFA)** :
   - **Hôtel Bene (Standard)** : `10 000 – 15 000 FCFA / nuit` (10 chambres climatisées ou ventilées, véranda panoramique réceptions à l'étage).
   - **Hôtel Chanthel (Confort)** : `15 000 – 25 000 FCFA / nuit` (12 chambres confort réparties en paliers 15 000 / 20 000 / 25 000 FCFA).
   - **Hôtel Ewondo (Mini-Suites VIP & Suites Privées)** : 8 unités au total, réparties en :
     - *Mini-Suites VIP* : `25 000 – 30 000 FCFA / nuit` (4 suites privatives, Day-Use repos journée dès `15 000 FCFA`).
     - *Suites Privées Élégantes Prestige* : `30 000 FCFA / nuit` (4 suites exécutives de standing).
   - *Suppression définitive de l'ancien tarif théorique de 45 000 FCFA* conformément à la grille officielle plafonnée à 30 000 FCFA.
-- **Restauration (3 espaces gastronomiques — plats dès 3 500 FCFA)** :
+- **Restauration (3 espaces gastronomiques - plats dès 3 500 FCFA)** :
   - *Restaurant VIP New Look* : salle climatisée privatisable pour déjeuners d'affaires et banquets (50 à 60 couverts).
   - *Les Boukarous d'Ahala* : espaces extérieurs conviviaux en pleine verdure.
   - *Le Château des Saveurs* : restaurant central traditionnel et gastronomique camerounais.
@@ -111,7 +111,7 @@ Lors de la synchronisation avec les publications officielles du site `ecopark-ya
 
 ## 3. Résultats des Contrôles Automatisés & Vérifications Multi-Écrans (Sections I.9 & J)
 
-### 3.1 Suites de tests automatisés exécutées (10 suites — 100 % de réussite)
+### 3.1 Suites de tests automatisés exécutées (10 suites - 100 % de réussite)
 
 | Suite de vérification | Commande exécutée | Résultat | Détails |
 | :--- | :--- | :--- | :--- |

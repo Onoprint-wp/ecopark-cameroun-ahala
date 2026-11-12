@@ -1,5 +1,5 @@
 -- ============================================================================
--- ECOPARK Cameroun — Synchronisation Officielle Novembre 2026
+-- ECOPARK Cameroun - Synchronisation Officielle Novembre 2026
 -- Date : 2026-11-04
 -- Aligne la base sur les mises à jour réelles du site ecopark-yaounde.com
 -- ============================================================================
@@ -43,7 +43,7 @@ INSERT INTO public.catalog_activities (
    'Parcours pédestre guidé d''environ 40 min au cœur du massif forestier et des collines préservées d''Ahala.',
    500, 1000, 700, 500, 300, TRUE, 'PUBLISHED', 15,
    'audit-assets/ecopark-real-media/IMG_20260829_172016-1-scaled.jpg', 'Balade en forêt guidée sous la canopée d''Ahala'),
-  ('a1100007-0000-4000-8000-000000000007', 'peche_canne', 'CAT-PECHE-CANNE', 'Location Canne à Pêche — Étangs d''Ahala', 'EAU_PLEIN_AIR',
+  ('a1100007-0000-4000-8000-000000000007', 'peche_canne', 'CAT-PECHE-CANNE', 'Location Canne à Pêche - Étangs d''Ahala', 'EAU_PLEIN_AIR',
    'Mise à disposition d''une canne à pêche avec ligne et appâts pour pêcher dans les étangs piscicoles d''Ahala.',
    2000, 2000, 2000, 2000, 100, TRUE, 'PUBLISHED', 25,
    'audit-assets/stitch-canopee-vivante/local_cameroon_freshwater_pond.png', 'Location canne à pêche aux étangs d''Ahala')
@@ -101,7 +101,7 @@ UPDATE public.lodge_cities SET
 WHERE code = 'CHANTHEL';
 
 UPDATE public.lodge_cities SET
-  name = 'Hôtel Ewondo — Mini-Suites VIP',
+  name = 'Hôtel Ewondo - Mini-Suites VIP',
   category = 'Mini-Suites Haut Standing Climatisées',
   min_price_fcfa = 25000,
   max_price_fcfa = 30000,
@@ -117,7 +117,7 @@ INSERT INTO public.lodge_cities (
   amenities, status, sort_order, image_src, image_alt
 ) VALUES (
   'a1100005-0000-4000-8000-000000000005', 'SUITES_PRIVEES', 'LOD-SUITES-PRIVEES',
-  'Hôtel Ewondo — Suites Privées Élégantes', 'Suites Privées Haut Standing',
+  'Hôtel Ewondo - Suites Privées Élégantes', 'Suites Privées Haut Standing',
   30000, 30000, 4, 2,
   ARRAY['Salon privé climatisé', 'Literie King-Size', 'Service en suite Château des Saveurs', 'Accès coupe-file Piscine & Zoo', 'Tarif unique 30 000 FCFA'],
   'PUBLISHED', 40,
@@ -160,7 +160,7 @@ INSERT INTO public.menu_items (
   is_signature, in_stock, preorder_enabled, image_src, image_alt, status, sort_order
 ) VALUES (
   'MNU-ASSIETTE-JOUR', 'GRILLADE',
-  'Grillades & Assiette du Jour — Boukarous / Restaurant VIP',
+  'Grillades & Assiette du Jour - Boukarous / Restaurant VIP',
   'Sélection du jour braisée au feu de bois (viandes savoureuses ou poisson) servie avec garniture au choix dans les Boukarous ombragés ou au Restaurant VIP New Look.',
   3500, FALSE, TRUE, TRUE,
   'audit-assets/ecopark-real-media/boucarous.jpg', 'Assiette du Jour et Grillades aux Boukarous ECOPARK Ahala',

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Builder Phase 7 — Orchestration Multi-Agents 360° & Optimisation de l'Existant (ECOPARK Yaoundé-Ahala)
+Builder Phase 7 - Orchestration Multi-Agents 360° & Optimisation de l'Existant (ECOPARK Yaoundé-Ahala)
 
 Intègre de manière 100 % idempotente dans :
   - etape0-site-live/index.html
@@ -12,7 +12,7 @@ Les 5 leviers d'optimisation Phase 7 :
   2. Neuro-Copywriting AIDA : Bandeau d'ancrage d'aversion à la perte (#heroLossAversionCallout)
      et Carte de Soulagement Dopaminergique Post-Formulaire (#dopamineReliefCard) avec Pont
      Direct WhatsApp 1-Clic (+237 697 13 62 03).
-  3. Back-Office : Module « Inbox Unifiée des Leads & Dossiers — Statuts en 1 Clic » (#admLeadsInboxCard)
+  3. Back-Office : Module « Inbox Unifiée des Leads & Dossiers - Statuts en 1 Clic » (#admLeadsInboxCard)
      consolidant Billets QR, Devis Groupes B2B/Écoles, RDV et Candidatures CFP avec filtrage
      et transition de statut en 1 clic tracée dans le journal d'audit.
   4. Sécurité & Contrat d'Interface : Assainissement Anti-XSS systématique (sanitizeEcoparkInput)
@@ -61,7 +61,7 @@ SCHEMA_JSONLD_HTML = SCHEMA_START + r"""
       {
         "@type": ["TouristAttraction", "LocalBusiness", "AmusementPark"],
         "@id": "https://ecopark-cameroun-ahala.vercel.app/#ecopark-ahala",
-        "name": "ECOPARK CAMEROUN — Yaounde-Ahala",
+        "name": "ECOPARK CAMEROUN - Yaounde-Ahala",
         "alternateName": "EcoPark Cameroun Ahala Barriere",
         "description": "Complexe agro-ecotouristique, parc animalier (gorille ToTo), lac et pirogues, piscine semi-olympique surveillee, restaurant Le Chateau des Saveurs, Cites Hotelieres (Bene, Chanthel, Ewondo VIP), Salle Menkii Essomba Anton et CFP agree MINEFOP a Yaounde-Ahala (face station Tradex).",
         "url": "https://ecopark-cameroun-ahala.vercel.app/",
@@ -105,7 +105,7 @@ SCHEMA_JSONLD_HTML = SCHEMA_START + r"""
       {
         "@type": ["Hotel", "LodgingBusiness"],
         "@id": "https://ecopark-cameroun-ahala.vercel.app/#cites-hotelieres",
-        "name": "Cites Hotelieres ECOPARK — Bene, Chanthel & Ewondo VIP",
+        "name": "Cites Hotelieres ECOPARK - Bene, Chanthel & Ewondo VIP",
         "parentOrganization": { "@id": "https://ecopark-cameroun-ahala.vercel.app/#ecopark-ahala" },
         "description": "Trois cites d'hebergement au coeur de la verdure d'Ahala (reception 24h/24) : Cite Bene (10 000 a 15 000 FCFA), Cite Chanthel (15 000 a 25 000 FCFA) et Cite Ewondo VIP (Suites climatisees 25 000 a 30 000 FCFA).",
         "priceRange": "10 000 FCFA - 30 000 FCFA",
@@ -121,7 +121,7 @@ SCHEMA_JSONLD_HTML = SCHEMA_START + r"""
       {
         "@type": "Restaurant",
         "@id": "https://ecopark-cameroun-ahala.vercel.app/#chateau-des-saveurs",
-        "name": "Le Chateau des Saveurs — ECOPARK Ahala",
+        "name": "Le Chateau des Saveurs - ECOPARK Ahala",
         "parentOrganization": { "@id": "https://ecopark-cameroun-ahala.vercel.app/#ecopark-ahala" },
         "servesCuisine": ["Camerounaise", "Africaine", "Grillades & Poisson braise d'Ahala", "Poulet DG Royal", "Ndole"],
         "priceRange": "3 500 FCFA - 8 500 FCFA",
@@ -132,7 +132,7 @@ SCHEMA_JSONLD_HTML = SCHEMA_START + r"""
       {
         "@type": "EducationalOrganization",
         "@id": "https://ecopark-cameroun-ahala.vercel.app/#cfp-minefop",
-        "name": "Centre de Formation Professionnelle (CFP) ECOPARK — Agree MINEFOP",
+        "name": "Centre de Formation Professionnelle (CFP) ECOPARK - Agree MINEFOP",
         "parentOrganization": { "@id": "https://ecopark-cameroun-ahala.vercel.app/#ecopark-ahala" },
         "description": "Formation professionnelle agreee par le MINEFOP (DQP/CQP en 12 mois, 70 % de pratique sur site a Ahala) dans 5 filieres : Hotellerie, Restauration, Decoration, Production Agropastorale et Pisciculture. Inscription 50 000 FCFA + scolarite 250 000 FCFA en 4 tranches.",
         "telephone": "+237 697 13 62 03",
@@ -186,7 +186,7 @@ DOPAMINE_CARD_HTML = DOPAMINE_CARD_START + r"""
 ADM_INBOX_HTML = ADM_INBOX_START + r"""
             <div class="adm-card" id="admLeadsInboxCard">
               <span id="sec-ADM-09"></span>
-              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> <span class="tech-code-tag">ADM-09 — </span>Inbox Unifiée des Leads &amp; Réservations (Statuts en 1 Clic)</h3>
+              <h3><svg class="svg-mono" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg> <span class="tech-code-tag">ADM-09 - </span>Inbox Unifiée des Leads &amp; Réservations (Statuts en 1 Clic)</h3>
               <p class="adm-lead">Centralisation en temps réel des 4 canaux d'acquisition (Billets QR, Devis Groupes B2B/Écoles, Rendez-vous Repérage/Mariage, Candidatures CFP MINEFOP) avec qualification en 1 clic et relance directe WhatsApp.</p>
 
               <div class="adm-kpis" id="admLeadsKpiBar" style="margin-bottom:14px;">
@@ -229,7 +229,7 @@ ADM_INBOX_HTML = ADM_INBOX_START + r"""
 
 PHASE7_JS = PHASE7_JS_START + r"""
   // ==========================================================================
-  // PHASE 7 : ORCHESTRATION MULTI-AGENTS 360° — CONTRAT JSON, ANTI-XSS,
+  // PHASE 7 : ORCHESTRATION MULTI-AGENTS 360° - CONTRAT JSON, ANTI-XSS,
   //           SOULAGEMENT DOPAMINERGIQUE WHATSAPP & INBOX LEADS 1-CLIC
   // ==========================================================================
 
@@ -359,7 +359,7 @@ PHASE7_JS = PHASE7_JS_START + r"""
     return url;
   };
 
-  // --- 3. INBOX UNIFIÉE DES LEADS & RÉSERVATIONS (STATUTS EN 1 CLIC — ADM-09) ---
+  // --- 3. INBOX UNIFIÉE DES LEADS & RÉSERVATIONS (STATUTS EN 1 CLIC - ADM-09) ---
   window._admLeadsActiveChannel = 'ALL';
 
   window.getUnifiedLeadsList = function () {

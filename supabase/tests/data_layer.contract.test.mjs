@@ -1,5 +1,5 @@
 // ============================================================================
-// ECOPARK — Tests de contrat de la couche d'accès aux données (Phase 3)
+// ECOPARK - Tests de contrat de la couche d'accès aux données (Phase 3)
 // La MÊME série est jouée contre les deux pilotes :
 //   - LocalDemoDriver (localStorage simulé)
 //   - SupabaseDriver branché sur le vrai SQL (PGlite : RLS, triggers, RPC)
@@ -27,8 +27,8 @@ const U = {
 let passed = 0, failed = 0;
 const fails = [];
 const ok = (c, label, detail = '') => {
-  if (c) { passed++; console.log(`    [OK]   ${label}${detail ? ' — ' + detail : ''}`); }
-  else { failed++; fails.push(label); console.log(`    [FAIL] ${label}${detail ? ' — ' + detail : ''}`); }
+  if (c) { passed++; console.log(`    [OK]   ${label}${detail ? ' - ' + detail : ''}`); }
+  else { failed++; fails.push(label); console.log(`    [FAIL] ${label}${detail ? ' - ' + detail : ''}`); }
 };
 const eq = (a, b) => JSON.stringify(a) === JSON.stringify(b);
 
@@ -218,7 +218,7 @@ async function contract(env) {
     orderSummary: '2 Adultes, 2 Enfants • Pass Découverte', pole: 'GUICHET_CAISSE', poleLabel: 'Guichet & Caisse RN3',
     badgeClass: 'eco-cat-nature', agentName: 'Mme Clarisse ATANGANA', agentMatricule: 'MAT-GUI-01',
     agentRole: 'Caissière Principale Guichet RN3', date: '2026-11-20', shift: 'Matinée (08h30 – 14h30)',
-    priority: 'HAUTE', status: 'ASSIGNEE', title: 'Accueil Guichet & Bracelets — EPK-2026-9901',
+    priority: 'HAUTE', status: 'ASSIGNEE', title: 'Accueil Guichet & Bracelets - EPK-2026-9901',
     location: 'Guichet Principal RN3 Ahala', objective: 'Contrôler billet et remettre bracelets.',
     equipment: 'Caisse POS #01', guardrail: 'Tarif enfant 500 FCFA protégé.',
     checklist: [{ text: 'Vérifier référence EPK-2026-9901', done: false }], assignedBy: "Chef d'Exploitation Ahala"
@@ -229,7 +229,7 @@ async function contract(env) {
     alertId: 'ALT-2026-901', missionId: 'MSN-2026-901', orderRef: 'EPK-2026-9901', customerName: 'Famille Test Contrat',
     orderSummary: '2 Adultes, 2 Enfants', amountFcfa: 14000, pole: 'GUICHET_CAISSE', poleLabel: 'Guichet & Caisse RN3',
     badgeClass: 'eco-cat-nature', agentName: 'Mme Clarisse ATANGANA', agentMatricule: 'MAT-GUI-01',
-    title: 'Accueil Guichet & Bracelets — EPK-2026-9901', acknowledged: false
+    title: 'Accueil Guichet & Bracelets - EPK-2026-9901', acknowledged: false
   }, { legacy: true });
   ok(altCreate.ok, 'Création d\'une Alerte de Poste via EcoparkData', altCreate.ok ? '' : altCreate.error.message);
 

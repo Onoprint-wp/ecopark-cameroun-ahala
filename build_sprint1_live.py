@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Sprint 1 — Assemblage de l'application « Apple-Grade × Canopée Vivante » + Moteur de Persistance Temps Réel (Supabase + LocalStorage/BroadcastChannel)
+Sprint 1 - Assemblage de l'application « Apple-Grade × Canopée Vivante » + Moteur de Persistance Temps Réel (Supabase + LocalStorage/BroadcastChannel)
 Fonctionnalités Sprint 1 intégrées et vérifiées :
 1. Finition visuelle Apple-Grade validée (Header Liquid Glass 1 ligne, Grille Bento asymétrique 28px plein bord, Typographie Semibold 600 à contraste tonal, boutons pilules 980px).
 2. Moteur transactionnel ECOPARK_DB :
@@ -104,7 +104,7 @@ SPRINT1_MODALS_AND_TOAST_HTML = """
 
 SPRINT1_DB_ENGINE_JS = r"""
     // ========================================================================
-    // SPRINT 1 — MOTEUR DE PERSISTANCE TEMPS RÉEL (SUPABASE + LOCALSTORAGE SYNC)
+    // SPRINT 1 - MOTEUR DE PERSISTANCE TEMPS RÉEL (SUPABASE + LOCALSTORAGE SYNC)
     // ========================================================================
     const STORAGE_KEY_SPRINT1 = 'ecopark_ahala_db_sprint1_v1';
     const syncChannel = typeof BroadcastChannel !== 'undefined' ? new BroadcastChannel('ecopark_ahala_sync') : null;
@@ -345,7 +345,7 @@ SPRINT1_DB_ENGINE_JS = r"""
       });
       saveDB(db);
       clearPos();
-      showToastSprint1(`🧾 Ticket ${ticketRef} (${formatFCFA(sum)} — ${method}) encaissé ! Caisse AGT-09 et Direction DIR-01 mises à jour.`);
+      showToastSprint1(`🧾 Ticket ${ticketRef} (${formatFCFA(sum)} - ${method}) encaissé ! Caisse AGT-09 et Direction DIR-01 mises à jour.`);
     };
 
     // Surcharge intelligente du contrôle QR (AGT-05 / AGT-06) :
@@ -362,7 +362,7 @@ SPRINT1_DB_ENGINE_JS = r"""
       if (found.scanned) {
         _origTriggerScanVerdict('USED');
         document.getElementById('scanResultDesc').textContent =
-          `Ce billet (${found.reference} — ${found.holder}) a déjà été scanné le ${found.scannedAt} au Tourniquet Principal.`;
+          `Ce billet (${found.reference} - ${found.holder}) a déjà été scanné le ${found.scannedAt} au Tourniquet Principal.`;
         return;
       }
       found.scanned = true;

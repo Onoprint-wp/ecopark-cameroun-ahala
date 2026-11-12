@@ -57,7 +57,7 @@ results = []
 def check(cond, label, detail=""):
     ok = bool(cond)
     results.append((ok, label, str(detail)))
-    print(f"  [{'OK' if ok else 'FAIL'}] {label}{(' — ' + str(detail)) if detail else ''}")
+    print(f"  [{'OK' if ok else 'FAIL'}] {label}{(' - ' + str(detail)) if detail else ''}")
 
 
 def main():
@@ -65,7 +65,7 @@ def main():
     print("\n=== VERIFICATION COMPLETE DE LA REFONTE ECOPARK « CANOPEE VIVANTE » ===\n")
 
     # 1. Section A : Regles persistantes & Documentation
-    print("1. Section A — Regles persistantes & Documentation vivante")
+    print("1. Section A - Regles persistantes & Documentation vivante")
     rule_files = [
         ROOT / ".agents" / "rules" / "ecopark-design.md",
         ROOT / ".agents" / "rules" / "ecopark-information.md",
@@ -98,7 +98,7 @@ def main():
         page.goto(BASE + "/", wait_until="networkidle")
 
         # 2. Section B : Systeme graphique, couleurs semantiques & accessibilite
-        print("\n2. Section B — Systeme graphique « Canopee vivante » & Accessibilite")
+        print("\n2. Section B - Systeme graphique « Canopee vivante » & Accessibilite")
         gfx = page.evaluate("""() => {
             const cs = getComputedStyle(document.documentElement);
             const bodyCs = getComputedStyle(document.body);
@@ -142,7 +142,7 @@ def main():
               f"font={gfx['fontSizePx']}px, btnH={gfx['btnResH']}px")
 
         # 3. Section C & D : Navigation principale a 5 rubriques & Accueil en 8 sections
-        print("\n3. Sections C & D — Architecture de l'information (5 rubriques) & Accueil (8 sections)")
+        print("\n3. Sections C & D - Architecture de l'information (5 rubriques) & Accueil (8 sections)")
         nav_and_home = page.evaluate("""() => {
             const topNavLabels = Array.from(document.querySelectorAll('#v4MainMegaNav .v4-dropdown-toggle span:nth-child(2)')).map(el => el.textContent.trim());
             const hasMesReservations = !!document.getElementById('nav-ACC') && document.getElementById('nav-ACC').textContent.includes('Mes réservations');
@@ -211,7 +211,7 @@ def main():
             page.screenshot(path=str(ARTIFACT_DIR / "01_accueil_canopee_vivante.png"), full_page=False)
 
         # 4. Section E, F & H : Gabarits des pages, Source unique & 5 scenarios auto-service
-        print("\n4. Sections E, F & H — Gabarits des pages, Source unique & 5 scenarios auto-service")
+        print("\n4. Sections E, F & H - Gabarits des pages, Source unique & 5 scenarios auto-service")
 
         # Page Catalogue & Fiche activite
         page.evaluate("navigateV4SiteMenu('ACT_PIROGUE')")
@@ -326,7 +326,7 @@ def main():
         )
 
         # 5. Section G : Parcours de reservation restructures (5 etapes, 0 billet avant validation, solde guichet)
-        print("\n5. Section G — Parcours de reservation restructures")
+        print("\n5. Section G - Parcours de reservation restructures")
         page.evaluate("navigateV4SiteMenu('SIMULATEUR_RES'); window.scrollTo(0, 0);")
         page.wait_for_timeout(200)
         res_check_before = page.evaluate("""() => {
@@ -576,8 +576,8 @@ def main():
         if ARTIFACT_DIR.exists():
             page.screenshot(path=str(ARTIFACT_DIR / "08_fiche_mission_imprimable_a4.png"), full_page=False)
 
-        # 9. Tableau de Bord de Direction (/direction — DIR-01 a DIR-05 : Services qui fonctionnent vs Sous-performance)
-        print("\n9. Tableau de Bord de Direction (/direction — DIR-01 a DIR-05 : Barometre des 11 services)")
+        # 9. Tableau de Bord de Direction (/direction - DIR-01 a DIR-05 : Services qui fonctionnent vs Sous-performance)
+        print("\n9. Tableau de Bord de Direction (/direction - DIR-01 a DIR-05 : Barometre des 11 services)")
         page.evaluate("""() => {
             const ov = document.getElementById('modalOverlaySprint1');
             if (ov) ov.style.display = 'none';

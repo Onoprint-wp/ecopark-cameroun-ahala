@@ -8,7 +8,7 @@ FILES = [
 
 CSS_VISUAL_APPRECIATION = """
     /* ==========================================================================
-       DISPOSITIF « ZÉRO RÉSERVATION À L'AVEUGLE » — APPRÉCIATION VISUELLE TOTALE
+       DISPOSITIF « ZÉRO RÉSERVATION À L'AVEUGLE » - APPRÉCIATION VISUELLE TOTALE
        ========================================================================== */
     .agenda-card-media {
       position: relative;
@@ -222,21 +222,21 @@ JS_VISUAL_APPRECIATION = """
       ],
       LODGES: {
         EWONDO: {
-          title: 'Cité Ewondo — Suite VIP Climatisée (Standing Prestige)',
+          title: 'Cité Ewondo - Suite VIP Climatisée (Standing Prestige)',
           rate: '25 000 – 30 000 FCFA / nuit',
           desc: "Suite climatisée avec literie King-Size, coin salon, salle d'eau privative, petit-déjeuner et accès privilégié Piscine & Zoo.",
           src: 'audit-assets/ecopark-real-media/chambre.jpeg',
           lbIdx: 8
         },
         CHANTHEL: {
-          title: 'Cité Chanthel — Loge Confort Familiale & Couples',
+          title: 'Cité Chanthel - Loge Confort Familiale & Couples',
           rate: '15 000 – 25 000 FCFA / nuit',
           desc: "Chambre spacieuse au calme sous la canopée d'Ahala, salle de bain privative, terrasse ombragée et service en chambre depuis Le Château des Saveurs.",
           src: 'audit-assets/ecopark-real-media/chambre.jpeg',
           lbIdx: 8
         },
         BENE: {
-          title: 'Cité Bene — Loge Standard Calme & Nature',
+          title: 'Cité Bene - Loge Standard Calme & Nature',
           rate: '10 000 – 15 000 FCFA / nuit',
           desc: "Idéal pour le repos en journée ou une nuitée nature accessible au cœur du parc d'Ahala (réception ouverte 24h/24).",
           src: 'audit-assets/ecopark-real-media/chambre.jpeg',
@@ -389,7 +389,7 @@ JS_VISUAL_APPRECIATION = """
           if (chk && chk.checked) {
             if (item.chkId === 'chkBumpLodgeEwondo') {
               activeItems.push({
-                title: lodgeMeta.title.split('—')[0].trim(),
+                title: lodgeMeta.title.split('-')[0].trim(),
                 price: lodgeMeta.rate,
                 src: lodgeMeta.src,
                 lbIdx: lodgeMeta.lbIdx
@@ -462,17 +462,17 @@ JS_VISUAL_APPRECIATION = """
         if (cfpTrack === 'Hôtellerie') {
           cImg.src = 'audit-assets/ecopark-real-media/chambre.jpeg';
           cImg.onclick = () => openEcoparkLightbox(8);
-          cTitle.textContent = 'Filière Hôtellerie — Stage Pratique dans nos 3 Cités (Ewondo, Chanthel, Bene)';
+          cTitle.textContent = 'Filière Hôtellerie - Stage Pratique dans nos 3 Cités (Ewondo, Chanthel, Bene)';
           cDesc.textContent = 'Apprentissage concret de la réception 24h/24, du gouvernantat et de la gestion hôtelière sur site.';
         } else if (cfpTrack === 'Restauration') {
           cImg.src = 'audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png';
           cImg.onclick = () => openEcoparkLightbox(2);
-          cTitle.textContent = 'Filière Restauration — Stage Pratique au Château des Saveurs';
+          cTitle.textContent = 'Filière Restauration - Stage Pratique au Château des Saveurs';
           cDesc.textContent = 'Maîtrise de la cuisine camerounaise et internationale, brigade, grillades et service banquet.';
         } else {
           cImg.src = 'audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png';
           cImg.onclick = () => openEcoparkLightbox(6);
-          cTitle.textContent = `Filière ${cfpTrack} — Campus & Bassins d'Application CFP ECOPARK`;
+          cTitle.textContent = `Filière ${cfpTrack} - Campus & Bassins d'Application CFP ECOPARK`;
           cDesc.textContent = '70 % de travaux pratiques sur les installations réelles du complexe d’Ahala (Diplôme DQP / CQP MINEFOP).';
         }
       }
@@ -656,9 +656,9 @@ def inject_visual_appreciation(filepath: str) -> None:
 
     # 4. Add visual dish preview inside #kitchenPreorderSubpanel
     kitchen_target = """                        <select id="simMealSlotSelect" class="form-control" style="min-height:32px;padding:3px 8px;font-size:12.5px;" onchange="recalcSimulator()">
-                          <option value="Service 12h30" selected>12h30 — Zéro attente (Prioritaire)</option>
-                          <option value="Service 13h30">13h30 — Cœur de journée</option>
-                          <option value="Service 15h00">15h00 — Après-midi au bord du lac</option>
+                          <option value="Service 12h30" selected>12h30 - Zéro attente (Prioritaire)</option>
+                          <option value="Service 13h30">13h30 - Cœur de journée</option>
+                          <option value="Service 15h00">15h00 - Après-midi au bord du lac</option>
                         </select>
                       </div>
                     </div>"""
@@ -683,7 +683,7 @@ def inject_visual_appreciation(filepath: str) -> None:
                       <img id="lodgeVisualPreviewImg" src="audit-assets/ecopark-real-media/chambre.jpeg" alt="Aperçu chambre Cité Hôtelière ECOPARK" onclick="openEcoparkLightbox(8)" title="Cliquer pour agrandir la photo réelle de la chambre" />
                       <div style="flex:1;font-size:12.5px;">
                         <div style="display:flex;justify-content:space-between;align-items:center;gap:6px;flex-wrap:wrap;">
-                          <strong style="color:var(--color-brand-deep);font-size:13.2px;" id="lodgeVisualPreviewTitle">Cité Ewondo — Suite VIP Climatisée (Standing Prestige)</strong>
+                          <strong style="color:var(--color-brand-deep);font-size:13.2px;" id="lodgeVisualPreviewTitle">Cité Ewondo - Suite VIP Climatisée (Standing Prestige)</strong>
                           <span class="price-pill" style="font-size:11px;padding:1px 8px;" id="lodgeVisualPreviewRate">25 000 – 30 000 FCFA / nuit</span>
                         </div>
                         <span style="color:var(--color-text-muted);display:block;margin-top:2px;" id="lodgeVisualPreviewDesc">Suite climatisée avec literie King-Size, coin salon, salle d'eau privative, petit-déjeuner et accès privilégié Piscine &amp; Zoo.</span>

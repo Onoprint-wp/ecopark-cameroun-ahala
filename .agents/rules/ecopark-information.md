@@ -2,7 +2,7 @@
 trigger: always_on
 ---
 
-# ECOPARK Cameroun — Architecture de l'Information & Source Unique des Données
+# ECOPARK Cameroun - Architecture de l'Information & Source Unique des Données
 
 ## 1. Navigation principale et accès utilitaires
 Navigation principale limitée à **5 entrées explicites** :

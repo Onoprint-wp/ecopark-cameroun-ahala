@@ -5,7 +5,7 @@
  * The carve is an analysis: it listens to a voice track, finds the bands it
  * occupies, and writes a chain of dips into the music bed plus a level match. In
  * Studio a panel runs it. This is the same analysis for an agent that has no
- * panel to click — identical functions from `@hyperframes/core`, identical
+ * panel to click - identical functions from `@hyperframes/core`, identical
  * output, so a composition carved here and one carved in Studio are the same
  * three attributes.
  *
@@ -19,7 +19,7 @@
  * room for both.
  *
  * Needs `ffmpeg` on PATH (to decode the audio) and `@hyperframes/core` resolvable
- * from the composition's project (`npm i -D @hyperframes/core`) — the CLI bundles
+ * from the composition's project (`npm i -D @hyperframes/core`) - the CLI bundles
  * core inline rather than shipping it as a package, so it cannot be borrowed from
  * there.
  */
@@ -82,7 +82,7 @@ function fail(message, code = 1) {
  * Load the carve analysis out of `@hyperframes/core`.
  *
  * Resolved from the project rather than from this script, which lives wherever
- * the skill was installed — a sibling of the composition is what has the
+ * the skill was installed - a sibling of the composition is what has the
  * dependency.
  */
 export async function loadCore(fromDir) {
@@ -94,11 +94,11 @@ export async function loadCore(fromDir) {
    *   1. Anchored at the PROJECT, not at this script. This file lives wherever
    *      the skill was installed, which has no @hyperframes/core; the
    *      composition's project is what holds the dependency. So a bare
-   *      `import("@hyperframes/core/audio-carve")` from here cannot work — bare
+   *      `import("@hyperframes/core/audio-carve")` from here cannot work - bare
    *      specifiers resolve relative to the importing module.
    *   2. Honouring the package's export CONDITIONS. `require.resolve` asks for
    *      "require"/"node". The workspace manifest declares `node`, so this
-   *      resolved fine inside the monorepo — but the PUBLISHED manifest carries
+   *      resolved fine inside the monorepo - but the PUBLISHED manifest carries
    *      only `import` + `types`, so every consumer of the released package got
    *      ERR_PACKAGE_PATH_NOT_EXPORTED for a package that ships the file. That
    *      is the audience this skill is shipped to, so the script was broken
@@ -151,7 +151,7 @@ export async function loadCore(fromDir) {
  * SKILL.md states the invariant: "A carve against more than one clip id is
  * wrong. Group the clips and carve against the group." Naming the group lets
  * `resolveCarveSourceIds` resolve membership at analysis time, so a voice added
- * later is covered without editing `sources` — whereas a list of clip ids rots
+ * later is covered without editing `sources` - whereas a list of clip ids rots
  * silently the moment a fourth narration clip appears. The lint rule
  * `audio_carve_ungrouped_sources` enforces exactly this.
  *
@@ -163,7 +163,7 @@ export async function loadCore(fromDir) {
  * The bed has to be part of the decision, because the group form resolves
  * LATER and wider than it looks. If the bed is itself a member of the voices'
  * group, `resolveCarveSourceIds` expands that id to every current member on the
- * next analysis — including the bed — and the bed ends up carved against
+ * next analysis - including the bed - and the bed ends up carved against
  * itself, which SKILL.md calls a bug rather than a mix choice. This run cannot
  * see it: `main()` sums the voice list it detected and never round-trips
  * through group resolution, so the first pass is correct and only the next
@@ -189,7 +189,7 @@ function sharedVoiceGroup(voices) {
 
 /**
  * Why naming the voices' shared group would persist something this run did not
- * analyse — or null when the group is safe to name.
+ * analyse - or null when the group is safe to name.
  *
  * `members` is every `<audio>` in the composition as `{id, group, nameKind}`,
  * with `nameKind` from core's `classifyAudioName`, so this and Studio's picker
@@ -197,7 +197,7 @@ function sharedVoiceGroup(voices) {
  *
  * Required, deliberately not defaulting to `[]`. With an empty list the `mixed`
  * refusal below cannot fire, so a call that forgot the argument would return the
- * group form and restore the exact behaviour this function exists to prevent —
+ * group form and restore the exact behaviour this function exists to prevent -
  * silently, because the first CLI pass is correct either way and only a later
  * Studio re-analysis is wrong. A missing argument throws on `members.filter`
  * instead.
@@ -208,14 +208,14 @@ function sharedVoiceGroup(voices) {
  * a src. `main()` meanwhile sums the voice list `detectTracks` returned, so the
  * first pass looks correct however wrong the persisted attribute is.
  *
- *   `bed`   — the bed is a member, so it would be handed to itself as a voice
+ *   `bed`   - the bed is a member, so it would be handed to itself as a voice
  *             and carved against its own content.
- *   `mixed` — a member classified music or sfx is not a voice this run measured,
+ *   `mixed` - a member classified music or sfx is not a voice this run measured,
  *             so it would enter the sidechain on the next analysis and duck the
  *             bed under a whoosh.
  *
  * Deliberately NOT a refusal: a member classified `voice` or `unknown` that this
- * run left out. That is the group form working as designed — `detectTracks` only
+ * run left out. That is the group form working as designed - `detectTracks` only
  * takes voices that overlap the bed, and picking up a clip that starts playing
  * later without an edit to `sources` is the whole reason SKILL.md says to name
  * the group. Refusing there would collapse the group form into clip ids for
@@ -299,7 +299,7 @@ function mediaElements(html) {
  * comes from core so Studio's own picker and this cannot disagree.
  *
  * EVERY voice over the bed, not one of them. A bed usually runs under a whole
- * sequence, and they are analysed together — so there is nothing to disambiguate,
+ * sequence, and they are analysed together - so there is nothing to disambiguate,
  * which is why this no longer refuses when several tracks look like speech.
  *
  * Only tracks that actually play while the bed does: one somewhere else on the
@@ -332,7 +332,7 @@ function detectTracks(html, given, classify, overlaps) {
     if (music.length === 1) bed = { ...music[0], why: "name looks like music" };
     else if (music.length > 1) {
       fail(
-        `several tracks look like music (${music.map((el) => el.id).join(", ")}) — name one with --bed`,
+        `several tracks look like music (${music.map((el) => el.id).join(", ")}) - name one with --bed`,
       );
     } else if (others.length === 1) {
       bed = { ...others[0], why: "only track left" };
@@ -351,7 +351,7 @@ function detectTracks(html, given, classify, overlaps) {
     .filter((el) => el.id !== bed.id && kindOf(el) !== "music" && kindOf(el) !== "sfx")
     .filter(overlapping);
   // A voiceover is normally its own <audio>. Video counts only when no audio track
-  // is left to be the voice — a talking-head recut — because otherwise every B-roll
+  // is left to be the voice - a talking-head recut - because otherwise every B-roll
   // clip in the composition reads as somebody talking.
   const spoken = plausible.filter((el) => el.kind === "audio");
   const pool = spoken.length > 0 ? spoken : plausible;
@@ -410,7 +410,7 @@ async function main() {
 
   const profile = carveApi.carveProfile(args.strength);
   // Every voice summed onto the BED's clock before anything is measured. One
-  // question — where and when is speech masking this bed — with one answer, even
+  // question - where and when is speech masking this bed - with one answer, even
   // when the answer comes from several people at different times.
   const voice = carveApi.mixCarveSources(
     voices.map((v) => ({
@@ -423,7 +423,7 @@ async function main() {
   const bands = carveApi.analyseCarveBands(voice, SAMPLE_RATE, profile);
 
   // The level half of the carve needs both sides: "how far over the speech is this
-  // bed" cannot be answered by listening to one of them. No offset — the mix is
+  // bed" cannot be answered by listening to one of them. No offset - the mix is
   // already on the bed's clock.
   const bed = profile.duckDb > 0 ? decode(resolve(compDir, unescapeAttr(bedSrc))) : null;
   const duck = bed ? carveApi.analyseCarveDuck(voice, bed, SAMPLE_RATE, profile, 0) : [];
@@ -548,7 +548,7 @@ async function main() {
   // Inserted before the tag's own closing ">", which is the only place they can
   // go: `stripped` is the opening tag alone, so appending would land outside it.
   const nextTag = stripped.replace(/\/?>$/, (close) => `${written}${close}`);
-  if (nextTag === stripped) fail("attribute write produced no change — refusing to save");
+  if (nextTag === stripped) fail("attribute write produced no change - refusing to save");
   writeFileSync(compPath, html.replace(bedTag, nextTag));
   process.stdout.write(`wrote ${args.comp} (id="${bedEl.id}")\n`);
 }

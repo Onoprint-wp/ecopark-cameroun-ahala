@@ -14,7 +14,7 @@ Ne pas présenter une « liste technique d'écrans », mais prouver en direct su
 
 ## Déroulé Chronométré en 5 Actes (7 Minutes)
 
-### ACTE 1 — L'Électrochoc Visuel & La Réassurance Ahala (00:00 → 01:15)
+### ACTE 1 - L'Électrochoc Visuel & La Réassurance Ahala (00:00 → 01:15)
 **Action à l'écran :** Ouvrir [`https://ecopark-cameroun-ahala.vercel.app/`](https://ecopark-cameroun-ahala.vercel.app/)
 1. Pointer le **bandeau météo & trafic en direct** tout en haut (`En direct d'Ahala Barrière (RN3 Face Tradex) : 27 °C Ensoleillé • Accès RN3 Fluide • Garantie Pluie : Report Gratuit 1 Clic`).
 2. Cliquer sur les miniatures du **Hero 50/50** (*Lac & Pirogues*, *Piscine & Eau*, *Saveurs & Loges*) pour montrer l'animation **HyperFrames** synchronisée avec les cartes de prix en **FCFA** (`500 / 1 000 FCFA`, `1 500 / 2 500 FCFA`, `10 000 – 30 000 FCFA`).
@@ -23,9 +23,9 @@ Ne pas présenter une « liste technique d'écrans », mais prouver en direct su
 
 ---
 
-### ACTE 2 — La Machine à Cash Famille & L'Anti-Fraude au Tourniquet (01:15 → 03:15)
+### ACTE 2 - La Machine à Cash Famille & L'Anti-Fraude au Tourniquet (01:15 → 03:15)
 **Action à l'écran :** Cliquer sur **`Réserver & Billets`** dans l'en-tête (`#sec-RES-03`).
-1. Cliquer en 1 clic sur le bouton **`Pass Journée Royale (Repas inclus) — 8 500 / 4 500 FCFA`** : montrer l'**odomètre cinétique FCFA** qui anime instantanément le total et la règle de protection : **« Entrée enfant garantie à 500 FCFA »**.
+1. Cliquer en 1 clic sur le bouton **`Pass Journée Royale (Repas inclus) - 8 500 / 4 500 FCFA`** : montrer l'**odomètre cinétique FCFA** qui anime instantanément le total et la règle de protection : **« Entrée enfant garantie à 500 FCFA »**.
 2. Dans les options à la carte, sélectionner :
    - **Spécialité Château des Saveurs** : `Poulet DG Royal & Plantain Mûr` • `Service 13h30` (zéro attente en cuisine).
    - **Navette Climatisée Yaoundé** : `Carrefour Bastos (Départ 09h15)`.
@@ -33,15 +33,15 @@ Ne pas présenter une « liste technique d'écrans », mais prouver en direct su
 4. Cliquer sur **`Télécharger Pass QR Hors-Ligne (Image PNG)`** : montrer que le visiteur repart avec son billet enregistré en image dans son téléphone, utilisable même s'il n'a plus de forfait Internet en arrivant à Ahala Barrière.
 5. **Le Moment de Vérité (Anti-Coulage, Mode Hors-Ligne RN3 & Billetage FCFA) :**
    - Cliquer sur le bouton flottant en bas à droite **`Mode Démo & Back-Office (77 Écrans)`** $\rightarrow$ aller sur **`Guichet / Contrôle (AGT-05)`** (ou ouvrir `/guichet`).
-   - Cliquer une **1re fois** sur **`Vérifier dans la BDD`** : l'écran affiche en vert **`1/7 • BILLET VALIDE — AUTORISER L'ENTRÉE`**.
-   - Cliquer une **2e fois** sur le même bouton 2 secondes plus tard : l'écran vire au rouge **`2/7 • BILLET DÉJÀ UTILISÉ — REFUSER L'ENTRÉE`** avec l'heure exacte du 1er passage.
+   - Cliquer une **1re fois** sur **`Vérifier dans la BDD`** : l'écran affiche en vert **`1/7 • BILLET VALIDE - AUTORISER L'ENTRÉE`**.
+   - Cliquer une **2e fois** sur le même bouton 2 secondes plus tard : l'écran vire au rouge **`2/7 • BILLET DÉJÀ UTILISÉ - REFUSER L'ENTRÉE`** avec l'heure exacte du 1er passage.
    - Basculer le commutateur **`Mode Hors-Ligne RN3`** : prouver que même en cas de coupure 3G/4G à Ahala Barrière, le tourniquet continue de scanner les billets en cache local et synchronise la file d'attente au retour du réseau.
    - Montrer la **Grille de Billetage Contradictoire en coupures FCFA (`AGT-08`)** (`10 000`, `5 000`, `2 000`, `1 000`, `500 FCFA`) qui calcule l'écart en temps réel et déclenche une alerte d'audit dès `2 000 FCFA` d'écart.
 - **Phrase clé au Promoteur :** *« Aucun billet papier ne peut plus être revendu deux fois à l'entrée, même si la connexion Internet coupe sur la RN3, et chaque coupure FCFA en caisse est comptée contradictoirement. »*
 
 ---
 
-### ACTE 3 — Le Moteur B2B : Écoles, Ministères, ONG & Mariages (03:15 → 04:45)
+### ACTE 3 - Le Moteur B2B : Écoles, Ministères, ONG & Mariages (03:15 → 04:45)
 **Action à l'écran :** Cliquer sur **`Prendre RDV`** puis sur **`Devis Groupe`** dans l'en-tête.
 1. Dans **`Prendre RDV`** (`/rdv`), sélectionner **`Repérage Mariage & Réception`** (Salle Polyvalente *Menkii Essomba Anton*), choisir le créneau **`11h00 – 12h00`** et cliquer sur **`Confirmer mon RDV`** (`RDV-2026-XXXX`).
 2. Ouvrir **`Devis Groupe`** : sélectionner **`Séminaire Ministère / ONG / Entreprise`** (ou *Excursion scolaire*), saisir `60 participants`, cocher la **Navette Climatisée 32 places**, puis cliquer sur **`Imprimer / PDF Proforma`**.
@@ -49,7 +49,7 @@ Ne pas présenter une « liste technique d'écrans », mais prouver en direct su
 
 ---
 
-### ACTE 4 — Le Campus CFP Agréé MINEFOP & La Garantie Pluie Yaoundé (04:45 → 05:45)
+### ACTE 4 - Le Campus CFP Agréé MINEFOP & La Garantie Pluie Yaoundé (04:45 → 05:45)
 **Action à l'écran :** Aller sur **`Formation CFP`** puis sur **`Mon Espace`**.
 1. Ouvrir la candidature **CFP ECOPARK** : montrer les **5 filières officielles** (*Hôtellerie, Restauration, Décoration, Agropastorale, Pisciculture*), les frais officiels (`50 000 FCFA` d'inscription + `250 000 FCFA` payables en **4 tranches**) et le contrôle réglementaire MINEFOP ($\ge 16\text{ ans}$).
 2. Ouvrir **`Mon Espace`** (`#view-ACC`) :
@@ -58,7 +58,7 @@ Ne pas présenter une « liste technique d'écrans », mais prouver en direct su
 
 ---
 
-### ACTE 5 — Le Poste de Commandement du Promoteur à 18h00 (05:45 → 07:00)
+### ACTE 5 - Le Poste de Commandement du Promoteur à 18h00 (05:45 → 07:00)
 **Action à l'écran :** Basculer sur **`Exploitation (EXP-07)`**, **`Direction (DIR-01 / DIR-05)`** (`/direction`) puis **`Admin / CMS (ADM-09)`** (`/admin`).
 1. Dans **`EXP-07`**, montrer la **Console de Closing WhatsApp en 1 Clic** (`+237 697 13 62 03`) qui permet à l'équipe d'envoyer un billet QR, une Proforma PDF ou de bloquer une Suite VIP à la **Cité Ewondo (`25 000 – 30 000 FCFA`)**.
 2. Dans **`ADM-09 (Inbox Unifiée des Leads & Billets en 1 Clic)`**, montrer que tous les flux entrants (`Billets QR`, `Devis B2B`, `RDV`, `Candidatures CFP`) arrivent dans une boîte unique filtrable où le Gérant change le statut (`Nouveau` $\rightarrow$ `Confirmé` $\rightarrow$ `Traité`) en 1 clic avec traçabilité dans le journal d'audit SHA-256 (`ADM-08`).

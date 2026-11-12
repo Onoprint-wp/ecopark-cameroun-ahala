@@ -265,18 +265,18 @@ def apply_declutter(filepath: str) -> None:
 
     # 2. Fix the critical extra </div> bug inside #kitchenPreorderSubpanel that broke the 2-column grid in #view-RES
     broken_kitchen_div = """                        <select id="simMealSlotSelect" class="form-control" style="min-height:32px;padding:3px 8px;font-size:12.5px;" onchange="recalcSimulator()">
-                          <option value="Service 12h30" selected>12h30 — Zéro attente (Prioritaire)</option>
-                          <option value="Service 13h30">13h30 — Cœur de journée</option>
-                          <option value="Service 15h00">15h00 — Après-midi au bord du lac</option>
+                          <option value="Service 12h30" selected>12h30 - Zéro attente (Prioritaire)</option>
+                          <option value="Service 13h30">13h30 - Cœur de journée</option>
+                          <option value="Service 15h00">15h00 - Après-midi au bord du lac</option>
                         </select>
                       </div>
                       </div>
                       <div id="kitchenVisualPreviewBox\""""
 
     fixed_kitchen_div = """                        <select id="simMealSlotSelect" class="form-control" style="min-height:32px;padding:3px 8px;font-size:12.5px;" onchange="recalcSimulator()">
-                          <option value="Service 12h30" selected>12h30 — Zéro attente (Prioritaire)</option>
-                          <option value="Service 13h30">13h30 — Cœur de journée</option>
-                          <option value="Service 15h00">15h00 — Après-midi au bord du lac</option>
+                          <option value="Service 12h30" selected>12h30 - Zéro attente (Prioritaire)</option>
+                          <option value="Service 13h30">13h30 - Cœur de journée</option>
+                          <option value="Service 15h00">15h00 - Après-midi au bord du lac</option>
                         </select>
                       </div>
                       <div id="kitchenVisualPreviewBox\""""
@@ -327,7 +327,7 @@ def apply_declutter(filepath: str) -> None:
         html = html.replace(old_weather, new_weather, 1)
 
     old_hero_copy = """                <p class="lead-editorial" style="margin:18px 0 26px;max-width:640px;">
-                  À 15 minutes du centre de Yaoundé (<strong>Ahala Barrière, face station Tradex</strong> — route 100 % bitumée), offrez à votre famille ou à vos équipes une vraie parenthèse loin des embouteillages : <strong>parc animalier avec notre gorille star « ToTo »</strong>, <strong>balade en pirogue sur le lac</strong>, <strong>piscine moderne surveillée</strong>, <strong>poisson frais des étangs braisé à la minute au Château des Saveurs</strong>, nos <strong>3 hôtels au calme (Ewondo, Chanthel, Bene)</strong> et notre <strong>Centre de Formation Professionnelle (CFP)</strong>.
+                  À 15 minutes du centre de Yaoundé (<strong>Ahala Barrière, face station Tradex</strong> - route 100 % bitumée), offrez à votre famille ou à vos équipes une vraie parenthèse loin des embouteillages : <strong>parc animalier avec notre gorille star « ToTo »</strong>, <strong>balade en pirogue sur le lac</strong>, <strong>piscine moderne surveillée</strong>, <strong>poisson frais des étangs braisé à la minute au Château des Saveurs</strong>, nos <strong>3 hôtels au calme (Ewondo, Chanthel, Bene)</strong> et notre <strong>Centre de Formation Professionnelle (CFP)</strong>.
                 </p>
                 <div style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:28px;">
                   <button type="button" class="btn btn-primary" onclick="navigateFamily('RES', 'RES-03')">Simuler mon budget en FCFA & Réserver</button>
@@ -474,7 +474,7 @@ def apply_declutter(filepath: str) -> None:
             wa_start,
             """                <details class="clean-details-accordion" id="waConciergeAccordion">
                   <summary>
-                    <span>Guichet Unique &amp; Portefeuille WhatsApp (+237 697 13 62 03) — Bon pré-calculé</span>
+                    <span>Guichet Unique &amp; Portefeuille WhatsApp (+237 697 13 62 03) - Bon pré-calculé</span>
                   </summary>
                   <div class="accordion-inner-body" style="padding:10px;">
                     <div class="wa-concierge-shell" id="whatsappConciergeCard" style="border:none;box-shadow:none;padding:8px;">""",

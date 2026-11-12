@@ -56,16 +56,16 @@ One command, one Chrome boot. `check` runs the linter first and skips the browse
 
 Every finding carries a selector, the element's `data-*` identity, the composition source file, a bbox, and the sample time: jump straight from the JSON to the HTML you must edit and re-run.
 
-**Severity is persistence-aware.** A dynamic issue observed at a single grid sample (an entrance/exit transient) demotes to info and never gates. Issues held across samples gate the exit code, a held `content_overlap` is an error, and a held, partially-visible `canvas_overflow` breaching ≥5% of the canvas promotes to warning. Coordinate-frame findings (`escaped_container`, `panel_out_of_canvas`, `connector_detached`) flag geometry computed in one frame but rendered in another — an element far outside its offset parent, a painted panel stuck across the canvas edge, a connector line detached from every node. Text drawn into a `<canvas>` has no DOM box, so `canvas_overflow` cannot see it; `canvas_content_at_edge` warns when a canvas's pixels show sharp content (drawn text, hard shapes) along the frame edge — mark intentional full-bleed art (particles, photos) with `data-layout-allow-overflow`. If a 3s+ composition shows no visible change across every sample, `check` fails with `sweep_static`: a frame that never changes while a GSAP timeline or tween, or a CSS or Web animation, holds the same time without ever finishing means the seek is not driving the page, so it refuses to pass. Any other frame that never changes (a still title card, an audio-only advance) is a warning that `--strict` fails; a composition meant to be still can take `data-no-timeline` on its root to skip it. The fingerprint includes per-element opacity, so opacity-only reveals (code typing, staggered fades) count as motion — but only while they're still in flight at the sampled times. The classic trap is a reveal that completes early and then holds a static frame for the rest of the duration: every sample lands on the settled state and check warns that nothing on screen moved (`--strict` fails it). Spread the reveal across the timeline or give the hold a real next action (the cursor heading to the next control, the camera's next move); don't bolt on a slow drift, a blinking caret or a loop just to appease the check.
+**Severity is persistence-aware.** A dynamic issue observed at a single grid sample (an entrance/exit transient) demotes to info and never gates. Issues held across samples gate the exit code, a held `content_overlap` is an error, and a held, partially-visible `canvas_overflow` breaching ≥5% of the canvas promotes to warning. Coordinate-frame findings (`escaped_container`, `panel_out_of_canvas`, `connector_detached`) flag geometry computed in one frame but rendered in another - an element far outside its offset parent, a painted panel stuck across the canvas edge, a connector line detached from every node. Text drawn into a `<canvas>` has no DOM box, so `canvas_overflow` cannot see it; `canvas_content_at_edge` warns when a canvas's pixels show sharp content (drawn text, hard shapes) along the frame edge - mark intentional full-bleed art (particles, photos) with `data-layout-allow-overflow`. If a 3s+ composition shows no visible change across every sample, `check` fails with `sweep_static`: a frame that never changes while a GSAP timeline or tween, or a CSS or Web animation, holds the same time without ever finishing means the seek is not driving the page, so it refuses to pass. Any other frame that never changes (a still title card, an audio-only advance) is a warning that `--strict` fails; a composition meant to be still can take `data-no-timeline` on its root to skip it. The fingerprint includes per-element opacity, so opacity-only reveals (code typing, staggered fades) count as motion - but only while they're still in flight at the sampled times. The classic trap is a reveal that completes early and then holds a static frame for the rest of the duration: every sample lands on the settled state and check warns that nothing on screen moved (`--strict` fails it). Spread the reveal across the timeline or give the hold a real next action (the cursor heading to the next control, the camera's next move); don't bolt on a slow drift, a blinking caret or a loop just to appease the check.
 
 **Escape hatches** (mark intent in the HTML, then re-run):
 
-- `data-layout-allow-overflow` — overflow is intentional (entrance/exit travel).
-- `data-layout-allow-overlap` — deliberate text layering (e.g. a demo cursor label over a heading). Applies only to the marked text block; it is not inherited. Mark the specific layering participant, never a scene/root wrapper, so unrelated descendant collisions remain auditable.
-- `data-layout-allow-occlusion` — an element is meant to cover text.
-- `data-layout-allow-caption-zone` — intentional lower-third / caption-band copy under `--caption-zone`. Applies to the marked element and every descendant (`closest`); silences only `caption_zone_collision` (not overflow/overlap/occlusion). Prefer the narrowest wrapper that owns the intentional band copy.
-- `data-layout-ignore` — decorative element that should never be audited.
-- `data-hold` — deliberate stillness: while this element is on screen, `dead_stretch` does not count the time.
+- `data-layout-allow-overflow` - overflow is intentional (entrance/exit travel).
+- `data-layout-allow-overlap` - deliberate text layering (e.g. a demo cursor label over a heading). Applies only to the marked text block; it is not inherited. Mark the specific layering participant, never a scene/root wrapper, so unrelated descendant collisions remain auditable.
+- `data-layout-allow-occlusion` - an element is meant to cover text.
+- `data-layout-allow-caption-zone` - intentional lower-third / caption-band copy under `--caption-zone`. Applies to the marked element and every descendant (`closest`); silences only `caption_zone_collision` (not overflow/overlap/occlusion). Prefer the narrowest wrapper that owns the intentional band copy.
+- `data-layout-ignore` - decorative element that should never be audited.
+- `data-hold` - deliberate stillness: while this element is on screen, `dead_stretch` does not count the time.
 
 **Opt-in pipeline gates** (used by orchestrators; off by default):
 
@@ -76,13 +76,13 @@ npx hyperframes check --frame-check     # media (img/svg/video/canvas) out-of-fr
 
 `--caption-zone` takes fractional band geometry (`x0/y0/x1/y1` required, 0-1 fractions of the composition's own canvas, portrait included) with optional `severity` and comma-separated `seek` fractions; it flags a text element's DOM box (`getBoundingClientRect`) that overlaps the band. Waive intentional lower-third copy with `data-layout-allow-caption-zone` on the element or its nearest wrapper (see Escape hatches). `--frame-check` reports media elements breaching the canvas beyond `max(120px, 6% of the min canvas dimension)`.
 
-**Fixing contrast errors** — thresholds are 4.5:1 for normal text, 3:1 for large text (24px+, or 19px+ bold). The finding's `suggestedColor` already picks the nearest compliant color in the right direction (brighten on dark backgrounds, darken on light); apply it or adjust within the palette family, then re-run `check`.
+**Fixing contrast errors** - thresholds are 4.5:1 for normal text, 3:1 for large text (24px+, or 19px+ bold). The finding's `suggestedColor` already picks the nearest compliant color in the right direction (brighten on dark backgrounds, darken on light); apply it or adjust within the palette family, then re-run `check`.
 
 ## Motion verification (`*.motion.json` sidecar)
 
-`check` verifies **motion intent** against the same seeked timeline the renderer uses — the closest automated proxy for "render the MP4 and watch it". It catches render-vs-preview bugs layout sampling can't: an entrance reveal the seek lands past, a broken stagger order, an element drifting off-frame mid-tween, a frozen shot.
+`check` verifies **motion intent** against the same seeked timeline the renderer uses - the closest automated proxy for "render the MP4 and watch it". It catches render-vs-preview bugs layout sampling can't: an entrance reveal the seek lands past, a broken stagger order, an element drifting off-frame mid-tween, a frozen shot.
 
-Drop a `*.motion.json` sidecar next to the composition (matching the html basename when several compositions share a dir). `check` discovers it automatically — no flag, no authoring-framework changes. With no sidecar, `check` behaves exactly as before.
+Drop a `*.motion.json` sidecar next to the composition (matching the html basename when several compositions share a dir). `check` discovers it automatically - no flag, no authoring-framework changes. With no sidecar, `check` behaves exactly as before.
 
 ```json
 {
@@ -98,12 +98,12 @@ Drop a `*.motion.json` sidecar next to the composition (matching the html basena
 
 | Assertion                      | Fails (code) when                                                                                                           |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------- |
-| `appearsBy(selector, bySec)`   | not visible (opacity ≥ 0.5) by `bySec` — `motion_appears_late`                                                              |
-| `before(a, b)`                 | `a` does not first appear strictly before `b` — `motion_out_of_order`                                                       |
-| `staysInFrame(selector)`       | once visible, its box leaves the canvas — `motion_off_frame`                                                                |
-| `keepsMoving(withinSelector?)` | a fully-static window exceeds `maxStaticSec` (default 2s); the film's final 3 s (an end card) never count — `motion_frozen` |
+| `appearsBy(selector, bySec)`   | not visible (opacity ≥ 0.5) by `bySec` - `motion_appears_late`                                                              |
+| `before(a, b)`                 | `a` does not first appear strictly before `b` - `motion_out_of_order`                                                       |
+| `staysInFrame(selector)`       | once visible, its box leaves the canvas - `motion_off_frame`                                                                |
+| `keepsMoving(withinSelector?)` | a fully-static window exceeds `maxStaticSec` (default 2s); the film's final 3 s (an end card) never count - `motion_frozen` |
 
-`duration`, `withinSelector`, and `maxStaticSec` are optional. Findings are **errors by default** and appear in the same human and `--json` output as layout findings. A selector that matches nothing is reported as `motion_selector_missing` rather than silently passing — a typo'd selector fails loudly. Use this in the feedback loop instead of eyeballing the render: assert what the motion is supposed to do, and let `check` tell you when the seek diverges from intent.
+`duration`, `withinSelector`, and `maxStaticSec` are optional. Findings are **errors by default** and appear in the same human and `--json` output as layout findings. A selector that matches nothing is reported as `motion_selector_missing` rather than silently passing - a typo'd selector fails loudly. Use this in the feedback loop instead of eyeballing the render: assert what the motion is supposed to do, and let `check` tell you when the seek diverges from intent.
 
 ## snapshot
 
@@ -143,7 +143,7 @@ npx hyperframes snapshot --zoom "100,50,400,300" --zoom-scale 2   # or an exact 
 npx hyperframes check
 ```
 
-`--zoom` takes a CSS selector or an exact `x,y,w,h` pixel region and always produces a real high-density crop (a raised `deviceScaleFactor`, never CSS zoom or a viewport resize), so the composition's layout — and its render determinism — is untouched. A selector matching nothing is a loud error, not a silent full-frame fallback, and a frame where the target has no visible box (collapsed or animated off-canvas) is skipped with a note instead of written as a sliver.
+`--zoom` takes a CSS selector or an exact `x,y,w,h` pixel region and always produces a real high-density crop (a raised `deviceScaleFactor`, never CSS zoom or a viewport resize), so the composition's layout - and its render determinism - is untouched. A selector matching nothing is a loud error, not a silent full-frame fallback, and a frame where the target has no visible box (collapsed or animated off-canvas) is skipped with a note instead of written as a sliver.
 
 ## Deprecated: validate, inspect, layout
 

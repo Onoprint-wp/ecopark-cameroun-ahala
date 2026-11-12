@@ -1,0 +1,43 @@
+{
+  "@context": "https://schema.org",
+  "@type": [
+    "TouristAttraction",
+    "Resort",
+    "AmusementPark"
+  ],
+  "@id": "https://ecopark-cameroun-ahala.vercel.app/#ecopark",
+  "name": "ECOPARK CAMEROUN (Yaounde - Ahala)",
+  "description": "Complexe eco-touristique, parc animalier, piscine, lac et pirogue, 4 cites hotelieres (10 000 a 30 000 FCFA/nuit), restaurant Le Chateau des Saveurs et CFP agree MINEFOP a Yaounde Ahala (RN3).",
+  "url": "https://ecopark-cameroun-ahala.vercel.app/",
+  "telephone": "+237697136203",
+  "priceRange": "500 FCFA - 45 000 FCFA",
+  "currenciesAccepted": "XAF",
+  "paymentAccepted": "Orange Money, MTN Mobile Money, Cash XAF",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Quartier Ahala Barriere, Face Station Tradex, Route Nationale N3",
+    "addressLocality": "Yaounde",
+    "addressRegion": "Centre",
+    "addressCountry": "CM"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": 3.7942,
+    "longitude": 11.4876
+  },
+  "openingHoursSpecification": [
+    {
+      "@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "09:00",
+      "closes": "18:30"
+    }
+  ]
+}

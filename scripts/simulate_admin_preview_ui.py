@@ -20,7 +20,7 @@ results = []
 
 def check(cond, label, detail=""):
     results.append((bool(cond), label))
-    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' — ' + detail) if detail else ''}")
+    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' - ' + detail) if detail else ''}")
 
 
 def open_admin(context):
@@ -62,7 +62,7 @@ def main():
         c0 = counts(page)
         print(f"\nÉtat initial : {c0}")
 
-        print("\n1. Catalogue (ADM-01/02) — Dupliquer")
+        print("\n1. Catalogue (ADM-01/02) - Dupliquer")
         zoo = page.locator("#admCatalogTbody tr", has_text="Zoologique").first
         zoo.locator("button.duplicate").click()
         page.wait_for_timeout(200)
@@ -73,7 +73,7 @@ def main():
         check("brouillon" in copy_row.inner_text().lower(), "La copie est en brouillon")
         check("DUPLICATION" in audit_text(page), "Entrée « DUPLICATION » dans le journal d'audit")
 
-        print("\n2. Catalogue — Ajouter (avec saisie interdite du tarif enfant groupe)")
+        print("\n2. Catalogue - Ajouter (avec saisie interdite du tarif enfant groupe)")
         page.locator("button[onclick=\"openAdmCrudModal('CREATE', null)\"]:visible").first.click()
         page.wait_for_timeout(200)
         check(page.locator("#modalAdmCrudBox.open").count() == 1, "La modale d'ajout s'ouvre")
@@ -94,7 +94,7 @@ def main():
         check("Actif en ligne" in new_row.inner_text(),
               "LIMITE CONSTATÉE : la préversion publie directement la nouvelle offre (la base exigera brouillon + Direction)")
 
-        print("\n3. Catalogue — Modifier via la modale")
+        print("\n3. Catalogue - Modifier via la modale")
         new_row.locator("button[onclick^='openAdmCrudModal']").click()
         page.wait_for_timeout(200)
         check(page.input_value("#admCrudTitleInput") == title, "La modale est préremplie avec la fiche")
@@ -105,7 +105,7 @@ def main():
         check(vals[1] == "4500", "Nouveau prix adulte 4 500 FCFA enregistré", f"valeurs {vals[:4]}")
         check("MODIFICATION" in audit_text(page), "Entrée « MODIFICATION » dans le journal")
 
-        print("\n4. Catalogue — Rechercher")
+        print("\n4. Catalogue - Rechercher")
         total_before = counts(page)["catalog"]
         page.fill("#admCatalogSearchInput", "Piscine")
         page.dispatch_event("#admCatalogSearchInput", "input")
@@ -117,7 +117,7 @@ def main():
         page.dispatch_event("#admCatalogSearchInput", "input")
         page.wait_for_timeout(150)
 
-        print("\n5. Catalogue — Supprimer")
+        print("\n5. Catalogue - Supprimer")
         before = counts(page)["catalog"]
         page.locator("#admCatalogTbody tr", has_text=title).first.locator("button.danger").click()
         page.wait_for_timeout(200)
@@ -157,7 +157,7 @@ def main():
         page.wait_for_timeout(200)
         check("Suspendu" not in page.locator("#admStaffTbody tr", has_text="ATANGANA").first.inner_text(), "Réactiver l'agent")
 
-        print("\n8. Journal d'audit (ADM-08) — filtres")
+        print("\n8. Journal d'audit (ADM-08) - filtres")
         kpi = lambda: int(page.inner_text("#admAuditCountKpi").split()[0])
         total = counts(page)["audit"]
         page.click("button[onclick=\"admFilterAuditLogs('CRUD')\"]")

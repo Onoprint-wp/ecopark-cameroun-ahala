@@ -1,4 +1,4 @@
-# Tier 3 — stargazed-data-driven
+# Tier 3 - stargazed-data-driven
 
 ## What it tests
 
@@ -41,7 +41,7 @@ value from `useCurrentFrame()` + a manual `1 - (1 - t)^3` ease.
 
    Overshoot ratio (1.4 vs 1.2) approximates the damping difference. The
    late-tail curve of GSAP's back ease and Remotion's spring don't match
-   exactly — costs ~0.03 mean SSIM per spring instance.
+   exactly - costs ~0.03 mean SSIM per spring instance.
 
 2. **Count-up easing**: `AnimatedNumber` uses `1 - (1 - t)^3` (cubic ease-out)
    manually computed in the component. GSAP's `power2.out` matches that cubic curve
@@ -70,12 +70,12 @@ translation; it does not measure the corrected cubic count-up.
 | `spring({damping:12, stiffness:100})`                                       | `back.out(1.4)` over ~0.7 s                                                           |
 | `spring({damping:14, stiffness:90})`                                        | `back.out(1.2)` over ~0.7 s                                                           |
 | `delayInFrames={i * 12}` (per-instance)                                     | GSAP timeline offset `(i * 0.4)` s                                                    |
-| `useVideoConfig()` to get `fps`                                             | dropped — composition fps is in `data-fps` on `#stage`                                |
+| `useVideoConfig()` to get `fps`                                             | dropped - composition fps is in `data-fps` on `#stage`                                |
 
 ## How to render and evaluate
 
 ```bash
-# Render Remotion baseline (no setup.sh — no binary assets in this fixture)
+# Render Remotion baseline (no setup.sh - no binary assets in this fixture)
 cd remotion-src && npm install && npm run render
 
 # Render HyperFrames translation

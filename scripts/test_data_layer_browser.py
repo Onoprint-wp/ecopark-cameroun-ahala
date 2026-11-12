@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase 3 — Test navigateur de la couche EcoparkData (Playwright).
+Phase 3 - Test navigateur de la couche EcoparkData (Playwright).
 
 A. Build démo réel (http://localhost:3000, `npm run dev` doit tourner) :
    pilote local, bandeau inchangé, mode ?demo=77, synchronisation entre onglets.
@@ -34,7 +34,7 @@ results = []
 
 def check(cond, label, detail=""):
     results.append(bool(cond))
-    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' — ' + str(detail)) if detail else ''}")
+    print(f"  [{'OK' if cond else 'FAIL'}] {label}{(' - ' + str(detail)) if detail else ''}")
 
 
 def fake_anon_key():

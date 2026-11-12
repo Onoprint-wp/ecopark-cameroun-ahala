@@ -1,9 +1,9 @@
-// bgm.mjs — background music for the media audio engine. Two routes, gated the
+// bgm.mjs - background music for the media audio engine. Two routes, gated the
 // same way as TTS/SFX:
 //
-//   retrieve (default when HeyGen is configured) — search HeyGen's music library
+//   retrieve (default when HeyGen is configured) - search HeyGen's music library
 //        by mood, download the top track. Synchronous. assets/bgm/track.mp3.
-//   generate (the alternative; the automatic choice when HeyGen is absent) —
+//   generate (the alternative; the automatic choice when HeyGen is absent) -
 //        Lyria (cloud, $GEMINI_API_KEY/$GOOGLE_API_KEY + google-genai) preferred,
 //        else local MusicGen (facebook/musicgen-small via transformers). Spawned
 //        DETACHED so the engine can return while audio renders; the caller marks
@@ -38,7 +38,7 @@ function pyOk(probe) {
 // exposes only `python3`/`pip3` on PATH, so a plain `pip` spawn silently
 // no-ops (ENOENT) and the documented "auto-installed on demand" path never
 // actually installs. `-m pip` also guarantees the packages land in the SAME
-// interpreter pyOk() probes — a bare `pip`/`pip3` could resolve to a
+// interpreter pyOk() probes - a bare `pip`/`pip3` could resolve to a
 // different Python installation than `python3` if more than one is on PATH.
 function pipInstall(deps) {
   const { cmd, args } = pythonInvocation(["-m", "pip", "install", "-q", ...deps]);
@@ -126,7 +126,7 @@ export function generateBgmDetached({
   const lyriaConfigured = !!lyriaKey() && !!lyriaRecipe && existsSync(lyriaRecipe);
 
   // Make a backend runnable: prefer Lyria when configured (install google-genai
-  // on demand), else ensure local MusicGen deps. Installs are synchronous here —
+  // on demand), else ensure local MusicGen deps. Installs are synchronous here -
   // generation itself is detached, so the engine still returns promptly.
   if (lyriaConfigured && !pyOk(LYRIA_PY_PROBE)) pipInstall(LYRIA_PY_DEPS);
   const useLyria = lyriaConfigured && pyOk(LYRIA_PY_PROBE);

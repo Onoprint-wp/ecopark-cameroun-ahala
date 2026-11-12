@@ -23,7 +23,7 @@ Ces pages sont publiées et accessibles dans le menu, mais ne contiennent qu'une
 - Après une courte introduction en français sur le *Château des Saveurs*, la page affiche le template anglophone non nettoyé :
   - Titres : *« Small-batch roasts, every day »*, *« Roasted in-house »*, *« Baked every morning »*, *« Made for lingering »*.
   - Faux menu : *« Velvet Flat White 4.50 USD »*, *« Butter Croissant 3.80 USD »*, *« The Morning Plate 12.00 USD »*.
-  - Faux avis (*« Maya R. — regular since 2019 »*) et fausse adresse (*« On the corner of 5th and Main »*).
+  - Faux avis (*« Maya R. - regular since 2019 »*) et fausse adresse (*« On the corner of 5th and Main »*).
 
 ### Cas n°3 : Page `/nos-tarifs/` cassée & Commentaires de détresse sur `/contact/`
 - La page `/nos-tarifs/` contient une balise `<img class="wp-image-987">` **sans attribut `src`** : la grille tarifaire est invisible.

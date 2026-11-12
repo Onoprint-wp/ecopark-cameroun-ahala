@@ -31,13 +31,13 @@ createServer((req, res) => {
 
   if (!file.startsWith(ROOT) || !existsSync(file) || !statSync(file).isFile()) {
     res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
-    res.end(`404 — ${url.pathname}`);
+    res.end(`404 - ${url.pathname}`);
     console.log(`404 ${url.pathname}`);
     return;
   }
   res.writeHead(200, { 'Content-Type': TYPES[extname(file).toLowerCase()] || 'application/octet-stream' });
   createReadStream(file).pipe(res);
 }).listen(PORT, () => {
-  console.log(`ECOPARK — serveur local : http://localhost:${PORT}`);
+  console.log(`ECOPARK - serveur local : http://localhost:${PORT}`);
   console.log(`Routes : /  /agenda  /reserver  /nos-tarifs  /guichet  /direction  /admin  (?demo=77 pour le mode démo)`);
 });

@@ -49,7 +49,7 @@
       {
         "id": "142efbd8-3995-492e-9c69-da04f89a73f2",
         "slug": "navette_yaounde",
-        "title": "Navette Climatisée A/R Yaoundé — Ahala",
+        "title": "Navette Climatisée A/R Yaoundé - Ahala",
         "pole": "GROUPES_B2B",
         "description": "Prise en charge aller-retour depuis le centre de Yaoundé (flotte 5, 18 et 32 places).",
         "child_price_fcfa": 1000,
@@ -71,7 +71,7 @@
       {
         "id": "a1100007-0000-4000-8000-000000000007",
         "slug": "peche_canne",
-        "title": "Location Canne à Pêche — Étangs d'Ahala",
+        "title": "Location Canne à Pêche - Étangs d'Ahala",
         "pole": "EAU_PLEIN_AIR",
         "description": "Mise à disposition d'une canne à pêche avec ligne et appâts pour pêcher dans les étangs piscicoles d'Ahala.",
         "child_price_fcfa": 2000,
@@ -181,7 +181,7 @@
       {
         "id": "ebb58aa7-e725-41da-a40e-28380d5f438a",
         "slug": "saveurs",
-        "title": "Repas — Le Château des Saveurs",
+        "title": "Repas - Le Château des Saveurs",
         "pole": "RESTAURATION",
         "description": "Gastronomie camerounaise : poisson braisé d'Ahala, poulet DG, Ndolè, plantains mûrs.",
         "child_price_fcfa": 2500,
@@ -442,7 +442,7 @@
       {
         "id": "e0e9f1ac-4c94-4a23-8e92-c32121b29b7a",
         "code": "EWONDO",
-        "name": "Hôtel Ewondo — Mini-Suites VIP",
+        "name": "Hôtel Ewondo - Mini-Suites VIP",
         "category": "Mini-Suites Haut Standing Climatisées",
         "min_price_fcfa": 25000,
         "max_price_fcfa": 30000,
@@ -468,7 +468,7 @@
       {
         "id": "a1100005-0000-4000-8000-000000000005",
         "code": "SUITES_PRIVEES",
-        "name": "Hôtel Ewondo — Suites Privées Élégantes",
+        "name": "Hôtel Ewondo - Suites Privées Élégantes",
         "category": "Suites Privées Haut Standing",
         "min_price_fcfa": 30000,
         "max_price_fcfa": 30000,
@@ -661,7 +661,7 @@
         "id": "859dda56-0c2c-4f75-a3aa-b8b3fff56bc1",
         "sku": "MNU-ASSIETTE-JOUR",
         "category": "GRILLADE",
-        "name": "Grillades & Assiette du Jour — Boukarous / Restaurant VIP",
+        "name": "Grillades & Assiette du Jour - Boukarous / Restaurant VIP",
         "description": "Sélection du jour braisée au feu de bois (viandes savoureuses ou poisson) servie avec garniture au choix dans les Boukarous ombragés ou au Restaurant VIP New Look.",
         "price_fcfa": 3500,
         "is_signature": false,

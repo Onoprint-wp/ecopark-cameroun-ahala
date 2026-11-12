@@ -48,7 +48,7 @@ def main():
             page.screenshot(path=str(dest))
         print("  [OK] phase7_2_dopamine_relief_whatsapp_bridge.png")
 
-        # 3. Capture du Module Back-Office « Inbox Unifiée des Leads — Statuts en 1 Clic » (ADM-09)
+        # 3. Capture du Module Back-Office « Inbox Unifiée des Leads - Statuts en 1 Clic » (ADM-09)
         page.evaluate("""() => {
             navigateFamily('ADM', 'ADM-01');
             const inbox = document.getElementById('admLeadsInboxCard');

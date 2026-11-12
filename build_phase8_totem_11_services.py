@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase 8 — Intégration et synchronisation 360° des 11 Services Officiels du Totem Physique ECOPARK :
+Phase 8 - Intégration et synchronisation 360° des 11 Services Officiels du Totem Physique ECOPARK :
   1. ZOO (←)
   2. MUSÉE (←)
   3. BIBLIOTHÈQUE (←)
@@ -49,7 +49,7 @@ TOTEM_PUB_HTML = """        <!-- ECOPARK_TOTEM_11_SERVICES:START -->
                   </div>
                 </div>
                 <div class="col-8">
-                  <span class="eyebrow" style="margin-bottom:6px;"><span class="tech-code-tag">PUB-02 • </span>Signalétique Officielle du Domaine — Les 11 Services d'Ahala</span>
+                  <span class="eyebrow" style="margin-bottom:6px;"><span class="tech-code-tag">PUB-02 • </span>Signalétique Officielle du Domaine - Les 11 Services d'Ahala</span>
                   <h2 style="font-size:1.85rem;margin-bottom:8px;">Tous les pôles du Totem ECOPARK en 1 clic</h2>
                   <p style="font-size:14.5px;color:var(--color-text-muted);margin-bottom:16px;">
                     Retrouvez ci-dessous l'intégralité des <strong>11 services officiels</strong> présents sur le totem directionnel d'Ahala Barrière. Cliquez sur n'importe quel panneau pour l'ajouter directement à votre Billet QR Coupe-File, réserver une Suite Privée, demander un Devis Salle des Fêtes ou candidater au CFP.
@@ -178,7 +178,7 @@ TOTEM_JS_BLOCK = """// ECOPARK_PHASE8_TOTEM_SYNC:START
   (function () {
     if (typeof VISUAL_APPRECIATION_CATALOG !== 'undefined' && VISUAL_APPRECIATION_CATALOG.LODGES) {
       VISUAL_APPRECIATION_CATALOG.LODGES.SUITES_PRIVEES = {
-        title: 'Suites Privées Prestige — Salon Privé & Service VIP',
+        title: 'Suites Privées Prestige - Salon Privé & Service VIP',
         rate: '30 000 – 45 000 FCFA / nuit ou Day-Use',
         desc: 'Suite privée haut standing avec salon climatisé, literie King-Size, service en chambre Château des Saveurs et accès coupe-file Piscine & Zoo.',
         src: 'audit-assets/ecopark-real-media/chambre.jpeg',

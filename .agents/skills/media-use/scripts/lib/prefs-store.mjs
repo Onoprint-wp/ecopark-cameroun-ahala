@@ -5,20 +5,20 @@ import { withFileLock } from "./config-lock.mjs";
 import { globalMediaDir } from "./media-home.mjs";
 
 /**
- * Remembered defaults — the lightweight tier of HyperFrames user memory.
+ * Remembered defaults - the lightweight tier of HyperFrames user memory.
  *
  * Two files, same shape as the rest of media-use's storage split:
- * - project `.media/preferences.json` — committed with the repo, so the whole
+ * - project `.media/preferences.json` - committed with the repo, so the whole
  *   team inherits it; written every time a brief answer is confirmed.
- * - user `~/.media/preferences.json` — personal, cross-repo. A key is promoted
+ * - user `~/.media/preferences.json` - personal, cross-repo. A key is promoted
  *   here only once the same value has been confirmed in two different projects
  *   (`PROMOTE_AT`), so a one-off choice never pollutes the global defaults.
- *   Pre-promotion evidence accumulates in the user file's `sightings` ledger —
+ *   Pre-promotion evidence accumulates in the user file's `sightings` ledger -
  *   project files can't see each other, so the cross-project count has to live
  *   user-side.
  *
  * Consumption contract (media-use references/memory.md): a remembered
- * value becomes the recommended option with a receipt naming its source — it
+ * value becomes the recommended option with a receipt naming its source - it
  * never skips a question, and explicit request content always wins.
  */
 
@@ -54,7 +54,7 @@ function isRecord(value) {
   return typeof value === "object" && value !== null && !Array.isArray(value);
 }
 
-/** Tolerant read — a missing or malformed file counts as empty. */
+/** Tolerant read - a missing or malformed file counts as empty. */
 function readPrefsFile(path) {
   try {
     if (!existsSync(path)) return emptyFile();
@@ -177,7 +177,7 @@ export function recordPreference({ projectDir, key, value, workflow }) {
     throw new Error("a preference needs a non-empty string value");
   }
   if (key === "style_preset" && (!workflow || !String(workflow).trim())) {
-    throw new Error("style_preset is stored per workflow — pass --workflow <w>");
+    throw new Error("style_preset is stored per workflow - pass --workflow <w>");
   }
   const fullKey = preferenceKeyFor(key, workflow);
   const projectName = basename(resolve(projectDir));
@@ -186,7 +186,7 @@ export function recordPreference({ projectDir, key, value, workflow }) {
 
   const confirmedIn = recordProjectTier(projectDir, fullKey, trimmed, projectName, now);
 
-  // Best-effort — a read-only home directory must never fail a brief.
+  // Best-effort - a read-only home directory must never fail a brief.
   let promoted = false;
   try {
     promoted = recordUserSighting(fullKey, trimmed, projectName, now);

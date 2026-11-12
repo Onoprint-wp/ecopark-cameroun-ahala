@@ -3,8 +3,8 @@
 Générateur des visuels de validation pour la 3e Couleur :
 Triade Chromatique 60-30-10 :
 - 60 % : Blanc Lumière (#FFFFFF) & Neutres (#1E281B)
-- 30 % : Vert Canopée (#1D490D / #EDF4E7) — Nature, Faune, Eau, Confiance
-- 10 % : Ocre Bronze / Terre d'Ahala (#C47D2B / texte #9A5B13 / surface douce #FBF5EC) — Valeur FCFA, Hospitalité, Gastronomie
+- 30 % : Vert Canopée (#1D490D / #EDF4E7) - Nature, Faune, Eau, Confiance
+- 10 % : Ocre Bronze / Terre d'Ahala (#C47D2B / texte #9A5B13 / surface douce #FBF5EC) - Valeur FCFA, Hospitalité, Gastronomie
 """
 
 import pathlib

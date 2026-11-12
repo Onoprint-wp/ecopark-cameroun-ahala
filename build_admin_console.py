@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 """
-Phase 4 — Intégration de la console d'administration CRUD (ADM-01 à ADM-08) dans le site.
+Phase 4 - Intégration de la console d'administration CRUD (ADM-01 à ADM-08) dans le site.
 
 Met à jour etape0-site-live/index.html ET Prototype_Interactif_ECOPARK_NEW_LOOK.html :
   1. Styles de la console (préfixe .adm-, palette 60-30-10 + Ocre Bronze)
@@ -212,7 +212,7 @@ ADMIN_VIEW = VIEW_START + f"""
             <div class="adm-rolebar" id="admRoleBar"></div>
 
             <div class="adm-card" id="sec-ADM-01">
-              <h3>{ICON_LIST} <span class="tech-code-tag">ADM-01 — </span>Catalogue, formules &amp; cités hôtelières</h3>
+              <h3>{ICON_LIST} <span class="tech-code-tag">ADM-01 - </span>Catalogue, formules &amp; cités hôtelières</h3>
               <p class="adm-lead">Ajouter, modifier, dupliquer, publier ou archiver une offre. Toute nouvelle fiche et toute copie restent en brouillon, invisibles du public, jusqu'à leur publication.</p>
               <div class="adm-tabs" id="admCatalogTabs">
                 <button type="button" data-tab="catalog_activities" class="active">Activités</button>
@@ -249,7 +249,7 @@ ADMIN_VIEW = VIEW_START + f"""
             </div>
 
             <div class="adm-card" id="sec-ADM-02">
-              <h3>{ICON_LOCK} <span class="tech-code-tag">ADM-02 — </span>Règles tarifaires appliquées par la base</h3>
+              <h3>{ICON_LOCK} <span class="tech-code-tag">ADM-02 - </span>Règles tarifaires appliquées par la base</h3>
               <div class="adm-rules">
                 <div class="adm-rule"><strong>Tarif enfant protégé</strong>Le tarif enfant en groupe ne peut jamais dépasser le tarif enfant individuel de la même activité (500 FCFA au Zoo, 1 500 FCFA à la Piscine).</div>
                 <div class="adm-rule"><strong>Publication par la Direction</strong>L'exploitation et l'administrateur préparent les brouillons ; seule la Direction met un tarif en ligne ou modifie un prix déjà publié.</div>
@@ -259,7 +259,7 @@ ADMIN_VIEW = VIEW_START + f"""
             </div>
 
             <div class="adm-card" id="sec-ADM-03">
-              <h3>{ICON_GAUGE} <span class="tech-code-tag">ADM-03 — </span>Jauges du jour &amp; bandeau météo</h3>
+              <h3>{ICON_GAUGE} <span class="tech-code-tag">ADM-03 - </span>Jauges du jour &amp; bandeau météo</h3>
               <div class="adm-split adm-split-quota">
                 <div>
                   <div class="adm-toolbar">
@@ -285,7 +285,7 @@ ADMIN_VIEW = VIEW_START + f"""
             </div>
 
             <div class="adm-card" id="sec-ADM-04">
-              <h3>{ICON_CAL} <span class="tech-code-tag">ADM-04 — </span>Agenda de la semaine &amp; carte du Château des Saveurs</h3>
+              <h3>{ICON_CAL} <span class="tech-code-tag">ADM-04 - </span>Agenda de la semaine &amp; carte du Château des Saveurs</h3>
               <p class="adm-lead">Dupliquez un événement pour le reproduire un autre jour (jour férié, édition spéciale), réordonnez, ou signalez un plat en rupture.</p>
               <div class="adm-split adm-split-even">
                 <div>
@@ -300,7 +300,7 @@ ADMIN_VIEW = VIEW_START + f"""
             </div>
 
             <div class="adm-card" id="sec-ADM-05">
-              <h3>{ICON_USERS} <span class="tech-code-tag">ADM-05 — </span>Comptes de l'équipe &amp; rôles</h3>
+              <h3>{ICON_USERS} <span class="tech-code-tag">ADM-05 - </span>Comptes de l'équipe &amp; rôles</h3>
               <div class="adm-toolbar"><span class="adm-rights">5 rôles d'équipe : guichet, contrôle, exploitation, direction, administrateur.</span>
                 <button type="button" class="btn btn-secondary btn-sm" id="admStaffAdd">+ Nouveau compte</button></div>
               <div class="table-responsive">
@@ -313,13 +313,13 @@ ADMIN_VIEW = VIEW_START + f"""
 
             <div class="adm-card" id="sec-ADM-06">
               <span id="sec-ADM-07"></span>
-              <h3>{ICON_PLUG} <span class="tech-code-tag">ADM-06 &amp; ADM-07 — </span>Passerelles de paiement &amp; WhatsApp</h3>
+              <h3>{ICON_PLUG} <span class="tech-code-tag">ADM-06 &amp; ADM-07 - </span>Passerelles de paiement &amp; WhatsApp</h3>
               <p class="adm-lead">État des connexions uniquement : aucune clé secrète n'est stockée ni affichée dans le navigateur.</p>
               <div id="admGatewayList"></div>
             </div>
 
             <div class="adm-card" id="sec-ADM-08">
-              <h3>{ICON_SHIELD} <span class="tech-code-tag">ADM-08 — </span>Journal d'audit immuable</h3>
+              <h3>{ICON_SHIELD} <span class="tech-code-tag">ADM-08 - </span>Journal d'audit immuable</h3>
               <div class="adm-toolbar">
                 <select class="form-control" id="admAuditOp" aria-label="Filtrer par opération">
                   <option value="ALL">Toutes les opérations</option>

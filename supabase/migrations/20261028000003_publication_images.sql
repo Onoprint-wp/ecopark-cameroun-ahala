@@ -1,5 +1,5 @@
 -- ============================================================================
--- ECOPARK — Migration 4 : une image pour chaque publication
+-- ECOPARK - Migration 4 : une image pour chaque publication
 --  1. Colonnes image_src / image_alt sur toutes les fiches publiables
 --  2. Sources d'image autorisées (photothèque du site ou stockage Supabase, jamais javascript:)
 --  3. Images par défaut des fiches déjà en ligne (photos actuelles du site)

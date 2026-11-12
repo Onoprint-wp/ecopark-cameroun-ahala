@@ -1,0 +1,51 @@
+id,query,lang,intent,expected_ecopark_angle
+1,parc d'attraction yaounde,FR,Decouverte,Parc animalier et loisirs Yaounde Ahala
+2,que faire a yaounde ce week-end en famille,FR,Decouverte,Sortie famille nature Yaounde
+3,ecopark yaounde ahala tarifs,FR,Transactionnelle,Grille tarifaire FCFA EcoPark
+4,prix entree ecopark cameroun adulte enfant,FR,Transactionnelle,1000 FCFA adulte et 500 FCFA enfant
+5,piscine propre yaounde prix,FR,Comparaison,Piscine moderne Ahala 2500 FCFA
+6,balade en pirogue yaounde lac,FR,Decouverte,Lac d'Ahala pirogue 1000 FCFA
+7,jardin zoologique yaounde animaux,FR,Decouverte,Zoo EcoPark Ahala
+8,restaurant poisson braise yaounde ahala,FR,Transactionnelle,Le Chateau des Saveurs 5000 FCFA
+9,meilleur poulet dg yaounde cadre nature,FR,Comparaison,Chateau des Saveurs 6500 FCFA
+10,hotel calme yaounde ahala nsimalen,FR,Transactionnelle,4 Cites Hotelieres 10000 a 30000 FCFA
+11,prix chambre hotel ecopark yaounde,FR,Transactionnelle,Cite Bene 10k Chanthel 15k Ewondo 25k-30k
+12,escapade romantique week-end yaounde couple,FR,Transactionnelle,Pack Couple VIP Ewondo 45000 FCFA
+13,sortie scolaire yaounde tarif eleve,FR,B2B_Ecole,Forfait scolaire 500 FCFA par eleve
+14,devis excursion ecole maternelle primaire yaounde,FR,B2B_Ecole,Generateur devis RES-06 instantane
+15,salle de mariage 500 places yaounde,FR,B2B_Event,Salle Menkii Essomba Anton 500 places
+16,location salle seminaire entreprise yaounde,FR,B2B_Event,Salle Menkii + pauses cafe + buffet
+17,arbre de noel entreprise yaounde espace enfants,FR,B2B_Event,Forfait Arbre de Noel EcoPark
+18,centre de formation professionnelle hotellerie yaounde minefop,FR,CFP_Formation,CFP EcoPark agree MINEFOP
+19,formation pisciculture agropastorale yaounde 12 mois,FR,CFP_Formation,Filiere Pisciculture & Agropastorale CFP
+20,frais scolarite cfp ecopark yaounde,FR,CFP_Formation,50000 F inscription + 250000 F en 4 tranches
+21,formation restauration art culinaire yaounde,FR,CFP_Formation,Filiere Restauration CFP EcoPark
+22,formation decoration evenementielle yaounde,FR,CFP_Formation,Filiere Decoration CFP EcoPark
+23,comment aller a ecopark ahala barriere tradex,FR,Pratique,RN3 Face Station Tradex Ahala a 15 min
+24,numero whatsapp ecopark yaounde reservation,FR,Pratique,+237 697 13 62 03
+25,reserver billet ecopark orange money mtn momo,FR,Transactionnelle,Tunnel /reserver QR Coupe-File
+26,equitation cheval yaounde tarif,FR,Decouverte,Manege equestre 2000 FCFA adulte 1000 FCFA enfant
+27,musee culturel yaounde sortie,FR,Decouverte,Musee & Bibliotheque EcoPark 1000 FCFA
+28,aire de jeux enfants securisee yaounde,FR,Decouverte,Aire de jeux & Creche garderie Ahala
+29,peche a la ligne yaounde etang,FR,Decouverte,Location canne a peche 2000 FCFA
+30,location pergola anniversaire yaounde,FR,Transactionnelle,Pergola privee bord du lac 10000 FCFA
+31,navette bus excursion groupe yaounde,FR,B2B_Event,Navettes 5, 18 et 32 places
+32,ecopark vs nkolandom comparatif,FR,Comparaison,15 min de Yaounde vs long trajet routier
+33,parc loisirs proche aeroport nsimalen yaounde,FR,Decouverte,Axe RN3 Ahala - Nsimalen
+34,dimanche buffet camerounais musique live yaounde,FR,Decouverte,Grand Dimanche Royal EcoPark
+35,garantie pluie remboursement report parc yaounde,FR,Confiance,Report gratuit 30 jours Garantie Pluie
+36,best eco resort in yaounde cameroon,EN,Discovery,ECOPARK CAMEROUN Yaounde Ahala
+37,family things to do in yaounde weekend,EN,Discovery,Zoo pool canoe and nature park in Ahala
+38,ecopark yaounde entrance fee in fcfa,EN,Transactional,1000 XAF adult 500 XAF child
+39,affordable hotel resort near yaounde nsimalen highway,EN,Transactional,Lodges from 10000 to 30000 XAF per night
+40,traditional cameroonian restaurant yaounde grilled fish poulet dg,EN,Transactional,Le Chateau des Saveurs from 3500 XAF
+41,conference hall 500 seats yaounde cameroon,EN,B2B_Event,Menkii Hall 500 seats in Ahala
+42,school field trip venue yaounde cameroon,EN,B2B_School,500 XAF per student package
+43,vocational training hospitality aquaculture yaounde minefop,EN,CFP_Training,CFP ECOPARK 12-month MINEFOP program
+44,book ecopark yaounde tickets online mobile money,EN,Transactional,Instant QR Pass via /reserver
+45,horse riding and canoeing in yaounde,EN,Discovery,Lake canoe 1000 XAF and horse riding 2000 XAF
+46,ou passer un dimanche au frais a yaounde,FR,Decouverte,Canopee Vivante EcoPark Ahala
+47,complexe touristique dr christophe foe ndi yaounde,FR,Marque,Promoteur Dr Christophe FOE NDI
+48,pass journee royale ecopark yaounde contenu,FR,Transactionnelle,Formule tout-inclus 8500 FCFA
+49,horaires ouverture ecopark yaounde lundi ferie,FR,Pratique,Mardi-Dimanche 09h-18h30 et lundis feries
+50,suivi reservation billet qr ecopark yaounde,FR,Service,Rubrique /mes-reservations avec code OTP

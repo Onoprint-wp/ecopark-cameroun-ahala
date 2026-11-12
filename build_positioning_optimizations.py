@@ -190,7 +190,7 @@ def apply_positioning():
               <div class="quick-intent-header">
                 <div style="display:flex;align-items:center;gap:8px;">
                   <span class="icon-medallion" style="width:30px;height:30px;"><svg class="svg-mono" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.85" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/></svg></span>
-                  <strong style="font-family:var(--font-heading);font-size:1.12rem;color:var(--color-brand-deep);">Accès Direct par Profil — Que souhaitez-vous organiser aujourd'hui ?</strong>
+                  <strong style="font-family:var(--font-heading);font-size:1.12rem;color:var(--color-brand-deep);">Accès Direct par Profil - Que souhaitez-vous organiser aujourd'hui ?</strong>
                 </div>
                 <span style="font-size:12.5px;color:var(--color-text-muted);font-weight:600;">Orientation en 1 clic • Tarifs 100 % transparents en FCFA</span>
               </div>

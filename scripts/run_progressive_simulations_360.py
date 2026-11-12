@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-SIMULATIONS PROGRESSIVES 360° (DU SIMPLE AU COMPLEXE — NIVEAUX 1 À 6) — ECOPARK CAMEROUN
+SIMULATIONS PROGRESSIVES 360° (DU SIMPLE AU COMPLEXE - NIVEAUX 1 À 6) - ECOPARK CAMEROUN
 Exécute une batterie graduée de 20 scénarios réalistes, complexes et offensifs (chaos/sécurité)
 pour détecter et prévenir la moindre anomalie fonctionnelle, mathématique, ergonomique ou sécuritaire.
 """
@@ -26,10 +26,10 @@ def run_simulations():
         nonlocal passed, failed
         if cond:
             passed += 1
-            print(f"  [PASS] {label}" + (f" — {detail}" if detail else ""))
+            print(f"  [PASS] {label}" + (f" - {detail}" if detail else ""))
         else:
             failed += 1
-            msg = f"{label}" + (f" — {detail}" if detail else "")
+            msg = f"{label}" + (f" - {detail}" if detail else "")
             issues.append(msg)
             print(f"  [FAIL] {msg}")
 
@@ -46,7 +46,7 @@ def run_simulations():
         page.goto(f"{BASE_URL}/?demo=77", wait_until="networkidle", timeout=45000)
 
         # =========================================================================
-        # NIVEAU 1 : SIMPLE — Parcours Visiteur Express B2C & Cohérence Vitrine
+        # NIVEAU 1 : SIMPLE - Parcours Visiteur Express B2C & Cohérence Vitrine
         # =========================================================================
         print("1. NIVEAU 1 (SIMPLE) : Parcours Visiteur Express, Hero HyperFrames & Pass Nature")
         res_lvl1 = page.evaluate(
@@ -70,18 +70,18 @@ def run_simulations():
         }"""
         )
         check(
-            "N1.1 — Vitrine Hero (4 vues HyperFrames) & Encart Aversion à la Perte FCFA",
+            "N1.1 - Vitrine Hero (4 vues HyperFrames) & Encart Aversion à la Perte FCFA",
             res_lvl1["hasLossBox"] and res_lvl1["thumbsCount"] == 4,
             f"thumbs={res_lvl1['thumbsCount']}",
         )
         check(
-            "N1.2 — Preset 'Pass Découverte Nature' & Protection Tarif Enfant 500 FCFA",
+            "N1.2 - Preset 'Pass Découverte Nature' & Protection Tarif Enfant 500 FCFA",
             res_lvl1["childProtected"] and "FCFA" in res_lvl1["totalText"],
             f"total={res_lvl1['totalText']}",
         )
 
         # =========================================================================
-        # NIVEAU 2 : INTERMÉDIAIRE — Famille Royale + Cuisine + Navette + Loge + Report Pluie
+        # NIVEAU 2 : INTERMÉDIAIRE - Famille Royale + Cuisine + Navette + Loge + Report Pluie
         # =========================================================================
         print("\n2. NIVEAU 2 (INTERMÉDIAIRE) : Panier Complexe Multi-Pôles, Billet QR, Dopamine & Report Pluie")
         res_lvl2 = page.evaluate(
@@ -150,23 +150,23 @@ def run_simulations():
         }"""
         )
         check(
-            "N2.1 — Calcul multi-options (Pass Royale + Cité Chanthel 2N + Cuisine 13h30 + Navette + Pêche)",
+            "N2.1 - Calcul multi-options (Pass Royale + Cité Chanthel 2N + Cuisine 13h30 + Navette + Pêche)",
             "FCFA" in res_lvl2["totalAfterOptions"] and res_lvl2["qrRef"].startswith("ECP-2026-"),
             f"ref={res_lvl2['qrRef']} | total={res_lvl2['totalAfterOptions']}",
         )
         check(
-            "N2.2 — Carte de Soulagement Dopaminergique, Pont WhatsApp 1-Clic & Export PNG Hors-Ligne",
+            "N2.2 - Carte de Soulagement Dopaminergique, Pont WhatsApp 1-Clic & Export PNG Hors-Ligne",
             res_lvl2["dopVisible"] and res_lvl2["waHasRef"] and res_lvl2["pngOk"],
             res_lvl2["qrRef"],
         )
         check(
-            "N2.3 — Garantie Pluie (ACC-05) : Verrou Lundi sur report (2026-11-16 -> 2026-11-17) & Report Dimanche (2026-12-20)",
+            "N2.3 - Garantie Pluie (ACC-05) : Verrou Lundi sur report (2026-11-16 -> 2026-11-17) & Report Dimanche (2026-12-20)",
             res_lvl2["dateAfterMondayAttempt"] == "2026-11-17" and res_lvl2["rescheduledDate"] == "2026-12-20",
             f"lundi->{res_lvl2['dateAfterMondayAttempt']} | dimanche->{res_lvl2['rescheduledDate']}",
         )
 
         # =========================================================================
-        # NIVEAU 3 : INTERMÉDIAIRE B2B & INSTITUTIONNEL — Garde-fous Lundi, <16 ans CFP, Devis & RDV
+        # NIVEAU 3 : INTERMÉDIAIRE B2B & INSTITUTIONNEL - Garde-fous Lundi, <16 ans CFP, Devis & RDV
         # =========================================================================
         print("\n3. NIVEAU 3 (B2B & GARDE-FOUS METIER) : Verrou Lundi, Devis Ministère 50 pax, RDV Mariage & CFP MINEFOP")
         res_lvl3 = page.evaluate(
@@ -225,25 +225,25 @@ def run_simulations():
             };
         }"""
         )
-        check("N3.1 — Garde-fou fermeture hebdomadaire du Lundi actif (décalage automatique au Mardi)", res_lvl3["mondayRejected"])
+        check("N3.1 - Garde-fou fermeture hebdomadaire du Lundi actif (décalage automatique au Mardi)", res_lvl3["mondayRejected"])
         check(
-            "N3.2 — Devis B2B Séminaire MINTOUL (50 pax + Navette = 670 000 FCFA) généré",
+            "N3.2 - Devis B2B Séminaire MINTOUL (50 pax + Navette = 670 000 FCFA) généré",
             res_lvl3["quoteRef"].startswith("DEV-2026-") and res_lvl3["proformaPreview"] == "670 000 FCFA",
             f"{res_lvl3['quoteRef']} ({res_lvl3['proformaPreview']})",
         )
         check(
-            "N3.3 — RDV Repérage Mariage Salle Menkii Essomba Anton confirmé",
+            "N3.3 - RDV Repérage Mariage Salle Menkii Essomba Anton confirmé",
             res_lvl3["rdvRef"].startswith("RDV-2026-"),
             res_lvl3["rdvRef"],
         )
         check(
-            "N3.4 — Garde-fou MINEFOP (< 16 ans rejeté, >= 16 ans accepté)",
+            "N3.4 - Garde-fou MINEFOP (< 16 ans rejeté, >= 16 ans accepté)",
             res_lvl3["underageBlocked"] and res_lvl3["validCfpAdded"] and res_lvl3["cfpRef"].startswith("CFP-2026-"),
             res_lvl3["cfpRef"],
         )
 
         # =========================================================================
-        # NIVEAU 4 : COMPLEXE TERRAIN — Scanner 7 Verdicts, Coupure Réseau RN3 & Billetage FCFA
+        # NIVEAU 4 : COMPLEXE TERRAIN - Scanner 7 Verdicts, Coupure Réseau RN3 & Billetage FCFA
         # =========================================================================
         print("\n4. NIVEAU 4 (TERRAIN GUICHET) : Anti-Fraude 7 Verdicts, Coupure Réseau RN3 & Billetage FCFA")
         ticket_ref = res_lvl2["qrRef"]
@@ -286,23 +286,23 @@ def run_simulations():
         page.evaluate("resetPhysicalCashCount()")
 
         check(
-            "N4.1 — Double Scan Anti-Fraude : 1er passage AUTORISÉ -> 2e passage REFUSÉ -> Forgé INCONNU",
+            "N4.1 - Double Scan Anti-Fraude : 1er passage AUTORISÉ -> 2e passage REFUSÉ -> Forgé INCONNU",
             "BILLET VALIDE" in v1 and "DÉJÀ UTILISÉ" in v2 and "INCONNU" in v7,
             f"1er='{v1[:24]}' | 2e='{v2[:24]}' | 7e='{v7[:22]}'",
         )
         check(
-            "N4.2 — Résilience Hors-Ligne RN3 : file d'attente locale puis synchronisation auto au retour 4G",
+            "N4.2 - Résilience Hors-Ligne RN3 : file d'attente locale puis synchronisation auto au retour 4G",
             "Mode Hors-Ligne RN3" in badge_offline and q_offline >= 1 and q_online == 0 and "Liaison RN3 Active" in badge_online,
             f"offline_queue={q_offline} -> online_queue={q_online}",
         )
         check(
-            "N4.3 — Grille de Billetage FCFA (AGT-08) : Alerte critique sur écart > 2 000 FCFA & Reset conforme",
+            "N4.3 - Grille de Billetage FCFA (AGT-08) : Alerte critique sur écart > 2 000 FCFA & Reset conforme",
             "ALERTE CRITIQUE" in diff_crit and alert_visible,
             diff_crit,
         )
 
         # =========================================================================
-        # NIVEAU 5 : COMPLEXE GOUVERNANCE — Inbox Unifiée ADM-09, Garde-Fou Enfant & Audit
+        # NIVEAU 5 : COMPLEXE GOUVERNANCE - Inbox Unifiée ADM-09, Garde-Fou Enfant & Audit
         # =========================================================================
         print("\n5. NIVEAU 5 (GOUVERNANCE & BACK-OFFICE) : Inbox Leads 1-Clic ADM-09 & Garde-Fou Tarif Enfant")
         res_lvl5 = page.evaluate(
@@ -361,23 +361,23 @@ def run_simulations():
             },
         )
         check(
-            "N5.1 — Convergence temps réel : les 4 flux (Billet, Devis, RDV, CFP) remontent dans l'Inbox ADM-09",
+            "N5.1 - Convergence temps réel : les 4 flux (Billet, Devis, RDV, CFP) remontent dans l'Inbox ADM-09",
             res_lvl5["allFourPresent"],
             f"{res_lvl5['totalRows']} lignes dans l'Inbox",
         )
         check(
-            "N5.2 — Traitement 1-Clic multi-canal (BOOKING, QUOTE, RDV, CFP) & Recherche instantanée ('MINTOUL')",
+            "N5.2 - Traitement 1-Clic multi-canal (BOOKING, QUOTE, RDV, CFP) & Recherche instantanée ('MINTOUL')",
             res_lvl5["statusesOk"] and res_lvl5["searchMatches"] >= 1,
             f"searchMatches={res_lvl5['searchMatches']}",
         )
         check(
-            "N5.3 — Sanctuarisation Tarif Enfant Parc/Zoo verrouillée à 500 FCFA",
+            "N5.3 - Sanctuarisation Tarif Enfant Parc/Zoo verrouillée à 500 FCFA",
             res_lvl5["zooChildProtected"] == 500,
             f"zooChild={res_lvl5['zooChildProtected']} FCFA",
         )
 
         # =========================================================================
-        # NIVEAU 6 : STRESS, CHAOS & SÉCURITÉ OFFENSIVE — XSS Polymorphes & Formats Téléphone
+        # NIVEAU 6 : STRESS, CHAOS & SÉCURITÉ OFFENSIVE - XSS Polymorphes & Formats Téléphone
         # =========================================================================
         print("\n6. NIVEAU 6 (STRESS & SÉCURITÉ OFFENSIVE) : Injections XSS Polymorphes & Validation Cameroun")
         res_lvl6 = page.evaluate(
@@ -434,15 +434,15 @@ def run_simulations():
         }"""
         )
         check(
-            "N6.1 — Résistance aux 5 vecteurs XSS polymorphes (<script>, <img onerror>, <svg onload>, attributs, javascript:)",
+            "N6.1 - Résistance aux 5 vecteurs XSS polymorphes (<script>, <img onerror>, <svg onload>, attributs, javascript:)",
             not res_lvl6["xssTriggered"] and not res_lvl6["anyAngleBracketLeft"] and not res_lvl6["anyEventHandlerLeft"],
         )
         check(
-            "N6.2 — Validation contractuelle Cameroun (+237 6XX/2XX acceptés, vide/étrangers/invalides & CFP <16 ans rejetés)",
+            "N6.2 - Validation contractuelle Cameroun (+237 6XX/2XX acceptés, vide/étrangers/invalides & CFP <16 ans rejetés)",
             res_lvl6["validCheck"] and res_lvl6["invalidCheck"] and res_lvl6["cfpContractOk"],
         )
         check(
-            "N6.3 — Stabilité globale après stress-test (0 erreur console / 0 exception JS)",
+            "N6.3 - Stabilité globale après stress-test (0 erreur console / 0 exception JS)",
             len(console_errors) == 0 and len(page_errors) == 0,
             f"console_errors={len(console_errors)}, page_errors={len(page_errors)}",
         )

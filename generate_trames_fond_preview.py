@@ -1,10 +1,10 @@
 # -*- coding: utf-8 -*-
 """
 Générateur des visuels de validation pour la Gestion des Trames de Fond (Architecture en 3 Plans de Lumière) :
-1. Trame 1 — Blanc Lumière (#FFFFFF) + Filigrane Vectoriel « Le Cercle du Vivant » (opacité 4.5 %) sur le Hero (#sec-PUB-01)
-2. Trame 2 — Sauge Tendre (#EDF4E7) + Cartes Bento Blanc Pur (#FFFFFF) sans bordures (#sec-PUB-03)
-3. Trame 3 (Option A — Approche Keynote Apple) — « Canopée Profonde » (#142E0B / #1D490D + halo radial émeraude) sur #sec-PUB-10
-4. Trame 3 (Option B — Approche Hospitalité Organique) — « Sable Raphia / Pierre Chaude » (#F6F4EE) sur #sec-PUB-10
+1. Trame 1 - Blanc Lumière (#FFFFFF) + Filigrane Vectoriel « Le Cercle du Vivant » (opacité 4.5 %) sur le Hero (#sec-PUB-01)
+2. Trame 2 - Sauge Tendre (#EDF4E7) + Cartes Bento Blanc Pur (#FFFFFF) sans bordures (#sec-PUB-03)
+3. Trame 3 (Option A - Approche Keynote Apple) - « Canopée Profonde » (#142E0B / #1D490D + halo radial émeraude) sur #sec-PUB-10
+4. Trame 3 (Option B - Approche Hospitalité Organique) - « Sable Raphia / Pierre Chaude » (#F6F4EE) sur #sec-PUB-10
 """
 
 import pathlib
@@ -80,7 +80,7 @@ TRAMES_CSS = """
       background-color: var(--color-surface-soft);
     }
 
-    /* Trame 3 — OPTION A : « Canopée Profonde » (#142E0B — Effet Keynote Apple) */
+    /* Trame 3 - OPTION A : « Canopée Profonde » (#142E0B - Effet Keynote Apple) */
     .section-canopy-dark {
       background:
         radial-gradient(circle at 85% 18%, rgba(31, 136, 11, 0.28) 0%, transparent 55%),
@@ -120,7 +120,7 @@ TRAMES_CSS = """
       color: var(--color-text) !important;
     }
 
-    /* Trame 3 — OPTION B : « Sable Raphia / Pierre Chaude » (#F6F4EE — Hospitalité Organique) */
+    /* Trame 3 - OPTION B : « Sable Raphia / Pierre Chaude » (#F6F4EE - Hospitalité Organique) */
     .section-warm-sand {
       background:
         radial-gradient(circle at 80% 15%, rgba(255, 255, 255, 0.85) 0%, rgba(246, 244, 238, 1) 70%) !important;
@@ -185,26 +185,26 @@ def build_and_capture():
         page.goto(TRAME_HTML.as_uri(), wait_until="networkidle")
         page.wait_for_timeout(400)
 
-        # Capture 1 : Trame 1 — Blanc Lumière (#FFFFFF) + Filigrane Vectoriel « Le Cercle du Vivant » + Cartes KPI Sauge (#EDF4E7)
+        # Capture 1 : Trame 1 - Blanc Lumière (#FFFFFF) + Filigrane Vectoriel « Le Cercle du Vivant » + Cartes KPI Sauge (#EDF4E7)
         s1 = ARTIFACT_DIR / "trame_validation_1_hero_filigrane_botanique.png"
         page.screenshot(path=str(s1), full_page=False)
         (LOCAL_QA_DIR / s1.name).write_bytes(s1.read_bytes())
 
-        # Capture 2 : Trame 2 — Sauge Tendre (#EDF4E7) + Cartes Bento Blanc Pur (#FFFFFF) en inversion Figure/Fond
+        # Capture 2 : Trame 2 - Sauge Tendre (#EDF4E7) + Cartes Bento Blanc Pur (#FFFFFF) en inversion Figure/Fond
         page.evaluate("window.scrollTo(0, document.getElementById('sec-PUB-03').offsetTop - 75);")
         page.wait_for_timeout(350)
         s2 = ARTIFACT_DIR / "trame_validation_2_sauge_bento_inversion.png"
         page.screenshot(path=str(s2), full_page=False)
         (LOCAL_QA_DIR / s2.name).write_bytes(s2.read_bytes())
 
-        # Capture 3 : Trame 3 (Option A — Approche Keynote Apple) — « Canopée Profonde » (#142E0B) sur #sec-PUB-10
+        # Capture 3 : Trame 3 (Option A - Approche Keynote Apple) - « Canopée Profonde » (#142E0B) sur #sec-PUB-10
         page.evaluate("window.scrollTo(0, document.getElementById('sec-PUB-10').offsetTop - 75);")
         page.wait_for_timeout(350)
         s3 = ARTIFACT_DIR / "trame_validation_3_optionA_canopee_profonde.png"
         page.screenshot(path=str(s3), full_page=False)
         (LOCAL_QA_DIR / s3.name).write_bytes(s3.read_bytes())
 
-        # Capture 4 : Trame 3 (Option B — Approche Hospitalité Organique) — « Sable Raphia / Pierre Chaude » (#F6F4EE) sur #sec-PUB-10
+        # Capture 4 : Trame 3 (Option B - Approche Hospitalité Organique) - « Sable Raphia / Pierre Chaude » (#F6F4EE) sur #sec-PUB-10
         page.evaluate("""() => {
             const sec = document.getElementById('sec-PUB-10');
             sec.classList.remove('section-canopy-dark');
