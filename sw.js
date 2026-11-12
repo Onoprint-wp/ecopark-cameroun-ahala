@@ -2,7 +2,7 @@
  * sw.js - Service Worker PWA Offline-First pour ECOPARK CAMEROUN (Yaoundé-Ahala)
  * Assure la disponibilité hors-ligne du guichet POS, du scanner QR (AGT-05) et de la vitrine.
  */
-const CACHE_NAME = 'ecopark-ahala-pwa-v4';
+const CACHE_NAME = 'ecopark-ahala-pwa-v5';
 const CORE_ASSETS = [
   '/',
   '/index.html',
@@ -30,6 +30,9 @@ self.addEventListener('activate', (event) => {
 
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
+  const reqUrl = new URL(event.request.url);
+  if (reqUrl.origin !== self.location.origin) return;
+
   event.respondWith(
     fetch(event.request)
       .then((response) => {
@@ -39,6 +42,14 @@ self.addEventListener('fetch', (event) => {
         }
         return response;
       })
-      .catch(() => caches.match(event.request).then((cached) => cached || caches.match('/index.html')))
+      .catch(() =>
+        caches.match(event.request).then((cached) => {
+          if (cached) return cached;
+          if (event.request.mode === 'navigate') {
+            return caches.match('/index.html');
+          }
+          return new Response('', { status: 504, statusText: 'Offline' });
+        })
+      )
   );
 });

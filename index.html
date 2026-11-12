@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="fr" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -168,11 +168,12 @@
   <script id="ecoparkZeroFoucThemeInit">
     (function () {
       try {
-        var savedTheme = localStorage.getItem('ecopark_theme');
-        if (savedTheme === 'dark' || savedTheme === 'sun' || savedTheme === 'light') {
-          document.documentElement.setAttribute('data-theme', savedTheme);
-        }
-      } catch (e) {}
+        var savedTheme = localStorage.getItem('ecopark_theme') || 'light';
+        if (savedTheme !== 'dark' && savedTheme !== 'sun') savedTheme = 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+      } catch (e) {
+        document.documentElement.setAttribute('data-theme', 'light');
+      }
     })();
   </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -22798,11 +22799,7 @@ window.ecoparkOpenAdmin = function () {
 
       window.setEcoparkTheme = function (theme) {
         var t = (theme === 'dark' || theme === 'sun') ? theme : 'light';
-        if (t === 'light') {
-          document.documentElement.removeAttribute('data-theme');
-        } else {
-          document.documentElement.setAttribute('data-theme', t);
-        }
+        document.documentElement.setAttribute('data-theme', t);
         try { localStorage.setItem('ecopark_theme', t); } catch (e) {}
         return t;
       };
@@ -22813,6 +22810,15 @@ window.ecoparkOpenAdmin = function () {
         try { localStorage.setItem('ecopark_lang', l); } catch (e) {}
         return l;
       };
+
+      try {
+        var urlParams = new URLSearchParams(window.location.search);
+        if (urlParams.get('lang') === 'en') {
+          window.setEcoparkLang('en');
+        } else if (urlParams.get('lang') === 'fr') {
+          window.setEcoparkLang('fr');
+        }
+      } catch (e) {}
 
       window.detectAiReferrer = function () {
         var ref = (typeof document !== 'undefined' && document.referrer) ? document.referrer.toLowerCase() : '';
