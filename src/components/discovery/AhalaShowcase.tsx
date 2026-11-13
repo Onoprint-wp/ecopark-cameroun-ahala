@@ -12,6 +12,7 @@ import {
   SHOWCASE_TAB_PATH_MAP,
   SHOWCASE_DEEP_PATHS,
   resolveShowcaseTabFromPath,
+  getPhotoObjectPosition,
 } from '../../utils/ecoRouting';
 import {
   BedDouble,
@@ -304,37 +305,41 @@ export const AhalaShowcase: React.FC = () => {
             </div>
           </div>
 
-          {/* 4 Hotels & Suites Cards */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {/* 4 Hotels & Suites Cards (4:3 face-safe framing + non-overlapping badges) */}
+          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
             {HOTELS.map((hotel) => (
               <div
                 key={hotel.id}
-                className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
+                className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between group"
               >
                 <div>
-                  <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-[#1F2421]">
+                  <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
                     <img
                       src={hotel.photo}
                       alt={hotel.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+                      style={{ objectPosition: getPhotoObjectPosition(hotel.photo) }}
                     />
-                    <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#1F2421]/85 backdrop-blur-xs text-[#E9F5ED] text-xs font-mono font-semibold border border-white/15">
-                      {hotel.badge}
-                    </div>
-                    <div className="absolute bottom-3 right-3 px-3.5 py-1.5 rounded-xl bg-[#1B4332] text-white font-['Barlow_Semi_Condensed'] font-bold text-base shadow-md">
-                      {hotel.priceRange}{' '}
-                      <span className="text-xs font-normal text-[#B7E4C7]">{hotel.unit}</span>
-                    </div>
                   </div>
 
-                  <div className="p-6 space-y-3">
+                  <div className="p-5 space-y-3">
+                    <div className="flex flex-wrap items-center justify-between gap-2">
+                      <span className="px-2.5 py-1 rounded-md bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] text-[11px] font-mono font-bold">
+                        {hotel.badge}
+                      </span>
+                      <span className="px-2.5 py-1 rounded-lg bg-[#1B4332] text-white font-['Barlow_Semi_Condensed'] font-bold text-sm shadow-2xs">
+                        {hotel.priceRange}{' '}
+                        <span className="text-[11px] font-normal text-[#B7E4C7]">{hotel.unit}</span>
+                      </span>
+                    </div>
+
                     <h3 className="font-['Barlow_Semi_Condensed'] text-xl font-bold text-[var(--text-primary)]">
                       {hotel.name}
                     </h3>
                     <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
                       {hotel.description}
                     </p>
-                    <ul className="space-y-1.5 pt-2">
+                    <ul className="space-y-1.5 pt-1">
                       {hotel.features.map((feat, idx) => (
                         <li key={idx} className="flex items-start gap-2 text-xs text-[var(--text-primary)]">
                           <CheckCircle2 className="w-4 h-4 text-[var(--brand-primary)] shrink-0 mt-0.5" />
@@ -345,17 +350,17 @@ export const AhalaShowcase: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="px-6 py-4 bg-[var(--bg-elevated)] border-t border-[var(--border-default)] flex items-center justify-between text-xs">
-                  <span className="font-mono text-[var(--text-muted)]">
-                    Réception 24h/24 · +237 694 60 14 49
+                <div className="px-5 py-3.5 bg-[var(--bg-elevated)] border-t border-[var(--border-default)] flex items-center justify-between gap-2 text-xs">
+                  <span className="font-mono text-[11px] text-[var(--text-muted)] truncate">
+                    24h/24 · +237 694 60 14 49
                   </span>
                   <a
                     href={`https://wa.me/237694601449?text=${encodeURIComponent(`Bonjour EcoPark Cameroun, je souhaite réserver : ${hotel.name} (${hotel.priceRange})`)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="font-bold text-[var(--brand-primary)] hover:underline flex items-center gap-1"
+                    className="font-bold text-[var(--brand-primary)] hover:underline flex items-center gap-1 shrink-0"
                   >
-                    <span>Vérifier la disponibilité</span>
+                    <span>Disponibilité</span>
                     <ArrowRight className="w-3.5 h-3.5" />
                   </a>
                 </div>
@@ -372,11 +377,14 @@ export const AhalaShowcase: React.FC = () => {
         <div className="space-y-8 animate-in fade-in duration-200">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-5 rounded-2xl overflow-hidden border border-[var(--border-default)] shadow-md bg-[#1F2421]">
-              <img
-                src="/images/ahala/local_cameroon_gastronomy_pergola.png"
-                alt="Restaurant Le Château des Saveurs — Pergolas au bord du lac d'Ahala"
-                className="w-full h-72 sm:h-80 object-cover"
-              />
+              <div className="aspect-[16/9] w-full overflow-hidden bg-[#1F2421]">
+                <img
+                  src="/images/ahala/local_cameroon_gastronomy_pergola.png"
+                  alt="Restaurant Le Château des Saveurs — Pergolas au bord du lac d'Ahala"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: getPhotoObjectPosition('/images/ahala/local_cameroon_gastronomy_pergola.png') }}
+                />
+              </div>
               <div className="p-5 bg-[#1F2421] text-[#E9F5ED] space-y-2">
                 <div className="text-xs font-mono text-[#74C69D] uppercase font-bold">
                   Ouvert 7j/7 de 07h00 à 23h00 · Sans billet d&apos;entrée parc le soir
@@ -535,11 +543,14 @@ export const AhalaShowcase: React.FC = () => {
         <div className="space-y-6 animate-in fade-in duration-200">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
             <div className="lg:col-span-5 rounded-2xl overflow-hidden border border-[var(--border-default)] bg-[#1F2421] shadow-md">
-              <img
-                src="/images/ahala/local_cameroon_cfp_students.png"
-                alt="Apprenants du CFP ECOPARK agréé par le MINEFOP à Yaoundé-Ahala"
-                className="w-full h-64 object-cover"
-              />
+              <div className="aspect-[16/9] w-full overflow-hidden bg-[#1F2421]">
+                <img
+                  src="/images/ahala/local_cameroon_cfp_students.png"
+                  alt="Apprenants du CFP ECOPARK agréé par le MINEFOP à Yaoundé-Ahala"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: getPhotoObjectPosition('/images/ahala/local_cameroon_cfp_students.png') }}
+                />
+              </div>
               <div className="p-5 text-[#E9F5ED] space-y-2">
                 <div className="text-xs font-mono font-bold text-[#74C69D] uppercase">
                   Diplômes d&apos;État DQP / CQP · Agrément Officiel MINEFOP

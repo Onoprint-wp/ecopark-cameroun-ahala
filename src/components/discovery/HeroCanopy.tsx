@@ -8,6 +8,7 @@ import React from 'react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { ImmersiveSection } from '../layout/ImmersiveSection';
 import { recordMotionOrigin } from '../../utils/ecoMotion';
+import { getPhotoObjectPosition } from '../../utils/ecoRouting';
 import {
   Sparkles,
   Ticket,
@@ -151,37 +152,46 @@ export const HeroCanopy: React.FC = () => {
 
         {/* Right Column: Official Photos Mosaic + Live Ahala Telemetry Card */}
         <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
-          {/* 3-Photo Authentic Collage from Production */}
+          {/* 3-Photo Authentic Collage from Production (aspect-4/3 + face-safe objectPosition + non-overlapping caption bar) */}
           <div className="grid grid-cols-3 gap-3">
-            <div className="relative h-28 sm:h-32 xl:h-36 rounded-xl overflow-hidden border border-white/20 shadow-md">
-              <img
-                src="/images/ahala/balade_pirogue3.jpg"
-                alt="Balade en pirogue sur le lac d'Ahala"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-1.5 left-1.5 right-1.5 px-2 py-0.5 rounded bg-black/75 text-[10px] font-bold text-white truncate">
+            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614]">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
+                <img
+                  src="/images/ahala/balade_pirogue3.jpg"
+                  alt="Balade en pirogue sur le lac d'Ahala"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: getPhotoObjectPosition('/images/ahala/balade_pirogue3.jpg') }}
+                />
+              </div>
+              <div className="px-2 py-1.5 bg-[#121614] border-t border-white/10 text-[10px] sm:text-[11px] font-bold text-[#E9F5ED] truncate text-center">
                 Pirogue · 1 000 FCFA
-              </span>
+              </div>
             </div>
-            <div className="relative h-28 sm:h-32 xl:h-36 rounded-xl overflow-hidden border border-white/20 shadow-md">
-              <img
-                src="/images/ahala/local_cameroon_gastronomy_pergola.png"
-                alt="Le Château des Saveurs à EcoPark Ahala"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-1.5 left-1.5 right-1.5 px-2 py-0.5 rounded bg-black/75 text-[10px] font-bold text-white truncate">
+            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614]">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
+                <img
+                  src="/images/ahala/local_cameroon_gastronomy_pergola.png"
+                  alt="Le Château des Saveurs à EcoPark Ahala"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: getPhotoObjectPosition('/images/ahala/local_cameroon_gastronomy_pergola.png') }}
+                />
+              </div>
+              <div className="px-2 py-1.5 bg-[#121614] border-t border-white/10 text-[10px] sm:text-[11px] font-bold text-[#E9F5ED] truncate text-center">
                 Château des Saveurs
-              </span>
+              </div>
             </div>
-            <div className="relative h-28 sm:h-32 xl:h-36 rounded-xl overflow-hidden border border-white/20 shadow-md">
-              <img
-                src="/images/ahala/chambre.jpeg"
-                alt="Hôtels Ewondo, Chanthel & Bene à EcoPark Cameroun"
-                className="w-full h-full object-cover"
-              />
-              <span className="absolute bottom-1.5 left-1.5 right-1.5 px-2 py-0.5 rounded bg-black/75 text-[10px] font-bold text-white truncate">
+            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614]">
+              <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
+                <img
+                  src="/images/ahala/chambre.jpeg"
+                  alt="Hôtels Ewondo, Chanthel & Bene à EcoPark Cameroun"
+                  className="w-full h-full object-cover"
+                  style={{ objectPosition: getPhotoObjectPosition('/images/ahala/chambre.jpeg') }}
+                />
+              </div>
+              <div className="px-2 py-1.5 bg-[#121614] border-t border-white/10 text-[10px] sm:text-[11px] font-bold text-[#E9F5ED] truncate text-center">
                 Hôtels dès 10 000 FCFA
-              </span>
+              </div>
             </div>
           </div>
 

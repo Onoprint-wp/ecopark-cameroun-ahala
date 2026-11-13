@@ -21,6 +21,7 @@ import { RangerDashboard } from './components/admin/RangerDashboard';
 import { ColorAtlasDrawer } from './components/design-system/ColorAtlasDrawer';
 import { useEcoPark } from './context/EcoParkContext';
 import { recordMotionOrigin, useEcoMotion } from './utils/ecoMotion';
+import { getPhotoObjectPosition } from './utils/ecoRouting';
 import {
   Compass,
   Ticket,
@@ -202,11 +203,12 @@ export default function App() {
                       className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group overflow-hidden flex flex-col justify-between"
                     >
                       {sp.photoUrl && (
-                        <div className="h-40 w-full overflow-hidden bg-[#1F2421]">
+                        <div className="aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
                           <img
                             src={sp.photoUrl}
                             alt={sp.commonName}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                            style={{ objectPosition: getPhotoObjectPosition(sp.photoUrl) }}
                           />
                         </div>
                       )}

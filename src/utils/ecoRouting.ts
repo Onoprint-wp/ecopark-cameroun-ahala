@@ -103,3 +103,22 @@ export function resolveShowcaseTabFromPath(pathname: string): ShowcaseTab {
   if (clean === '/formation' || clean === '/formations') return 'formation';
   return 'hebergements';
 }
+
+/**
+ * Retourne le point focal CSS (object-position) calibré sur les visages
+ * pour chaque photographie officielle d'ECOPARK CAMEROUN à Yaoundé-Ahala,
+ * garantissant qu'aucun visage n'est coupé quel que soit le ratio du conteneur.
+ */
+export function getPhotoObjectPosition(photoUrl?: string): string {
+  if (!photoUrl) return '50% 50%';
+  if (photoUrl.includes('IMG-20260713-WA0051')) return '50% 12%';
+  if (photoUrl.includes('IMG_20260829_172016')) return '50% 20%';
+  if (photoUrl.includes('IMG-20260809-WA0009')) return '50% 52%';
+  if (photoUrl.includes('balade_pirogue3')) return '50% 60%';
+  if (photoUrl.includes('local_cameroon_gastronomy_pergola')) return '56% 40%';
+  if (photoUrl.includes('local_cameroon_cfp_students')) return '50% 28%';
+  if (photoUrl.includes('local_cameroon_family_canopy')) return '50% 48%';
+  if (photoUrl.includes('local_cameroon_pool_pirogue')) return '50% 55%';
+  if (photoUrl.includes('chimpanze')) return '45% 35%';
+  return '50% 50%';
+}

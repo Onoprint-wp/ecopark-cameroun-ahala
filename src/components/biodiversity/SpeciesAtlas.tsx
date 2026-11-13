@@ -10,6 +10,7 @@ import {
   ConservationStatus,
 } from '../../types/ecosystem';
 import { ImmersiveSection } from '../layout/ImmersiveSection';
+import { getPhotoObjectPosition } from '../../utils/ecoRouting';
 import {
   Search,
   Eye,
@@ -300,7 +301,7 @@ export const SpeciesAtlas: React.FC = () => {
         </div>
 
         {/* Species Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
           {filteredSpecies.map((sp) => {
             // Find attached trails
             const attachedTrails = trails.filter((t) => sp.trailIds.includes(t.id));
@@ -331,12 +332,12 @@ export const SpeciesAtlas: React.FC = () => {
                 {/* Header: Common Name, Scientific Name & IUCN Badge */}
                 <div className="space-y-3">
                   {sp.photoUrl && (
-                    <div className="h-48 w-full rounded-xl overflow-hidden bg-[#1F2421] mb-2 border border-[var(--border-default)]">
+                    <div className="aspect-[4/3] w-full rounded-xl overflow-hidden bg-[#1F2421] mb-2 border border-[var(--border-default)]">
                       <img
                         src={sp.photoUrl}
                         alt={sp.commonName}
                         className="w-full h-full object-cover"
-                        loading="lazy"
+                        style={{ objectPosition: getPhotoObjectPosition(sp.photoUrl) }}
                       />
                     </div>
                   )}
