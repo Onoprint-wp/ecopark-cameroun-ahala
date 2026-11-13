@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>ECO-PARK — Réserve Naturelle &amp; Écotourisme Régulé</title>
+
+    <!-- F04: Script synchrone anti-FOUC (Zéro clignotement au chargement) -->
+    <script>
+      (function () {
+        try {
+          var STORAGE_THEME_KEY = "eco-park-theme";
+          var STORAGE_VISION_KEY = "eco-park-vision";
+          var storedTheme = localStorage.getItem(STORAGE_THEME_KEY);
+          var prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+
+          var isDark = false;
+          if (storedTheme === "dark") {
+            isDark = true;
+          } else if (storedTheme === "light") {
+            isDark = false;
+          } else {
+            // Mode 'auto' par défaut
+            isDark = prefersDark;
+          }
+
+          var root = document.documentElement;
+          if (isDark) {
+            root.classList.add("dark");
+            root.setAttribute("data-theme", "dark");
+          } else {
+            root.classList.remove("dark");
+            root.setAttribute("data-theme", "light");
+          }
+
+          var storedVision = localStorage.getItem(STORAGE_VISION_KEY);
+          if (storedVision && storedVision !== "normal") {
+            root.setAttribute("data-vision", storedVision);
+          } else {
+            root.removeAttribute("data-vision");
+          }
+        } catch (e) {
+          console.warn("Theme anti-FOUC initialization fallback:", e);
+        }
+      })();
+    </script>
+
+    <!-- F05: Typographie éditoriale Google Fonts (Fraunces, DM Sans, JetBrains Mono) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400..700;1,9..40,400..600&family=Fraunces:ital,opsz,wght@0,9..144,400..800;1,9..144,400..600&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- F06: Daltonisme — Définitions des filtres matriciels SVG (Brettel / Viénot) -->
+    <svg
+      width="0"
+      height="0"
+      style="position: absolute; width: 0; height: 0; overflow: hidden; pointer-events: none"
+      aria-hidden="true"
+    >
+      <defs>
+        <!-- Deutéranopie (Déficience des récepteurs verts) -->
+        <filter id="filter-deuteranopia" color-interpolation-filters="linearRGB">
+          <feColorMatrix
+            type="matrix"
+            values="
+              0.625 0.375 0.000 0 0
+              0.700 0.300 0.000 0 0
+              0.000 0.300 0.700 0 0
+              0.000 0.000 0.000 1 0
+            "
+          />
+        </filter>
+
+        <!-- Protanopie (Déficience des récepteurs rouges) -->
+        <filter id="filter-protanopia" color-interpolation-filters="linearRGB">
+          <feColorMatrix
+            type="matrix"
+            values="
+              0.567 0.433 0.000 0 0
+              0.558 0.442 0.000 0 0
+              0.000 0.242 0.758 0 0
+              0.000 0.000 0.000 1 0
+            "
+          />
+        </filter>
+
+        <!-- Tritanopie (Déficience des récepteurs bleus) -->
+        <filter id="filter-tritanopia" color-interpolation-filters="linearRGB">
+          <feColorMatrix
+            type="matrix"
+            values="
+              0.950 0.050 0.000 0 0
+              0.000 0.433 0.567 0 0
+              0.000 0.475 0.525 0 0
+              0.000 0.000 0.000 1 0
+            "
+          />
+        </filter>
+      </defs>
+    </svg>
+
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,305 @@
+@import "tailwindcss";
+
+/* ==========================================================================
+   ECO-PARK Web Ecosystem — Design Tokens & Theme Engine
+   Conformité : WCAG 2.1 AA/AAA renforcé & Daltonisme Brettel/Vienot
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. PRIMITIVES CHROMATIQUES (Les 5 Piliers d'après Adobe Color Explore)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Pilier 1 : Forest (Vert Canopée Profond) */
+  --color-forest-50:  #EDF7F2;
+  --color-forest-100: #D8F3DC;
+  --color-forest-200: #B7E4C7;
+  --color-forest-300: #95D5B2;
+  --color-forest-400: #74C69D;
+  --color-forest-500: #52B788;
+  --color-forest-600: #40916C;
+  --color-forest-700: #2D6A4F;
+  --color-forest-800: #1B4332; /* Swatch 1 Primary */
+  --color-forest-900: #112A1F;
+  --color-forest-950: #081C15;
+
+  /* Pilier 2 : Leaf (Vert Feuille / Émeraude Vivant) */
+  --color-leaf-50:  #F0FAF5;
+  --color-leaf-100: #D8F3DC;
+  --color-leaf-200: #B7E4C7;
+  --color-leaf-300: #95D5B2;
+  --color-leaf-400: #74C69D;
+  --color-leaf-500: #52B788; /* Swatch 2 Secondary */
+  --color-leaf-600: #3D996E;
+  --color-leaf-700: #2D7A56;
+  --color-leaf-800: #215C41;
+  --color-leaf-900: #163E2C;
+  --color-leaf-950: #0B2218;
+
+  /* Pilier 3 : Earth (Ocre Terreux & Ambre Minéral) */
+  --color-earth-50:  #FBF6F0;
+  --color-earth-100: #F5EBE0;
+  --color-earth-200: #EBD5BE;
+  --color-earth-300: #E0BC99;
+  --color-earth-400: #D4A373; /* Swatch 3 Accent */
+  --color-earth-500: #C08852;
+  --color-earth-600: #A46E3B;
+  --color-earth-700: #84562D;
+  --color-earth-800: #684324;
+  --color-earth-900: #4E321B;
+  --color-earth-950: #2E1C0E;
+
+  /* Pilier 4 : Mist (Brume Végétale & Surfaces Douces) */
+  --color-mist-50:  #F6FBF8; /* Fond d'écran clair */
+  --color-mist-100: #E9F5ED; /* Swatch 4 Surface carte */
+  --color-mist-200: #D4E9DC;
+  --color-mist-300: #B5D6C2;
+  --color-mist-400: #8EBAA0; /* Bordure nette mode clair */
+  --color-mist-500: #699B7E;
+
+  /* Pilier 5 : Bark (Écorce Neutre & Anthracite Végétal) */
+  --color-bark-50:  #F4F6F5;
+  --color-bark-100: #E4E8E5;
+  --color-bark-200: #C9D1CC; /* Texte secondaire sombre (10.8:1) */
+  --color-bark-300: #A3B0A8;
+  --color-bark-400: #7B8C82;
+  --color-bark-500: #5C6B62;
+  --color-bark-600: #46534B; /* Bordure nette mode sombre */
+  --color-bark-700: #36403A; /* Texte secondaire clair renforcé (9.4:1) */
+  --color-bark-800: #29302C; /* Surface surélevée sombre */
+  --color-bark-900: #1F2421; /* Swatch 5 Encre / Surface sombre */
+  --color-bark-950: #121614; /* Fond général sombre OLED */
+
+  /* ------------------------------------------------------------------------
+     SURFACES D'IMMERSION ÉDITORIALES CONSTANTES
+     Préservent leur caractère nocturne/profond quel que soit le thème actif
+     ------------------------------------------------------------------------ */
+  --surface-canopy:        #1B4332;
+  --surface-bark:          #1F2421;
+  --text-on-immersive:     #E9F5ED;
+  --text-on-immersive-alt: #FFFFFF;
+  --border-on-immersive:   rgba(142, 186, 160, 0.28);
+
+  /* ------------------------------------------------------------------------
+     TYPOGRAPHIE ÉDITORIALE (F05)
+     ------------------------------------------------------------------------ */
+  --font-serif:   'Fraunces', Georgia, serif;
+  --font-display: 'Fraunces', Georgia, serif;
+  --font-sans:    'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-body:    'DM Sans', system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono:    'JetBrains Mono', "Courier New", monospace;
+
+  /* Rayons & Ombres */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 9999px;
+  --shadow-soft: 0 14px 34px -14px rgba(27, 67, 50, 0.12);
+
+  /* ------------------------------------------------------------------------
+     TOKENS SÉMANTIQUES — MODE CLAIR (PLEIN SOLEIL / HAUTE LISIBILITÉ)
+     ------------------------------------------------------------------------ */
+  --bg-canvas:           #F6FBF8;
+  --bg-surface:          #E9F5ED;
+  --bg-elevated:         #FFFFFF;
+  --text-primary:        #1F2421; /* 14.07:1 sur mist-100, 15.35:1 sur canvas */
+  --text-muted:          #36403A; /* Renforcé WCAG AAA 9.4:1 */
+  --brand-primary:       #1B4332; /* Forest-800 */
+  --brand-primary-hover: #2D6A4F; /* Forest-700 */
+  --on-primary:          #FFFFFF;
+  --brand-secondary:     #52B788; /* Leaf-500 */
+  --on-secondary:        #1F2421;
+  --brand-accent:        #D4A373; /* Earth-400 */
+  --on-accent:           #1F2421;
+  --border-default:      #8EBAA0; /* Mist-400 net */
+  --border-subtle:       #D4E9DC; /* Mist-200 discret */
+  --focus-ring:          #2D6A4F;
+
+  /* Statuts opérationnels */
+  --status-open:         #52B788;
+  --status-open-bg:      #D8F3DC;
+  --status-caution:      #D4A373;
+  --status-caution-bg:   #F5EBE0;
+  --status-closed:       #DC2626;
+  --status-closed-bg:    #FEF2F2;
+  --status-info:         #40916C;
+  --status-info-bg:      #E9F5ED;
+}
+
+/* --------------------------------------------------------------------------
+   2. TOKENS SÉMANTIQUES — MODE SOMBRE (OLED / ÉCO-ÉNERGIE)
+   -------------------------------------------------------------------------- */
+.dark,
+[data-theme="dark"] {
+  --bg-canvas:           #121614; /* Bark-950 */
+  --bg-surface:          #1F2421; /* Bark-900 */
+  --bg-elevated:         #29302C; /* Bark-800 */
+  --text-primary:        #E9F5ED; /* 14.07:1 sur surface, 16.80:1 sur canvas */
+  --text-muted:          #C9D1CC; /* Renforcé WCAG AAA 10.8:1 */
+  --brand-primary:       #52B788; /* Leaf-500 */
+  --brand-primary-hover: #74C69D; /* Leaf-400 */
+  --on-primary:          #121614;
+  --brand-secondary:     #2D6A4F; /* Forest-700 */
+  --on-secondary:        #E9F5ED;
+  --brand-accent:        #D4A373; /* Earth-400 */
+  --on-accent:           #1F2421;
+  --border-default:      #46534B; /* Bark-600 net */
+  --border-subtle:       #29302C; /* Bark-800 discret */
+  --focus-ring:          #74C69D;
+  --shadow-soft: 0 16px 40px -12px rgba(0, 0, 0, 0.65);
+
+  /* Statuts opérationnels sombre */
+  --status-open:         #74C69D;
+  --status-open-bg:      rgba(82, 183, 136, 0.18);
+  --status-caution:      #E0BC99;
+  --status-caution-bg:   rgba(212, 163, 115, 0.18);
+  --status-closed:       #F87171;
+  --status-closed-bg:    rgba(220, 38, 38, 0.18);
+  --status-info:         #95D5B2;
+  --status-info-bg:      rgba(64, 145, 108, 0.18);
+}
+
+/* --------------------------------------------------------------------------
+   3. TAILWIND CSS v4 @theme EXPORTATION
+   -------------------------------------------------------------------------- */
+@theme {
+  /* Typographies */
+  --font-serif:   var(--font-serif);
+  --font-display: var(--font-display);
+  --font-sans:    var(--font-sans);
+  --font-body:    var(--font-body);
+  --font-mono:    var(--font-mono);
+
+  /* Couleurs sémantiques adaptatives */
+  --color-canvas:         var(--bg-canvas);
+  --color-surface:        var(--bg-surface);
+  --color-elevated:       var(--bg-elevated);
+  --color-ink:            var(--text-primary);
+  --color-ink-muted:      var(--text-muted);
+  --color-border:         var(--border-default);
+  --color-border-subtle:  var(--border-subtle);
+
+  --color-primary:        var(--brand-primary);
+  --color-primary-hover:  var(--brand-primary-hover);
+  --color-on-primary:     var(--on-primary);
+
+  --color-secondary:      var(--brand-secondary);
+  --color-on-secondary:   var(--on-secondary);
+
+  --color-accent:         var(--brand-accent);
+  --color-on-accent:      var(--on-accent);
+
+  /* Surfaces immersives */
+  --color-canopy:             var(--surface-canopy);
+  --color-bark-dark:          var(--surface-bark);
+  --color-on-immersive:       var(--text-on-immersive);
+  --color-on-immersive-alt:   var(--text-on-immersive-alt);
+  --color-border-immersive:   var(--border-on-immersive);
+
+  /* Piliers complets pour Tailwind Utilities */
+  --color-forest-50:  #EDF7F2;
+  --color-forest-100: #D8F3DC;
+  --color-forest-200: #B7E4C7;
+  --color-forest-300: #95D5B2;
+  --color-forest-400: #74C69D;
+  --color-forest-500: #52B788;
+  --color-forest-600: #40916C;
+  --color-forest-700: #2D6A4F;
+  --color-forest-800: #1B4332;
+  --color-forest-900: #112A1F;
+  --color-forest-950: #081C15;
+
+  --color-leaf-50:  #F0FAF5;
+  --color-leaf-100: #D8F3DC;
+  --color-leaf-200: #B7E4C7;
+  --color-leaf-300: #95D5B2;
+  --color-leaf-400: #74C69D;
+  --color-leaf-500: #52B788;
+  --color-leaf-600: #3D996E;
+  --color-leaf-700: #2D7A56;
+  --color-leaf-800: #215C41;
+  --color-leaf-900: #163E2C;
+  --color-leaf-950: #0B2218;
+
+  --color-earth-50:  #FBF6F0;
+  --color-earth-100: #F5EBE0;
+  --color-earth-200: #EBD5BE;
+  --color-earth-300: #E0BC99;
+  --color-earth-400: #D4A373;
+  --color-earth-500: #C08852;
+  --color-earth-600: #A46E3B;
+  --color-earth-700: #84562D;
+  --color-earth-800: #684324;
+  --color-earth-900: #4E321B;
+  --color-earth-950: #2E1C0E;
+
+  --color-mist-50:  #F6FBF8;
+  --color-mist-100: #E9F5ED;
+  --color-mist-200: #D4E9DC;
+  --color-mist-300: #B5D6C2;
+  --color-mist-400: #8EBAA0;
+  --color-mist-500: #699B7E;
+
+  --color-bark-50:  #F4F6F5;
+  --color-bark-100: #E4E8E5;
+  --color-bark-200: #C9D1CC;
+  --color-bark-300: #A3B0A8;
+  --color-bark-400: #7B8C82;
+  --color-bark-500: #5C6B62;
+  --color-bark-600: #46534B;
+  --color-bark-700: #36403A;
+  --color-bark-800: #29302C;
+  --color-bark-900: #1F2421;
+  --color-bark-950: #121614;
+
+  /* Rayons */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-pill: var(--radius-pill);
+}
+
+/* --------------------------------------------------------------------------
+   4. BASE APPLICATION STYLES
+   -------------------------------------------------------------------------- */
+html {
+  color-scheme: light dark;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  scroll-behavior: smooth;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: var(--bg-canvas);
+  color: var(--text-primary);
+  transition: background-color 200ms ease, color 200ms ease;
+}
+
+/* Focus accessible */
+:focus-visible {
+  outline: 3px solid var(--focus-ring);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   5. DALTONISME SVG FILTERS CSS BINDINGS (F06)
+   -------------------------------------------------------------------------- */
+html[data-vision="deuteranopia"],
+body[data-vision="deuteranopia"] {
+  filter: url(#filter-deuteranopia);
+}
+
+html[data-vision="protanopia"],
+body[data-vision="protanopia"] {
+  filter: url(#filter-protanopia);
+}
+
+html[data-vision="tritanopia"],
+body[data-vision="tritanopia"] {
+  filter: url(#filter-tritanopia);
+}
