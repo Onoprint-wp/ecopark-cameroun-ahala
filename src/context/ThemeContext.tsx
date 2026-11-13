@@ -16,6 +16,7 @@ import {
   DaltonismMode,
   ThemeContextType,
 } from '../types/ecosystem';
+import { runEcoViewTransition } from '../utils/ecoMotion';
 
 const THEME_STORAGE_KEY = 'eco_park_v1_theme';
 const LEGACY_THEME_STORAGE_KEY = 'eco-park-theme';
@@ -110,13 +111,31 @@ export const ThemeProvider: React.FC<ThemeProviderProps> = ({ children }) => {
     }
   }, []);
 
-  // Update theme mode and persist
+  // Update theme mode and persist (with Sunrise / OLED Extinguish View Transition)
   const setThemeMode = useCallback(
     (newMode: ThemeMode) => {
-      setThemeModeState(newMode);
       safeSetStorage(THEME_STORAGE_KEY, newMode);
       safeSetStorage(LEGACY_THEME_STORAGE_KEY, newMode);
-      syncThemeDOM(newMode);
+
+      if (typeof window === 'undefined') {
+        setThemeModeState(newMode);
+        return;
+      }
+
+      const osPrefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      const nextIsDark = newMode === 'dark' ? true : newMode === 'light' ? false : osPrefersDark;
+      const prevIsDark = document.documentElement.classList.contains('dark');
+
+      if (nextIsDark !== prevIsDark) {
+        const vtKind = nextIsDark ? 'oled-extinguish' : 'sunrise';
+        runEcoViewTransition(vtKind, () => {
+          setThemeModeState(newMode);
+          syncThemeDOM(newMode);
+        });
+      } else {
+        setThemeModeState(newMode);
+        syncThemeDOM(newMode);
+      }
     },
     [syncThemeDOM]
   );

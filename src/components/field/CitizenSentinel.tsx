@@ -3,7 +3,7 @@
 // Features F24 & F25: Participative field reporting and live observation feed
 // ============================================================================
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect } from 'react';
 import {
   ShieldAlert,
   MapPin,
@@ -33,6 +33,9 @@ export const CitizenSentinel: React.FC = () => {
   const {
     reports,
     trails,
+    selectedTrailId: globalSelectedTrailId,
+    setSelectedTrailId: setGlobalSelectedTrailId,
+    setActiveView,
     submitCitizenReport,
     upvoteReport,
   } = useEcoPark();
@@ -40,11 +43,17 @@ export const CitizenSentinel: React.FC = () => {
   // Active view tab: Form (F24) vs Feed (F25)
   const [activeTab, setActiveTab] = useState<'form' | 'feed'>('form');
 
-  // Form states (F24)
-  const [reportType, setReportType] = useState<CitizenReportType>('faune_rare');
+  // Form states (F24) — synced with global selectedTrailId when navigated from Map / Atlas
   const [selectedTrailId, setSelectedTrailId] = useState<string>(
-    trails.length > 0 ? trails[0].id : 'canopee'
+    globalSelectedTrailId || (trails.length > 0 ? trails[0].id : 'canopee')
   );
+  const [reportType, setReportType] = useState<CitizenReportType>('faune_rare');
+
+  useEffect(() => {
+    if (globalSelectedTrailId && trails.some((t) => t.id === globalSelectedTrailId)) {
+      setSelectedTrailId(globalSelectedTrailId);
+    }
+  }, [globalSelectedTrailId, trails]);
   const [severity, setSeverity] = useState<ReportSeverity>('info');
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
@@ -54,6 +63,7 @@ export const CitizenSentinel: React.FC = () => {
   // Simulated GPS Coordinates (Yaoundé – Ahala Barrière, RN3)
   const [gpsCoordinates, setGpsCoordinates] = useState<string>('[GPS 3.792° N, 11.488° E - Alt. 725m · Ahala RN3]');
   const [gpsRefreshing, setGpsRefreshing] = useState<boolean>(false);
+  const [gpsPulseKey, setGpsPulseKey] = useState<number>(0);
 
   // Simulated Photo Attachment
   const [selectedPhotoPreset, setSelectedPhotoPreset] = useState<string>('photo-faune-1');
@@ -61,6 +71,7 @@ export const CitizenSentinel: React.FC = () => {
   // Form validation & submission feedback
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [submittedReportId, setSubmittedReportId] = useState<string | null>(null);
+  const [lastCreatedReportId, setLastCreatedReportId] = useState<string | null>(null);
 
   // Feed filtering states (F25)
   const [feedCategoryFilter, setFeedCategoryFilter] = useState<string>('all');
@@ -104,6 +115,7 @@ export const CitizenSentinel: React.FC = () => {
       const alt = Math.floor(710 + Math.random() * 50);
       setGpsCoordinates(`[GPS ${lat}° N, ${lon}° E - Alt. ${alt}m · Ahala RN3]`);
       setGpsRefreshing(false);
+      setGpsPulseKey((prev) => prev + 1);
     }, 400);
   };
 
@@ -235,17 +247,18 @@ export const CitizenSentinel: React.FC = () => {
 
     const newReport = submitCitizenReport(reportInput);
     setSubmittedReportId(newReport.id);
+    setLastCreatedReportId(newReport.id);
 
     // Reset fields
     setTitle('');
     setDescription('');
     setLandmark('');
 
-    // Switch to feed after 1.5s
+    // Switch to feed after sonar echo completes
     setTimeout(() => {
       setSubmittedReportId(null);
       setActiveTab('feed');
-    }, 1800);
+    }, 1650);
   };
 
   // Filtered feed computation (F25)
@@ -314,14 +327,25 @@ export const CitizenSentinel: React.FC = () => {
       {activeTab === 'form' && (
         <form onSubmit={handleSubmitReport} className="space-y-6">
           {submittedReportId && (
-            <div className="p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-950 dark:text-emerald-100 flex items-center gap-3.5 animate-fade-in shadow-md">
-              <CheckCircle2 className="w-6 h-6 text-emerald-600 shrink-0" />
+            <div className="p-5 rounded-2xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-950 dark:text-emerald-100 flex items-center gap-4 shadow-md overflow-hidden relative">
+              <div className="relative w-11 h-11 rounded-full bg-emerald-600/15 flex items-center justify-center shrink-0">
+                <span
+                  aria-hidden="true"
+                  className="eco-sonar-wave absolute inset-0 rounded-full border-2 border-emerald-500/70"
+                />
+                <span
+                  aria-hidden="true"
+                  style={{ animationDelay: '260ms' }}
+                  className="eco-sonar-wave absolute inset-0 rounded-full border border-emerald-400/60"
+                />
+                <MapPin className="w-5 h-5 text-emerald-700 dark:text-emerald-300 eco-pin-drop relative z-10" />
+              </div>
               <div>
-                <h4 className="font-bold text-sm">
-                  Signalement {submittedReportId} transmis à l équipe des Éco-Gardes !
+                <h4 className="font-bold text-sm flex items-center gap-2">
+                  <span>Signalement {submittedReportId} émis par onde sonar aux Éco-Gardes !</span>
                 </h4>
                 <p className="text-xs text-emerald-800 dark:text-emerald-200 mt-0.5">
-                  Merci pour votre contribution citoyenne. Vous allez être redirigé vers le fil communautaire...
+                  Coordonnées {gpsCoordinates} verrouillées. Ouverture du fil communautaire...
                 </p>
               </div>
             </div>
@@ -418,7 +442,10 @@ export const CitizenSentinel: React.FC = () => {
             {/* Simulated GPS Tag */}
             <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
               <div className="flex items-center gap-2">
-                <MapPin className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <MapPin
+                  key={gpsPulseKey}
+                  className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 eco-pin-drop"
+                />
                 <span className="font-mono text-emerald-800 dark:text-emerald-200 font-bold">
                   {gpsCoordinates}
                 </span>
@@ -654,10 +681,13 @@ export const CitizenSentinel: React.FC = () => {
             ) : (
               filteredReports.map((report) => {
                 const trailMatch = trails.find((t) => t.id === report.trailId);
+                const isFreshlyEmitted = report.id === lastCreatedReportId;
                 return (
                   <div
                     key={report.id}
-                    className="p-5 sm:p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-xs transition-shadow space-y-4"
+                    className={`p-5 sm:p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-xs transition-shadow space-y-4 ${
+                      isFreshlyEmitted ? 'eco-sentinel-fresh ring-2 ring-emerald-500/40' : ''
+                    }`}
                   >
                     {/* Top Row: ID, Category, Severity & Status */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 pb-3 border-b border-[var(--border-default)]/60">
@@ -665,6 +695,11 @@ export const CitizenSentinel: React.FC = () => {
                         <span className="font-['JetBrains_Mono'] font-bold text-xs text-[var(--brand-primary)]">
                           {report.id}
                         </span>
+                        {isFreshlyEmitted && (
+                          <span className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-700 dark:text-emerald-300 border border-emerald-500/40">
+                            ● Écho récent
+                          </span>
+                        )}
                         <span className="text-[var(--text-muted)]">·</span>
                         <div className="inline-flex items-center gap-1 text-xs font-semibold text-[var(--text-primary)]">
                           {renderCategoryIcon(report.type, 'w-3.5 h-3.5 text-[var(--brand-primary)]')}
@@ -692,9 +727,17 @@ export const CitizenSentinel: React.FC = () => {
                     {/* Metadata & Trail Pill */}
                     <div className="flex flex-wrap items-center justify-between gap-3 pt-2 text-[11px] text-[var(--text-muted)] font-sans">
                       <div className="flex flex-wrap items-center gap-2.5">
-                        <span className="px-2.5 py-1 rounded-md bg-[var(--bg-elevated)] border border-[var(--border-default)] font-semibold text-[var(--text-primary)]">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setGlobalSelectedTrailId(report.trailId);
+                            setActiveView('sentiers');
+                          }}
+                          className="px-2.5 py-1 rounded-md bg-[var(--bg-elevated)] hover:bg-[var(--brand-primary)] hover:text-white border border-[var(--border-default)] font-semibold text-[var(--text-primary)] transition-colors cursor-pointer"
+                          title="Localiser ce circuit sur la carte interactive"
+                        >
                           📍 {trailMatch ? trailMatch.name : report.trailId}
-                        </span>
+                        </button>
                         <span>Repère : <strong className="text-[var(--text-primary)]">{report.landmark}</strong></span>
                         <span>Par <span className="font-mono">{report.reporterName}</span></span>
                       </div>

@@ -18,13 +18,15 @@ import {
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { ActiveView } from '../../types/ecosystem';
+import { recordMotionOrigin, useEcoMotion } from '../../utils/ecoMotion';
 
 export const Footer: React.FC = () => {
-  const { telemetry, setActiveView, setColorDrawerOpen, resetToSeedData } = useEcoPark();
+  const { telemetry, effectiveTheme, setActiveView, setColorDrawerOpen, resetToSeedData } = useEcoPark();
+  const motionState = useEcoMotion(effectiveTheme === 'dark');
 
-  const handleLinkClick = (view: ActiveView) => {
+  const handleLinkClick = (view: ActiveView, e?: React.MouseEvent<HTMLElement>) => {
+    if (e) recordMotionOrigin(e);
     setActiveView(view);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleResetDemo = () => {
@@ -86,7 +88,7 @@ export const Footer: React.FC = () => {
             <ul className="space-y-2 text-sm text-[#C9D1CC]">
               <li>
                 <button
-                  onClick={() => handleLinkClick('accueil')}
+                  onClick={(e) => handleLinkClick('accueil', e)}
                   className="hover:text-[#52B788] transition-colors cursor-pointer text-left"
                 >
                   Accueil, Hôtels (30), Château des Saveurs &amp; CFP
@@ -94,7 +96,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleLinkClick('sentiers')}
+                  onClick={(e) => handleLinkClick('sentiers', e)}
                   className="hover:text-[#52B788] transition-colors cursor-pointer text-left"
                 >
                   Plan du Parc, Lac, Pirogues &amp; Piscine Semi-Olympique
@@ -102,7 +104,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleLinkClick('biodiversite')}
+                  onClick={(e) => handleLinkClick('biodiversite', e)}
                   className="hover:text-[#52B788] transition-colors cursor-pointer text-left"
                 >
                   Jardin Zoologique (Gorille ToTo, Chimpanzés, Tortues)
@@ -110,7 +112,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleLinkClick('billetterie')}
+                  onClick={(e) => handleLinkClick('billetterie', e)}
                   className="hover:text-[#52B788] transition-colors cursor-pointer text-left"
                 >
                   Réserver un Pass QR (dès 500 FCFA · OM / MoMo)
@@ -118,7 +120,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleLinkClick('pass')}
+                  onClick={(e) => handleLinkClick('pass', e)}
                   className="hover:text-[#52B788] transition-colors cursor-pointer text-left"
                 >
                   Mon Pass QR (ECP-2026-XXXXX) &amp; Avis Visiteurs
@@ -126,7 +128,7 @@ export const Footer: React.FC = () => {
               </li>
               <li>
                 <button
-                  onClick={() => handleLinkClick('ranger')}
+                  onClick={(e) => handleLinkClick('ranger', e)}
                   className="hover:text-[#52B788] transition-colors text-amber-300 font-medium cursor-pointer text-left"
                 >
                   Console de Supervision &amp; Exploitation Ahala
@@ -208,6 +210,16 @@ export const Footer: React.FC = () => {
               <div className="flex items-center justify-between pt-1 border-t border-[#36403A]">
                 <span className="text-[#8EBAA0]">Météo Ahala</span>
                 <span className="text-white">{telemetry.temperatureC}°C · {telemetry.weatherCondition.split('·')[0]}</span>
+              </div>
+              <div className="flex items-center justify-between pt-1 border-t border-[#36403A]">
+                <span className="text-[#8EBAA0]">Sobriété Cinétique</span>
+                <span className="text-[#52B788] font-bold">
+                  {motionState.reducedMotion
+                    ? 'Mouvement Réduit'
+                    : motionState.oledEcoPaused
+                    ? 'OLED · Pause Ambiante'
+                    : 'GPU 0-Layout'}
+                </span>
               </div>
             </div>
 

@@ -8,6 +8,12 @@
 import React, { useState, useEffect } from 'react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import {
+  type ShowcaseTab,
+  SHOWCASE_TAB_PATH_MAP,
+  SHOWCASE_DEEP_PATHS,
+  resolveShowcaseTabFromPath,
+} from '../../utils/ecoRouting';
+import {
   BedDouble,
   Utensils,
   Ticket,
@@ -23,56 +29,35 @@ import {
   Heart,
 } from 'lucide-react';
 
-type ShowcaseTab = 'hebergements' | 'saveurs' | 'tarifs' | 'entreprise' | 'formation';
-
-const resolveShowcaseTabFromPath = (): ShowcaseTab => {
-  if (typeof window === 'undefined') return 'hebergements';
-  const clean = window.location.pathname.replace(/\/+$/, '').toLowerCase();
-  if (clean === '/restaurant' || clean === '/sejour-restaurant') return 'saveurs';
-  if (clean === '/tarifs' || clean === '/nos-tarifs') return 'tarifs';
-  if (clean === '/pack-entreprise' || clean === '/pack-ecole' || clean === '/groupes-evenements') return 'entreprise';
-  if (clean === '/formation' || clean === '/formations') return 'formation';
-  return 'hebergements';
-};
-
 export const AhalaShowcase: React.FC = () => {
-  const { setActiveView } = useEcoPark();
-  const [activeTab, setActiveTab] = useState<ShowcaseTab>(() => resolveShowcaseTabFromPath());
+  const { setActiveView, setSelectedTrailId } = useEcoPark();
+  const [activeTab, setActiveTab] = useState<ShowcaseTab>(() =>
+    typeof window !== 'undefined' ? resolveShowcaseTabFromPath(window.location.pathname) : 'hebergements'
+  );
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const clean = window.location.pathname.replace(/\/+$/, '').toLowerCase();
-    const deepPaths = [
-      '/hebergements',
-      '/hotellerie',
-      '/sejour-restaurant',
-      '/restaurant',
-      '/tarifs',
-      '/nos-tarifs',
-      '/pack-entreprise',
-      '/pack-ecole',
-      '/groupes-evenements',
-      '/formation',
-      '/formations',
-    ];
-    if (deepPaths.includes(clean)) {
+    if (SHOWCASE_DEEP_PATHS.includes(clean)) {
       setTimeout(() => {
         document.getElementById('ahala-production-showcase')?.scrollIntoView({ behavior: 'smooth' });
       }, 150);
     }
+
+    const handlePopState = () => {
+      setActiveTab(resolveShowcaseTabFromPath(window.location.pathname));
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   const handleSelectShowcaseTab = (tab: ShowcaseTab) => {
     setActiveTab(tab);
     if (typeof window !== 'undefined') {
-      const tabPathMap: Record<ShowcaseTab, string> = {
-        hebergements: '/hebergements',
-        saveurs: '/restaurant',
-        tarifs: '/tarifs',
-        entreprise: '/pack-entreprise',
-        formation: '/formation',
-      };
-      window.history.replaceState(null, '', tabPathMap[tab]);
+      const nextPath = SHOWCASE_TAB_PATH_MAP[tab];
+      if (window.location.pathname !== nextPath) {
+        window.history.pushState({ showcaseTab: tab }, '', nextPath);
+      }
     }
   };
 
@@ -307,7 +292,10 @@ export const AhalaShowcase: React.FC = () => {
               </a>
               <button
                 type="button"
-                onClick={() => setActiveView('billetterie')}
+                onClick={() => {
+                  setSelectedTrailId('piste-eco-gardes');
+                  setActiveView('billetterie');
+                }}
                 className="px-4 py-3 rounded-xl bg-white/15 hover:bg-white/25 text-white font-semibold text-xs sm:text-sm border border-white/25 cursor-pointer flex items-center gap-1.5"
               >
                 <span>Réserver un Pass Parc</span>
@@ -449,7 +437,10 @@ export const AhalaShowcase: React.FC = () => {
               </div>
               <button
                 type="button"
-                onClick={() => setActiveView('billetterie')}
+                onClick={() => {
+                  setSelectedTrailId('marais');
+                  setActiveView('billetterie');
+                }}
                 className="px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] text-white font-bold text-xs cursor-pointer flex items-center gap-1.5 self-start sm:self-auto"
               >
                 <Ticket className="w-4 h-4" />

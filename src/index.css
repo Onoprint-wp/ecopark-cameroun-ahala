@@ -309,3 +309,422 @@ html[data-vision="tritanopia"],
 body[data-vision="tritanopia"] {
   filter: url(#filter-tritanopia);
 }
+
+/* --------------------------------------------------------------------------
+   6. SYSTÈME D'ANIMATIONS COMBINÉES & SOBRIÉTÉ CINÉTIQUE (GPU-ONLY)
+   - Uniquement transform, opacity, clip-path & stroke-dashoffset SVG
+   - Pause automatique onglet masqué & mode Sombre OLED
+   - Dégradation douce prefers-reduced-motion
+   -------------------------------------------------------------------------- */
+:root {
+  --vt-origin-x: 50%;
+  --vt-origin-y: 48px;
+  --vt-end-radius: 150vmax;
+  --ease-canopy: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring-seed: cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* --- 6.1 Transition « Lisière » entre les vues (View Transitions API) --- */
+.eco-sticky-navbar {
+  view-transition-name: eco-navbar;
+}
+
+.eco-main-stage {
+  view-transition-name: eco-stage;
+}
+
+.vt-nav-pill {
+  view-transition-name: eco-nav-pill;
+}
+
+.vt-trail-spotlight {
+  view-transition-name: eco-trail-spotlight;
+}
+
+html[data-vt-kind="lisiere"]::view-transition-group(eco-navbar) {
+  z-index: 60;
+  animation-duration: 240ms;
+}
+
+html[data-vt-kind="lisiere"]::view-transition-group(eco-nav-pill),
+html[data-vt-kind="lisiere"]::view-transition-group(eco-trail-spotlight) {
+  animation-duration: 440ms;
+  animation-timing-function: var(--ease-canopy);
+}
+
+html[data-vt-kind="lisiere"]::view-transition-old(eco-stage) {
+  animation: eco-vt-stage-out 360ms var(--ease-canopy) both;
+  z-index: 1;
+}
+
+html[data-vt-kind="lisiere"]::view-transition-new(eco-stage) {
+  animation: eco-vt-lisiere-in 520ms var(--ease-canopy) both;
+  z-index: 2;
+}
+
+@keyframes eco-vt-stage-out {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.28;
+    transform: scale(0.988);
+  }
+}
+
+@keyframes eco-vt-lisiere-in {
+  from {
+    clip-path: circle(0px at var(--vt-origin-x) var(--vt-origin-y));
+    opacity: 0.72;
+  }
+  to {
+    clip-path: circle(var(--vt-end-radius) at var(--vt-origin-x) var(--vt-origin-y));
+    opacity: 1;
+  }
+}
+
+/* Fallback d'entrée de vue uniquement lorsque View Transitions API n'est pas supportée */
+@supports not (view-transition-name: none) {
+  .eco-view-enter {
+    animation: eco-stage-fallback-in 280ms var(--ease-canopy) both;
+  }
+}
+
+@keyframes eco-stage-fallback-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 8px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* --- 6.2 Bascule Thème « Lever de Soleil / Extinction OLED » --- */
+html[data-vt-kind="sunrise"] *,
+html[data-vt-kind="oled-extinguish"] * {
+  view-transition-name: none !important;
+}
+
+html[data-vt-kind="sunrise"]::view-transition-old(root),
+html[data-vt-kind="sunrise"]::view-transition-new(root),
+html[data-vt-kind="oled-extinguish"]::view-transition-old(root),
+html[data-vt-kind="oled-extinguish"]::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+html[data-vt-kind="sunrise"]::view-transition-old(root) {
+  z-index: 1;
+}
+
+html[data-vt-kind="sunrise"]::view-transition-new(root) {
+  z-index: 999;
+  animation: eco-sunrise-reveal 560ms var(--ease-canopy) both;
+}
+
+html[data-vt-kind="oled-extinguish"]::view-transition-new(root) {
+  z-index: 1;
+}
+
+html[data-vt-kind="oled-extinguish"]::view-transition-old(root) {
+  z-index: 999;
+  animation: eco-oled-extinguish 520ms cubic-bezier(0.4, 0, 0.2, 1) both;
+}
+
+@keyframes eco-sunrise-reveal {
+  from {
+    clip-path: circle(0px at var(--vt-origin-x) var(--vt-origin-y));
+  }
+  to {
+    clip-path: circle(var(--vt-end-radius) at var(--vt-origin-x) var(--vt-origin-y));
+  }
+}
+
+@keyframes eco-oled-extinguish {
+  from {
+    clip-path: circle(var(--vt-end-radius) at var(--vt-origin-x) var(--vt-origin-y));
+  }
+  to {
+    clip-path: circle(0px at var(--vt-origin-x) var(--vt-origin-y));
+  }
+}
+
+/* --- 6.3 Carte Topo « Tracé Vivant » & Profil Altimétrique Synchronisé --- */
+.eco-trail-self-draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: eco-trail-draw 880ms var(--ease-canopy) forwards;
+}
+
+@keyframes eco-trail-draw {
+  from {
+    stroke-dashoffset: 1000;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+.eco-elevation-area-reveal {
+  animation: eco-elevation-clip 880ms var(--ease-canopy) both;
+}
+
+@keyframes eco-elevation-clip {
+  from {
+    clip-path: inset(0 100% 0 0);
+    opacity: 0.3;
+  }
+  to {
+    clip-path: inset(0 0% 0 0);
+    opacity: 1;
+  }
+}
+
+.eco-poi-pop {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eco-poi-pop-in 420ms var(--ease-spring-seed) var(--poi-delay, 180ms) backwards;
+}
+
+@keyframes eco-poi-pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.eco-shockwave-ring {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eco-shockwave-expand 1500ms cubic-bezier(0.16, 1, 0.3, 1) var(--wave-delay, 0ms) forwards;
+}
+
+@keyframes eco-shockwave-expand {
+  0% {
+    opacity: 0.95;
+    transform: scale(0.18);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.4);
+  }
+}
+
+/* --- 6.4 Éco-Pass « Germination du QR », Retournement 3D & Reflet Holo --- */
+.eco-qr-seed {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: eco-qr-germinate 420ms var(--ease-spring-seed) var(--seed-delay, 0ms) backwards;
+}
+
+@keyframes eco-qr-germinate {
+  0% {
+    opacity: 0;
+    transform: scale(0.08) rotate(-18deg);
+  }
+  68% {
+    opacity: 1;
+    transform: scale(1.1) rotate(2deg);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) rotate(0deg);
+  }
+}
+
+.eco-pass-3d-stage {
+  perspective: 1300px;
+}
+
+.eco-pass-3d-card {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 520ms var(--ease-canopy), box-shadow 300ms ease;
+  transform: rotateX(var(--pass-tilt-x, 0deg))
+    rotateY(calc(var(--pass-flip-y, 0deg) + var(--pass-tilt-y, 0deg)));
+  animation: eco-pass-3d-enter 640ms var(--ease-canopy) backwards;
+}
+
+.eco-pass-3d-card.is-pointer-active {
+  transition: transform 90ms linear, box-shadow 220ms ease;
+}
+
+.eco-pass-face {
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.eco-pass-face-back {
+  transform: rotateY(180deg);
+}
+
+@keyframes eco-pass-3d-enter {
+  from {
+    opacity: 0;
+    transform: perspective(1300px) rotateY(-16deg) rotateX(6deg) translate3d(0, 16px, 0) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: perspective(1300px) rotateY(0deg) rotateX(0deg) translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.eco-pass-holo-glare {
+  background:
+    radial-gradient(
+      circle 260px at var(--glare-x, 50%) var(--glare-y, 35%),
+      rgba(82, 183, 136, 0.24),
+      rgba(212, 163, 115, 0.16) 42%,
+      transparent 75%
+    ),
+    linear-gradient(
+      125deg,
+      transparent 20%,
+      rgba(116, 198, 157, 0.12) 44%,
+      rgba(212, 163, 115, 0.14) 56%,
+      transparent 80%
+    );
+  mix-blend-mode: soft-light;
+  opacity: var(--glare-opacity, 0);
+  transition: opacity 240ms ease;
+}
+
+@media print {
+  .eco-pass-3d-card {
+    transform: none !important;
+    animation: none !important;
+  }
+
+  .eco-pass-face-back,
+  .eco-pass-holo-glare {
+    display: none !important;
+  }
+}
+
+/* --- 6.5 Jauge Liquide « Respiration Écologique », Pousse CO₂ & Sonar --- */
+.eco-liquid-wave-track {
+  will-change: transform;
+  animation: eco-liquid-wave var(--wave-period, 3.6s) linear infinite;
+}
+
+@keyframes eco-liquid-wave {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+[data-motion-pulse="true"] {
+  animation: eco-badge-landing-pulse 620ms var(--ease-spring-seed);
+}
+
+@keyframes eco-badge-landing-pulse {
+  0% {
+    transform: scale(1);
+  }
+  42% {
+    transform: scale(1.12);
+    box-shadow: 0 0 0 6px rgba(82, 183, 136, 0.35);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgba(82, 183, 136, 0);
+  }
+}
+
+.eco-leaf-sprout {
+  transform-box: fill-box;
+  transform-origin: bottom center;
+  transition: transform 460ms var(--ease-spring-seed), opacity 340ms ease;
+}
+
+.eco-sonar-wave {
+  animation: eco-sonar-ripple 1150ms cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes eco-sonar-ripple {
+  0% {
+    opacity: 0.85;
+    transform: scale(0.65);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(2.35);
+  }
+}
+
+.eco-pin-drop {
+  animation: eco-pin-drop-bounce 520ms var(--ease-spring-seed) both;
+}
+
+@keyframes eco-pin-drop-bounce {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, -18px, 0) scale(0.75);
+  }
+  70% {
+    opacity: 1;
+    transform: translate3d(0, 2px, 0) scale(1.06);
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+.eco-sentinel-fresh {
+  animation: eco-sentinel-slide-in 480ms var(--ease-canopy) both;
+}
+
+@keyframes eco-sentinel-slide-in {
+  from {
+    opacity: 0;
+    transform: translate3d(0, -12px, 0) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+/* --- 6.6 Gouvernance Sobriété : Onglet Inactif, Mode OLED & Reduced Motion --- */
+html[data-page-hidden="true"] *,
+html[data-page-hidden="true"] *::before,
+html[data-page-hidden="true"] *::after {
+  animation-play-state: paused !important;
+}
+
+html[data-oled-eco="true"] .eco-ambient-anim,
+.dark .eco-oled-pause {
+  animation-play-state: paused !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 120ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .eco-trail-self-draw {
+    stroke-dashoffset: 0 !important;
+    animation: none !important;
+  }
+
+  .eco-pass-3d-card {
+    transform: rotateY(var(--pass-flip-y, 0deg)) !important;
+    animation: none !important;
+  }
+}

@@ -25,6 +25,7 @@ import {
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { ActiveView, DaltonismMode } from '../../types/ecosystem';
+import { recordMotionOrigin, useAnimatedNumber } from '../../utils/ecoMotion';
 
 export const Navbar: React.FC = () => {
   const {
@@ -38,6 +39,7 @@ export const Navbar: React.FC = () => {
     colorDrawerOpen,
     setColorDrawerOpen,
     telemetry,
+    passes,
   } = useEcoPark();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -53,24 +55,35 @@ export const Navbar: React.FC = () => {
     { id: 'ranger', label: 'Supervision', icon: ShieldAlert },
   ];
 
-  // Occupancy metrics and dynamic color status
-  const occupancyPercent = Math.round(
-    (telemetry.currentOccupancy / telemetry.dailyCapacityMax) * 100
+  // Occupancy metrics and dynamic color status + smooth rolling counter
+  const animatedOccupancy = useAnimatedNumber(telemetry.currentOccupancy, 480, 0);
+  const occupancyPercent = Math.min(
+    100,
+    Math.max(0, Math.round((telemetry.currentOccupancy / telemetry.dailyCapacityMax) * 100))
   );
+  const activePassesCount = passes.filter((p) => p.status !== 'cancelled').length;
 
   let occupancyBadgeStyle = 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800';
+  let waveFillColor = '#52B788';
+  let wavePeriodSec = '4.2s';
   if (occupancyPercent >= 90) {
     occupancyBadgeStyle = 'bg-red-100 text-red-800 border-red-300 dark:bg-red-950/70 dark:text-red-300 dark:border-red-800';
+    waveFillColor = '#DC2626';
+    wavePeriodSec = '1.6s';
   } else if (occupancyPercent >= 70) {
     occupancyBadgeStyle = 'bg-amber-100 text-amber-800 border-amber-300 dark:bg-amber-950/70 dark:text-amber-300 dark:border-amber-800';
+    waveFillColor = '#D97706';
+    wavePeriodSec = '2.4s';
   }
 
-  const handleNavClick = (view: ActiveView) => {
+  const handleNavClick = (view: ActiveView, e?: React.MouseEvent<HTMLElement>) => {
+    if (e) recordMotionOrigin(e);
     setActiveView(view);
     setMobileMenuOpen(false);
   };
 
-  const cycleTheme = () => {
+  const cycleTheme = (e: React.MouseEvent<HTMLButtonElement>) => {
+    recordMotionOrigin(e);
     if (themeMode === 'auto') setThemeMode('light');
     else if (themeMode === 'light') setThemeMode('dark');
     else setThemeMode('auto');
@@ -84,7 +97,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-canvas)]/95 border-b border-[var(--border-default)] transition-colors duration-200">
+    <header className="eco-sticky-navbar sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-canvas)]/95 border-b border-[var(--border-default)] transition-colors duration-200">
       {/* Official Production Topbar: Yaoundé – Ahala Barrière */}
       <div className="bg-[#1B4332] text-[#E9F5ED] text-[11px] py-1.5 px-4 border-b border-[#2D6A4F]/60">
         <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
@@ -114,44 +127,50 @@ export const Navbar: React.FC = () => {
         <div className="flex items-center justify-between h-16 md:h-20 gap-2">
           {/* Official Brand Logo & Title */}
           <button
-            onClick={() => handleNavClick('accueil')}
-            className="flex items-center gap-3 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg p-1 cursor-pointer"
+            onClick={(e) => handleNavClick('accueil', e)}
+            className="flex items-center gap-2.5 text-left group shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg p-1 cursor-pointer"
             aria-label="ECOPARK CAMEROUN - Retour à l'accueil"
           >
             <img
               src="/images/ahala/cropped-LOGO-ECOPARK-Youtube.png"
               alt="Logo Officiel ECOPARK CAMEROUN"
-              className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover border-2 border-[var(--brand-primary)] shadow-sm group-hover:scale-105 transition-transform duration-200 bg-white"
+              className="w-10 h-10 md:w-11 md:h-11 shrink-0 rounded-full object-cover border-2 border-[var(--brand-primary)] shadow-sm group-hover:scale-105 transition-transform duration-200 bg-white"
             />
-            <div className="flex flex-col">
+            <div className="flex flex-col whitespace-nowrap">
               <span className="font-['Barlow_Semi_Condensed'] font-bold text-lg md:text-xl tracking-tight text-[var(--text-primary)] leading-none">
                 ECOPARK CAMEROUN
               </span>
-              <span className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold tracking-wide uppercase mt-0.5">
+              <span className="text-[10px] md:text-[11px] text-[var(--text-muted)] font-semibold tracking-wide uppercase mt-0.5">
                 Yaoundé – Ahala • Dès 500 FCFA
               </span>
             </div>
           </button>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-1" aria-label="Navigation principale">
+          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 shrink-0" aria-label="Navigation principale">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeView === item.id;
               return (
                 <button
                   key={item.id}
-                  onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-150 relative cursor-pointer ${
+                  data-motion-target={item.id === 'pass' ? 'nav-pass' : undefined}
+                  onClick={(e) => handleNavClick(item.id, e)}
+                  className={`flex items-center gap-1.5 px-2.5 2xl:px-3 py-2 rounded-lg text-xs 2xl:text-sm font-semibold whitespace-nowrap shrink-0 transition-all duration-150 relative cursor-pointer ${
                     isActive
                       ? 'text-[var(--brand-primary)] bg-[var(--bg-surface)] font-bold shadow-xs'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)]/60'
                   }`}
                 >
-                  <Icon className={`w-4 h-4 ${isActive ? 'text-[var(--brand-primary)]' : 'text-[var(--text-muted)]'}`} />
+                  <Icon className={`w-3.5 h-3.5 2xl:w-4 2xl:h-4 shrink-0 ${isActive ? 'text-[var(--brand-primary)]' : 'text-[var(--text-muted)]'}`} />
                   <span>{item.label}</span>
+                  {item.id === 'pass' && activePassesCount > 0 && (
+                    <span className="ml-0.5 px-1.5 py-0.2 rounded-full bg-[var(--brand-primary)]/15 text-[var(--brand-primary)] font-mono text-[10px] font-bold">
+                      {activePassesCount}
+                    </span>
+                  )}
                   {isActive && (
-                    <span className="absolute bottom-0 left-2 right-2 h-0.5 bg-[var(--brand-primary)] rounded-full" />
+                    <span className="vt-nav-pill absolute bottom-0 left-2 right-2 h-0.5 bg-[var(--brand-primary)] rounded-full" />
                   )}
                 </button>
               );
@@ -159,26 +178,73 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Telemetry Badges & Quick Controls */}
-          <div className="flex items-center gap-2 sm:gap-2.5">
-            {/* Live Occupancy Gauge Badge */}
+          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+            {/* Live Occupancy Liquid Gauge Badge (« Respiration écologique ») */}
             <div
-              className={`hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-mono font-medium shadow-2xs ${occupancyBadgeStyle}`}
-              title="Affluence instantanée du parc à Yaoundé-Ahala"
+              data-motion-target="nav-quota"
+              className={`hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-mono font-medium whitespace-nowrap shrink-0 shadow-2xs transition-colors ${occupancyBadgeStyle}`}
+              title={`Respiration écologique d'Ahala : ${telemetry.currentOccupancy} / ${telemetry.dailyCapacityMax} visiteurs (${occupancyPercent}%)`}
             >
-              <Users className="w-3.5 h-3.5" />
+              {/* Miniature Liquid Wave Vessel with Daltonism-Safe Threshold Patterns */}
+              <svg
+                width="16"
+                height="16"
+                viewBox="0 0 20 20"
+                className="shrink-0 rounded-full ring-1 ring-current/30 overflow-hidden bg-black/10 dark:bg-black/40"
+                aria-hidden="true"
+              >
+                <defs>
+                  <clipPath id="nav-quota-flask">
+                    <circle cx="10" cy="10" r="9.5" />
+                  </clipPath>
+                  <pattern id="nav-quota-stripes" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+                    <line x1="0" y1="0" x2="0" y2="4" stroke="#FFFFFF" strokeWidth="1.2" strokeOpacity="0.45" />
+                  </pattern>
+                  <pattern id="nav-quota-hatch" width="4" height="4" patternUnits="userSpaceOnUse">
+                    <path d="M0,0 L4,4 M4,0 L0,4" stroke="#FFFFFF" strokeWidth="0.9" strokeOpacity="0.55" />
+                  </pattern>
+                </defs>
+                <g clipPath="url(#nav-quota-flask)">
+                  <g
+                    style={{
+                      transform: `translate3d(0, ${Math.max(1, 20 - (occupancyPercent / 100) * 19)}px, 0)`,
+                      transition: 'transform 520ms cubic-bezier(0.22, 1, 0.36, 1)',
+                    }}
+                  >
+                    <g
+                      className="eco-liquid-wave-track eco-ambient-anim"
+                      style={{ '--wave-period': wavePeriodSec } as React.CSSProperties}
+                    >
+                      <path
+                        d="M 0,2 Q 5,0 10,2 T 20,2 T 30,2 T 40,2 L 40,24 L 0,24 Z"
+                        fill={waveFillColor}
+                      />
+                    </g>
+                    {occupancyPercent >= 70 && occupancyPercent < 90 && (
+                      <rect x="0" y="1" width="20" height="22" fill="url(#nav-quota-stripes)" />
+                    )}
+                    {occupancyPercent >= 90 && (
+                      <rect x="0" y="1" width="20" height="22" fill="url(#nav-quota-hatch)" />
+                    )}
+                  </g>
+                </g>
+                <Users className="hidden" />
+              </svg>
               <span>
-                {telemetry.currentOccupancy}/{telemetry.dailyCapacityMax}{' '}
-                <span className="opacity-80">({occupancyPercent}%)</span>
+                {Math.round(animatedOccupancy)}/{telemetry.dailyCapacityMax}
+                <span className="opacity-80 hidden 2xl:inline"> ({occupancyPercent}%)</span>
               </span>
             </div>
 
             {/* Weather & Temperature Badge */}
             <div
-              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-900 dark:border-sky-800 dark:bg-sky-950/70 dark:text-sky-200 text-xs font-mono font-medium shadow-2xs"
+              className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-900 dark:border-sky-800 dark:bg-sky-950/70 dark:text-sky-200 text-xs font-mono font-medium whitespace-nowrap shrink-0 shadow-2xs"
               title="Météo locale et qualité de l'air à Yaoundé-Ahala"
             >
-              <Wind className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-              <span>{telemetry.temperatureC}°C · Ahala</span>
+              <Wind className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
+              <span>
+                {telemetry.temperatureC}°C<span className="hidden 2xl:inline"> · Ahala</span>
+              </span>
             </div>
 
             {/* Quick Theme Switcher */}
@@ -245,12 +311,14 @@ export const Navbar: React.FC = () => {
             {/* Atelier Chromatique High-Visibility Button */}
             <button
               onClick={() => setColorDrawerOpen(!colorDrawerOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-secondary)] text-xs font-semibold shadow-xs transition-transform active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-lg bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-secondary)] text-xs font-semibold whitespace-nowrap shrink-0 shadow-xs transition-transform active:scale-95 cursor-pointer"
               title="Ouvrir le laboratoire chromatique Adobe Color & testeur de contraste WCAG"
               aria-label="Ouvrir l'Atelier Chromatique"
             >
-              <Palette className="w-4 h-4" />
-              <span className="hidden sm:inline">Atelier Couleurs</span>
+              <Palette className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline">
+                Atelier<span className="hidden 2xl:inline"> Couleurs</span>
+              </span>
             </button>
 
             {/* Mobile Hamburger Toggle Button */}
@@ -281,7 +349,7 @@ export const Navbar: React.FC = () => {
               return (
                 <button
                   key={item.id}
-                  onClick={() => handleNavClick(item.id)}
+                  onClick={(e) => handleNavClick(item.id, e)}
                   className={`flex items-center gap-3 w-full px-3 py-2.5 rounded-lg text-sm font-medium transition-colors ${
                     isActive
                       ? 'bg-[var(--brand-primary)] text-white font-semibold'

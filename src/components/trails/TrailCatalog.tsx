@@ -30,7 +30,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
   onSelectTrailOnMap,
   className = '',
 }) => {
-  const { trails, selectedTrailId, setSelectedTrailId, setActiveView } = useEcoPark();
+  const { trails, reports, selectedTrailId, setSelectedTrailId, setActiveView } = useEcoPark();
 
   // Filter states
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -115,7 +115,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
         return (
           <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300 dark:border-red-800">
             <XCircle className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
-            Fermé (Nidification)
+            Fermé / Accès Réservé
           </span>
         );
     }
@@ -243,19 +243,19 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
         {/* Row 2: Biome Selector, Difficulty Chips & Status Filter */}
         <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[var(--border-default)]/60 text-xs">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="font-mono text-[var(--text-muted)]">Biome :</span>
+            <span className="font-mono text-[var(--text-muted)]">Secteur :</span>
             <select
               value={selectedBiome}
               onChange={(e) => setSelectedBiome(e.target.value)}
               className="px-3 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
             >
-              <option value="all">Tous les biomes</option>
-              <option value="canopee">Canopée Primaire</option>
-              <option value="cretes">Crêtes & Falaises</option>
-              <option value="marais">Zone Humide & Marais</option>
-              <option value="sous_bois">Sous-bois & Cascades</option>
-              <option value="geologie">Éboulis Géologiques</option>
-              <option value="vallon">Vallon Bocager</option>
+              <option value="all">Tous les secteurs</option>
+              <option value="canopee">Jardin Zoologique &amp; Canopée</option>
+              <option value="cretes">Cités Hôtelières &amp; Salle 500 pl.</option>
+              <option value="marais">Lac, Pirogues &amp; Piscine</option>
+              <option value="sous_bois">Étangs Piscicoles &amp; CFP MINEFOP</option>
+              <option value="geologie">Manège Équestre &amp; Musée Culturel</option>
+              <option value="vallon">Grande Boucle Royale (5 Pôles)</option>
             </select>
 
             <span className="font-mono text-[var(--text-muted)] ml-2">Difficulté :</span>
@@ -291,7 +291,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
               <option value="all">Tous les états</option>
               <option value="fluide">Fluide / Ouvert</option>
               <option value="balise">Balisé / Prudence</option>
-              <option value="ferme">Fermé (Nidification)</option>
+              <option value="ferme">Fermé / Accès Réservé</option>
             </select>
           </div>
 
@@ -331,6 +331,9 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredTrails.map((trail) => {
             const isSelected = selectedTrailId === trail.id;
+            const activeTrailReportsCount = reports.filter(
+              (r) => r.trailId === trail.id && r.status !== 'rejete' && r.status !== 'resolu'
+            ).length;
 
             return (
               <div
@@ -344,8 +347,23 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
                 {/* Header: Status badge & Distance */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between gap-2">
-                    {renderStatusBadge(trail.status)}
-                    <span className="text-xs font-mono font-bold text-[var(--text-primary)]">
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {renderStatusBadge(trail.status)}
+                      {activeTrailReportsCount > 0 && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedTrailId(trail.id);
+                            setActiveView('pass');
+                          }}
+                          className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 cursor-pointer"
+                          title="Consulter les observations Sentinelle actives sur ce secteur"
+                        >
+                          {activeTrailReportsCount} obs. terrain
+                        </button>
+                      )}
+                    </div>
+                    <span className="text-xs font-mono font-bold text-[var(--text-primary)] shrink-0">
                       {trail.lengthKm} km
                     </span>
                   </div>
@@ -429,7 +447,10 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
 
                   <button
                     type="button"
-                    onClick={() => setActiveView('billetterie')}
+                    onClick={() => {
+                      setSelectedTrailId(trail.id);
+                      setActiveView('billetterie');
+                    }}
                     disabled={trail.status === 'ferme'}
                     className={`py-2 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       trail.status === 'ferme'

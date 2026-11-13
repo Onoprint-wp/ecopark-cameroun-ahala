@@ -3,7 +3,7 @@
 // Feature F19 — 8 Keystone Species with UICN Badges, Seasonal Guides & Trail Links
 // ============================================================================
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import {
   SpeciesCategory,
@@ -23,10 +23,33 @@ import {
   Flower2,
   Droplets,
   ArrowRight,
+  X,
+  Send,
 } from 'lucide-react';
 
 export const SpeciesAtlas: React.FC = () => {
-  const { species, trails, setSelectedTrailId, setActiveView } = useEcoPark();
+  const {
+    species,
+    trails,
+    reports,
+    selectedSpeciesId,
+    setSelectedSpeciesId,
+    setSelectedTrailId,
+    setActiveView,
+  } = useEcoPark();
+
+  const speciesCardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  useEffect(() => {
+    if (!selectedSpeciesId) return;
+    const timer = window.setTimeout(() => {
+      const targetEl = speciesCardRefs.current[selectedSpeciesId];
+      if (targetEl) {
+        targetEl.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    }, 120);
+    return () => window.clearTimeout(timer);
+  }, [selectedSpeciesId]);
 
   // Search & category filters
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -247,12 +270,33 @@ export const SpeciesAtlas: React.FC = () => {
           </div>
         </div>
 
+        {/* Focused Species Banner when navigated from Home */}
+        {selectedSpeciesId && species.some((s) => s.id === selectedSpeciesId) && (
+          <div className="p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex flex-wrap items-center justify-between gap-3 text-xs">
+            <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200 font-semibold">
+              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+              <span>
+                Fiche sélectionnée :{' '}
+                <strong>{species.find((s) => s.id === selectedSpeciesId)?.commonName}</strong>
+              </span>
+            </div>
+            <button
+              type="button"
+              onClick={() => setSelectedSpeciesId(null)}
+              className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer"
+            >
+              <X className="w-3.5 h-3.5" />
+              <span>Désélectionner</span>
+            </button>
+          </div>
+        )}
+
         {/* Species Count Summary */}
         <div className="flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
           <span>
             Affichage de <strong>{filteredSpecies.length}</strong> espèce{filteredSpecies.length > 1 ? 's' : ''} sur {species.length}
           </span>
-          <span className="italic font-serif">Illustrations botaniques & guides éco-gardes</span>
+          <span className="italic font-serif">Synchronisé avec les observations Sentinelle terrain</span>
         </div>
 
         {/* Species Grid */}
@@ -260,11 +304,29 @@ export const SpeciesAtlas: React.FC = () => {
           {filteredSpecies.map((sp) => {
             // Find attached trails
             const attachedTrails = trails.filter((t) => sp.trailIds.includes(t.id));
+            const isHighlighted = selectedSpeciesId === sp.id;
+            const sentinelBonusSightings = reports.filter(
+              (r) =>
+                r.status !== 'rejete' &&
+                sp.trailIds.includes(r.trailId) &&
+                (sp.category === 'flore'
+                  ? r.type === 'flore_remarquable'
+                  : r.type === 'faune_rare')
+            ).length;
+            const liveSightingsCount = sp.sightingsCount + sentinelBonusSightings;
 
             return (
               <div
                 key={sp.id}
-                className="p-6 sm:p-7 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between space-y-5"
+                ref={(el) => {
+                  speciesCardRefs.current[sp.id] = el;
+                }}
+                onClick={() => setSelectedSpeciesId(isHighlighted ? null : sp.id)}
+                className={`p-6 sm:p-7 rounded-2xl bg-[var(--bg-surface)] border shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between space-y-5 cursor-pointer ${
+                  isHighlighted
+                    ? 'border-[var(--brand-primary)] ring-2 ring-[var(--brand-primary)]/30 shadow-md'
+                    : 'border-[var(--border-default)]'
+                }`}
               >
                 {/* Header: Common Name, Scientific Name & IUCN Badge */}
                 <div className="space-y-3">
@@ -301,7 +363,7 @@ export const SpeciesAtlas: React.FC = () => {
                     <div className="shrink-0">{renderIucnBadge(sp.iucnStatus)}</div>
                   </div>
 
-                  {/* Seasonal Observation & Best Time Badges */}
+                  {/* Seasonal Observation, Best Time & Live Sentinel Sightings Badges */}
                   <div className="flex flex-wrap items-center gap-2 pt-1">
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[11px] font-mono text-[var(--text-primary)]">
                       <Calendar className="w-3 h-3 text-[var(--brand-primary)]" />
@@ -311,6 +373,14 @@ export const SpeciesAtlas: React.FC = () => {
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[11px] font-mono text-[var(--text-muted)]">
                       <Moon className="w-3 h-3 text-amber-500" />
                       <span>{sp.bestTime}</span>
+                    </div>
+
+                    <div
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-mono font-semibold text-emerald-800 dark:text-emerald-300"
+                      title="Cumul des relevés naturalistes et signalements Sentinelle validés sur ses circuits"
+                    >
+                      <Eye className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                      <span>{liveSightingsCount} obs. recensées</span>
                     </div>
                   </div>
 
@@ -366,11 +436,30 @@ export const SpeciesAtlas: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Attached Trails Links */}
-                <div className="pt-4 border-t border-[var(--border-default)]/60 space-y-2">
-                  <span className="text-[11px] font-mono font-semibold text-[var(--text-muted)] uppercase tracking-wider block">
-                    Sentiers propices à l observation :
-                  </span>
+                {/* Attached Trails Links & Sentinel Reporting Shortcut */}
+                <div
+                  className="pt-4 border-t border-[var(--border-default)]/60 space-y-2"
+                  onClick={(e) => e.stopPropagation()}
+                >
+                  <div className="flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-mono font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                      Sentiers propices à l observation :
+                    </span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        if (sp.trailIds[0]) {
+                          setSelectedTrailId(sp.trailIds[0]);
+                        }
+                        setActiveView('pass');
+                      }}
+                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
+                      title="Transmettre une observation terrain via Sentinelle Nature"
+                    >
+                      <Send className="w-3 h-3" />
+                      <span>Signaler une observation</span>
+                    </button>
+                  </div>
 
                   <div className="flex flex-wrap gap-2">
                     {attachedTrails.map((trail) => (

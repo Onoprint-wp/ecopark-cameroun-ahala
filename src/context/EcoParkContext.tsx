@@ -9,6 +9,7 @@ import React, {
   useEffect,
   useCallback,
   useMemo,
+  useRef,
   ReactNode,
 } from 'react';
 import {
@@ -32,6 +33,8 @@ import {
   INITIAL_REPORTS,
 } from '../data/initialParkData';
 import { useTheme } from './ThemeContext';
+import { runEcoViewTransition, emitTrailStatusWave } from '../utils/ecoMotion';
+import { resolveViewFromPath, VIEW_PATH_MAP } from '../utils/ecoRouting';
 
 // Storage keys under strict eco_park_ahala_v2_* namespace
 export const STORAGE_KEYS = {
@@ -95,33 +98,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     setHighContrastOutdoor,
   } = useTheme();
 
-  // Resolve initial view from production URL pathname if present
-  const resolveViewFromPath = (pathname: string): ActiveView | null => {
-    const clean = pathname.replace(/\/+$/, '').toLowerCase();
-    if (clean === '/activites' || clean === '/fiche-activite') return 'sentiers';
-    if (clean === '/reserver' || clean === '/rdv' || clean === '/rendez-vous') return 'billetterie';
-    if (clean === '/mon-espace' || clean === '/mes-reservations') return 'pass';
-    if (clean === '/exploitation' || clean === '/guichet' || clean === '/direction' || clean === '/admin') return 'ranger';
-    if (
-      clean === '/hebergements' ||
-      clean === '/hotellerie' ||
-      clean === '/sejour-restaurant' ||
-      clean === '/restaurant' ||
-      clean === '/tarifs' ||
-      clean === '/nos-tarifs' ||
-      clean === '/pack-entreprise' ||
-      clean === '/pack-ecole' ||
-      clean === '/groupes-evenements' ||
-      clean === '/formation' ||
-      clean === '/formations' ||
-      clean === '/decouvrir'
-    ) {
-      return 'accueil';
-    }
-    return null;
-  };
-
-  // Navigation state
+  // Navigation state (resolved from URL pathname via shared ecoRouting engine)
   const [activeView, setActiveViewState] = useState<ActiveView>(() => {
     if (typeof window !== 'undefined') {
       const fromUrl = resolveViewFromPath(window.location.pathname);
@@ -168,29 +145,65 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     safeLocalStorage.getItem<CitizenReport[]>(STORAGE_KEYS.REPORTS, INITIAL_REPORTS)
   );
 
+  // Live synchronous refs so cross-domain mutators never read stale closures
+  const trailsRef = useRef<Trail[]>(trails);
+  trailsRef.current = trails;
+  const passesRef = useRef<EcoPass[]>(passes);
+  passesRef.current = passes;
+
+  // Reconcile global on-site occupancy = open trails headcount + today's net booked pass delta
+  const reconcileTodayOccupancy = useCallback(
+    (trailsList: Trail[], passesList: EcoPass[], dailyMax: number): number => {
+      const todayIso = new Date().toISOString().split('T')[0];
+      const openTrailsOccupancy = trailsList
+        .filter((t) => t.status !== 'ferme')
+        .reduce((sum, t) => sum + t.currentOccupancy, 0);
+
+      const seedTodayGuests = INITIAL_PASSES.filter(
+        (p) => p.visitDate === todayIso && p.status !== 'cancelled'
+      ).reduce((sum, p) => sum + p.guestCount, 0);
+
+      const activeTodayGuests = passesList
+        .filter((p) => p.visitDate === todayIso && p.status !== 'cancelled')
+        .reduce((sum, p) => sum + p.guestCount, 0);
+
+      const todayNetDelta = activeTodayGuests - seedTodayGuests;
+      return Math.max(0, Math.min(dailyMax, openTrailsOccupancy + todayNetDelta));
+    },
+    []
+  );
+
+  // Browser Back / Forward URL history synchronization
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const handlePopState = () => {
+      const resolved = resolveViewFromPath(window.location.pathname) || 'accueil';
+      safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, resolved);
+      setActiveViewState(resolved);
+    };
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
+  }, []);
+
   // --------------------------------------------------------------------------
   // Mutators with localStorage persistence
   // --------------------------------------------------------------------------
 
   const setActiveView = useCallback((view: ActiveView) => {
-    setActiveViewState(view);
     safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, view);
     if (typeof window !== 'undefined') {
-      const viewPathMap: Record<ActiveView, string> = {
-        accueil: '/',
-        sentiers: '/activites',
-        biodiversite: '/decouvrir',
-        billetterie: '/reserver',
-        pass: '/mon-espace',
-        ranger: '/exploitation',
-        color_atlas: '/',
-      };
-      const targetPath = viewPathMap[view] || '/';
+      const targetPath = VIEW_PATH_MAP[view] || '/';
       if (window.location.pathname !== targetPath) {
-        window.history.replaceState(null, '', targetPath);
+        window.history.pushState({ ecoView: view }, '', targetPath);
       }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
+
+    runEcoViewTransition('lisiere', () => {
+      setActiveViewState(view);
+      if (typeof window !== 'undefined') {
+        window.scrollTo({ top: 0, behavior: 'instant' as ScrollBehavior });
+      }
+    });
   }, []);
 
   const setColorDrawerOpen = useCallback((open: boolean) => {
@@ -211,38 +224,52 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
   const updateTrailStatus = useCallback(
     (trailId: string, status: TrailStatus, closureReason?: string) => {
-      setTrailsState((prevTrails) => {
-        const nextTrails = prevTrails.map((trail) => {
-          if (trail.id !== trailId && trail.slug !== trailId) return trail;
-          const updatedOccupancy =
-            status === 'ferme' ? 0 : trail.status === 'ferme' ? Math.floor(trail.maxCapacity * 0.4) : trail.currentOccupancy;
-          return {
-            ...trail,
-            status,
-            closureReason: status === 'ferme' ? closureReason || 'Fermeture préventive temporaire' : undefined,
-            currentOccupancy: updatedOccupancy,
-          };
-        });
-        safeLocalStorage.setItem(STORAGE_KEYS.TRAILS, nextTrails);
+      emitTrailStatusWave(trailId, status);
+      const nextTrails = trailsRef.current.map((trail) => {
+        if (trail.id !== trailId && trail.slug !== trailId) return trail;
+        const updatedOccupancy =
+          status === 'ferme'
+            ? 0
+            : trail.status === 'ferme'
+            ? Math.floor(trail.maxCapacity * 0.4)
+            : trail.currentOccupancy;
 
-        // Recalculate global occupancy based on open trails and baseline bookings
-        const openTrailsOccupancy = nextTrails
-          .filter((t) => t.status !== 'ferme')
-          .reduce((sum, t) => sum + t.currentOccupancy, 0);
+        const nextNotice =
+          status === 'fluide'
+            ? undefined
+            : closureReason !== undefined
+            ? closureReason
+            : status === 'ferme'
+            ? trail.closureReason || 'Fermeture préventive temporaire'
+            : trail.closureReason || 'Circulation encadrée par les Éco-Gardes';
 
-        setTelemetryState((prevTelem) => {
-          const updatedTelem: ParkTelemetry = {
-            ...prevTelem,
-            currentOccupancy: Math.min(prevTelem.dailyCapacityMax, openTrailsOccupancy),
-          };
-          safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updatedTelem);
-          return updatedTelem;
-        });
+        return {
+          ...trail,
+          status,
+          closureReason: nextNotice,
+          currentOccupancy: updatedOccupancy,
+        };
+      });
 
-        return nextTrails;
+      trailsRef.current = nextTrails;
+      safeLocalStorage.setItem(STORAGE_KEYS.TRAILS, nextTrails);
+      setTrailsState(nextTrails);
+
+      // Reconcile global occupancy without clobbering today's active pass bookings
+      setTelemetryState((prevTelem) => {
+        const updatedTelem: ParkTelemetry = {
+          ...prevTelem,
+          currentOccupancy: reconcileTodayOccupancy(
+            nextTrails,
+            passesRef.current,
+            prevTelem.dailyCapacityMax
+          ),
+        };
+        safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updatedTelem);
+        return updatedTelem;
       });
     },
-    []
+    [reconcileTodayOccupancy]
   );
 
   const setSelectedTrailId = useCallback((trailId: string | null) => {
@@ -271,22 +298,25 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
         id: newId,
         createdAt: nowIso,
         status: 'confirmed',
-        qrPayload: `ECOPARK-AHALA:PASS:${newId}:DATE=${input.visitDate}:SLOT=${input.timeSlot}:GUESTS=${input.guestCount}:MODE=${input.mobilityMode}`,
+        qrPayload: `ECOPARK-AHALA:PASS:${newId}:DATE=${input.visitDate}:SLOT=${input.timeSlot}:GUESTS=${input.guestCount}:FORMULE=${input.experienceType.toUpperCase()}:MODE=${input.mobilityMode}`,
       };
 
-      setPassesState((prev) => {
-        const next = [newPass, ...prev];
-        safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
-        return next;
-      });
+      const nextPasses = [newPass, ...passesRef.current];
+      passesRef.current = nextPasses;
+      safeLocalStorage.setItem(STORAGE_KEYS.PASSES, nextPasses);
+      setPassesState(nextPasses);
 
       setActivePassId(newId);
 
-      // Increment park telemetry occupancy and avoided CO2
+      // Reconcile today's park occupancy (only increments if visitDate === today) & add avoided CO2
       setTelemetryState((prev) => {
         const next: ParkTelemetry = {
           ...prev,
-          currentOccupancy: Math.min(prev.dailyCapacityMax, prev.currentOccupancy + input.guestCount),
+          currentOccupancy: reconcileTodayOccupancy(
+            trailsRef.current,
+            nextPasses,
+            prev.dailyCapacityMax
+          ),
           totalCo2AvoidedKg: Number((prev.totalCo2AvoidedKg + input.co2AvoidedKg).toFixed(1)),
         };
         safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, next);
@@ -295,47 +325,60 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
       return newPass;
     },
-    [setActivePassId]
+    [reconcileTodayOccupancy, setActivePassId]
   );
 
-  const cancelPass = useCallback((passId: string) => {
-    setPassesState((prev) => {
-      let releasedGuests = 0;
-      const next = prev.map((p) => {
+  const cancelPass = useCallback(
+    (passId: string) => {
+      let wasCancelled = false;
+      let releasedCo2Kg = 0;
+
+      const nextPasses = passesRef.current.map((p) => {
         if (p.id === passId && p.status !== 'cancelled') {
-          releasedGuests = p.guestCount;
+          wasCancelled = true;
+          releasedCo2Kg = p.co2AvoidedKg;
           return { ...p, status: 'cancelled' as const };
         }
         return p;
       });
-      safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
 
-      if (releasedGuests > 0) {
-        setTelemetryState((prevTelem) => {
-          const updated: ParkTelemetry = {
-            ...prevTelem,
-            currentOccupancy: Math.max(0, prevTelem.currentOccupancy - releasedGuests),
-          };
-          safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updated);
-          return updated;
-        });
-      }
-      return next;
-    });
-  }, []);
+      if (!wasCancelled) return;
+
+      passesRef.current = nextPasses;
+      safeLocalStorage.setItem(STORAGE_KEYS.PASSES, nextPasses);
+      setPassesState(nextPasses);
+
+      setTelemetryState((prevTelem) => {
+        const updated: ParkTelemetry = {
+          ...prevTelem,
+          currentOccupancy: reconcileTodayOccupancy(
+            trailsRef.current,
+            nextPasses,
+            prevTelem.dailyCapacityMax
+          ),
+          totalCo2AvoidedKg: Math.max(
+            0,
+            Number((prevTelem.totalCo2AvoidedKg - releasedCo2Kg).toFixed(1))
+          ),
+        };
+        safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updated);
+        return updated;
+      });
+    },
+    [reconcileTodayOccupancy]
+  );
 
   const checkInPass = useCallback((passId: string) => {
-    setPassesState((prev) => {
-      const nowIso = new Date().toISOString();
-      const next = prev.map((p) => {
-        if (p.id === passId) {
-          return { ...p, status: 'checked_in' as const, checkInTimestamp: nowIso };
-        }
-        return p;
-      });
-      safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
-      return next;
+    const nowIso = new Date().toISOString();
+    const next = passesRef.current.map((p) => {
+      if (p.id === passId && p.status !== 'cancelled') {
+        return { ...p, status: 'checked_in' as const, checkInTimestamp: nowIso };
+      }
+      return p;
     });
+    passesRef.current = next;
+    safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
+    setPassesState(next);
   }, []);
 
   const submitCitizenReport = useCallback((input: ReportInput): CitizenReport => {
@@ -395,6 +438,9 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
   }, []);
 
   const resetToSeedData = useCallback(() => {
+    trailsRef.current = INITIAL_TRAILS;
+    passesRef.current = INITIAL_PASSES;
+
     safeLocalStorage.setItem(STORAGE_KEYS.TRAILS, INITIAL_TRAILS);
     safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, INITIAL_TELEMETRY);
     safeLocalStorage.setItem(STORAGE_KEYS.PASSES, INITIAL_PASSES);

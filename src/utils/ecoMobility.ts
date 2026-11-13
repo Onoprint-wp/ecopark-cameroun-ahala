@@ -3,7 +3,7 @@
 // (src/utils/ecoMobility.ts)
 // ============================================================================
 
-import { ExperienceType, MobilityMode } from '../types/ecosystem';
+import type { ExperienceType, MobilityMode } from '../types/ecosystem.ts';
 
 export interface MobilityOption {
   id: MobilityMode;
@@ -231,6 +231,26 @@ export function calculateEcoMobilityPricing(
     mobilityInfo,
     experienceInfo,
   };
+}
+
+export function getExperienceInfo(experienceType: ExperienceType): ExperiencePricingDefinition {
+  return EXPERIENCES_CATALOG.find((exp) => exp.id === experienceType) || EXPERIENCES_CATALOG[0];
+}
+
+export function resolveExperienceForTrail(trailId: string | null | undefined): ExperienceType {
+  switch (trailId) {
+    case 'marais':
+      return 'pack_mobilite';
+    case 'roches-moussues':
+      return 'eco_guide';
+    case 'piste-eco-gardes':
+      return 'atelier_botanique';
+    case 'canopee':
+    case 'vallee-fougeres':
+    case 'cretes-cedres':
+    default:
+      return 'sentiers';
+  }
 }
 
 export function formatEur(amount: number): string {

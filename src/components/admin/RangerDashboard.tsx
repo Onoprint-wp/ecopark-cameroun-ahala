@@ -27,6 +27,9 @@ import {
   CloudRain,
   Radio,
   Sparkles,
+  QrCode,
+  Ticket,
+  Users,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import {
@@ -35,6 +38,11 @@ import {
   ReportSeverity,
   CitizenReportType,
 } from '../../types/ecosystem';
+import {
+  MOBILITY_OPTIONS,
+  getExperienceInfo,
+  formatEur,
+} from '../../utils/ecoMobility';
 import { ImmersiveSection } from '../layout/ImmersiveSection';
 
 export const RangerDashboard: React.FC = () => {
@@ -43,9 +51,14 @@ export const RangerDashboard: React.FC = () => {
     setDailyCapacity,
     trails,
     updateTrailStatus,
+    setSelectedTrailId,
+    setActiveView,
     reports,
     updateReportStatus,
     passes,
+    checkInPass,
+    cancelPass,
+    setActivePassId,
     resetToSeedData,
   } = useEcoPark();
 
@@ -227,12 +240,14 @@ export const RangerDashboard: React.FC = () => {
       voiture_solo: 0,
     };
 
-    // Aggregate from booked passes
-    passes.forEach((p) => {
-      if (counts[p.mobilityMode] !== undefined) {
-        counts[p.mobilityMode] += p.guestCount;
-      }
-    });
+    // Aggregate from active (non-cancelled) booked passes
+    passes
+      .filter((p) => p.status !== 'cancelled')
+      .forEach((p) => {
+        if (counts[p.mobilityMode] !== undefined) {
+          counts[p.mobilityMode] += p.guestCount;
+        }
+      });
 
     // Add baseline realistic distribution if passes are few
     counts.train += 340;
@@ -243,12 +258,15 @@ export const RangerDashboard: React.FC = () => {
 
     const total = Object.values(counts).reduce((a, b) => a + b, 0);
 
+    const resolveShortLabel = (modeId: string, fallback: string) =>
+      MOBILITY_OPTIONS.find((opt) => opt.id === modeId)?.shortLabel || fallback;
+
     const MODES = [
-      { id: 'train', label: 'Train express', color: '#2D6A4F', count: counts.train },
-      { id: 'navette_electrique', label: 'Navette électrique', color: '#52B788', count: counts.navette_electrique },
-      { id: 'velo', label: 'Vélo & VAE', color: '#D4A373', count: counts.velo },
-      { id: 'covoiturage', label: 'Covoiturage', color: '#E76F51', count: counts.covoiturage },
-      { id: 'voiture_solo', label: 'Voiture solo', color: '#46534B', count: counts.voiture_solo },
+      { id: 'train', label: resolveShortLabel('train', 'Orange Money / MTN MoMo'), color: '#2D6A4F', count: counts.train },
+      { id: 'navette_electrique', label: resolveShortLabel('navette_electrique', 'Navette Climatisée'), color: '#52B788', count: counts.navette_electrique },
+      { id: 'velo', label: resolveShortLabel('velo', 'Groupe 20+ (-30%)'), color: '#D4A373', count: counts.velo },
+      { id: 'covoiturage', label: resolveShortLabel('covoiturage', 'Parking Gratuit RN3'), color: '#E76F51', count: counts.covoiturage },
+      { id: 'voiture_solo', label: resolveShortLabel('voiture_solo', 'Espèces au Guichet'), color: '#46534B', count: counts.voiture_solo },
     ];
 
     let currentAngle = 0;
@@ -831,12 +849,26 @@ export const RangerDashboard: React.FC = () => {
                       </div>
                     </div>
 
-                    {/* Closure Reason Banner if closed */}
-                    {isClosed && trail.closureReason && (
-                      <div className="p-3 rounded-xl bg-red-100/80 dark:bg-red-900/40 border border-red-300 dark:border-red-800 text-xs text-red-900 dark:text-red-200 flex items-start gap-2">
-                        <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+                    {/* Operational Notice Banner if closed or balisé */}
+                    {trail.closureReason && (
+                      <div
+                        className={`p-3 rounded-xl border text-xs flex items-start gap-2 ${
+                          isClosed
+                            ? 'bg-red-100/80 dark:bg-red-900/40 border-red-300 dark:border-red-800 text-red-900 dark:text-red-200'
+                            : 'bg-amber-100/70 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200'
+                        }`}
+                      >
+                        <AlertTriangle
+                          className={`w-4 h-4 shrink-0 mt-0.5 ${
+                            isClosed
+                              ? 'text-red-600 dark:text-red-400'
+                              : 'text-amber-600 dark:text-amber-400'
+                          }`}
+                        />
                         <div>
-                          <strong className="font-semibold">Motif de fermeture :</strong>{' '}
+                          <strong className="font-semibold">
+                            {isClosed ? 'Motif de fermeture :' : 'Consigne terrain :'}
+                          </strong>{' '}
                           {trail.closureReason}
                         </div>
                       </div>
@@ -845,8 +877,18 @@ export const RangerDashboard: React.FC = () => {
 
                   {/* Dynamic Action Buttons */}
                   <div className="pt-3 border-t border-[var(--border-default)]/60 space-y-2">
-                    <div className="text-[11px] font-semibold text-[var(--text-muted)] uppercase">
-                      Changer l état opérationnel :
+                    <div className="flex items-center justify-between text-[11px] font-semibold text-[var(--text-muted)] uppercase">
+                      <span>Changer l état opérationnel :</span>
+                      <button
+                        type="button"
+                        onClick={() => {
+                          setSelectedTrailId(trail.id);
+                          setActiveView('sentiers');
+                        }}
+                        className="text-[var(--brand-primary)] hover:underline font-mono normal-case cursor-pointer"
+                      >
+                        Carte →
+                      </button>
                     </div>
 
                     <div className="grid grid-cols-3 gap-1.5 text-xs">
@@ -882,6 +924,147 @@ export const RangerDashboard: React.FC = () => {
                       >
                         Fermer
                       </button>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </section>
+
+        {/* ================================================================= */}
+        {/* SECTION 3BIS: GUICHET PASS QR CONTROL & LIVE CHECK-IN SYNC         */}
+        {/* ================================================================= */}
+        <section aria-labelledby="guichet-pass-control-title" className="space-y-4">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--brand-primary)]">
+                <Ticket className="w-4 h-4 text-[var(--brand-primary)]" />
+                <span>Guichet Central RN3 &amp; Portiques QR</span>
+              </div>
+              <h2
+                id="guichet-pass-control-title"
+                className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+              >
+                Contrôle en Direct des Éco-Pass &amp; Validation Check-In
+              </h2>
+              <p className="text-xs text-[var(--text-muted)] mt-1">
+                Synchronisé en temps réel avec la Billetterie et l&apos;espace « Mon Pass QR » des visiteurs
+              </p>
+            </div>
+
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
+              <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 font-bold">
+                {passes.filter((p) => p.status === 'confirmed').length} à scanner
+              </span>
+              <span className="px-3 py-1.5 rounded-xl bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-800 font-bold">
+                {passes.filter((p) => p.status === 'checked_in').length} entrés
+              </span>
+              <span className="px-3 py-1.5 rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 font-bold">
+                {passes.filter((p) => p.status === 'cancelled').length} annulés
+              </span>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {passes.map((pass) => {
+              const expInfo = getExperienceInfo(pass.experienceType);
+              return (
+                <div
+                  key={pass.id}
+                  className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs flex flex-col justify-between space-y-4"
+                >
+                  <div className="space-y-2.5">
+                    <div className="flex items-center justify-between gap-2">
+                      <span className="font-['JetBrains_Mono'] text-sm font-bold text-[var(--brand-primary)]">
+                        {pass.id}
+                      </span>
+                      <span
+                        className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold ${
+                          pass.status === 'confirmed'
+                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300'
+                            : pass.status === 'checked_in'
+                            ? 'bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 border border-sky-300'
+                            : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300'
+                        }`}
+                      >
+                        {pass.status === 'confirmed'
+                          ? 'Confirmé'
+                          : pass.status === 'checked_in'
+                          ? 'Check-In OK'
+                          : 'Annulé'}
+                      </span>
+                    </div>
+
+                    <div>
+                      <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                        {pass.leadVisitor.fullName}
+                      </div>
+                      <div className="text-xs text-[var(--text-muted)] line-clamp-1">
+                        {expInfo.title}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[var(--border-default)]/60 text-[11px] font-mono text-[var(--text-muted)]">
+                      <div>
+                        <span className="block text-[10px] uppercase">Date &amp; Créneau</span>
+                        <strong className="text-[var(--text-primary)]">{pass.visitDate}</strong>
+                        <span className="block">{pass.timeSlot}</span>
+                      </div>
+                      <div className="text-right">
+                        <span className="block text-[10px] uppercase">Groupe &amp; Tarif</span>
+                        <strong className="text-[var(--text-primary)] inline-flex items-center gap-1 justify-end">
+                          <Users className="w-3 h-3 text-[var(--brand-primary)]" />
+                          {pass.guestCount} pers.
+                        </strong>
+                        <span className="block text-[var(--brand-primary)] font-bold">
+                          {formatEur(pass.totalPriceEur)}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="pt-3 border-t border-[var(--border-default)]/60 flex flex-wrap items-center justify-between gap-2">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setActivePassId(pass.id);
+                        setActiveView('pass');
+                      }}
+                      className="px-3 py-1.5 rounded-xl bg-[var(--bg-elevated)] hover:bg-[var(--bg-canvas)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] cursor-pointer inline-flex items-center gap-1.5"
+                    >
+                      <QrCode className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
+                      <span>Voir QR</span>
+                    </button>
+
+                    <div className="flex items-center gap-1.5">
+                      {pass.status === 'confirmed' && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            checkInPass(pass.id);
+                            showToast(`Entrée validée au guichet pour ${pass.id} (${pass.guestCount} pers.)`);
+                          }}
+                          className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer inline-flex items-center gap-1 shadow-xs active:scale-95 transition-transform"
+                        >
+                          <CheckCircle2 className="w-3.5 h-3.5" />
+                          <span>Check-In</span>
+                        </button>
+                      )}
+
+                      {pass.status !== 'cancelled' && (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            cancelPass(pass.id);
+                            showToast(`Pass ${pass.id} annulé — quota mis à jour`);
+                          }}
+                          className="px-2.5 py-1.5 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
+                          title="Annuler ce billet et restituer la jauge"
+                        >
+                          Annuler
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -1085,10 +1268,18 @@ export const RangerDashboard: React.FC = () => {
                     {/* Location & Sender Metadata */}
                     <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] text-[var(--text-muted)] pt-1">
                       <div className="flex flex-wrap items-center gap-3">
-                        <span className="flex items-center gap-1 text-[var(--text-primary)] font-semibold">
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setSelectedTrailId(rep.trailId);
+                            setActiveView('sentiers');
+                          }}
+                          className="flex items-center gap-1 text-[var(--text-primary)] hover:text-[var(--brand-primary)] hover:underline font-semibold cursor-pointer"
+                          title="Ouvrir ce circuit sur la carte interactive"
+                        >
                           <MapPin className="w-3 h-3 text-[var(--brand-primary)]" />
                           <span>{trailMatch ? trailMatch.name : rep.trailId}</span>
-                        </span>
+                        </button>
                         <span>Repère : <strong className="text-[var(--text-primary)]">{rep.landmark}</strong></span>
                         <span>Transmis par <span className="font-mono">{rep.reporterName}</span></span>
                       </div>

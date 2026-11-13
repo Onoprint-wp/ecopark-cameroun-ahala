@@ -5,13 +5,29 @@
 
 import test from 'node:test';
 import assert from 'node:assert/strict';
+import fs from 'node:fs';
+import path from 'node:path';
 import {
   INITIAL_TRAILS,
   INITIAL_SPECIES,
   INITIAL_TELEMETRY,
+  INITIAL_PASSES,
   INITIAL_REPORTS,
 } from '../data/initialParkData.ts';
+import {
+  getExperienceInfo,
+  resolveExperienceForTrail,
+  MOBILITY_OPTIONS,
+} from './ecoMobility.ts';
+import {
+  VIEW_PATH_MAP,
+  SHOWCASE_TAB_PATH_MAP,
+  resolveViewFromPath,
+  resolveShowcaseTabFromPath,
+  type ShowcaseTab,
+} from './ecoRouting.ts';
 import type {
+  ActiveView,
   Trail,
   EcoPass,
   CitizenReport,
@@ -187,5 +203,107 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
 
     dailyCapacityMax = clampCapacity(1200);
     assert.strictEqual(dailyCapacityMax, 1200, 'Valid capacity must remain unchanged');
+  });
+
+  await t.test('Global Cross-Module Synchronization (Trail <-> Formula <-> Pass <-> Telemetry)', () => {
+    // 1. Trail -> Experience pre-selection mapping
+    assert.strictEqual(resolveExperienceForTrail('marais'), 'pack_mobilite');
+    assert.strictEqual(resolveExperienceForTrail('roches-moussues'), 'eco_guide');
+    assert.strictEqual(resolveExperienceForTrail('piste-eco-gardes'), 'atelier_botanique');
+    assert.strictEqual(resolveExperienceForTrail('canopee'), 'sentiers');
+
+    // 2. Official FCFA formula resolution & Yaoundé-Ahala mobility labels
+    const royalInfo = getExperienceInfo('atelier_botanique');
+    assert.ok(royalInfo.title.includes('Pass Journée Royale'));
+    assert.strictEqual(MOBILITY_OPTIONS.length, 5);
+    assert.ok(MOBILITY_OPTIONS.some((m) => m.shortLabel.includes('Orange Money')));
+
+    // 3. Reconciled Occupancy (Trail Status Closure must NOT wipe today's net booked passes)
+    const todayIso = new Date().toISOString().split('T')[0];
+    const reconcile = (trailsList: Trail[], passesList: EcoPass[], cap: number) => {
+      const openOcc = trailsList
+        .filter((tr) => tr.status !== 'ferme')
+        .reduce((s, tr) => s + tr.currentOccupancy, 0);
+      const seedToday = INITIAL_PASSES.filter(
+        (p) => p.visitDate === todayIso && p.status !== 'cancelled'
+      ).reduce((s, p) => s + p.guestCount, 0);
+      const activeToday = passesList
+        .filter((p) => p.visitDate === todayIso && p.status !== 'cancelled')
+        .reduce((s, p) => s + p.guestCount, 0);
+      return Math.max(0, Math.min(cap, openOcc + (activeToday - seedToday)));
+    };
+
+    const trails: Trail[] = JSON.parse(JSON.stringify(INITIAL_TRAILS));
+    const passes: EcoPass[] = JSON.parse(JSON.stringify(INITIAL_PASSES));
+    assert.strictEqual(reconcile(trails, passes, 1500), 642, 'Baseline reconciled occupancy equals 642');
+
+    // Book +4 guests for TODAY
+    passes.unshift({
+      ...passes[0],
+      id: 'ECP-2026-99999',
+      visitDate: todayIso,
+      guestCount: 4,
+      status: 'confirmed',
+    });
+    assert.strictEqual(reconcile(trails, passes, 1500), 646, 'Today booking adds +4 guests');
+
+    // Ranger closes 'marais' (198 guests): 642 - 198 + 4 = 448 (today's +4 booking is preserved!)
+    const marais = trails.find((tr) => tr.id === 'marais')!;
+    marais.status = 'ferme';
+    marais.currentOccupancy = 0;
+    assert.strictEqual(reconcile(trails, passes, 1500), 448, 'Closing a trail preserves today net pass bookings');
+  });
+
+  await t.test('Vercel SPA Rewrites & Bidirectional URL Workflow Synchronization', () => {
+    const vercelPath = path.resolve(process.cwd(), 'vercel.json');
+    const vercelConfig = JSON.parse(fs.readFileSync(vercelPath, 'utf8')) as {
+      rewrites: Array<{ source: string; destination: string }>;
+    };
+
+    assert.ok(vercelConfig.rewrites.length >= 56, 'vercel.json must contain all 56 SPA rewrites');
+
+    // Every single rewrite in vercel.json must resolve to a valid ActiveView
+    for (const rw of vercelConfig.rewrites) {
+      assert.strictEqual(rw.destination, '/index.html');
+      const resolved = resolveViewFromPath(rw.source);
+      assert.ok(
+        resolved !== null,
+        `Vercel rewrite "${rw.source}" must resolve to an ActiveView in ecoRouting.ts`
+      );
+    }
+
+    // Bidirectional round-trip for primary SPA views
+    const primaryViews: ActiveView[] = [
+      'accueil',
+      'sentiers',
+      'biodiversite',
+      'billetterie',
+      'pass',
+      'ranger',
+    ];
+    for (const view of primaryViews) {
+      const targetUrl = VIEW_PATH_MAP[view];
+      assert.strictEqual(
+        resolveViewFromPath(targetUrl),
+        view,
+        `ActiveView "${view}" -> "${targetUrl}" must round-trip cleanly`
+      );
+    }
+
+    // Bidirectional round-trip for all 5 AhalaShowcase tabs & presence in vercel.json
+    const rewriteSources = new Set(vercelConfig.rewrites.map((r) => r.source));
+    const showcaseTabs: ShowcaseTab[] = [
+      'hebergements',
+      'saveurs',
+      'tarifs',
+      'entreprise',
+      'formation',
+    ];
+    for (const tab of showcaseTabs) {
+      const tabUrl = SHOWCASE_TAB_PATH_MAP[tab];
+      assert.ok(rewriteSources.has(tabUrl), `Showcase tab URL "${tabUrl}" must exist in vercel.json`);
+      assert.strictEqual(resolveViewFromPath(tabUrl), 'accueil');
+      assert.strictEqual(resolveShowcaseTabFromPath(tabUrl), tab);
+    }
   });
 });

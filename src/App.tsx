@@ -20,6 +20,7 @@ import { CitizenSentinel } from './components/field/CitizenSentinel';
 import { RangerDashboard } from './components/admin/RangerDashboard';
 import { ColorAtlasDrawer } from './components/design-system/ColorAtlasDrawer';
 import { useEcoPark } from './context/EcoParkContext';
+import { recordMotionOrigin, useEcoMotion } from './utils/ecoMotion';
 import {
   Compass,
   Ticket,
@@ -35,13 +36,20 @@ export default function App() {
   const {
     activeView,
     setActiveView,
+    effectiveTheme,
     telemetry,
     trails,
+    selectedTrailId,
     setSelectedTrailId,
     species,
+    setSelectedSpeciesId,
   } = useEcoPark();
 
+  // Global kinetic sobriety governance (tab visibility, OLED pause, reduced-motion)
+  useEcoMotion(effectiveTheme === 'dark');
+
   const [scrubPoint, setScrubPoint] = useState<ScrubPayload | null>(null);
+  const spotlightTrailId = selectedTrailId || trails[0]?.id || null;
 
   // Status helper badges
   const renderTrailStatusBadge = (status: TrailStatus) => {
@@ -76,12 +84,12 @@ export default function App() {
       <Navbar />
 
       {/* Main View Router Content */}
-      <main className="flex-1 w-full" id="main-content">
+      <main className="eco-main-stage flex-1 w-full" id="main-content">
         {/* ================================================================= */}
         {/* VUE 1 : ACCUEIL & LES 5 PÔLES D'ECOPARK CAMEROUN (YAOUNDÉ-AHALA)  */}
         {/* ================================================================= */}
         {activeView === 'accueil' && (
-          <div className="space-y-14 pb-16">
+          <div className="eco-view-enter space-y-14 pb-16">
             {/* Hero Canopy Section (F14) */}
             <HeroCanopy />
 
@@ -103,7 +111,10 @@ export default function App() {
                   </h2>
                 </div>
                 <button
-                  onClick={() => setActiveView('sentiers')}
+                  onClick={(e) => {
+                    recordMotionOrigin(e);
+                    setActiveView('sentiers');
+                  }}
                   className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
                 >
                   <span>Ouvrir la carte interactive complète du domaine</span>
@@ -115,11 +126,15 @@ export default function App() {
                 {trails.map((trail) => (
                   <div
                     key={trail.id}
-                    onClick={() => {
+                    onPointerDown={() => setSelectedTrailId(trail.id)}
+                    onClick={(e) => {
+                      recordMotionOrigin(e);
                       setSelectedTrailId(trail.id);
                       setActiveView('sentiers');
                     }}
-                    className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md transition-all cursor-pointer group flex flex-col justify-between"
+                    className={`${
+                      spotlightTrailId === trail.id ? 'vt-trail-spotlight ' : ''
+                    }p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group flex flex-col justify-between`}
                   >
                     <div className="space-y-3">
                       <div className="flex items-center justify-between gap-2">
@@ -159,7 +174,11 @@ export default function App() {
                   </h2>
                 </div>
                 <button
-                  onClick={() => setActiveView('biodiversite')}
+                  onClick={(e) => {
+                    recordMotionOrigin(e);
+                    setSelectedSpeciesId(null);
+                    setActiveView('biodiversite');
+                  }}
                   className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
                 >
                   <span>Consulter les 8 fiches du Jardin Zoologique &amp; Biodiversité</span>
@@ -171,8 +190,12 @@ export default function App() {
                 {species.slice(0, 4).map((sp) => (
                   <div
                     key={sp.id}
-                    onClick={() => setActiveView('biodiversite')}
-                    className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md transition-all cursor-pointer group overflow-hidden flex flex-col justify-between"
+                    onClick={(e) => {
+                      recordMotionOrigin(e);
+                      setSelectedSpeciesId(sp.id);
+                      setActiveView('biodiversite');
+                    }}
+                    className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group overflow-hidden flex flex-col justify-between"
                   >
                     {sp.photoUrl && (
                       <div className="h-36 w-full overflow-hidden bg-[#1F2421]">
@@ -209,7 +232,7 @@ export default function App() {
         {/* VUE 2 : CARTE INTERACTIVE DU DOMAINE D'AHALA & 6 CIRCUITS         */}
         {/* ================================================================= */}
         {activeView === 'sentiers' && (
-          <div className="space-y-10 pb-16">
+          <div className="eco-view-enter space-y-10 pb-16">
             <ImmersiveSection variant="forest" className="py-10">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div className="space-y-1">
@@ -231,8 +254,8 @@ export default function App() {
               {/* Interactive Topographic Map (F16) */}
               <InteractiveTopoMap scrubPoint={scrubPoint} />
 
-              {/* Synchronized Elevation Profile with Scrubber (F17) */}
-              <ElevationProfile onScrub={setScrubPoint} />
+              {/* Synchronized Elevation Profile with Scrubber (F17) — Shared Element Target */}
+              <ElevationProfile onScrub={setScrubPoint} className="vt-trail-spotlight" />
 
               {/* Trail Catalog & Multicriteria Filters (F18) */}
               <TrailCatalog
@@ -249,14 +272,16 @@ export default function App() {
         {/* VUE 3 : JARDIN ZOOLOGIQUE & BIODIVERSITÉ D'AHALA (F19)            */}
         {/* ================================================================= */}
         {activeView === 'biodiversite' && (
-          <SpeciesAtlas />
+          <div className="eco-view-enter">
+            <SpeciesAtlas />
+          </div>
         )}
 
         {/* ================================================================= */}
         {/* VUE 4 : BILLETTERIE & PASS TOUT-INCLUS EN FCFA (F20, F21)         */}
         {/* ================================================================= */}
         {activeView === 'billetterie' && (
-          <div className="space-y-8 pb-16">
+          <div className="eco-view-enter space-y-8 pb-16">
             <ImmersiveSection variant="canopy" className="py-10">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -284,7 +309,7 @@ export default function App() {
         {/* VUE 5 : MON PASS QR (ECP-2026-XXXXX) & AVIS VISITEURS (F22..F25)  */}
         {/* ================================================================= */}
         {activeView === 'pass' && (
-          <div className="space-y-10 pb-16">
+          <div className="eco-view-enter space-y-10 pb-16">
             <ImmersiveSection variant="bark" className="py-10">
               <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
                 <div>
@@ -319,7 +344,11 @@ export default function App() {
         {/* ================================================================= */}
         {/* VUE 6 : CONSOLE DE SUPERVISION ÉCO-GARDE (F26, F27, F28)          */}
         {/* ================================================================= */}
-        {activeView === 'ranger' && <RangerDashboard />}
+        {activeView === 'ranger' && (
+          <div className="eco-view-enter">
+            <RangerDashboard />
+          </div>
+        )}
       </main>
 
       {/* Slide-over Color Atlas Drawer & WCAG Tester (F29, F30) */}

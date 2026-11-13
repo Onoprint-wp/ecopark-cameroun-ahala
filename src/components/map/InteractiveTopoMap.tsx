@@ -3,10 +3,15 @@
 // Feature F16 — 1000x700 Pure SVG Topo Engine with 7 Layers & Real-Time Sync
 // ============================================================================
 
-import React, { useState, useId } from 'react';
+import React, { useState, useId, useRef, useEffect, useMemo } from 'react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { PointOfInterest, TrailStatus } from '../../types/ecosystem';
 import { ScrubPayload } from './ElevationProfile';
+import {
+  consumeRecentTrailWave,
+  TRAIL_WAVE_EVENT_NAME,
+  TrailWavePayload,
+} from '../../utils/ecoMotion';
 import {
   Layers,
   ZoomIn,
@@ -53,6 +58,78 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
 
   // Hovered trail id for subtle pre-selection highlight
   const [hoveredTrailId, setHoveredTrailId] = useState<string | null>(null);
+
+  // Synchronized self-drawing epoch & SVG path measurement refs (« Tracé vivant »)
+  const [drawEpoch, setDrawEpoch] = useState<number>(0);
+  const trailPathRefs = useRef<Record<string, SVGPathElement | null>>({});
+
+  // Cross-view status shockwave emitted from Console Éco-Garde
+  const [statusWave, setStatusWave] = useState<TrailWavePayload | null>(null);
+
+  const effectiveSelectedId = useMemo(() => {
+    if (selectedTrailId && trails.some((t) => t.id === selectedTrailId)) {
+      return selectedTrailId;
+    }
+    const firstOpen = trails.find((t) => t.status === 'fluide');
+    return (firstOpen || trails[0])?.id || null;
+  }, [selectedTrailId, trails]);
+
+  useEffect(() => {
+    setDrawEpoch((e) => e + 1);
+  }, [effectiveSelectedId]);
+
+  useEffect(() => {
+    const recent = consumeRecentTrailWave(45000);
+    if (recent) {
+      setStatusWave(recent);
+      setSelectedTrailId(recent.trailId);
+      const timer = window.setTimeout(() => setStatusWave(null), 2600);
+      return () => window.clearTimeout(timer);
+    }
+  }, [setSelectedTrailId]);
+
+  useEffect(() => {
+    const handleWaveEvent = (ev: Event) => {
+      const custom = ev as CustomEvent<TrailWavePayload>;
+      if (!custom.detail) return;
+      setStatusWave(custom.detail);
+      const timer = window.setTimeout(() => {
+        setStatusWave((curr) =>
+          curr && curr.timestamp === custom.detail.timestamp ? null : curr
+        );
+      }, 2400);
+      return () => window.clearTimeout(timer);
+    };
+
+    window.addEventListener(TRAIL_WAVE_EVENT_NAME, handleWaveEvent);
+    return () => window.removeEventListener(TRAIL_WAVE_EVENT_NAME, handleWaveEvent);
+  }, []);
+
+  // Compute exact SVG Bézier coordinates & tangent heading via getPointAtLength
+  const exactHikerBeacon = useMemo(() => {
+    if (!scrubPoint) return null;
+    const pathEl = effectiveSelectedId ? trailPathRefs.current[effectiveSelectedId] : null;
+    if (
+      pathEl &&
+      scrubPoint.progressRatio !== undefined &&
+      typeof pathEl.getTotalLength === 'function'
+    ) {
+      try {
+        const totalLen = pathEl.getTotalLength();
+        if (totalLen > 0) {
+          const targetLen = Math.max(0, Math.min(totalLen, scrubPoint.progressRatio * totalLen));
+          const pt = pathEl.getPointAtLength(targetLen);
+          const behind = pathEl.getPointAtLength(Math.max(0, targetLen - 4));
+          const ahead = pathEl.getPointAtLength(Math.min(totalLen, targetLen + 4));
+          const angleDeg = (Math.atan2(ahead.y - behind.y, ahead.x - behind.x) * 180) / Math.PI;
+          return { x: pt.x, y: pt.y, angleDeg };
+        }
+      } catch {
+        // Fallback to interpolated profile coordinates
+      }
+    }
+    return { x: scrubPoint.x, y: scrubPoint.y, angleDeg: 0 };
+  }, [scrubPoint, effectiveSelectedId]);
 
   // Handle zoom controls
   const handleZoomIn = () => setZoomLevel((z) => Math.min(2.5, +(z + 0.25).toFixed(2)));
@@ -118,6 +195,9 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
   };
 
   const handleTrailClick = (trailId: string) => {
+    if (effectiveSelectedId === trailId) {
+      setDrawEpoch((e) => e + 1);
+    }
     setSelectedTrailId(trailId);
     if (onSelectTrail) {
       onSelectTrail(trailId);
@@ -260,6 +340,22 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
             <pattern id={`${idPrefix}-waterPattern`} width="20" height="20" patternUnits="userSpaceOnUse">
               <path d="M 0,10 Q 5,7 10,10 T 20,10" fill="none" stroke="#52B788" strokeWidth="0.75" opacity="0.3" />
             </pattern>
+
+            {/* Progressive Self-Drawing Masks for Dashed / Closed Trails (Daltonism-safe) */}
+            {trails.map((trail) => (
+              <mask key={`mask-def-${trail.id}-${drawEpoch}`} id={`${idPrefix}-draw-mask-${trail.id}`}>
+                <path
+                  d={trail.mapPath}
+                  pathLength={1000}
+                  fill="none"
+                  stroke="#FFFFFF"
+                  strokeWidth={24}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  className={effectiveSelectedId === trail.id ? 'eco-trail-self-draw' : ''}
+                />
+              </mask>
+            ))}
           </defs>
 
           {/* =============================================================== */}
@@ -458,21 +554,28 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
           )}
 
           {/* =============================================================== */}
-          {/* LAYER 5: 6 Trail SVG paths with dynamic status colors           */}
+          {/* LAYER 5: 6 Trail SVG paths — « Tracé vivant » & Status Waves    */}
           {/* =============================================================== */}
           {showTrails && (
             <g id="layer-trails">
               {trails.map((trail) => {
-                const isSelected = selectedTrailId === trail.id;
+                const isSelected = effectiveSelectedId === trail.id;
                 const isHovered = hoveredTrailId === trail.id;
                 const strokeColor = getTrailStroke(trail.status);
                 const dashArray = getTrailDashArray(trail.status);
+                const isSolidOpen = trail.status === 'fluide';
+                const hasWave = statusWave?.trailId === trail.id;
 
-                // Opacity logic: if one is selected, dim others
+                // Midpoint for Éco-Garde status shockwave
+                const midIdx = Math.floor((trail.elevationProfile?.length || 1) / 2);
+                const waveCenter =
+                  trail.elevationProfile?.[midIdx]?.mapCoord || trail.startPoint;
+
+                // Opacity logic: if one is selected explicitly, dim others
                 const trailOpacity = isSelected
                   ? 1.0
                   : selectedTrailId
-                  ? 0.28
+                  ? 0.3
                   : isHovered
                   ? 1.0
                   : 0.85;
@@ -493,8 +596,11 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                       }
                     }}
                   >
-                    {/* Invisible wider hit-area path for easy hovering/clicking */}
+                    {/* Invisible wider hit-area + exact geometry ref for getPointAtLength */}
                     <path
+                      ref={(el) => {
+                        trailPathRefs.current[trail.id] = el;
+                      }}
                       d={trail.mapPath}
                       fill="none"
                       stroke="transparent"
@@ -502,10 +608,24 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                       strokeLinecap="round"
                     />
 
-                    {/* Active Halo Glow */}
+                    {/* Subtle ghost guide under selected trail while self-drawing */}
                     {isSelected && (
                       <path
                         d={trail.mapPath}
+                        fill="none"
+                        stroke={strokeColor}
+                        strokeWidth={2.5}
+                        strokeDasharray="3 5"
+                        opacity={0.22}
+                      />
+                    )}
+
+                    {/* Active Halo Glow */}
+                    {isSelected && (
+                      <path
+                        key={`halo-${trail.id}-${drawEpoch}`}
+                        d={trail.mapPath}
+                        pathLength={1000}
                         fill="none"
                         stroke={strokeColor}
                         strokeWidth={10}
@@ -513,30 +633,99 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                         strokeLinejoin="round"
                         opacity={0.35}
                         filter={`url(#${idPrefix}-glow)`}
+                        className="eco-trail-self-draw"
                       />
                     )}
 
-                    {/* Main Trail Path */}
-                    <path
-                      d={trail.mapPath}
-                      fill="none"
-                      stroke={strokeColor}
-                      strokeWidth={isSelected ? 5.5 : isHovered ? 4.5 : 3.5}
-                      strokeDasharray={dashArray}
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      opacity={trailOpacity}
-                      className="transition-all duration-200"
-                    />
+                    {/* Main Trail Path: Progressive Self-Drawing + Daltonism Dash/Hatch */}
+                    {isSelected && isSolidOpen ? (
+                      <path
+                        key={`main-solid-${trail.id}-${drawEpoch}`}
+                        d={trail.mapPath}
+                        pathLength={1000}
+                        fill="none"
+                        stroke={strokeColor}
+                        strokeWidth={5.5}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        opacity={trailOpacity}
+                        className="eco-trail-self-draw"
+                      />
+                    ) : (
+                      <path
+                        key={`main-patterned-${trail.id}-${isSelected ? drawEpoch : 0}`}
+                        d={trail.mapPath}
+                        fill="none"
+                        stroke={strokeColor}
+                        strokeWidth={isSelected ? 5.5 : isHovered ? 4.5 : 3.5}
+                        strokeDasharray={dashArray}
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        opacity={trailOpacity}
+                        mask={isSelected ? `url(#${idPrefix}-draw-mask-${trail.id})` : undefined}
+                        className="transition-all duration-200"
+                      />
+                    )}
+
+                    {/* Daltonism-Safe Cross-Hatch Barrier Ticks (×) on Closed Trails */}
+                    {trail.status === 'ferme' &&
+                      (trail.elevationProfile || [])
+                        .filter((_, idx, arr) => idx > 0 && idx < arr.length - 1)
+                        .map((pt, idx) => (
+                          <g
+                            key={`hatch-${trail.id}-${idx}`}
+                            transform={`translate(${pt.mapCoord.x}, ${pt.mapCoord.y})`}
+                            opacity={trailOpacity}
+                            className="pointer-events-none"
+                          >
+                            <circle r="5.5" fill="#121614" stroke="#DC2626" strokeWidth="1.25" />
+                            <path
+                              d="M -2.6,-2.6 L 2.6,2.6 M 2.6,-2.6 L -2.6,2.6"
+                              stroke="#FCA5A5"
+                              strokeWidth="1.5"
+                              strokeLinecap="round"
+                            />
+                          </g>
+                        ))}
+
+                    {/* Concentric Cartographic Shockwave when Ranger modifies trail status */}
+                    {hasWave && (
+                      <g
+                        key={`wave-${trail.id}-${statusWave?.timestamp}`}
+                        transform={`translate(${waveCenter.x}, ${waveCenter.y})`}
+                        className="pointer-events-none"
+                      >
+                        {[0, 220, 440].map((delayMs, idx) => (
+                          <circle
+                            key={idx}
+                            r="18"
+                            fill="none"
+                            stroke={strokeColor}
+                            strokeWidth="2.5"
+                            className="eco-shockwave-ring"
+                            style={{ '--wave-delay': `${delayMs}ms` } as React.CSSProperties}
+                          />
+                        ))}
+                      </g>
+                    )}
 
                     {/* Trail departure / arrival points markers */}
                     <circle
                       cx={trail.startPoint.x}
                       cy={trail.startPoint.y}
-                      r={isSelected ? 5 : 3.5}
+                      r={isSelected ? 5.5 : 3.5}
                       fill={strokeColor}
                       stroke="#FFFFFF"
                       strokeWidth={1.5}
+                      opacity={trailOpacity}
+                    />
+                    <circle
+                      cx={trail.endPoint.x}
+                      cy={trail.endPoint.y}
+                      r={isSelected ? 4.5 : 3}
+                      fill="#121614"
+                      stroke={strokeColor}
+                      strokeWidth={2}
                       opacity={trailOpacity}
                     />
                   </g>
@@ -614,26 +803,34 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
           )}
 
           {/* =============================================================== */}
-          {/* LAYER 7: Interactive Cursor / Scrub Point Synced from Profile    */}
+          {/* LAYER 7: Exact getPointAtLength Hiker Beacon Synced from Profile */}
           {/* =============================================================== */}
-          {scrubPoint && (
+          {scrubPoint && exactHikerBeacon && (
             <g
               id="layer-interactive-cursor"
-              transform={`translate(${scrubPoint.x}, ${scrubPoint.y})`}
+              transform={`translate(${exactHikerBeacon.x}, ${exactHikerBeacon.y})`}
               className="pointer-events-none"
             >
               {/* Radar pulse ripples */}
               <circle r="18" fill="none" stroke="#E76F51" strokeWidth="2" className="animate-ping" />
-              <circle r="10" fill="#E76F51" fillOpacity="0.4" stroke="#FFFFFF" strokeWidth="2" />
-              <circle r="4" fill="#FFFFFF" />
+              <circle r="11" fill="#E76F51" fillOpacity="0.45" stroke="#FFFFFF" strokeWidth="2" />
 
-              {/* Synchronized Callout Box */}
-              <g transform="translate(14, -28)">
+              {/* Directional Tangent Heading Chevron */}
+              <g transform={`rotate(${exactHikerBeacon.angleDeg})`}>
+                <polygon points="8,0 -4,-4.5 -1.5,0 -4,4.5" fill="#FFFFFF" />
+              </g>
+
+              {/* Viewport-aware Synchronized Callout Box */}
+              <g
+                transform={`translate(${exactHikerBeacon.x > 820 ? -152 : 15}, ${
+                  exactHikerBeacon.y < 75 ? 12 : -36
+                })`}
+              >
                 <rect
                   x="0"
                   y="0"
-                  width="130"
-                  height="36"
+                  width="138"
+                  height="38"
                   rx="6"
                   fill="#1F2421"
                   stroke="#E76F51"
@@ -641,10 +838,11 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                   className="shadow-xl"
                 />
                 <text x="8" y="15" fill="#E76F51" className="font-mono text-[10px] font-bold">
-                  {scrubPoint.poiLabel ? scrubPoint.poiLabel : `Km ${scrubPoint.distanceKm.toFixed(1)}`}
+                  {scrubPoint.poiLabel ? scrubPoint.poiLabel : `Km ${scrubPoint.distanceKm.toFixed(2)}`}
                 </text>
-                <text x="8" y="28" fill="#E9F5ED" className="font-mono text-[9px]">
+                <text x="8" y="29" fill="#E9F5ED" className="font-mono text-[9px]">
                   Alt: {scrubPoint.elevationM} m
+                  {scrubPoint.slopePercent !== undefined ? ` · ${scrubPoint.slopePercent}%` : ''}
                 </text>
               </g>
             </g>

@@ -1,0 +1,97 @@
+name: ECOPARK Zero-Error Gate & Full QA Suite
+
+on:
+  push:
+    branches: [main, master, 'feat/**']
+  pull_request:
+    branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify-ecopark-360:
+    name: TypeScript, Unit/E2E Workflows & Production Bundle Gate
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install clean dependencies
+        run: npm ci
+
+      - name: Run Unit, Accessibility, Motion & E2E Workflow Tests
+        run: npm test
+
+      - name: Build Production Bundle (Strict TypeScript + Vite)
+        run: npm run build
+
+      - name: Verify Static Configs, Vercel Rewrites, SEO/GEO & Dist Integrity
+        shell: bash
+        run: |
+          node --input-type=module -e '
+            import fs from "node:fs";
+            import path from "node:path";
+
+            const jsonFiles = [
+              "package.json",
+              "vercel.json",
+              "tokens/color-tokens.json",
+              "public/manifest.json"
+            ];
+            for (const file of jsonFiles) {
+              if (!fs.existsSync(file)) throw new Error(`Missing JSON config: ${file}`);
+              JSON.parse(fs.readFileSync(file, "utf8"));
+            }
+
+            const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+            if (!Array.isArray(vercel.rewrites) || vercel.rewrites.length < 20) {
+              throw new Error("vercel.json must define production SPA rewrites");
+            }
+            for (const rw of vercel.rewrites) {
+              if (!rw.source.startsWith("/") || rw.destination !== "/index.html") {
+                throw new Error(`Invalid Vercel rewrite rule: ${JSON.stringify(rw)}`);
+              }
+            }
+
+            const requiredDistFiles = [
+              "dist/index.html",
+              "dist/manifest.json",
+              "dist/llms.txt",
+              "dist/agents.txt",
+              "dist/sitemap.xml",
+              "dist/robots.txt",
+              "dist/favicon.svg"
+            ];
+            for (const distFile of requiredDistFiles) {
+              if (!fs.existsSync(distFile) || fs.statSync(distFile).size === 0) {
+                throw new Error(`Missing or empty production artifact: ${distFile}`);
+              }
+            }
+
+            const assetsDir = "dist/assets";
+            const assets = fs.readdirSync(assetsDir);
+            const jsChunks = assets.filter((f) => f.endsWith(".js"));
+            const cssChunks = assets.filter((f) => f.endsWith(".css"));
+            if (jsChunks.length === 0 || cssChunks.length === 0) {
+              throw new Error("Production dist/assets must contain compiled JS and CSS chunks");
+            }
+
+            const totalBytes = assets.reduce(
+              (sum, f) => sum + fs.statSync(path.join(assetsDir, f)).size,
+              0
+            );
+            console.log(`CI Gate OK: ${vercel.rewrites.length} Vercel rewrites, ${jsChunks.length} JS chunk(s), ${cssChunks.length} CSS chunk(s), ${(totalBytes / 1024).toFixed(1)} KB uncompressed assets.`);
+          '

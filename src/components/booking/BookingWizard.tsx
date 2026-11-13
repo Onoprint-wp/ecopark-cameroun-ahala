@@ -3,7 +3,7 @@
 // Feature F20 & F21: Ecological quota regulation & carbon discount engine
 // ============================================================================
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef, useEffect } from 'react';
 import {
   Calendar,
   Clock,
@@ -21,6 +21,7 @@ import {
   Check,
   Sparkles,
   Footprints,
+  Compass,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import {
@@ -33,24 +34,42 @@ import {
   EXPERIENCES_CATALOG,
   MOBILITY_OPTIONS,
   calculateEcoMobilityPricing,
+  resolveExperienceForTrail,
   formatEur,
   formatCo2,
 } from '../../utils/ecoMobility';
+import { Co2BotanicalSprout } from './Co2BotanicalSprout';
+import { launchQuotaFlightToken, recordMotionOrigin } from '../../utils/ecoMotion';
 
 export const BookingWizard: React.FC = () => {
   const {
     telemetry,
     passes,
+    trails,
+    selectedTrailId,
     bookPass,
     setActiveView,
     setActivePassId,
   } = useEcoPark();
 
+  const selectedTrail = useMemo(
+    () => (selectedTrailId ? trails.find((t) => t.id === selectedTrailId) || null : null),
+    [selectedTrailId, trails]
+  );
+
   // Wizard state
   const [currentStep, setCurrentStep] = useState<1 | 2 | 3>(1);
 
-  // Step 1: Experience & Date
-  const [experienceType, setExperienceType] = useState<ExperienceType>('sentiers');
+  // Step 1: Experience & Date (auto-synced with selected trail on entry)
+  const [experienceType, setExperienceType] = useState<ExperienceType>(() =>
+    resolveExperienceForTrail(selectedTrailId)
+  );
+
+  useEffect(() => {
+    if (selectedTrailId) {
+      setExperienceType(resolveExperienceForTrail(selectedTrailId));
+    }
+  }, [selectedTrailId]);
   const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
   const [visitDate, setVisitDate] = useState<string>(todayStr);
 
@@ -71,6 +90,7 @@ export const BookingWizard: React.FC = () => {
   // Validation errors
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [bookingSuccess, setBookingSuccess] = useState<string | null>(null);
+  const submitBtnRef = useRef<HTMLButtonElement | null>(null);
 
   // Total guests
   const totalGuests = adultCount + childCount + pmrCount;
@@ -228,10 +248,31 @@ export const BookingWizard: React.FC = () => {
     setActivePassId(newPass.id);
     setBookingSuccess(newPass.id);
 
-    // Short timeout to transition to pass view
+    // Launch GPU Web Animations API flight tokens into Navbar Quota Flask & Pass QR pill
+    launchQuotaFlightToken(
+      submitBtnRef.current,
+      '[data-motion-target="nav-quota"]',
+      `+${totalGuests} vis.`,
+      '#52B788'
+    );
+    launchQuotaFlightToken(
+      submitBtnRef.current,
+      '[data-motion-target="nav-pass"]',
+      newPass.id,
+      '#D4A373'
+    );
+
+    // Short timeout to let tokens land in Navbar before organic Lisière transition to Pass view
     setTimeout(() => {
+      if (submitBtnRef.current) {
+        const rect = submitBtnRef.current.getBoundingClientRect();
+        recordMotionOrigin({
+          clientX: rect.left + rect.width / 2,
+          clientY: rect.top + rect.height / 2,
+        });
+      }
       setActiveView('pass');
-    }, 1200);
+    }, 1050);
   };
 
   return (
@@ -389,6 +430,46 @@ export const BookingWizard: React.FC = () => {
               </p>
             )}
           </div>
+
+          {/* Synchronized Trail Selection Banner (if visitor arrived from Map / TrailCatalog) */}
+          {selectedTrail && (
+            <div
+              className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
+                selectedTrail.status === 'ferme'
+                  ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200'
+                  : 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
+              }`}
+            >
+              <div className="flex items-start gap-2.5">
+                {selectedTrail.status === 'ferme' ? (
+                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                ) : (
+                  <Compass className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                )}
+                <div>
+                  <div className="font-bold">
+                    {selectedTrail.status === 'ferme'
+                      ? `Secteur « ${selectedTrail.name} » actuellement réservé / fermé`
+                      : `Formule pré-sélectionnée pour « ${selectedTrail.name} »`}
+                  </div>
+                  <div className="opacity-90 mt-0.5">
+                    {selectedTrail.status === 'ferme'
+                      ? selectedTrail.closureReason ||
+                        'Votre Pass vous donne accès aux autres secteurs ouverts du domaine d’Ahala.'
+                      : 'La formule recommandée ci-dessous a été synchronisée avec votre circuit (modifiable librement).'}
+                  </div>
+                </div>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setActiveView('sentiers')}
+                className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer shrink-0 self-start sm:self-center"
+              >
+                Changer de circuit
+              </button>
+            </div>
+          )}
 
           {/* Experiences Grid */}
           <div className="space-y-3">
@@ -659,7 +740,7 @@ export const BookingWizard: React.FC = () => {
                 </label>
                 <input
                   type="text"
-                  placeholder="Ex : Claire Delaunay"
+                  placeholder="Ex : Jean-Paul Mbarga"
                   value={leadName}
                   onChange={(e) => setLeadName(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
@@ -677,7 +758,7 @@ export const BookingWizard: React.FC = () => {
                 </label>
                 <input
                   type="email"
-                  placeholder="claire.delaunay@nature.fr"
+                  placeholder="jp.mbarga@exemple.cm"
                   value={leadEmail}
                   onChange={(e) => setLeadEmail(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
@@ -691,11 +772,11 @@ export const BookingWizard: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
-                  Téléphone (alertes météo)
+                  Téléphone (WhatsApp / Mobile Money)
                 </label>
                 <input
                   type="tel"
-                  placeholder="06 12 34 56 78"
+                  placeholder="+237 672 56 45 98"
                   value={leadPhone}
                   onChange={(e) => setLeadPhone(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
@@ -788,7 +869,7 @@ export const BookingWizard: React.FC = () => {
                       </p>
 
                       <div className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono pt-1">
-                        ADEME : {opt.ademeNote}
+                        Avantage Ahala : {opt.ademeNote}
                       </div>
                     </div>
                   </div>
@@ -802,6 +883,13 @@ export const BookingWizard: React.FC = () => {
             <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
               Récapitulatif Écologique & Tarifaire
             </h4>
+
+            {/* Combined Botanical Sprout & Rolling CO2 Simulator (#5) */}
+            <Co2BotanicalSprout
+              co2AvoidedKg={pricing.totalCo2AvoidedKg}
+              mobilityMode={mobilityMode}
+              guestCount={pricing.totalGuests}
+            />
 
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pb-4 border-b border-[var(--border-default)] text-xs">
               <div>
@@ -865,16 +953,16 @@ export const BookingWizard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs text-[var(--text-muted)]">
               <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <strong className="text-[var(--text-primary)]">1. Silence & Quiétude :</strong> Respect strict des zones de nidification balisées et des observatoires ornithologiques.
+                <strong className="text-[var(--text-primary)]">1. Quiétude de la Faune :</strong> Silence acoustique aux abords du Sanctuaire du Gorille « ToTo » et respect des consignes des soigneurs.
               </div>
               <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <strong className="text-[var(--text-primary)]">2. Zéro Déchet :</strong> Emport systématique de tous déchets, même biodégradables (épluchures).
+                <strong className="text-[var(--text-primary)]">2. Zéro Déchet Intégral :</strong> Aucun rejet plastique ou organique hors des points de tri sélectif d&apos;Ahala.
               </div>
               <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <strong className="text-[var(--text-primary)]">3. Rester sur le Tracé :</strong> Interdiction de couper les lacets pour prévenir le ravinement des sols.
+                <strong className="text-[var(--text-primary)]">3. Respect des Tracés :</strong> Maintien sur les allées balisées et digues sécurisées des bassins piscicoles.
               </div>
               <div className="p-3 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <strong className="text-[var(--text-primary)]">4. Cueillette Interdite :</strong> Protection absolue des orchidées rares et de la flore alpine protégée.
+                <strong className="text-[var(--text-primary)]">4. Garantie Météo RN3 &amp; Flore :</strong> Protection de la flore tropicale et report gratuit sous 90j en cas d&apos;alerte orage tropical.
               </div>
             </div>
 
@@ -910,6 +998,7 @@ export const BookingWizard: React.FC = () => {
             </button>
 
             <button
+              ref={submitBtnRef}
               type="submit"
               disabled={!charterAccepted || bookingSuccess !== null}
               className="px-7 py-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2 transition-all active:scale-95"

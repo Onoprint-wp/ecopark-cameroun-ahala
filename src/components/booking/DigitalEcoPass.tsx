@@ -3,7 +3,7 @@
 // Feature F22 & F23: Pure SVG QR code pass, Outdoor Mode & Ticket Management
 // ============================================================================
 
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import {
   Calendar,
   Clock,
@@ -21,11 +21,16 @@ import {
   ArrowRight,
   Ticket,
   Maximize2,
+  RotateCcw,
+  Award,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { EcoPass } from '../../types/ecosystem';
-import { QRCodeSVG, generateQrSvgString } from '../../utils/qrCodeGenerator';
-import { formatEur, formatCo2, MOBILITY_OPTIONS } from '../../utils/ecoMobility';
+import { generateQrSvgString } from '../../utils/qrCodeGenerator';
+import { formatEur, formatCo2, MOBILITY_OPTIONS, getExperienceInfo } from '../../utils/ecoMobility';
+import { GerminatingQrCode } from './GerminatingQrCode';
+import { Co2BotanicalSprout } from './Co2BotanicalSprout';
+import { isReducedMotionPreferred, recordMotionOrigin } from '../../utils/ecoMotion';
 
 export const DigitalEcoPass: React.FC = () => {
   const {
@@ -44,6 +49,43 @@ export const DigitalEcoPass: React.FC = () => {
   const [outdoorVariant, setOutdoorVariant] = useState<'sunlight' | 'oled'>('sunlight');
   const [showCancelModal, setShowCancelModal] = useState<boolean>(false);
   const [downloadSuccess, setDownloadSuccess] = useState<boolean>(false);
+  const [germinationReplayCount, setGerminationReplayCount] = useState<number>(0);
+  const [isFlippedBack, setIsFlippedBack] = useState<boolean>(false);
+  const [isPointerActive, setIsPointerActive] = useState<boolean>(false);
+  const card3dRef = useRef<HTMLDivElement | null>(null);
+
+  const resetCardTiltAndGlare = () => {
+    const el = card3dRef.current;
+    if (el) {
+      el.style.setProperty('--pass-tilt-x', '0deg');
+      el.style.setProperty('--pass-tilt-y', '0deg');
+      el.style.setProperty('--glare-opacity', '0');
+    }
+    setIsPointerActive(false);
+  };
+
+  const handleCardPointerMove = (e: React.PointerEvent<HTMLDivElement>) => {
+    if (highContrastOutdoor || isReducedMotionPreferred() || e.pointerType === 'touch') {
+      return;
+    }
+    const el = card3dRef.current;
+    if (!el) return;
+
+    const rect = el.getBoundingClientRect();
+    if (rect.width <= 0 || rect.height <= 0) return;
+
+    const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const relY = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+    const tiltX = ((0.5 - relY) * 8.5).toFixed(2);
+    const tiltY = ((relX - 0.5) * 9.5).toFixed(2);
+
+    el.style.setProperty('--pass-tilt-x', `${tiltX}deg`);
+    el.style.setProperty('--pass-tilt-y', `${tiltY}deg`);
+    el.style.setProperty('--glare-x', `${Math.round(relX * 100)}%`);
+    el.style.setProperty('--glare-y', `${Math.round(relY * 100)}%`);
+    el.style.setProperty('--glare-opacity', '1');
+    if (!isPointerActive) setIsPointerActive(true);
+  };
 
   // Selected pass resolution
   const currentPass: EcoPass | null =
@@ -60,6 +102,9 @@ export const DigitalEcoPass: React.FC = () => {
   // SVG Pass Download Action
   const handleDownloadSvg = () => {
     if (!currentPass) return;
+
+    const svgMobility = getMobilityInfo(currentPass.mobilityMode);
+    const svgExperience = getExperienceInfo(currentPass.experienceType);
 
     const qrSvg = generateQrSvgString(
       currentPass.qrPayload || `ECOPARK:PASS:${currentPass.id}`,
@@ -86,7 +131,7 @@ export const DigitalEcoPass: React.FC = () => {
 
   <!-- Header -->
   <text x="30" y="45" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="bold" fill="#B7E4C7" letter-spacing="2">ECOPARK CAMEROUN · YAOUNDÉ – AHALA BARRIÈRE (RN3)</text>
-  <text x="30" y="80" class="title" fill="#FFFFFF">Pass QR Officiel d Accès (Dès 500 FCFA)</text>
+  <text x="30" y="80" class="title" fill="#FFFFFF">${svgExperience.title}</text>
 
   <!-- Pass ID & Status -->
   <text x="30" y="150" class="label">Identifiant Unique</text>
@@ -119,8 +164,8 @@ export const DigitalEcoPass: React.FC = () => {
   <text x="30" y="630" class="label">Nombre de Visiteurs</text>
   <text x="30" y="650" class="value">${currentPass.guestCount} pers.</text>
 
-  <text x="320" y="630" class="label">Mode d Acheminement</text>
-  <text x="320" y="650" class="value">${currentPass.mobilityMode.toUpperCase()} (-${currentPass.discountAppliedPercent}%)</text>
+  <text x="320" y="630" class="label">Mode d Accès &amp; Paiement</text>
+  <text x="320" y="650" class="value">${svgMobility.shortLabel}${currentPass.discountAppliedPercent > 0 ? ` (-${currentPass.discountAppliedPercent}%)` : ''}</text>
 
   <text x="30" y="715" class="label">Contribution Carbone Évitée</text>
   <text x="30" y="738" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="bold" fill="#2D6A4F">+${currentPass.co2AvoidedKg} kg CO₂ évités</text>
@@ -168,7 +213,10 @@ export const DigitalEcoPass: React.FC = () => {
           </p>
         </div>
         <button
-          onClick={() => setActiveView('billetterie')}
+          onClick={(e) => {
+            recordMotionOrigin(e);
+            setActiveView('billetterie');
+          }}
           className="px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-white font-bold text-sm shadow-xs hover:bg-[var(--brand-secondary)] cursor-pointer inline-flex items-center gap-2"
         >
           <span>Accéder à la billetterie régulée</span>
@@ -179,6 +227,10 @@ export const DigitalEcoPass: React.FC = () => {
   }
 
   const mobilityInfo = getMobilityInfo(currentPass.mobilityMode);
+  const experienceInfo = getExperienceInfo(currentPass.experienceType);
+  const qrPayloadValue =
+    currentPass.qrPayload ||
+    `ECOPARK:PASS:${currentPass.id}:DATE=${currentPass.visitDate}:GUESTS=${currentPass.guestCount}`;
 
   return (
     <div className="space-y-6">
@@ -192,7 +244,10 @@ export const DigitalEcoPass: React.FC = () => {
             {passes.map((pass) => (
               <button
                 key={pass.id}
-                onClick={() => setActivePassId(pass.id)}
+                onClick={() => {
+                  setActivePassId(pass.id);
+                  setIsFlippedBack(false);
+                }}
                 className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   pass.id === currentPass.id
                     ? 'bg-[var(--brand-primary)] text-white shadow-xs'
@@ -214,10 +269,30 @@ export const DigitalEcoPass: React.FC = () => {
           </div>
         </div>
 
-        {/* Outdoor Mode Controls */}
-        <div className="flex items-center gap-2">
+        {/* Outdoor Mode & 3D Flip Controls */}
+        <div className="flex flex-wrap items-center gap-2">
           <button
-            onClick={() => setHighContrastOutdoor(!highContrastOutdoor)}
+            type="button"
+            onClick={() => {
+              resetCardTiltAndGlare();
+              setIsFlippedBack((prev) => !prev);
+            }}
+            className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
+              isFlippedBack
+                ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-xs'
+                : 'bg-[var(--bg-elevated)] border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-surface)]'
+            }`}
+            title="Retourner le Pass en 3D pour consulter le Certificat Carbone & la Charte Zéro-Trace"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
+            <span>{isFlippedBack ? 'Voir Recto (QR Code)' : 'Certificat Verso 3D'}</span>
+          </button>
+
+          <button
+            onClick={() => {
+              resetCardTiltAndGlare();
+              setHighContrastOutdoor(!highContrastOutdoor);
+            }}
             className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
               highContrastOutdoor
                 ? 'bg-amber-500 text-black border-amber-600 font-bold shadow-xs'
@@ -258,220 +333,384 @@ export const DigitalEcoPass: React.FC = () => {
         </div>
       </div>
 
-      {/* Main Digital Pass Card Container */}
-      <div
-        id="printable-eco-pass"
-        className={`max-w-2xl mx-auto rounded-3xl transition-all duration-300 overflow-hidden shadow-lg border ${
-          highContrastOutdoor && outdoorVariant === 'oled'
-            ? 'bg-black text-[#52B788] border-emerald-900 ring-2 ring-emerald-500/30'
-            : highContrastOutdoor && outdoorVariant === 'sunlight'
-            ? 'bg-white text-black border-4 border-black'
-            : 'bg-[var(--bg-surface)] text-[var(--text-primary)] border-[var(--border-default)]'
-        }`}
-      >
-        {/* Pass Top Banner */}
+      {/* Main Digital Pass 3D Stage & Card Container */}
+      <div className="eco-pass-3d-stage max-w-2xl mx-auto">
         <div
-          className={`p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+          id="printable-eco-pass"
+          ref={card3dRef}
+          onPointerMove={handleCardPointerMove}
+          onPointerLeave={resetCardTiltAndGlare}
+          style={
+            {
+              '--pass-flip-y': isFlippedBack ? '180deg' : '0deg',
+            } as React.CSSProperties
+          }
+          className={`eco-pass-3d-card ${
+            isPointerActive ? 'is-pointer-active' : ''
+          } relative grid rounded-3xl shadow-lg border ${
             highContrastOutdoor && outdoorVariant === 'oled'
-              ? 'bg-[#0B1D15] border-b border-emerald-950 text-emerald-100'
+              ? 'bg-black text-[#52B788] border-emerald-900 ring-2 ring-emerald-500/30'
               : highContrastOutdoor && outdoorVariant === 'sunlight'
-              ? 'bg-black text-white'
-              : 'bg-[#1B4332] text-white'
+              ? 'bg-white text-black border-4 border-black'
+              : 'bg-[var(--bg-surface)] text-[var(--text-primary)] border-[var(--border-default)]'
           }`}
         >
-          <div>
-            <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#B7E4C7]">
-              ECOPARK CAMEROUN · YAOUNDÉ – AHALA BARRIÈRE (FACE TRADEX RN3)
-            </span>
-            <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold mt-0.5">
-              Pass QR Officiel — Complexe Écologique &amp; Loisirs
-            </h2>
-          </div>
-
-          <div className="flex items-center gap-2">
-            <span
-              className={`px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider ${
-                currentPass.status === 'confirmed'
-                  ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400'
-                  : currentPass.status === 'checked_in'
-                  ? 'bg-blue-500/20 text-blue-300 border border-blue-400'
-                  : 'bg-red-500/20 text-red-300 border border-red-400'
-              }`}
-            >
-              {currentPass.status === 'confirmed' && 'Confirmé · Accès Valide'}
-              {currentPass.status === 'checked_in' && 'Check-In Effectué'}
-              {currentPass.status === 'cancelled' && 'Pass Annulé'}
-            </span>
-          </div>
-        </div>
-
-        {/* Pass Body */}
-        <div className="p-6 sm:p-8 space-y-6">
-          {/* Header Row: ID & Experience */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[var(--border-default)]/60">
-            <div>
-              <div className="text-xs font-mono text-[var(--text-muted)]">Numéro de Billet</div>
-              <div className="font-['JetBrains_Mono'] text-xl font-bold tracking-tight text-[var(--brand-primary)]">
-                {currentPass.id}
-              </div>
-            </div>
-
-            <div className="sm:text-right">
-              <div className="text-xs text-[var(--text-muted)]">Formule Souscrite</div>
-              <div className="font-bold text-sm capitalize text-[var(--text-primary)]">
-                {currentPass.experienceType.replace('_', ' ')}
-              </div>
-            </div>
-          </div>
-
-          {/* QR Code Presentation Box */}
-          <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-3">
-            <div className="p-4 rounded-xl bg-white shadow-xs border border-gray-200">
-              <QRCodeSVG
-                value={
-                  currentPass.qrPayload ||
-                  `ECOPARK:PASS:${currentPass.id}:DATE=${currentPass.visitDate}:GUESTS=${currentPass.guestCount}`
-                }
-                size={180}
-                fgColor="#1B4332"
-                bgColor="#FFFFFF"
-                quietZone={2}
-                title={`Éco-Pass QR Code pour ${currentPass.id}`}
-              />
-            </div>
-
-            <div className="text-center space-y-1">
-              <span className="text-xs font-mono font-semibold text-[var(--text-primary)]">
-                Scannable aux portiques et par les Éco-Gardes
-              </span>
-              <p className="text-[11px] text-[var(--text-muted)] font-mono">
-                Payload SVG vectoriel certifié ISO/IEC 18004
-              </p>
-            </div>
-          </div>
-
-          {/* Details Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
-            <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-              <div className="text-[var(--text-muted)] flex items-center gap-1.5">
-                <Users className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
-                <span>Titulaire du Billet</span>
-              </div>
-              <div className="font-bold text-sm text-[var(--text-primary)]">
-                {currentPass.leadVisitor.fullName}
-              </div>
-              <div className="text-[var(--text-muted)] font-mono text-[11px]">
-                {currentPass.leadVisitor.email} · {currentPass.leadVisitor.phone}
-              </div>
-            </div>
-
-            <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-              <div className="text-[var(--text-muted)] flex items-center gap-1.5">
-                <Calendar className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
-                <span>Date &amp; Créneau d Arrivée</span>
-              </div>
-              <div className="font-bold text-sm text-[var(--text-primary)]">
-                {currentPass.visitDate}
-              </div>
-              <div className="text-[var(--brand-primary)] font-mono font-semibold text-[11px] flex items-center gap-1">
-                <Clock className="w-3 h-3" />
-                {currentPass.timeSlot}
-              </div>
-            </div>
-
-            <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-              <div className="text-[var(--text-muted)] flex items-center gap-1.5">
-                <Leaf className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span>Mode d Acheminement</span>
-              </div>
-              <div className="font-bold text-sm text-[var(--text-primary)]">
-                {mobilityInfo.label}
-              </div>
-              <div className="text-emerald-700 dark:text-emerald-400 font-mono text-[11px] font-semibold">
-                Réduction de {currentPass.discountAppliedPercent}% appliquée
-              </div>
-            </div>
-
-            <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-              <div className="text-[var(--text-muted)] flex items-center gap-1.5">
-                <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
-                <span>Bilan Carbone Évité</span>
-              </div>
-              <div className="font-mono font-bold text-sm text-emerald-600 dark:text-emerald-400">
-                +{formatCo2(currentPass.co2AvoidedKg)}
-              </div>
-              <div className="text-[var(--text-muted)] text-[11px]">
-                Pour {currentPass.guestCount} visiteur(s)
-              </div>
-            </div>
-          </div>
-
-          {/* Price & Charter Badge */}
-          <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2">
-              <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
-              <span className="text-[var(--text-muted)]">
-                Charte Zéro-Trace acceptée · Randonnée éco-responsable
-              </span>
-            </div>
-            <div className="font-mono font-bold text-[var(--text-primary)] text-sm sm:text-right">
-              Réglé : {formatEur(currentPass.totalPriceEur)}
-            </div>
-          </div>
-        </div>
-
-        {/* Pass Actions Bar */}
-        <div className="p-6 bg-[var(--bg-canvas)] border-t border-[var(--border-default)] flex flex-wrap items-center justify-between gap-3 print:hidden">
-          {/* Check-In Action Button */}
-          {currentPass.status === 'confirmed' ? (
-            <button
-              onClick={() => checkInPass(currentPass.id)}
-              className="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-95 transition-transform"
-            >
-              <CheckCircle2 className="w-4 h-4" />
-              <span>Valider l entrée terrain (Check-In)</span>
-            </button>
-          ) : currentPass.status === 'checked_in' ? (
-            <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4" />
-              Entrée validée le {new Date(currentPass.checkInTimestamp || '').toLocaleTimeString('fr-FR')}
-            </span>
-          ) : (
-            <span className="text-xs font-mono font-bold text-red-600 dark:text-red-400 flex items-center gap-1.5">
-              <XCircle className="w-4 h-4" />
-              Pass annulé
-            </span>
+          {/* Holographic Forest-Ochre Glare Layer (disabled in High-Contrast Outdoor mode) */}
+          {!highContrastOutdoor && (
+            <div
+              aria-hidden="true"
+              className="eco-pass-holo-glare pointer-events-none absolute inset-0 rounded-3xl z-20 print:hidden"
+            />
           )}
 
-          {/* Utility Action Buttons */}
-          <div className="flex items-center gap-2">
-            <button
-              onClick={handleDownloadSvg}
-              className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
-              title="Télécharger le fichier vectoriel SVG de l Éco-Pass"
-            >
-              <Download className="w-3.5 h-3.5" />
-              <span>SVG Ticket</span>
-            </button>
-
-            <button
-              onClick={handlePrint}
-              className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
-              title="Imprimer ou enregistrer en PDF"
-            >
-              <Printer className="w-3.5 h-3.5" />
-              <span>Imprimer</span>
-            </button>
-
-            {currentPass.status !== 'cancelled' && (
-              <button
-                onClick={() => setShowCancelModal(true)}
-                className="px-3.5 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-300 dark:hover:border-red-900 cursor-pointer flex items-center gap-1"
-                title="Annuler ce pass et libérer la jauge du parc"
+          {/* =============================================================== */}
+          {/* FACE RECTO : QR CODE GERMINATIF & CONTRÔLE D'ACCÈS              */}
+          {/* =============================================================== */}
+          <div
+            aria-hidden={isFlippedBack}
+            className={`eco-pass-face [grid-area:1/1] flex flex-col justify-between overflow-hidden rounded-3xl ${
+              isFlippedBack ? 'pointer-events-none' : ''
+            }`}
+          >
+            <div>
+              {/* Pass Top Banner */}
+              <div
+                className={`p-6 sm:p-7 flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
+                  highContrastOutdoor && outdoorVariant === 'oled'
+                    ? 'bg-[#0B1D15] border-b border-emerald-950 text-emerald-100'
+                    : highContrastOutdoor && outdoorVariant === 'sunlight'
+                    ? 'bg-black text-white'
+                    : 'bg-[#1B4332] text-white'
+                }`}
               >
-                <span>Annuler</span>
+                <div>
+                  <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#B7E4C7]">
+                    ECOPARK CAMEROUN · YAOUNDÉ – AHALA BARRIÈRE (FACE TRADEX RN3)
+                  </span>
+                  <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold mt-0.5">
+                    Pass QR Officiel — Complexe Écologique &amp; Loisirs
+                  </h2>
+                </div>
+
+                <div className="flex items-center gap-2">
+                  <span
+                    className={`px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider ${
+                      currentPass.status === 'confirmed'
+                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400'
+                        : currentPass.status === 'checked_in'
+                        ? 'bg-blue-500/20 text-blue-300 border border-blue-400'
+                        : 'bg-red-500/20 text-red-300 border border-red-400'
+                    }`}
+                  >
+                    {currentPass.status === 'confirmed' && 'Confirmé · Accès Valide'}
+                    {currentPass.status === 'checked_in' && 'Check-In Effectué'}
+                    {currentPass.status === 'cancelled' && 'Pass Annulé'}
+                  </span>
+                </div>
+              </div>
+
+              {/* Pass Body */}
+              <div className="p-6 sm:p-8 space-y-6">
+                {/* Header Row: ID & Experience */}
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[var(--border-default)]/60">
+                  <div>
+                    <div className="text-xs font-mono text-[var(--text-muted)]">Numéro de Billet</div>
+                    <div className="font-['JetBrains_Mono'] text-xl font-bold tracking-tight text-[var(--brand-primary)]">
+                      {currentPass.id}
+                    </div>
+                  </div>
+
+                  <div className="sm:text-right">
+                    <div className="text-xs text-[var(--text-muted)]">Formule Souscrite</div>
+                    <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                      {experienceInfo.title}
+                    </div>
+                    <div className="text-[11px] font-mono text-[var(--brand-primary)] font-semibold">
+                      {experienceInfo.badge}
+                    </div>
+                  </div>
+                </div>
+
+                {/* QR Code Presentation Box with Spiral Seed Germination */}
+                <div className="flex flex-col items-center justify-center p-6 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-3">
+                  <div className="p-4 rounded-xl bg-white shadow-xs border border-gray-200">
+                    <GerminatingQrCode
+                      value={qrPayloadValue}
+                      size={180}
+                      fgColor={highContrastOutdoor ? '#000000' : '#1B4332'}
+                      bgColor="#FFFFFF"
+                      quietZone={2}
+                      germinationKey={`${currentPass.id}-${germinationReplayCount}`}
+                      disableAnimation={highContrastOutdoor && outdoorVariant === 'oled'}
+                      title={`Éco-Pass QR Code pour ${currentPass.id}`}
+                    />
+                  </div>
+
+                  <div className="text-center space-y-1">
+                    <span className="text-xs font-mono font-semibold text-[var(--text-primary)]">
+                      Scannable aux portiques et par les Éco-Gardes
+                    </span>
+                    <p className="text-[11px] text-[var(--text-muted)] font-mono">
+                      Germination spirale botanique · Vecteur ISO/IEC 18004 1-nœud
+                    </p>
+                  </div>
+
+                  <div className="flex flex-wrap items-center justify-center gap-2 pt-1 print:hidden">
+                    <button
+                      type="button"
+                      onClick={() => setGerminationReplayCount((c) => c + 1)}
+                      className="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-[11px] font-mono font-semibold text-[var(--text-primary)] hover:border-[var(--brand-primary)] cursor-pointer inline-flex items-center gap-1.5 transition-colors"
+                      title="Rejouer l'éclosion organique des modules QR"
+                    >
+                      <Sparkles className="w-3 h-3 text-[#52B788]" />
+                      <span>Rejouer la germination</span>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        resetCardTiltAndGlare();
+                        setIsFlippedBack(true);
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-[11px] font-mono font-semibold text-[var(--brand-primary)] hover:bg-[var(--bg-canvas)] cursor-pointer inline-flex items-center gap-1.5 transition-colors"
+                    >
+                      <RotateCcw className="w-3 h-3" />
+                      <span>Voir le certificat carbone (Verso 3D)</span>
+                    </button>
+                  </div>
+                </div>
+
+                {/* Details Grid */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs font-sans">
+                  <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                    <div className="text-[var(--text-muted)] flex items-center gap-1.5">
+                      <Users className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
+                      <span>Titulaire du Billet</span>
+                    </div>
+                    <div className="font-bold text-sm text-[var(--text-primary)]">
+                      {currentPass.leadVisitor.fullName}
+                    </div>
+                    <div className="text-[var(--text-muted)] font-mono text-[11px]">
+                      {currentPass.leadVisitor.email} · {currentPass.leadVisitor.phone}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                    <div className="text-[var(--text-muted)] flex items-center gap-1.5">
+                      <Calendar className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
+                      <span>Date &amp; Créneau d Arrivée</span>
+                    </div>
+                    <div className="font-bold text-sm text-[var(--text-primary)]">
+                      {currentPass.visitDate}
+                    </div>
+                    <div className="text-[var(--brand-primary)] font-mono font-semibold text-[11px] flex items-center gap-1">
+                      <Clock className="w-3 h-3" />
+                      {currentPass.timeSlot}
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                    <div className="text-[var(--text-muted)] flex items-center gap-1.5">
+                      <Leaf className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <span>Mode d Acheminement</span>
+                    </div>
+                    <div className="font-bold text-sm text-[var(--text-primary)]">
+                      {mobilityInfo.label}
+                    </div>
+                    <div className="text-emerald-700 dark:text-emerald-400 font-mono text-[11px] font-semibold">
+                      Réduction de {currentPass.discountAppliedPercent}% appliquée
+                    </div>
+                  </div>
+
+                  <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                    <div className="text-[var(--text-muted)] flex items-center gap-1.5">
+                      <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <span>Bilan Carbone Évité</span>
+                    </div>
+                    <div className="font-mono font-bold text-sm text-emerald-600 dark:text-emerald-400">
+                      +{formatCo2(currentPass.co2AvoidedKg)}
+                    </div>
+                    <div className="text-[var(--text-muted)] text-[11px]">
+                      Pour {currentPass.guestCount} visiteur(s)
+                    </div>
+                  </div>
+                </div>
+
+                {/* Price & Charter Badge */}
+                <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
+                  <div className="flex items-center gap-2">
+                    <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <span className="text-[var(--text-muted)]">
+                      Charte Zéro-Trace acceptée · Randonnée éco-responsable
+                    </span>
+                  </div>
+                  <div className="font-mono font-bold text-[var(--text-primary)] text-sm sm:text-right">
+                    Réglé : {formatEur(currentPass.totalPriceEur)}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Pass Actions Bar */}
+            <div className="p-6 bg-[var(--bg-canvas)] border-t border-[var(--border-default)] flex flex-wrap items-center justify-between gap-3 print:hidden">
+              {/* Check-In Action Button */}
+              {currentPass.status === 'confirmed' ? (
+                <button
+                  onClick={() => checkInPass(currentPass.id)}
+                  className="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-95 transition-transform"
+                >
+                  <CheckCircle2 className="w-4 h-4" />
+                  <span>Valider l entrée terrain (Check-In)</span>
+                </button>
+              ) : currentPass.status === 'checked_in' ? (
+                <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                  <CheckCircle2 className="w-4 h-4" />
+                  Entrée validée le {new Date(currentPass.checkInTimestamp || '').toLocaleTimeString('fr-FR')}
+                </span>
+              ) : (
+                <span className="text-xs font-mono font-bold text-red-600 dark:text-red-400 flex items-center gap-1.5">
+                  <XCircle className="w-4 h-4" />
+                  Pass annulé
+                </span>
+              )}
+
+              {/* Utility Action Buttons */}
+              <div className="flex items-center gap-2">
+                <button
+                  onClick={handleDownloadSvg}
+                  className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
+                  title="Télécharger le fichier vectoriel SVG de l Éco-Pass"
+                >
+                  <Download className="w-3.5 h-3.5" />
+                  <span>SVG Ticket</span>
+                </button>
+
+                <button
+                  onClick={handlePrint}
+                  className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
+                  title="Imprimer ou enregistrer en PDF"
+                >
+                  <Printer className="w-3.5 h-3.5" />
+                  <span>Imprimer</span>
+                </button>
+
+                {currentPass.status !== 'cancelled' && (
+                  <button
+                    onClick={() => setShowCancelModal(true)}
+                    className="px-3.5 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-300 dark:hover:border-red-900 cursor-pointer flex items-center gap-1"
+                    title="Annuler ce pass et libérer la jauge du parc"
+                  >
+                    <span>Annuler</span>
+                  </button>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* =============================================================== */}
+          {/* FACE VERSO 3D : CERTIFICAT CARBONE & CHARTE ZÉRO-TRACE          */}
+          {/* =============================================================== */}
+          <div
+            aria-hidden={!isFlippedBack}
+            className={`eco-pass-face eco-pass-face-back [grid-area:1/1] flex flex-col justify-between overflow-hidden rounded-3xl print:hidden ${
+              !isFlippedBack ? 'pointer-events-none' : ''
+            }`}
+          >
+            <div>
+              {/* Verso Top Banner */}
+              <div className="p-6 sm:p-7 bg-[#1F2421] text-[#E9F5ED] border-b border-[#2D6A4F]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                <div>
+                  <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#D4A373]">
+                    VERSO OFFICIEL · ATTESTATION D&apos;IMPACT ÉCOLOGIQUE
+                  </span>
+                  <h3 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold mt-0.5 text-white flex items-center gap-2">
+                    <Award className="w-6 h-6 text-[#52B788] shrink-0" />
+                    <span>Certificat Carbone &amp; Serment Zéro-Trace</span>
+                  </h3>
+                </div>
+
+                <span className="px-3 py-1 rounded-full text-xs font-mono font-bold bg-[#1B4332] text-[#B7E4C7] border border-[#52B788]/50 self-start sm:self-center">
+                  {currentPass.id}
+                </span>
+              </div>
+
+              {/* Verso Body */}
+              <div className="p-6 sm:p-8 space-y-6">
+                {/* Embedded Botanical Sprout Visualizer */}
+                <Co2BotanicalSprout
+                  co2AvoidedKg={currentPass.co2AvoidedKg}
+                  mobilityMode={currentPass.mobilityMode}
+                  guestCount={currentPass.guestCount}
+                />
+
+                {/* 4 Pillars of Signed Zero-Trace Charter */}
+                <div className="space-y-3">
+                  <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
+                    <ShieldCheck className="w-4 h-4 text-[#52B788]" />
+                    <span>Engagements Zéro-Trace signés par {currentPass.leadVisitor.fullName}</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
+                    <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
+                      <div className="font-bold text-[var(--text-primary)]">1. Quiétude de la Faune</div>
+                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                        Silence acoustique aux abords du Sanctuaire du Gorille « ToTo » et des zones de nidification.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
+                      <div className="font-bold text-[var(--text-primary)]">2. Zéro Déchet Intégral</div>
+                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                        Aucun rejet plastique ou organique hors des points de tri sélectif d&apos;Ahala.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
+                      <div className="font-bold text-[var(--text-primary)]">3. Respect des Tracés</div>
+                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                        Maintien strict sur les sentiers balisés pour protéger l&apos;humus forestier de l&apos;érosion.
+                      </p>
+                    </div>
+
+                    <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
+                      <div className="font-bold text-[var(--text-primary)]">4. Garantie Météo RN3</div>
+                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                        Report gratuit sous 90 jours en cas d&apos;alerte orage tropical émise par les Éco-Gardes.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cryptographic / Field Verification Stamp */}
+                <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-[var(--text-muted)]">
+                  <span>
+                    Émis le {new Date(currentPass.createdAt).toLocaleDateString('fr-FR')} · Poste de garde RN3 Ahala Barrière
+                  </span>
+                  <span className="text-[var(--brand-primary)] font-bold">
+                    Urgence Éco-Gardes : +237 672 56 45 98
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            {/* Verso Footer Bar */}
+            <div className="p-6 bg-[var(--bg-canvas)] border-t border-[var(--border-default)] flex items-center justify-between gap-3">
+              <span className="text-xs font-mono text-[var(--text-muted)]">
+                Face 2/2 · Certificat écologique vérifié
+              </span>
+
+              <button
+                type="button"
+                onClick={() => {
+                  resetCardTiltAndGlare();
+                  setIsFlippedBack(false);
+                }}
+                className="px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] font-bold text-xs shadow-xs cursor-pointer inline-flex items-center gap-1.5 hover:opacity-95 transition-opacity"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span>Retourner vers le QR Code (Recto 3D)</span>
               </button>
-            )}
+            </div>
           </div>
         </div>
       </div>

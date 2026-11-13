@@ -7,6 +7,7 @@
 import React from 'react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { ImmersiveSection } from '../layout/ImmersiveSection';
+import { recordMotionOrigin } from '../../utils/ecoMotion';
 import {
   Sparkles,
   Ticket,
@@ -91,7 +92,10 @@ export const HeroCanopy: React.FC = () => {
           <div className="pt-2 flex flex-wrap gap-3.5 justify-center md:justify-start">
             <button
               type="button"
-              onClick={() => setActiveView('billetterie')}
+              onClick={(e) => {
+                recordMotionOrigin(e);
+                setActiveView('billetterie');
+              }}
               className="px-6 py-3.5 rounded-xl bg-[#52B788] hover:bg-[#40916C] text-[#0B1D15] font-bold text-sm shadow-lg hover:shadow-emerald-950/40 transition-all flex items-center gap-2 cursor-pointer active:scale-95 group focus:outline-none focus:ring-2 focus:ring-emerald-400"
             >
               <Ticket className="w-4 h-4 text-[#0B1D15] group-hover:rotate-12 transition-transform" />
@@ -103,7 +107,9 @@ export const HeroCanopy: React.FC = () => {
 
             <button
               type="button"
-              onClick={() => {
+              onPointerDown={() => setSelectedTrailId('canopee')}
+              onClick={(e) => {
+                recordMotionOrigin(e);
                 setSelectedTrailId('canopee');
                 setActiveView('sentiers');
               }}
