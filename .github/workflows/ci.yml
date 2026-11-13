@@ -2,7 +2,7 @@ name: ECOPARK Zero-Error Gate & Full QA Suite
 
 on:
   push:
-    branches: [main, master, 'feat/**']
+    branches: [main, master, 'feat/**', 'release/**']
   pull_request:
     branches: [main, master]
   workflow_dispatch:
@@ -89,9 +89,17 @@ jobs:
               throw new Error("Production dist/assets must contain compiled JS and CSS chunks");
             }
 
+            if (!fs.existsSync("supabase/config.toml")) {
+              throw new Error("Missing supabase/config.toml");
+            }
+            const sqlMigrations = fs.readdirSync("supabase/migrations").filter((f) => f.endsWith(".sql"));
+            if (sqlMigrations.length < 8) {
+              throw new Error(`Expected >= 8 Supabase SQL migrations, found ${sqlMigrations.length}`);
+            }
+
             const totalBytes = assets.reduce(
               (sum, f) => sum + fs.statSync(path.join(assetsDir, f)).size,
               0
             );
-            console.log(`CI Gate OK: ${vercel.rewrites.length} Vercel rewrites, ${jsChunks.length} JS chunk(s), ${cssChunks.length} CSS chunk(s), ${(totalBytes / 1024).toFixed(1)} KB uncompressed assets.`);
+            console.log(`CI Gate OK: ${vercel.rewrites.length} Vercel rewrites, ${sqlMigrations.length} SQL migrations, ${jsChunks.length} JS chunk(s), ${cssChunks.length} CSS chunk(s), ${(totalBytes / 1024).toFixed(1)} KB uncompressed assets.`);
           '
