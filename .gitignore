@@ -8,6 +8,7 @@ dist-ssr/
 
 # Agent / workspace internal scratch
 .agents/
+.vercel/
 
 # Environment variables
 .env
