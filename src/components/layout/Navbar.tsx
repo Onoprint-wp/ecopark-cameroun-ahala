@@ -147,7 +147,7 @@ export const Navbar: React.FC = () => {
           </button>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center justify-center gap-0.5 2xl:gap-1.5 min-w-0" aria-label="Navigation principale">
+          <nav className="hidden xl:flex items-center justify-center gap-1 shrink-0" aria-label="Navigation principale">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeView === item.id;
@@ -156,13 +156,13 @@ export const Navbar: React.FC = () => {
                   key={item.id}
                   data-motion-target={item.id === 'pass' ? 'nav-pass' : undefined}
                   onClick={(e) => handleNavClick(item.id, e)}
-                  className={`flex items-center gap-1.5 px-2 2xl:px-3 py-2 rounded-lg text-xs 2xl:text-sm font-semibold whitespace-nowrap shrink-0 transition-all duration-150 relative cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-xs xl:text-[13px] font-semibold whitespace-nowrap shrink-0 transition-all duration-150 relative cursor-pointer ${
                     isActive
                       ? 'text-[var(--brand-primary)] bg-[var(--bg-surface)] font-bold shadow-xs'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)]/60'
                   }`}
                 >
-                  <Icon className={`w-3.5 h-3.5 2xl:w-4 2xl:h-4 shrink-0 ${isActive ? 'text-[var(--brand-primary)]' : 'text-[var(--text-muted)]'}`} />
+                  <Icon className={`w-3.5 h-3.5 shrink-0 ${isActive ? 'text-[var(--brand-primary)]' : 'text-[var(--text-muted)]'}`} />
                   <span>{item.label}</span>
                   {item.id === 'pass' && activePassesCount > 0 && (
                     <span className="ml-0.5 px-1.5 py-0.2 rounded-full bg-[var(--brand-primary)]/15 text-[var(--brand-primary)] font-mono text-[10px] font-bold">
@@ -178,7 +178,7 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Telemetry Badges & Quick Controls */}
-          <div className="flex items-center gap-1.5 2xl:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 shrink-0">
             {/* Live Occupancy Liquid Gauge Badge (« Respiration écologique ») */}
             <div
               data-motion-target="nav-quota"
@@ -232,7 +232,6 @@ export const Navbar: React.FC = () => {
               </svg>
               <span>
                 {Math.round(animatedOccupancy)}/{telemetry.dailyCapacityMax}
-                <span className="opacity-80 hidden 2xl:inline"> ({occupancyPercent}%)</span>
               </span>
             </div>
 
@@ -242,9 +241,7 @@ export const Navbar: React.FC = () => {
               title="Météo locale et qualité de l'air à Yaoundé-Ahala"
             >
               <Wind className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400 shrink-0" />
-              <span>
-                {telemetry.temperatureC}°C<span className="hidden 2xl:inline"> · Ahala</span>
-              </span>
+              <span>{telemetry.temperatureC}°C</span>
             </div>
 
             {/* Quick Theme Switcher */}
@@ -268,17 +265,19 @@ export const Navbar: React.FC = () => {
             <div className="relative">
               <button
                 onClick={() => setDaltonismDropdownOpen(!daltonismDropdownOpen)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-colors shadow-2xs cursor-pointer ${
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-colors shadow-2xs cursor-pointer ${
                   daltonismMode !== 'normal'
                     ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] font-semibold'
                     : 'border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)]'
                 }`}
-                title="Filtres d'accessibilité visuelle (Deutéranopie, Protanopie, Tritanopie)"
+                title={`Filtres d'accessibilité visuelle (${daltonismLabels[daltonismMode]})`}
                 aria-expanded={daltonismDropdownOpen}
                 aria-label="Sélecteur d'accessibilité daltonisme"
               >
                 <Eye className="w-4 h-4" />
-                <span className="hidden 2xl:inline">{daltonismLabels[daltonismMode]}</span>
+                {daltonismMode !== 'normal' && (
+                  <span className="hidden xl:inline">{daltonismLabels[daltonismMode]}</span>
+                )}
                 <ChevronDown className="w-3 h-3 opacity-70" />
               </button>
 
@@ -311,7 +310,7 @@ export const Navbar: React.FC = () => {
             {/* Atelier Chromatique High-Visibility Button */}
             <button
               onClick={() => setColorDrawerOpen(!colorDrawerOpen)}
-              className="flex items-center gap-1.5 px-2.5 2xl:px-3 py-1.5 rounded-lg bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-secondary)] text-xs font-semibold whitespace-nowrap shrink-0 shadow-xs transition-transform active:scale-95 cursor-pointer"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-secondary)] text-xs font-semibold whitespace-nowrap shrink-0 shadow-xs transition-transform active:scale-95 cursor-pointer"
               title="Ouvrir le laboratoire chromatique Adobe Color & testeur de contraste WCAG"
               aria-label="Ouvrir l'Atelier Chromatique"
             >
