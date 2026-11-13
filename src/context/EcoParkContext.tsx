@@ -33,17 +33,17 @@ import {
 } from '../data/initialParkData';
 import { useTheme } from './ThemeContext';
 
-// Storage keys under strict eco_park_v1_* namespace
+// Storage keys under strict eco_park_ahala_v2_* namespace
 export const STORAGE_KEYS = {
-  TRAILS: 'eco_park_v1_trails',
-  TELEMETRY: 'eco_park_v1_telemetry',
-  PASSES: 'eco_park_v1_passes',
-  REPORTS: 'eco_park_v1_reports',
-  ACTIVE_VIEW: 'eco_park_v1_active_view',
-  SELECTED_TRAIL: 'eco_park_v1_selected_trail',
-  SELECTED_SPECIES: 'eco_park_v1_selected_species',
-  ACTIVE_PASS_ID: 'eco_park_v1_active_pass_id',
-  DRAWER_OPEN: 'eco_park_v1_drawer_open',
+  TRAILS: 'eco_park_ahala_v2_trails',
+  TELEMETRY: 'eco_park_ahala_v2_telemetry',
+  PASSES: 'eco_park_ahala_v2_passes',
+  REPORTS: 'eco_park_ahala_v2_reports',
+  ACTIVE_VIEW: 'eco_park_ahala_v2_active_view',
+  SELECTED_TRAIL: 'eco_park_ahala_v2_selected_trail',
+  SELECTED_SPECIES: 'eco_park_ahala_v2_selected_species',
+  ACTIVE_PASS_ID: 'eco_park_ahala_v2_active_pass_id',
+  DRAWER_OPEN: 'eco_park_ahala_v2_drawer_open',
 };
 
 // Resilient safeLocalStorage helper wrapping all browser storage operations
@@ -130,7 +130,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
   );
 
   const [activePassId, setActivePassIdState] = useState<string | null>(() =>
-    safeLocalStorage.getItem<string | null>(STORAGE_KEYS.ACTIVE_PASS_ID, 'ECO-2026-8942-XF')
+    safeLocalStorage.getItem<string | null>(STORAGE_KEYS.ACTIVE_PASS_ID, 'ECP-2026-8942')
   );
 
   // Citizen Reports state
@@ -220,9 +220,8 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
   const bookPass = useCallback(
     (input: BookingInput): EcoPass => {
-      const randomSuffix = Math.random().toString(36).substring(2, 4).toUpperCase();
-      const randomDigits = Math.floor(1000 + Math.random() * 9000);
-      const newId = `ECO-2026-${randomDigits}-${randomSuffix}`;
+      const randomDigits = Math.floor(10000 + Math.random() * 90000);
+      const newId = `ECP-2026-${randomDigits}`;
       const nowIso = new Date().toISOString();
 
       const newPass: EcoPass = {
@@ -230,7 +229,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
         id: newId,
         createdAt: nowIso,
         status: 'confirmed',
-        qrPayload: `ECOPARK:PASS:${newId}:DATE=${input.visitDate}:SLOT=${input.timeSlot}:GUESTS=${input.guestCount}:MODE=${input.mobilityMode}`,
+        qrPayload: `ECOPARK-AHALA:PASS:${newId}:DATE=${input.visitDate}:SLOT=${input.timeSlot}:GUESTS=${input.guestCount}:MODE=${input.mobilityMode}`,
       };
 
       setPassesState((prev) => {
@@ -361,7 +360,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, 'accueil');
     safeLocalStorage.setItem(STORAGE_KEYS.SELECTED_TRAIL, null);
     safeLocalStorage.setItem(STORAGE_KEYS.SELECTED_SPECIES, null);
-    safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_PASS_ID, 'ECO-2026-8942-XF');
+    safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_PASS_ID, 'ECP-2026-8942');
     safeLocalStorage.setItem(STORAGE_KEYS.DRAWER_OPEN, false);
 
     setTrailsState(INITIAL_TRAILS);
@@ -371,7 +370,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     setActiveViewState('accueil');
     setSelectedTrailIdState(null);
     setSelectedSpeciesIdState(null);
-    setActivePassIdState('ECO-2026-8942-XF');
+    setActivePassIdState('ECP-2026-8942');
     setColorDrawerOpenState(false);
   }, []);
 

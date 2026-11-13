@@ -62,7 +62,7 @@ export const BookingWizard: React.FC = () => {
 
   const [leadName, setLeadName] = useState<string>('');
   const [leadEmail, setLeadEmail] = useState<string>('');
-  const [leadPhone, setLeadPhone] = useState<string>('06 82 45 19 33');
+  const [leadPhone, setLeadPhone] = useState<string>('+237 672 56 45 98');
 
   // Step 3: Eco-Mobility & Charter
   const [mobilityMode, setMobilityMode] = useState<MobilityMode>('train');
@@ -243,7 +243,7 @@ export const BookingWizard: React.FC = () => {
             <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
               Parcours de Réservation Éco-Régulé
             </span>
-            <h2 className="font-['Fraunces'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-0.5">
+            <h2 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-0.5">
               Étape {currentStep} sur 3 :{' '}
               {currentStep === 1 && 'Expérience & Date Régulée'}
               {currentStep === 2 && 'Créneau Horodaté & Visiteurs'}
@@ -290,7 +290,7 @@ export const BookingWizard: React.FC = () => {
             <CheckCircle2 className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-['Fraunces'] text-lg font-bold">
+            <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold">
               Éco-Pass émis avec succès !
             </h3>
             <p className="text-xs text-emerald-800 dark:text-emerald-200 mt-1">
@@ -392,7 +392,7 @@ export const BookingWizard: React.FC = () => {
 
           {/* Experiences Grid */}
           <div className="space-y-3">
-            <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+            <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
               Sélectionnez votre formule de découverte
             </h3>
 
@@ -414,12 +414,12 @@ export const BookingWizard: React.FC = () => {
                         <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
                           {exp.badge}
                         </span>
-                        <span className="font-['Fraunces'] font-bold text-base text-[var(--text-primary)]">
-                          {exp.adultPrice} € <span className="text-xs font-normal text-[var(--text-muted)]">/ adulte</span>
+                        <span className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                          {formatEur(exp.adultPrice)} <span className="text-xs font-normal text-[var(--text-muted)]">/ adulte</span>
                         </span>
                       </div>
 
-                      <h4 className="font-['Fraunces'] text-base font-bold text-[var(--text-primary)]">
+                      <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
                         {exp.title}
                       </h4>
 
@@ -439,7 +439,7 @@ export const BookingWizard: React.FC = () => {
 
                     <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between">
                       <span className="text-[11px] text-[var(--text-muted)]">
-                        Enfant / PMR : {exp.childPrice} €
+                        Enfant (3–12 ans) : {formatEur(exp.childPrice)}
                       </span>
                       <div
                         className={`w-5 h-5 rounded-full border flex items-center justify-center ${
@@ -485,7 +485,7 @@ export const BookingWizard: React.FC = () => {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[var(--brand-primary)]" />
-              <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+              <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
                 Sélectionnez votre créneau d arrivée
               </h3>
             </div>
@@ -507,7 +507,7 @@ export const BookingWizard: React.FC = () => {
                       <div className="text-xs font-mono font-bold text-[var(--brand-primary)]">
                         {slot.period}
                       </div>
-                      <div className="font-['Fraunces'] font-bold text-base text-[var(--text-primary)] mt-1">
+                      <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)] mt-1">
                         {slot.label}
                       </div>
                       <p className="text-[11px] text-[var(--text-muted)] mt-1 leading-snug">
@@ -741,7 +741,7 @@ export const BookingWizard: React.FC = () => {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Leaf className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+                <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
                   Mode d acheminement vers le Parc (Bonus Éco-Mobilité)
                 </h3>
               </div>
@@ -799,7 +799,7 @@ export const BookingWizard: React.FC = () => {
 
           {/* Dynamic Price & Avoided CO2 Summary Card */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-4">
-            <h4 className="font-['Fraunces'] text-base font-bold text-[var(--text-primary)]">
+            <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
               Récapitulatif Écologique & Tarifaire
             </h4>
 
@@ -840,7 +840,7 @@ export const BookingWizard: React.FC = () => {
                 <span className="text-xs text-[var(--text-muted)]">
                   Total net à régler pour l émission de l Éco-Pass :
                 </span>
-                <div className="font-['Fraunces'] text-2xl font-bold text-[var(--brand-primary)]">
+                <div className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--brand-primary)]">
                   {formatEur(pricing.netTotalEur)}
                   <span className="text-xs font-normal text-[var(--text-muted)] ml-2">
                     ({formatEur(pricing.unitPriceEur)} / personne)

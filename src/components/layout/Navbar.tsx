@@ -1,5 +1,6 @@
 // ============================================================================
-// ECO-PARK STICKY NAVIGATION HEADER (src/components/layout/Navbar.tsx)
+// ECOPARK CAMEROUN (YAOUNDÉ – AHALA) — STICKY NAVIGATION HEADER
+// (src/components/layout/Navbar.tsx)
 // ============================================================================
 
 import React, { useState } from 'react';
@@ -19,6 +20,8 @@ import {
   QrCode,
   ShieldAlert,
   ChevronDown,
+  MapPin,
+  PhoneCall,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { ActiveView, DaltonismMode } from '../../types/ecosystem';
@@ -42,12 +45,12 @@ export const Navbar: React.FC = () => {
 
   // Nav views definition
   const NAV_ITEMS: { id: ActiveView; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: 'accueil', label: 'Accueil', icon: Trees },
-    { id: 'sentiers', label: 'Carte & Sentiers', icon: Compass },
-    { id: 'biodiversite', label: 'Biodiversité', icon: Eye },
-    { id: 'billetterie', label: 'Billetterie Éco-Pass', icon: Ticket },
-    { id: 'pass', label: 'Mon Pass & Terrain', icon: QrCode },
-    { id: 'ranger', label: 'Console Éco-Garde', icon: ShieldAlert },
+    { id: 'accueil', label: 'Accueil & 5 Pôles', icon: Trees },
+    { id: 'sentiers', label: 'Carte & Activités', icon: Compass },
+    { id: 'biodiversite', label: 'Zoo & Faune', icon: Eye },
+    { id: 'billetterie', label: 'Réserver (FCFA)', icon: Ticket },
+    { id: 'pass', label: 'Mon Pass QR', icon: QrCode },
+    { id: 'ranger', label: 'Supervision', icon: ShieldAlert },
   ];
 
   // Occupancy metrics and dynamic color status
@@ -81,24 +84,51 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-canvas)]/90 border-b border-[var(--border-default)] transition-colors duration-200">
+    <header className="sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-canvas)]/95 border-b border-[var(--border-default)] transition-colors duration-200">
+      {/* Official Production Topbar: Yaoundé – Ahala Barrière */}
+      <div className="bg-[#1B4332] text-[#E9F5ED] text-[11px] py-1.5 px-4 border-b border-[#2D6A4F]/60">
+        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2 font-medium">
+            <MapPin className="w-3.5 h-3.5 text-[#74C69D] shrink-0" />
+            <span>
+              <strong>Yaoundé – Ahala Barrière (Face station Tradex, RN3)</strong> • Parc : Mar–Dim 09h00–18h00 • Hôtels 24h/24 • Restaurant 07h–23h • Parking gratuit
+            </span>
+          </div>
+          <div className="hidden md:flex items-center gap-4 font-mono text-[#B7E4C7]">
+            <a
+              href="https://wa.me/237672564598"
+              target="_blank"
+              rel="noreferrer"
+              className="hover:text-white flex items-center gap-1"
+            >
+              <PhoneCall className="w-3 h-3 text-[#74C69D]" />
+              <span>WhatsApp : +237 672 56 45 98 / +237 694 60 14 49</span>
+            </a>
+            <span>•</span>
+            <span>info@ecopark-yaounde.com</span>
+          </div>
+        </div>
+      </div>
+
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16 md:h-20 gap-2">
-          {/* Brand Logo & Reserve Title */}
+          {/* Official Brand Logo & Title */}
           <button
             onClick={() => handleNavClick('accueil')}
-            className="flex items-center gap-3 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg p-1"
-            aria-label="ECO-PARK - Retour à l'accueil"
+            className="flex items-center gap-3 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg p-1 cursor-pointer"
+            aria-label="ECOPARK CAMEROUN - Retour à l'accueil"
           >
-            <div className="w-10 h-10 md:w-11 md:h-11 rounded-xl bg-gradient-to-br from-[var(--color-leaf-500)] to-[var(--color-forest-800)] flex items-center justify-center text-white shadow-md shadow-emerald-950/20 group-hover:scale-105 transition-transform duration-200">
-              <Trees className="w-5 h-5 md:w-6 md:h-6" />
-            </div>
+            <img
+              src="/images/ahala/cropped-LOGO-ECOPARK-Youtube.png"
+              alt="Logo Officiel ECOPARK CAMEROUN"
+              className="w-10 h-10 md:w-11 md:h-11 rounded-full object-cover border-2 border-[var(--brand-primary)] shadow-sm group-hover:scale-105 transition-transform duration-200 bg-white"
+            />
             <div className="flex flex-col">
-              <span className="font-['Fraunces'] font-bold text-lg md:text-xl tracking-tight text-[var(--text-primary)] leading-none">
-                ECO-PARK
+              <span className="font-['Barlow_Semi_Condensed'] font-bold text-lg md:text-xl tracking-tight text-[var(--text-primary)] leading-none">
+                ECOPARK CAMEROUN
               </span>
-              <span className="text-[10px] md:text-xs text-[var(--text-muted)] font-medium tracking-wide uppercase mt-0.5">
-                Sanctuaire & Réserve
+              <span className="text-[10px] md:text-xs text-[var(--text-muted)] font-semibold tracking-wide uppercase mt-0.5">
+                Yaoundé – Ahala • Dès 500 FCFA
               </span>
             </div>
           </button>
@@ -112,9 +142,9 @@ export const Navbar: React.FC = () => {
                 <button
                   key={item.id}
                   onClick={() => handleNavClick(item.id)}
-                  className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all duration-150 relative ${
+                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-semibold transition-all duration-150 relative cursor-pointer ${
                     isActive
-                      ? 'text-[var(--brand-primary)] bg-[var(--bg-surface)] font-semibold shadow-xs'
+                      ? 'text-[var(--brand-primary)] bg-[var(--bg-surface)] font-bold shadow-xs'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)]/60'
                   }`}
                 >
@@ -129,11 +159,11 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Telemetry Badges & Quick Controls */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Live Occupancy Gauge Badge */}
             <div
-              className={`hidden md:flex items-center gap-2 px-2.5 py-1.5 rounded-lg border text-xs font-mono font-medium shadow-2xs ${occupancyBadgeStyle}`}
-              title="Affluence instantanée de la réserve sur le quota quotidien"
+              className={`hidden md:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-mono font-medium shadow-2xs ${occupancyBadgeStyle}`}
+              title="Affluence instantanée du parc à Yaoundé-Ahala"
             >
               <Users className="w-3.5 h-3.5" />
               <span>
@@ -142,19 +172,19 @@ export const Navbar: React.FC = () => {
               </span>
             </div>
 
-            {/* Air Quality IQA Badge */}
+            {/* Weather & Temperature Badge */}
             <div
               className="hidden sm:flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-sky-300 bg-sky-50 text-sky-900 dark:border-sky-800 dark:bg-sky-950/70 dark:text-sky-200 text-xs font-mono font-medium shadow-2xs"
-              title="Indice de Qualité de l'Air (IQA) mesuré en temps réel au cœur du sanctuaire"
+              title="Météo locale et qualité de l'air à Yaoundé-Ahala"
             >
               <Wind className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />
-              <span>IQA {telemetry.airQualityIqa} · {telemetry.airQualityStatus}</span>
+              <span>{telemetry.temperatureC}°C · Ahala</span>
             </div>
 
             {/* Quick Theme Switcher */}
             <button
               onClick={cycleTheme}
-              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs font-medium transition-colors shadow-2xs"
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)] text-xs font-medium transition-colors shadow-2xs cursor-pointer"
               title={`Thème actuel : ${themeMode} (${effectiveTheme}). Cliquer pour basculer.`}
               aria-label="Basculer le thème clair, sombre ou automatique"
             >
@@ -172,7 +202,7 @@ export const Navbar: React.FC = () => {
             <div className="relative">
               <button
                 onClick={() => setDaltonismDropdownOpen(!daltonismDropdownOpen)}
-                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-colors shadow-2xs ${
+                className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg border text-xs font-medium transition-colors shadow-2xs cursor-pointer ${
                   daltonismMode !== 'normal'
                     ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] font-semibold'
                     : 'border-[var(--border-default)] bg-[var(--bg-surface)] hover:bg-[var(--bg-elevated)] text-[var(--text-primary)]'
@@ -182,7 +212,7 @@ export const Navbar: React.FC = () => {
                 aria-label="Sélecteur d'accessibilité daltonisme"
               >
                 <Eye className="w-4 h-4" />
-                <span className="hidden xl:inline">{daltonismLabels[daltonismMode]}</span>
+                <span className="hidden 2xl:inline">{daltonismLabels[daltonismMode]}</span>
                 <ChevronDown className="w-3 h-3 opacity-70" />
               </button>
 
@@ -198,7 +228,7 @@ export const Navbar: React.FC = () => {
                         setDaltonismMode(mode);
                         setDaltonismDropdownOpen(false);
                       }}
-                      className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-[var(--bg-surface)] ${
+                      className={`w-full text-left px-3 py-2 text-xs flex items-center justify-between hover:bg-[var(--bg-surface)] cursor-pointer ${
                         daltonismMode === mode
                           ? 'text-[var(--brand-primary)] font-bold bg-[var(--brand-primary)]/10'
                           : 'text-[var(--text-primary)]'
@@ -215,7 +245,7 @@ export const Navbar: React.FC = () => {
             {/* Atelier Chromatique High-Visibility Button */}
             <button
               onClick={() => setColorDrawerOpen(!colorDrawerOpen)}
-              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-secondary)] text-xs font-semibold shadow-xs transition-transform active:scale-95"
+              className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[var(--brand-primary)] text-white hover:bg-[var(--brand-secondary)] text-xs font-semibold shadow-xs transition-transform active:scale-95 cursor-pointer"
               title="Ouvrir le laboratoire chromatique Adobe Color & testeur de contraste WCAG"
               aria-label="Ouvrir l'Atelier Chromatique"
             >
@@ -241,7 +271,7 @@ export const Navbar: React.FC = () => {
         <div className="xl:hidden border-t border-[var(--border-default)] bg-[var(--bg-canvas)] px-4 pt-3 pb-6 space-y-2 shadow-lg animate-in slide-in-from-top-4 duration-200">
           <div className="flex items-center justify-between py-2 px-1 text-xs text-[var(--text-muted)] border-b border-[var(--border-default)] mb-2 font-mono">
             <span>Affluence: {telemetry.currentOccupancy}/{telemetry.dailyCapacityMax} ({occupancyPercent}%)</span>
-            <span>IQA: {telemetry.airQualityIqa} · {telemetry.airQualityStatus}</span>
+            <span>{telemetry.temperatureC}°C · Ahala RN3</span>
           </div>
 
           <div className="grid grid-cols-1 gap-1">

@@ -404,7 +404,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="810"
                 y="65"
                 fill="#E9F5ED"
-                className="font-['Fraunces'] font-bold text-[13px] tracking-wide"
+                className="font-['Barlow_Semi_Condensed'] font-bold text-[13px] tracking-wide"
                 opacity="0.9"
               >
                 Crête des Cèdres (420m)
@@ -413,7 +413,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="620"
                 y="150"
                 fill="#B7E4C7"
-                className="font-['Fraunces'] font-semibold text-[11px]"
+                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
                 opacity="0.8"
               >
                 Chaos Géologique & Karsts
@@ -422,7 +422,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="470"
                 y="345"
                 fill="#B7E4C7"
-                className="font-['Fraunces'] font-semibold text-[12px]"
+                className="font-['Barlow_Semi_Condensed'] font-semibold text-[12px]"
                 opacity="0.8"
               >
                 Canopée Primaire
@@ -431,7 +431,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="320"
                 y="325"
                 fill="#8EBAA0"
-                className="font-['Fraunces'] font-semibold text-[11px]"
+                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
                 opacity="0.75"
               >
                 Vallée des Fougères
@@ -440,7 +440,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="260"
                 y="630"
                 fill="#8EBAA0"
-                className="font-['Fraunces'] font-semibold text-[11px]"
+                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
                 opacity="0.75"
               >
                 Marais & Roselières
@@ -449,7 +449,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="130"
                 y="370"
                 fill="#8EBAA0"
-                className="font-['Fraunces'] font-semibold text-[11px]"
+                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
                 opacity="0.75"
               >
                 Vallon Bocager PMR
@@ -698,7 +698,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 <span className="text-[10px] font-mono font-semibold uppercase text-[#74C69D]">
                   {activePoi.categoryLabel} · Alt. {activePoi.altitudeM} m
                 </span>
-                <h4 className="font-['Fraunces'] text-base font-bold text-white">
+                <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-white">
                   {activePoi.name}
                 </h4>
               </div>

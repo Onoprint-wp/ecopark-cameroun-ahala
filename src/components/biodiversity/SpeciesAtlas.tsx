@@ -151,24 +151,22 @@ export const SpeciesAtlas: React.FC = () => {
           <div className="space-y-3 max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-mono text-[#B7E4C7]">
               <Sparkles className="w-3.5 h-3.5 text-[#74C69D]" />
-              <span>Inventaire Scientifique Permanent · 8 Espèces Clés</span>
+              <span>Jardin Zoologique, Bassins Piscicoles &amp; Flore Tropicale · Yaoundé – Ahala</span>
             </div>
 
-            <h1 className="font-['Fraunces'] text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
-              Atlas de la Biodiversité Endémique
+            <h1 className="font-['Barlow_Semi_Condensed'] text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
+              Jardin Zoologique &amp; Atlas de la Biodiversité d&apos;Ahala
             </h1>
 
             <p className="text-sm sm:text-base text-[#E9F5ED]/90 leading-relaxed font-sans">
-              Le sanctuaire d ECO-PARK abrite des espèces rares et reliques glaciaires protégées
-              au titre des directives européennes. Chaque fiche rassemble critères botaniques,
-              indices de terrain, créneaux optimaux d observation et règles de quiétude éco-garde.
+              Découvrez les pensionnaires emblématiques d&apos;ECOPARK CAMEROUN à Yaoundé-Ahala : le Gorille des plaines <strong>« ToTo »</strong>, nos chimpanzés, les tortues géantes, les tilapias et carpes de nos bassins (« Du bassin à la braise »), les chevaux du manège équestre et notre flore tropicale.
             </p>
           </div>
 
           <div className="p-4 rounded-2xl bg-[#1F2421]/90 border border-[#36403A] text-xs font-mono text-[#8EBAA0] space-y-1 self-start md:self-auto shrink-0 shadow-lg">
-            <div className="text-white font-bold text-sm">Protocole Sentinelle</div>
-            <div>8 taxons suivis par bio-acoustique</div>
-            <div>Statuts UICN validés 2026</div>
+            <div className="text-white font-bold text-sm">Visites Guidées &amp; Écoles</div>
+            <div>Entrée Zoo : 1 000 FCFA Ad. / 500 FCFA Enf.</div>
+            <div>Forfait Scolaire : 1 350 FCFA / élève</div>
           </div>
         </div>
       </ImmersiveSection>
@@ -270,6 +268,16 @@ export const SpeciesAtlas: React.FC = () => {
               >
                 {/* Header: Common Name, Scientific Name & IUCN Badge */}
                 <div className="space-y-3">
+                  {sp.photoUrl && (
+                    <div className="h-48 w-full rounded-xl overflow-hidden bg-[#1F2421] mb-2 border border-[var(--border-default)]">
+                      <img
+                        src={sp.photoUrl}
+                        alt={sp.commonName}
+                        className="w-full h-full object-cover"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
                   <div className="flex items-start justify-between gap-3">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
@@ -281,7 +289,7 @@ export const SpeciesAtlas: React.FC = () => {
                         </span>
                       </div>
 
-                      <h2 className="font-['Fraunces'] text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+                      <h2 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
                         {sp.commonName}
                       </h2>
 

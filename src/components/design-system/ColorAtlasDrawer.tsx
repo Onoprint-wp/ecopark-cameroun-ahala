@@ -313,7 +313,7 @@ export const ColorAtlasDrawer: React.FC = () => {
               <div>
                 <h2
                   id="color-atlas-title"
-                  className="font-['Fraunces'] font-bold text-lg sm:text-xl text-[var(--text-primary)] leading-tight"
+                  className="font-['Barlow_Semi_Condensed'] font-bold text-lg sm:text-xl text-[var(--text-primary)] leading-tight"
                 >
                   Atelier Chromatique
                 </h2>
@@ -427,7 +427,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                             style={{ backgroundColor: pillar.hex }}
                           />
                           <div>
-                            <h3 className="font-['Fraunces'] font-bold text-base text-[var(--text-primary)]">
+                            <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
                               {pillar.name}
                             </h3>
                             <div className="text-xs text-[var(--text-muted)]">
@@ -581,7 +581,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                 {/* 1. Explored Adobe Palettes */}
                 <div className="space-y-3">
                   <div className="flex items-center justify-between">
-                    <h3 className="font-['Fraunces'] font-bold text-sm text-[var(--text-primary)]">
+                    <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-sm text-[var(--text-primary)]">
                       Palettes Thématiques Extraites d Adobe Color Explore
                     </h3>
                     <span className="text-[11px] text-[var(--text-muted)] font-mono">
@@ -647,7 +647,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                 <div className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
                   <div className="flex items-center justify-between">
                     <div>
-                      <h3 className="font-['Fraunces'] font-bold text-base text-[var(--text-primary)]">
+                      <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
                         Calculateur de Contraste WCAG 2.1 en Temps Réel
                       </h3>
                       <p className="text-xs text-[var(--text-muted)]">
@@ -743,7 +743,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                     <div className="text-[10px] font-mono font-bold uppercase tracking-wider opacity-75">
                       Aperçu de Rendu Typographique &amp; Composant
                     </div>
-                    <div className="font-['Fraunces'] text-xl sm:text-2xl font-bold leading-tight">
+                    <div className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold leading-tight">
                       Forêt &amp; Canopée Sauvage ECO-PARK
                     </div>
                     <p className="text-xs leading-relaxed max-w-lg opacity-90 font-sans">
@@ -773,7 +773,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                       <div className="text-[10px] text-[var(--text-muted)] font-mono uppercase font-semibold">
                         Ratio Mathématique W3C
                       </div>
-                      <div className="text-3xl font-['Fraunces'] font-bold text-[var(--text-primary)]">
+                      <div className="text-3xl font-['Barlow_Semi_Condensed'] font-bold text-[var(--text-primary)]">
                         {verdict.ratioFormatted}
                       </div>
                     </div>

@@ -186,7 +186,7 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
             </span>
             {statusBadge()}
           </div>
-          <h3 className="font-['Fraunces'] text-lg sm:text-xl font-bold text-[var(--text-primary)]">
+          <h3 className="font-['Barlow_Semi_Condensed'] text-lg sm:text-xl font-bold text-[var(--text-primary)]">
             {activeTrail.name}
           </h3>
           <p className="text-xs text-[var(--text-muted)] italic font-serif">

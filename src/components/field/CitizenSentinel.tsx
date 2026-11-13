@@ -51,8 +51,8 @@ export const CitizenSentinel: React.FC = () => {
   const [landmark, setLandmark] = useState<string>('');
   const [reporterName, setReporterName] = useState<string>('Sentinelle #' + Math.floor(100 + Math.random() * 900));
 
-  // Simulated GPS Coordinates
-  const [gpsCoordinates, setGpsCoordinates] = useState<string>('[GPS 45.892° N, 6.128° E - Alt. 840m]');
+  // Simulated GPS Coordinates (Yaoundé – Ahala Barrière, RN3)
+  const [gpsCoordinates, setGpsCoordinates] = useState<string>('[GPS 3.792° N, 11.488° E - Alt. 725m · Ahala RN3]');
   const [gpsRefreshing, setGpsRefreshing] = useState<boolean>(false);
 
   // Simulated Photo Attachment
@@ -67,30 +67,30 @@ export const CitizenSentinel: React.FC = () => {
   const [feedTrailFilter, setFeedTrailFilter] = useState<string>('all');
   const [feedStatusFilter, setFeedStatusFilter] = useState<string>('all');
 
-  // Photo presets with realistic descriptions
+  // Photo presets with realistic descriptions at Yaoundé-Ahala
   const PHOTO_PRESETS = [
     {
       id: 'photo-faune-1',
-      title: 'Empreinte de Loutre d Europe',
-      meta: 'Sable humide · Berges du ruisseau',
+      title: 'Animation au Sanctuaire du Gorille « ToTo »',
+      meta: 'Jardin Zoologique d Ahala · Soigneur présent',
       accent: '#52B788',
     },
     {
       id: 'photo-obstacle-1',
-      title: 'Épicéa déraciné en travers du sentier',
-      meta: 'Obstacle à 1.5m de hauteur · Passage délicat',
+      title: 'Palme tombée près de l embarcadère des pirogues',
+      meta: 'Quai du lac d Ahala · Intervention entretien',
       accent: '#D48359',
     },
     {
       id: 'photo-flore-1',
-      title: 'Station de Sabot de Vénus en fleur',
-      meta: 'Clairière calcaire · 4 individus intacts',
+      title: 'Récolte bio sur la parcelle CFP MINEFOP',
+      meta: 'Ferme-école Agroécologie · Légumes du Château des Saveurs',
       accent: '#357A5B',
     },
     {
       id: 'photo-meteo-1',
-      title: 'Ravinement et coulée de boue',
-      meta: 'Après fortes pluies · Risque de glissade',
+      title: 'Averse tropicale passagère sur la Piscine Semi-Olympique',
+      meta: 'Bassin sécurisé par les maîtres-nageurs',
       accent: '#E63946',
     },
   ];
@@ -99,10 +99,10 @@ export const CitizenSentinel: React.FC = () => {
   const refreshGpsLocation = () => {
     setGpsRefreshing(true);
     setTimeout(() => {
-      const lat = (45.885 + Math.random() * 0.02).toFixed(3);
-      const lon = (6.12 + Math.random() * 0.02).toFixed(3);
-      const alt = Math.floor(750 + Math.random() * 450);
-      setGpsCoordinates(`[GPS ${lat}° N, ${lon}° E - Alt. ${alt}m]`);
+      const lat = (3.788 + Math.random() * 0.008).toFixed(3);
+      const lon = (11.484 + Math.random() * 0.008).toFixed(3);
+      const alt = Math.floor(710 + Math.random() * 50);
+      setGpsCoordinates(`[GPS ${lat}° N, ${lon}° E - Alt. ${alt}m · Ahala RN3]`);
       setGpsRefreshing(false);
     }, 400);
   };
@@ -271,7 +271,7 @@ export const CitizenSentinel: React.FC = () => {
         <div>
           <div className="flex items-center gap-2">
             <ShieldAlert className="w-5 h-5 text-[var(--brand-primary)]" />
-            <h2 className="font-['Fraunces'] text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+            <h2 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
               Sentinelle Nature &amp; Veille Participative
             </h2>
           </div>
@@ -329,7 +329,7 @@ export const CitizenSentinel: React.FC = () => {
 
           {/* Category Pill Radio */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
-            <h3 className="font-['Fraunces'] text-base font-bold text-[var(--text-primary)]">
+            <h3 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
               1. Type d observation constatée sur le terrain
             </h3>
 
@@ -374,7 +374,7 @@ export const CitizenSentinel: React.FC = () => {
 
           {/* Trail & Location Coordinates */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
-            <h3 className="font-['Fraunces'] text-base font-bold text-[var(--text-primary)]">
+            <h3 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
               2. Localisation précise sur le tracé
             </h3>
 
@@ -438,7 +438,7 @@ export const CitizenSentinel: React.FC = () => {
 
           {/* Details, Severity & Photo */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
-            <h3 className="font-['Fraunces'] text-base font-bold text-[var(--text-primary)]">
+            <h3 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
               3. Détails &amp; Photo naturaliste
             </h3>
 
@@ -644,7 +644,7 @@ export const CitizenSentinel: React.FC = () => {
             {filteredReports.length === 0 ? (
               <div className="p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center space-y-2">
                 <Sparkles className="w-8 h-8 text-[var(--brand-primary)] mx-auto" />
-                <h4 className="font-['Fraunces'] font-bold text-base text-[var(--text-primary)]">
+                <h4 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
                   Aucun signalement ne correspond à ces critères
                 </h4>
                 <p className="text-xs text-[var(--text-muted)]">
@@ -680,7 +680,7 @@ export const CitizenSentinel: React.FC = () => {
 
                     {/* Report Content */}
                     <div className="space-y-2">
-                      <h4 className="font-['Fraunces'] text-base sm:text-lg font-bold text-[var(--text-primary)]">
+                      <h4 className="font-['Barlow_Semi_Condensed'] text-base sm:text-lg font-bold text-[var(--text-primary)]">
                         {report.title}
                       </h4>
 

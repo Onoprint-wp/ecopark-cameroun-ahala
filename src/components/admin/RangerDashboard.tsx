@@ -82,11 +82,11 @@ export const RangerDashboard: React.FC = () => {
   const [closureReasonInput, setClosureReasonInput] = useState<string>('');
 
   const CLOSURE_PRESETS = [
-    'Nidification Aigle botté (Arrêté de quiétude préfectoral)',
-    'Éboulement rocheux instable suite aux intempéries',
-    'Arbre centenaire menaçant de choir en travers du sentier',
-    'Risque incendie sévère — Canicule et sécheresse extrême',
-    'Crue du ruisseau des Mousses & passerelle submergée',
+    'Accès réservé aux résidents des Cités Hôtelières Ewondo, Chanthel & Bene',
+    'Privatisation événementielle — Salle Polyvalente Menkii Essomba Anton (500 places)',
+    'Travaux pratiques d alevinage en cours avec les apprenants du CFP MINEFOP',
+    'Repos biologique hebdomadaire du lundi & maintenance préventive des bassins',
+    'Entretien des berges du lac d Ahala et contrôle des gilets de pirogue',
   ];
 
   const handleOpenClosureDialog = (trailId: string, currentReason?: string) => {
@@ -381,7 +381,7 @@ export const RangerDashboard: React.FC = () => {
               <ShieldAlert className="w-4 h-4 text-amber-400" />
               <span>Poste de Commandement Central</span>
             </div>
-            <h1 className="font-['Fraunces'] text-2xl sm:text-4xl font-bold text-white mt-1">
+            <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
               Console de Supervision Éco-Garde
             </h1>
           </div>
@@ -408,7 +408,7 @@ export const RangerDashboard: React.FC = () => {
                   VHF CANAL 15 ACTIF
                 </span>
               </div>
-              <h1 className="font-['Fraunces'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-0.5">
+              <h1 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-0.5">
                 Garde Chef : Thomas D. (#GARDE-04)
               </h1>
               <p className="text-xs text-[var(--text-muted)]">
@@ -445,7 +445,7 @@ export const RangerDashboard: React.FC = () => {
                 </div>
                 <h2
                   id="quota-regulator-title"
-                  className="font-['Fraunces'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+                  className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
                 >
                   Régulateur de Capacité Journalière
                 </h2>
@@ -460,7 +460,7 @@ export const RangerDashboard: React.FC = () => {
                 <div className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider">
                   Plafond Fixé
                 </div>
-                <div className="text-3xl sm:text-4xl font-['Fraunces'] font-bold text-[var(--brand-primary)]">
+                <div className="text-3xl sm:text-4xl font-['Barlow_Semi_Condensed'] font-bold text-[var(--brand-primary)]">
                   {telemetry.dailyCapacityMax}
                 </div>
                 <div className="text-xs text-[var(--text-muted)] mt-0.5">
@@ -572,7 +572,7 @@ export const RangerDashboard: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-[var(--brand-primary)]" />
-                  <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+                  <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
                     Histogramme d Affluence Horaire (08h00 - 20h00)
                   </h3>
                 </div>
@@ -681,7 +681,7 @@ export const RangerDashboard: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-[var(--brand-primary)]" />
-                <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+                <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
                   Part Modale Éco-Mobilité
                 </h3>
               </div>
@@ -759,7 +759,7 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="trail-status-manager-title"
-                className="font-['Fraunces'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+                className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
               >
                 Contrôle d État des 6 Sentiers Officiels
               </h2>
@@ -793,7 +793,7 @@ export const RangerDashboard: React.FC = () => {
                         <span className="text-[10px] font-mono uppercase text-[var(--brand-primary)] font-semibold">
                           {trail.biomeLabel}
                         </span>
-                        <h3 className="font-['Fraunces'] font-bold text-base text-[var(--text-primary)]">
+                        <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
                           {trail.name}
                         </h3>
                       </div>
@@ -902,7 +902,7 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="sentinel-moderation-title"
-                className="font-['Fraunces'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+                className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
               >
                 File de Modération des Signalements Sentinelle
               </h2>
@@ -1010,7 +1010,7 @@ export const RangerDashboard: React.FC = () => {
             {filteredReports.length === 0 ? (
               <div className="p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center space-y-2">
                 <Sparkles className="w-8 h-8 text-[var(--brand-primary)] mx-auto" />
-                <h4 className="font-['Fraunces'] font-bold text-base text-[var(--text-primary)]">
+                <h4 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
                   Aucun signalement ne correspond à ces critères
                 </h4>
                 <p className="text-xs text-[var(--text-muted)]">
@@ -1074,7 +1074,7 @@ export const RangerDashboard: React.FC = () => {
 
                     {/* Report Content */}
                     <div className="space-y-1.5">
-                      <h4 className="font-['Fraunces'] text-base sm:text-lg font-bold text-[var(--text-primary)]">
+                      <h4 className="font-['Barlow_Semi_Condensed'] text-base sm:text-lg font-bold text-[var(--text-primary)]">
                         {rep.title}
                       </h4>
                       <p className="text-xs text-[var(--text-muted)] leading-relaxed">
@@ -1168,7 +1168,7 @@ export const RangerDashboard: React.FC = () => {
                   <XCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-['Fraunces'] font-bold text-lg text-[var(--text-primary)]">
+                  <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-lg text-[var(--text-primary)]">
                     Fermeture d Urgence de Sentier
                   </h3>
                   <span className="text-xs text-[var(--text-muted)] font-mono">
@@ -1260,7 +1260,7 @@ export const RangerDashboard: React.FC = () => {
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-['Fraunces'] font-bold text-lg text-[var(--text-primary)]">
+                  <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-lg text-[var(--text-primary)]">
                     Clôturer &amp; Résoudre le Signalement
                   </h3>
                   <span className="text-xs text-[var(--text-muted)] font-mono">
@@ -1349,7 +1349,7 @@ export const RangerDashboard: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
                 <RotateCcw className="w-5 h-5" />
               </div>
-              <h3 className="font-['Fraunces'] font-bold text-lg text-[var(--text-primary)]">
+              <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-lg text-[var(--text-primary)]">
                 Réinitialisation Démo
               </h3>
             </div>

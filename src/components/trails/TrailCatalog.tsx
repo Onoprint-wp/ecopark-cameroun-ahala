@@ -190,7 +190,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
           <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
             Topographie & Randonnée Responsable
           </span>
-          <h2 className="font-['Fraunces'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
+          <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
             Catalogue des Sentiers de la Réserve
           </h2>
           <p className="text-xs text-[var(--text-muted)] mt-1">
@@ -313,7 +313,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
       {filteredTrails.length === 0 ? (
         <div className="p-12 text-center rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-3">
           <Trees className="w-10 h-10 text-[var(--text-muted)] mx-auto opacity-40" />
-          <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+          <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
             Aucun sentier ne correspond à vos filtres
           </h3>
           <p className="text-xs text-[var(--text-muted)]">
@@ -351,7 +351,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
                   </div>
 
                   <div>
-                    <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+                    <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
                       {trail.name}
                     </h3>
                     <p className="text-xs text-[var(--text-muted)] italic font-serif mt-0.5">

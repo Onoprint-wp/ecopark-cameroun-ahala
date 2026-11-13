@@ -70,12 +70,12 @@ export const DigitalEcoPass: React.FC = () => {
 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="850" viewBox="0 0 600 850">
   <defs>
     <style>
-      .title { font-family: 'Fraunces', serif; font-size: 24px; font-weight: bold; fill: #1B4332; }
-      .subtitle { font-family: 'DM Sans', sans-serif; font-size: 12px; fill: #36403A; }
-      .label { font-family: 'DM Sans', sans-serif; font-size: 11px; fill: #78847C; font-weight: 600; text-transform: uppercase; }
-      .value { font-family: 'DM Sans', sans-serif; font-size: 15px; fill: #1F2421; font-weight: bold; }
+      .title { font-family: 'Barlow Semi Condensed', serif; font-size: 24px; font-weight: bold; fill: #1B4332; }
+      .subtitle { font-family: 'Source Sans 3', sans-serif; font-size: 12px; fill: #36403A; }
+      .label { font-family: 'Source Sans 3', sans-serif; font-size: 11px; fill: #78847C; font-weight: 600; text-transform: uppercase; }
+      .value { font-family: 'Source Sans 3', sans-serif; font-size: 15px; fill: #1F2421; font-weight: bold; }
       .mono { font-family: 'JetBrains Mono', monospace; font-size: 14px; fill: #1B4332; font-weight: bold; }
-      .badge { font-family: 'DM Sans', sans-serif; font-size: 12px; fill: #52B788; font-weight: bold; }
+      .badge { font-family: 'Source Sans 3', sans-serif; font-size: 12px; fill: #52B788; font-weight: bold; }
     </style>
   </defs>
 
@@ -85,8 +85,8 @@ export const DigitalEcoPass: React.FC = () => {
   <rect x="0" y="90" width="600" height="20" fill="#1B4332"/>
 
   <!-- Header -->
-  <text x="30" y="45" font-family="'DM Sans', sans-serif" font-size="11" font-weight="bold" fill="#B7E4C7" letter-spacing="2">RÉSERVE FORESTIÈRE DU HAUT-CANTON</text>
-  <text x="30" y="80" class="title" fill="#FFFFFF">Éco-Pass Officiel d Accès Régulé</text>
+  <text x="30" y="45" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="bold" fill="#B7E4C7" letter-spacing="2">ECOPARK CAMEROUN · YAOUNDÉ – AHALA BARRIÈRE (RN3)</text>
+  <text x="30" y="80" class="title" fill="#FFFFFF">Pass QR Officiel d Accès (Dès 500 FCFA)</text>
 
   <!-- Pass ID & Status -->
   <text x="30" y="150" class="label">Identifiant Unique</text>
@@ -126,11 +126,11 @@ export const DigitalEcoPass: React.FC = () => {
   <text x="30" y="738" font-family="'JetBrains Mono', monospace" font-size="16" font-weight="bold" fill="#2D6A4F">+${currentPass.co2AvoidedKg} kg CO₂ évités</text>
 
   <text x="320" y="715" class="label">Montant Réglé (TTC)</text>
-  <text x="320" y="738" class="value">${currentPass.totalPriceEur.toFixed(2)} €</text>
+  <text x="320" y="738" class="value">${formatEur(currentPass.totalPriceEur)}</text>
 
   <!-- Footer Charter -->
   <rect x="30" y="775" width="540" height="50" rx="10" fill="#E9F5ED"/>
-  <text x="50" y="805" font-family="'DM Sans', sans-serif" font-size="11" fill="#1B4332">✓ Charte Zéro-Trace acceptée · Silence &amp; Quiétude des sentiers garantis</text>
+  <text x="50" y="805" font-family="'Source Sans 3', sans-serif" font-size="11" fill="#1B4332">✓ Garantie Météo RN3 (report gratuit 90j) · Orange Money / MTN MoMo / Guichet</text>
 </svg>`;
 
     const blob = new Blob([fullTicketSvg], { type: 'image/svg+xml;charset=utf-8' });
@@ -160,7 +160,7 @@ export const DigitalEcoPass: React.FC = () => {
           <Ticket className="w-8 h-8" />
         </div>
         <div>
-          <h2 className="font-['Fraunces'] text-2xl font-bold text-[var(--text-primary)]">
+          <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--text-primary)]">
             Aucun Éco-Pass enregistré
           </h2>
           <p className="text-xs text-[var(--text-muted)] mt-1.5 max-w-md mx-auto leading-relaxed">
@@ -281,10 +281,10 @@ export const DigitalEcoPass: React.FC = () => {
         >
           <div>
             <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#B7E4C7]">
-              RÉSERVE FORESTIÈRE DU HAUT-CANTON
+              ECOPARK CAMEROUN · YAOUNDÉ – AHALA BARRIÈRE (FACE TRADEX RN3)
             </span>
-            <h2 className="font-['Fraunces'] text-2xl font-bold mt-0.5">
-              Éco-Pass d Accès Sanctuaire
+            <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold mt-0.5">
+              Pass QR Officiel — Complexe Écologique &amp; Loisirs
             </h2>
           </div>
 
@@ -490,7 +490,7 @@ export const DigitalEcoPass: React.FC = () => {
           <div className="w-full max-w-md p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xl space-y-4">
             <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
               <AlertCircle className="w-6 h-6" />
-              <h3 className="font-['Fraunces'] text-lg font-bold text-[var(--text-primary)]">
+              <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
                 Annuler cet Éco-Pass ?
               </h3>
             </div>

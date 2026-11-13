@@ -1,5 +1,6 @@
 // ============================================================================
-// ECO-MOBILITY & CARBON ENGINE (src/utils/ecoMobility.ts)
+// ECOPARK CAMEROUN (YAOUNDÉ – AHALA) — OFFICIAL PRICING & ACCESS ENGINE
+// (src/utils/ecoMobility.ts)
 // ============================================================================
 
 import { ExperienceType, MobilityMode } from '../types/ecosystem';
@@ -20,60 +21,65 @@ export interface MobilityOption {
 export const MOBILITY_OPTIONS: MobilityOption[] = [
   {
     id: 'velo',
-    label: 'Vélo & Mobilité Douce',
-    shortLabel: 'Vélo / Douce',
-    description: 'Arrivée à vélo classique, VAE ou à pied depuis les gares et véloroutes.',
+    label: 'Tarif Groupe Constitué (20+ pers.) & Associations',
+    shortLabel: 'Groupe 20+ (-30%)',
+    description:
+      'Remise officielle de -30% dès 20 participants (Entrée Adulte à 700 FCFA au lieu de 1 000 FCFA) pour familles nombreuses, associations et comités.',
     discountPercent: 30,
-    co2AvoidedKgPerPerson: 10.5,
+    co2AvoidedKgPerPerson: 6.5,
     iconName: 'Bike',
-    carbonBadge: '-30% · 10.5 kg CO₂ évités / pers.',
-    ademeNote: 'Empreinte 0 g CO₂eq/km — Borne de recharge solaire et consigne gratuites sur place.',
+    carbonBadge: '-30% Groupe (dès 20 pers.)',
+    ademeNote: 'Avantage officiel EcoPark Ahala : Entrée Adulte ramenée à 700 FCFA (Enfant : 500 FCFA).',
     highlight: true,
   },
   {
     id: 'train',
-    label: 'Train Régional TER',
-    shortLabel: 'Train TER',
-    description: 'Ligne alpine avec arrêt direct en gare du Parc. Billet combiné SNCF / ECO-PARK.',
-    discountPercent: 25,
-    co2AvoidedKgPerPerson: 8.4,
+    label: 'Prévente Orange Money (#150#) / MTN MoMo (*126#)',
+    shortLabel: 'Orange Money / MTN MoMo',
+    description:
+      'Réservation mobile avec émission immédiate du Pass QR Code (ECP-2026-XXXXX) et file prioritaire sans attente au guichet d Ahala.',
+    discountPercent: 0,
+    co2AvoidedKgPerPerson: 4.2,
     iconName: 'Train',
-    carbonBadge: '-25% · 8.4 kg CO₂ évités / pers.',
-    ademeNote: 'Émissions TER : ~2.4 g CO₂eq/voyageur-km contre ~193 g pour une voiture thermique.',
+    carbonBadge: 'Coupe-File QR · Garantie Météo 90j',
+    ademeNote: 'Garantie Météo RN3 incluse : report 100 % gratuit pendant 90 jours ou remboursement Mobile Money ≥ 48h.',
     highlight: true,
   },
   {
     id: 'navette_electrique',
-    label: 'Navette Électrique du Parc',
-    shortLabel: 'Navette Électrique',
-    description: 'Navette 100% électrique alimentée par la ferme solaire de la réserve forestière.',
-    discountPercent: 20,
-    co2AvoidedKgPerPerson: 6.2,
+    label: 'Navette Climatisée EcoPark (Yaoundé ↔ Ahala)',
+    shortLabel: 'Navette Climatisée',
+    description:
+      'Liaison aller-retour depuis Yaoundé en navette climatisée (5, 18 ou 32 places) : 1 500 FCFA A/R adulte · 1 000 FCFA A/R enfant.',
+    discountPercent: 0,
+    co2AvoidedKgPerPerson: 5.8,
     iconName: 'Bus',
-    carbonBadge: '-20% · 6.2 kg CO₂ évités / pers.',
-    ademeNote: 'Navette intercommunale cadencée toutes les 20 min depuis les parkings relais aval.',
+    carbonBadge: 'Navette A/R : 1 500 FCFA Ad. / 1 000 FCFA Enf.',
+    ademeNote: 'Transport collectif sécurisé jusqu à l entrée d Ahala Barrière (en face de la station Tradex, RN3).',
   },
   {
     id: 'covoiturage',
-    label: 'Covoiturage (3 pers. minimum)',
-    shortLabel: 'Covoiturage (≥3)',
-    description: 'Arrivée groupée à 3 passagers ou plus dans un même véhicule partagé.',
-    discountPercent: 10,
-    co2AvoidedKgPerPerson: 4.1,
+    label: 'Véhicule Famille RN3 (Parking Gratuit Face Tradex)',
+    shortLabel: 'Parking Gratuit RN3',
+    description:
+      'Accès direct par route 100 % goudronnée (RN3, à 15 min du centre-ville de Yaoundé) avec grand parking gratuit sécurisé en face de la station Tradex Ahala.',
+    discountPercent: 0,
+    co2AvoidedKgPerPerson: 3.1,
     iconName: 'Users',
-    carbonBadge: '-10% · 4.1 kg CO₂ évités / pers.',
-    ademeNote: 'Division par 3 des émissions de circulation et réduction de l occupation des sols de stationnement.',
+    carbonBadge: 'Parking 100% Gratuit & Sécurisé',
+    ademeNote: 'Stationnement gratuit sous surveillance 24h/24 pour les visiteurs du parc, du restaurant et des hôtels.',
   },
   {
     id: 'voiture_solo',
-    label: 'Voiture Individuelle Thermique',
-    shortLabel: 'Voiture Solo',
-    description: 'Véhicule personnel standard thermique (sans partage de trajet).',
+    label: 'Paiement Espèces au Guichet d Ahala Barrière',
+    shortLabel: 'Espèces au Guichet',
+    description:
+      'Pré-enregistrement de votre Pass QR Code en ligne et règlement en espèces (FCFA) directement à la caisse principale à votre arrivée.',
     discountPercent: 0,
-    co2AvoidedKgPerPerson: 0,
+    co2AvoidedKgPerPerson: 1.5,
     iconName: 'Car',
-    carbonBadge: '0% réduction · 0 kg CO₂ évité',
-    ademeNote: 'Tarif plein sans bonus écologique. Contribution carbone intégrée aux actions de reforestation.',
+    carbonBadge: 'Règlement FCFA sur place',
+    ademeNote: 'Guichet ouvert du Mardi au Dimanche de 09h00 à 18h00 (Réception Hôtels & Restaurant ouverte 7j/7).',
   },
 ];
 
@@ -91,58 +97,62 @@ export interface ExperiencePricingDefinition {
 export const EXPERIENCES_CATALOG: ExperiencePricingDefinition[] = [
   {
     id: 'sentiers',
-    title: 'Accès Libre aux 6 Sentiers',
-    badge: 'Formule Découverte',
-    description: 'Accès illimité aux 6 sentiers balisés, points de vue et aires d observation ornithologiques.',
-    adultPrice: 12,
-    childPrice: 6,
-    pmrPrice: 6,
+    title: 'Entrée Parc & Jardin Zoologique Seul',
+    badge: 'Tarif Officiel Guichet',
+    description:
+      'Accès aux allées botaniques ombragées, au Jardin Zoologique (Gorille « ToTo », chimpanzés, tortues) et aux espaces de détente au bord du lac.',
+    adultPrice: 1000,
+    childPrice: 500,
+    pmrPrice: 500,
     features: [
-      'Accès aux 6 parcours de la réserve',
-      'Carte vectorielle et profil altimétrique',
-      'Accès libre aux observatoires faune',
+      'Jardin Zoologique (Gorille ToTo, chimpanzés, tortues)',
+      'Promenade sous les allées forestières & bord du lac',
+      'Gratuit (0 FCFA) pour les tout-petits de moins de 3 ans',
     ],
   },
   {
     id: 'eco_guide',
-    title: 'Sortie Naturaliste avec Éco-Garde',
-    badge: 'Immersion Faune & Flore',
-    description: 'Sortie de 3 heures en petit groupe (max 12 pers.) guidée par un garde-forestier certifié.',
-    adultPrice: 24,
-    childPrice: 14,
-    pmrPrice: 14,
+    title: 'Pass Découverte Nature (Zoo + Pirogue + Cheval)',
+    badge: 'Formule Tout-Inclus #1',
+    description:
+      'Formule combinée idéale en famille réunissant les 3 activités nature incontournables d EcoPark Cameroun avec un seul QR Code.',
+    adultPrice: 2500,
+    childPrice: 1500,
+    pmrPrice: 1500,
     features: [
-      'Guidage spécialisé par un éco-garde',
-      'Longues-vues Swarovski fournies',
-      'Identification empreintes & chants d oiseaux',
-    ],
-  },
-  {
-    id: 'atelier_botanique',
-    title: 'Atelier Botanique & Herbier Vivant',
-    badge: 'Pédagogie & Savoirs',
-    description: 'Session immersive d identification des plantes médicinales et endémiques avec confection d un herbier numérique.',
-    adultPrice: 28,
-    childPrice: 16,
-    pmrPrice: 16,
-    features: [
-      'Atelier 2h30 au rucher et jardin conservatoire',
-      'Kit loupe de terrain inclus',
-      'Accès aux fiches de l Atlas taxonomique',
+      'Entrée Parc & Jardin Zoologique complet',
+      'Balade en Pirogue sur le lac (45 min, gilet fourni)',
+      'Balade à cheval & initiation au manège équestre',
     ],
   },
   {
     id: 'pack_mobilite',
-    title: 'Pack Mobilité Douce + Vélo Solaire',
-    badge: 'Tout-en-un Bas Carbone',
-    description: 'Billet combiné incluant la mise à disposition d un vélo à assistance solaire et accès sentiers VTT.',
-    adultPrice: 18,
-    childPrice: 10,
-    pmrPrice: 10,
+    title: 'Pass Journée Complète (Zoo + Piscine + Pirogue)',
+    badge: 'Formule Tout-Inclus #2 · Best-Seller',
+    description:
+      'Accès privilégié combinant la découverte zoologique, la traversée du lac en pirogue et la baignade dans la piscine semi-olympique surveillée.',
+    adultPrice: 4500,
+    childPrice: 2500,
+    pmrPrice: 2500,
     features: [
-      'Location VAE solaire 1 demi-journée',
-      'Accès aux pistes cyclables balisées',
-      'Casque et sacoche étanche fournis',
+      'Entrée Parc & Jardin Zoologique (Gorille ToTo)',
+      'Accès Piscine Semi-Olympique surveillée par maîtres-nageurs',
+      'Balade en Pirogue de 45 min sur le lac d Ahala',
+    ],
+  },
+  {
+    id: 'atelier_botanique',
+    title: 'Pass Journée Royale (Zoo + Piscine + Pirogue + Repas)',
+    badge: 'Formule VIP Tout-Inclus #3',
+    description:
+      'L expérience royale complète à Yaoundé-Ahala incluant toutes les activités phares ainsi qu un repas gastronomique au restaurant « Le Château des Saveurs ».',
+    adultPrice: 8500,
+    childPrice: 4500,
+    pmrPrice: 4500,
+    features: [
+      'Zoo + Piscine Semi-Olympique + Balade en Pirogue',
+      'Repas chaud inclus au restaurant « Le Château des Saveurs »',
+      'Accès prioritaire coupe-file aux embarcadères & bassins',
     ],
   },
 ];
@@ -183,7 +193,6 @@ export function calculateEcoMobilityPricing(
 
   const totalGuests = Math.max(1, adultCount + childCount + pmrCount);
 
-  // If covoiturage is selected with fewer than 3 guests, reduce discount to 0 with explanation
   let actualDiscountPercent = mobilityInfo.discountPercent;
   let actualCo2Avoided = mobilityInfo.co2AvoidedKgPerPerson;
   if (mobilityMode === 'covoiturage' && totalGuests < 3) {
@@ -196,9 +205,9 @@ export function calculateEcoMobilityPricing(
   const pmrBaseTotal = pmrCount * experienceInfo.pmrPrice;
   const grossTotalEur = adultBaseTotal + childBaseTotal + pmrBaseTotal;
 
-  const discountAmountEur = Number(((grossTotalEur * actualDiscountPercent) / 100).toFixed(2));
-  const netTotalEur = Number(Math.max(0, grossTotalEur - discountAmountEur).toFixed(2));
-  const unitPriceEur = Number((netTotalEur / totalGuests).toFixed(2));
+  const discountAmountEur = Math.round((grossTotalEur * actualDiscountPercent) / 100);
+  const netTotalEur = Math.max(0, grossTotalEur - discountAmountEur);
+  const unitPriceEur = Math.round(netTotalEur / totalGuests);
 
   const totalCo2AvoidedKg = Number((actualCo2Avoided * totalGuests).toFixed(1));
 
@@ -225,12 +234,7 @@ export function calculateEcoMobilityPricing(
 }
 
 export function formatEur(amount: number): string {
-  return amount.toLocaleString('fr-FR', {
-    style: 'currency',
-    currency: 'EUR',
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
+  return `${Math.round(amount).toLocaleString('fr-FR')} FCFA`;
 }
 
 export function formatCo2(kg: number): string {
