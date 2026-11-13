@@ -19531,7 +19531,7 @@ window.ecoparkOpenAdmin = function () {
           targetPhone = '237675763494';
         } else if (channel === 'QUOTE') {
           targetPhone = '237677510348';
-        } else if (data && ((data.summary && /lodge|chambre|hebergement/i.test(data.summary)) || (data.name && /hebergement/i.test(data.name)))) {
+        } else if (data && ((data.summary && /lodge|loge|suite|ewondo|chanthel|bene|chambre|h[eé]bergement/i.test(data.summary)) || (data.name && /h[eé]bergement/i.test(data.name)))) {
           targetPhone = '237694601449';
         }
         var waUrl = (res && res.whatsappUrl) ? res.whatsappUrl.replace(/wa\.me\/\d+/, 'wa.me/' + targetPhone) : ('https://wa.me/' + targetPhone);
