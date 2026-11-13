@@ -5,7 +5,7 @@
 // Official Activity Tariffs (FCFA), B2B/Schools (500-seat hall) & CFP MINEFOP
 // ============================================================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import {
   BedDouble,
@@ -25,9 +25,56 @@ import {
 
 type ShowcaseTab = 'hebergements' | 'saveurs' | 'tarifs' | 'entreprise' | 'formation';
 
+const resolveShowcaseTabFromPath = (): ShowcaseTab => {
+  if (typeof window === 'undefined') return 'hebergements';
+  const clean = window.location.pathname.replace(/\/+$/, '').toLowerCase();
+  if (clean === '/restaurant' || clean === '/sejour-restaurant') return 'saveurs';
+  if (clean === '/tarifs' || clean === '/nos-tarifs') return 'tarifs';
+  if (clean === '/pack-entreprise' || clean === '/pack-ecole' || clean === '/groupes-evenements') return 'entreprise';
+  if (clean === '/formation' || clean === '/formations') return 'formation';
+  return 'hebergements';
+};
+
 export const AhalaShowcase: React.FC = () => {
   const { setActiveView } = useEcoPark();
-  const [activeTab, setActiveTab] = useState<ShowcaseTab>('hebergements');
+  const [activeTab, setActiveTab] = useState<ShowcaseTab>(() => resolveShowcaseTabFromPath());
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const clean = window.location.pathname.replace(/\/+$/, '').toLowerCase();
+    const deepPaths = [
+      '/hebergements',
+      '/hotellerie',
+      '/sejour-restaurant',
+      '/restaurant',
+      '/tarifs',
+      '/nos-tarifs',
+      '/pack-entreprise',
+      '/pack-ecole',
+      '/groupes-evenements',
+      '/formation',
+      '/formations',
+    ];
+    if (deepPaths.includes(clean)) {
+      setTimeout(() => {
+        document.getElementById('ahala-production-showcase')?.scrollIntoView({ behavior: 'smooth' });
+      }, 150);
+    }
+  }, []);
+
+  const handleSelectShowcaseTab = (tab: ShowcaseTab) => {
+    setActiveTab(tab);
+    if (typeof window !== 'undefined') {
+      const tabPathMap: Record<ShowcaseTab, string> = {
+        hebergements: '/hebergements',
+        saveurs: '/restaurant',
+        tarifs: '/tarifs',
+        entreprise: '/pack-entreprise',
+        formation: '/formation',
+      };
+      window.history.replaceState(null, '', tabPathMap[tab]);
+    }
+  };
 
   const HOTELS = [
     {
@@ -213,7 +260,7 @@ export const AhalaShowcase: React.FC = () => {
               <button
                 key={tab.id}
                 type="button"
-                onClick={() => setActiveTab(tab.id as ShowcaseTab)}
+                onClick={() => handleSelectShowcaseTab(tab.id as ShowcaseTab)}
                 className={`px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${
                   isActive
                     ? 'bg-[var(--brand-primary)] text-white shadow-sm'

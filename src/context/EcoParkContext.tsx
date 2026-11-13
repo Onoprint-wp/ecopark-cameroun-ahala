@@ -95,10 +95,40 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     setHighContrastOutdoor,
   } = useTheme();
 
+  // Resolve initial view from production URL pathname if present
+  const resolveViewFromPath = (pathname: string): ActiveView | null => {
+    const clean = pathname.replace(/\/+$/, '').toLowerCase();
+    if (clean === '/activites' || clean === '/fiche-activite') return 'sentiers';
+    if (clean === '/reserver' || clean === '/rdv' || clean === '/rendez-vous') return 'billetterie';
+    if (clean === '/mon-espace' || clean === '/mes-reservations') return 'pass';
+    if (clean === '/exploitation' || clean === '/guichet' || clean === '/direction' || clean === '/admin') return 'ranger';
+    if (
+      clean === '/hebergements' ||
+      clean === '/hotellerie' ||
+      clean === '/sejour-restaurant' ||
+      clean === '/restaurant' ||
+      clean === '/tarifs' ||
+      clean === '/nos-tarifs' ||
+      clean === '/pack-entreprise' ||
+      clean === '/pack-ecole' ||
+      clean === '/groupes-evenements' ||
+      clean === '/formation' ||
+      clean === '/formations' ||
+      clean === '/decouvrir'
+    ) {
+      return 'accueil';
+    }
+    return null;
+  };
+
   // Navigation state
-  const [activeView, setActiveViewState] = useState<ActiveView>(() =>
-    safeLocalStorage.getItem<ActiveView>(STORAGE_KEYS.ACTIVE_VIEW, 'accueil')
-  );
+  const [activeView, setActiveViewState] = useState<ActiveView>(() => {
+    if (typeof window !== 'undefined') {
+      const fromUrl = resolveViewFromPath(window.location.pathname);
+      if (fromUrl) return fromUrl;
+    }
+    return safeLocalStorage.getItem<ActiveView>(STORAGE_KEYS.ACTIVE_VIEW, 'accueil');
+  });
 
   // Architectural slide-over drawer state
   const [colorDrawerOpen, setColorDrawerOpenState] = useState<boolean>(() =>
@@ -145,8 +175,20 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
   const setActiveView = useCallback((view: ActiveView) => {
     setActiveViewState(view);
     safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, view);
-    // Smooth scroll to top when changing view
     if (typeof window !== 'undefined') {
+      const viewPathMap: Record<ActiveView, string> = {
+        accueil: '/',
+        sentiers: '/activites',
+        biodiversite: '/decouvrir',
+        billetterie: '/reserver',
+        pass: '/mon-espace',
+        ranger: '/exploitation',
+        color_atlas: '/',
+      };
+      const targetPath = viewPathMap[view] || '/';
+      if (window.location.pathname !== targetPath) {
+        window.history.replaceState(null, '', targetPath);
+      }
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }, []);

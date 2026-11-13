@@ -1,0 +1,62 @@
+# robots.txt - ECOPARK CAMEROUN (Yaounde - Ahala, RN3)
+# Standard RFC 9309 & Agentic GEO 2026 (9 Crawlers IA autorises sur le Front-Office public)
+
+User-agent: *
+Allow: /
+Allow: /decouvrir
+Allow: /sejour-restaurant
+Allow: /groupes-evenements
+Allow: /formations
+Allow: /preparer-ma-visite
+Allow: /reserver
+Allow: /llms.txt
+Allow: /agents.txt
+Disallow: /admin
+Disallow: /admin/
+Disallow: /direction
+Disallow: /direction/
+Disallow: /guichet
+Disallow: /guichet/
+Disallow: /exploitation
+Disallow: /exploitation/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /admin
+Disallow: /direction
+Disallow: /guichet
+Disallow: /exploitation
+
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /admin
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /admin
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /admin
+
+User-agent: ClaudeBot
+Allow: /
+Disallow: /admin
+
+User-agent: Claude-Web
+Allow: /
+Disallow: /admin
+
+User-agent: anthropic-ai
+Allow: /
+Disallow: /admin
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /admin
+
+User-agent: Applebot-Extended
+Allow: /
+Disallow: /admin
+
+Sitemap: https://ecopark-cameroun-ahala.vercel.app/sitemap.xml
