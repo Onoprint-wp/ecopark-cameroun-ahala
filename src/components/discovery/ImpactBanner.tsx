@@ -105,8 +105,8 @@ export const ImpactBanner: React.FC = () => {
       ariaLabel="Les 4 piliers officiels d ECOPARK CAMEROUN à Yaoundé-Ahala"
     >
       {/* Editorial Header */}
-      <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 pb-2">
-        <div className="space-y-2 max-w-2xl">
+      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2">
+        <div className="space-y-2 max-w-4xl">
           <div className="inline-flex items-center gap-2 text-xs font-mono font-semibold uppercase tracking-wider text-[#74C69D]">
             <Sparkles className="w-3.5 h-3.5 text-[#52B788]" />
             <span>Chiffres Clés &amp; Tarifs Validés · Yaoundé – Ahala Barrière (RN3)</span>
@@ -119,7 +119,7 @@ export const ImpactBanner: React.FC = () => {
           </p>
         </div>
 
-        <div className="text-xs font-mono text-[#8EBAA0] bg-[#121614] px-3 py-2 rounded-xl border border-[#29302C] self-start md:self-auto shrink-0">
+        <div className="text-xs font-mono text-[#8EBAA0] bg-[#121614] px-3.5 py-2.5 rounded-xl border border-[#29302C] self-start lg:self-auto shrink-0">
           <span className="flex items-center gap-2">
             <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
             En face de la station Tradex Ahala (RN3)

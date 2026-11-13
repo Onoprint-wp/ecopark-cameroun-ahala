@@ -410,7 +410,7 @@ export const RangerDashboard: React.FC = () => {
       </ImmersiveSection>
 
       {/* Cockpit Officer & Status Bar */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="eco-container">
         <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
           <div className="flex items-center gap-4">
             <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white shadow-sm shrink-0">
@@ -449,7 +449,7 @@ export const RangerDashboard: React.FC = () => {
       </div>
 
       {/* Main Cockpit Sections */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <div className="eco-container space-y-10">
         {/* ================================================================= */}
         {/* SECTION 1: DAILY QUOTA REGULATOR (F26)                            */}
         {/* ================================================================= */}

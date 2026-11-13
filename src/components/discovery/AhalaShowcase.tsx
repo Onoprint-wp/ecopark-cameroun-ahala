@@ -213,11 +213,11 @@ export const AhalaShowcase: React.FC = () => {
     <section
       id="ahala-production-showcase"
       aria-label="Pôles Officiels ECOPARK CAMEROUN Yaoundé-Ahala"
-      className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8"
+      className="eco-container space-y-8"
     >
       {/* Section Header */}
-      <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-[var(--border-default)] pb-6">
-        <div className="space-y-2">
+      <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-5 border-b border-[var(--border-default)] pb-6">
+        <div className="space-y-2 flex-1">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] text-xs font-mono font-bold uppercase tracking-wider">
             <Sparkles className="w-3.5 h-3.5" />
             <span>Complexe Intégré · MPECK MULTI-SERVICES (Fondateur : Dr Christophe FOE NDI)</span>
@@ -225,13 +225,13 @@ export const AhalaShowcase: React.FC = () => {
           <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-[var(--text-primary)] tracking-tight">
             Les 5 Pôles Officiels d&apos;ECOPARK CAMEROUN à Yaoundé – Ahala
           </h2>
-          <p className="text-sm sm:text-base text-[var(--text-muted)] max-w-3xl">
+          <p className="text-sm sm:text-base text-[var(--text-muted)] max-w-4xl">
             Situé au quartier <strong>Ahala Barrière (en face de la station-service Tradex Ahala, RN3)</strong> à 15 minutes du centre-ville de Yaoundé. Retrouvez l&apos;intégralité de nos offres et tarifs officiels en FCFA.
           </p>
         </div>
 
         {/* Navigation Pill Tabs */}
-        <div className="flex flex-wrap gap-2">
+        <div className="flex flex-wrap gap-2 shrink-0">
           {[
             { id: 'hebergements', label: 'Hôtels & Suites (30)', icon: BedDouble },
             { id: 'saveurs', label: 'Château des Saveurs', icon: Utensils },
@@ -267,7 +267,7 @@ export const AhalaShowcase: React.FC = () => {
         <div className="space-y-8 animate-in fade-in duration-200">
           {/* Top Highlight Banner: Pack Escapade Couple VIP */}
           <div className="p-6 rounded-2xl bg-gradient-to-r from-[#1B4332] to-[#2D6A4F] text-white shadow-md flex flex-col lg:flex-row lg:items-center justify-between gap-6">
-            <div className="space-y-2 max-w-2xl">
+            <div className="space-y-2 flex-1 max-w-4xl">
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/15 text-[#B7E4C7] text-xs font-mono font-bold uppercase">
                 <Heart className="w-3.5 h-3.5 text-amber-300" />
                 <span>Offre Signature Tout-Inclus · Réception Hôtellerie 24h/24 &amp; 7j/7</span>
@@ -312,12 +312,11 @@ export const AhalaShowcase: React.FC = () => {
                 className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] overflow-hidden shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
               >
                 <div>
-                  <div className="relative h-52 w-full overflow-hidden bg-[#1F2421]">
+                  <div className="relative h-56 sm:h-64 w-full overflow-hidden bg-[#1F2421]">
                     <img
                       src={hotel.photo}
                       alt={hotel.name}
                       className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                      loading="lazy"
                     />
                     <div className="absolute top-3 left-3 px-3 py-1 rounded-full bg-[#1F2421]/85 backdrop-blur-xs text-[#E9F5ED] text-xs font-mono font-semibold border border-white/15">
                       {hotel.badge}

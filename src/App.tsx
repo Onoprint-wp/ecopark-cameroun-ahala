@@ -89,140 +89,144 @@ export default function App() {
         {/* VUE 1 : ACCUEIL & LES 5 PÔLES D'ECOPARK CAMEROUN (YAOUNDÉ-AHALA)  */}
         {/* ================================================================= */}
         {activeView === 'accueil' && (
-          <div className="eco-view-enter space-y-14 pb-16">
-            {/* Hero Canopy Section (F14) */}
-            <HeroCanopy />
+          <div className="eco-view-enter pb-16">
+            {/* Full-Bleed Immersive Header Stack (Zero White Gap Between Hero & ImpactBanner) */}
+            <div>
+              {/* Hero Canopy Section (F14) */}
+              <HeroCanopy />
 
-            {/* 4 Pillars & Official Production Metrics (F15) */}
-            <ImpactBanner />
-
-            {/* Validated Production Showcase: Hotels (30), Château des Saveurs, Tariffs, B2B & CFP MINEFOP */}
-            <AhalaShowcase />
-
-            {/* Quick Circuits & Zones Showcase */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                <div>
-                  <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
-                    Orientation &amp; Plan du Domaine d&apos;Ahala
-                  </span>
-                  <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
-                    Les 6 Circuits &amp; Secteurs Officiels du Parc
-                  </h2>
-                </div>
-                <button
-                  onClick={(e) => {
-                    recordMotionOrigin(e);
-                    setActiveView('sentiers');
-                  }}
-                  className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
-                >
-                  <span>Ouvrir la carte interactive complète du domaine</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
-
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {trails.map((trail) => (
-                  <div
-                    key={trail.id}
-                    onPointerDown={() => setSelectedTrailId(trail.id)}
-                    onClick={(e) => {
-                      recordMotionOrigin(e);
-                      setSelectedTrailId(trail.id);
-                      setActiveView('sentiers');
-                    }}
-                    className={`${
-                      spotlightTrailId === trail.id ? 'vt-trail-spotlight ' : ''
-                    }p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group flex flex-col justify-between`}
-                  >
-                    <div className="space-y-3">
-                      <div className="flex items-center justify-between gap-2">
-                        {renderTrailStatusBadge(trail.status)}
-                        <span className="text-xs font-mono font-medium text-[var(--text-muted)]">
-                          {trail.lengthKm} km · {Math.floor(trail.durationMin / 60)}h{trail.durationMin % 60 > 0 ? `${trail.durationMin % 60}` : '00'}
-                        </span>
-                      </div>
-
-                      <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)] group-hover:text-[var(--brand-primary)] transition-colors">
-                        {trail.name}
-                      </h3>
-
-                      <p className="text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
-                        {trail.description}
-                      </p>
-                    </div>
-
-                    <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between text-xs text-[var(--text-muted)]">
-                      <span className="truncate pr-2">{trail.biomeLabel}</span>
-                      <span className="font-mono text-[var(--text-primary)] font-semibold shrink-0">Alt. {trail.maxElevationM}m</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              {/* 4 Pillars & Official Production Metrics (F15) */}
+              <ImpactBanner />
             </div>
 
-            {/* Quick Zoological & Heritage Showcase */}
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-6 pt-2">
-              <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
-                <div>
-                  <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
-                    Jardin Zoologique &amp; Patrimoine Vivant d&apos;Ahala
-                  </span>
-                  <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
-                    Gorille « ToTo », Chimpanzés, Bassins Piscicoles &amp; Flore
-                  </h2>
-                </div>
-                <button
-                  onClick={(e) => {
-                    recordMotionOrigin(e);
-                    setSelectedSpeciesId(null);
-                    setActiveView('biodiversite');
-                  }}
-                  className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
-                >
-                  <span>Consulter les 8 fiches du Jardin Zoologique &amp; Biodiversité</span>
-                  <ChevronRight className="w-4 h-4" />
-                </button>
-              </div>
+            <div className="space-y-14 pt-12">
+              {/* Validated Production Showcase: Hotels (30), Château des Saveurs, Tariffs, B2B & CFP MINEFOP */}
+              <AhalaShowcase />
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                {species.slice(0, 4).map((sp) => (
-                  <div
-                    key={sp.id}
+              {/* Quick Circuits & Zones Showcase */}
+              <div className="eco-container space-y-6">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                  <div>
+                    <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
+                      Orientation &amp; Plan du Domaine d&apos;Ahala
+                    </span>
+                    <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
+                      Les 6 Circuits &amp; Secteurs Officiels du Parc
+                    </h2>
+                  </div>
+                  <button
                     onClick={(e) => {
                       recordMotionOrigin(e);
-                      setSelectedSpeciesId(sp.id);
-                      setActiveView('biodiversite');
+                      setActiveView('sentiers');
                     }}
-                    className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group overflow-hidden flex flex-col justify-between"
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
                   >
-                    {sp.photoUrl && (
-                      <div className="h-36 w-full overflow-hidden bg-[#1F2421]">
-                        <img
-                          src={sp.photoUrl}
-                          alt={sp.commonName}
-                          className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                          loading="lazy"
-                        />
+                    <span>Ouvrir la carte interactive complète du domaine</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                  {trails.map((trail) => (
+                    <div
+                      key={trail.id}
+                      onPointerDown={() => setSelectedTrailId(trail.id)}
+                      onClick={(e) => {
+                        recordMotionOrigin(e);
+                        setSelectedTrailId(trail.id);
+                        setActiveView('sentiers');
+                      }}
+                      className={`${
+                        spotlightTrailId === trail.id ? 'vt-trail-spotlight ' : ''
+                      }p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group flex flex-col justify-between`}
+                    >
+                      <div className="space-y-3">
+                        <div className="flex items-center justify-between gap-2">
+                          {renderTrailStatusBadge(trail.status)}
+                          <span className="text-xs font-mono font-medium text-[var(--text-muted)]">
+                            {trail.lengthKm} km · {Math.floor(trail.durationMin / 60)}h{trail.durationMin % 60 > 0 ? `${trail.durationMin % 60}` : '00'}
+                          </span>
+                        </div>
+
+                        <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)] group-hover:text-[var(--brand-primary)] transition-colors">
+                          {trail.name}
+                        </h3>
+
+                        <p className="text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
+                          {trail.description}
+                        </p>
                       </div>
-                    )}
-                    <div className="p-4">
-                      <div className="text-xs font-mono text-[var(--brand-primary)] font-semibold uppercase">
-                        {sp.categoryLabel}
-                      </div>
-                      <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)] mt-1 group-hover:text-[var(--brand-primary)]">
-                        {sp.commonName}
-                      </div>
-                      <div className="text-[11px] italic text-[var(--text-muted)]">
-                        {sp.scientificName}
-                      </div>
-                      <div className="mt-3 inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)]">
-                        Statut : {sp.iucnStatus} · {sp.iucnLabel}
+
+                      <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between text-xs text-[var(--text-muted)]">
+                        <span className="truncate pr-2">{trail.biomeLabel}</span>
+                        <span className="font-mono text-[var(--text-primary)] font-semibold shrink-0">Alt. {trail.maxElevationM}m</span>
                       </div>
                     </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Quick Zoological & Heritage Showcase */}
+              <div className="eco-container space-y-6 pt-2">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
+                  <div>
+                    <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
+                      Jardin Zoologique &amp; Patrimoine Vivant d&apos;Ahala
+                    </span>
+                    <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
+                      Gorille « ToTo », Chimpanzés, Bassins Piscicoles &amp; Flore
+                    </h2>
                   </div>
-                ))}
+                  <button
+                    onClick={(e) => {
+                      recordMotionOrigin(e);
+                      setSelectedSpeciesId(null);
+                      setActiveView('biodiversite');
+                    }}
+                    className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
+                  >
+                    <span>Consulter les 8 fiches du Jardin Zoologique &amp; Biodiversité</span>
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                  {species.slice(0, 4).map((sp) => (
+                    <div
+                      key={sp.id}
+                      onClick={(e) => {
+                        recordMotionOrigin(e);
+                        setSelectedSpeciesId(sp.id);
+                        setActiveView('biodiversite');
+                      }}
+                      className="rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group overflow-hidden flex flex-col justify-between"
+                    >
+                      {sp.photoUrl && (
+                        <div className="h-40 w-full overflow-hidden bg-[#1F2421]">
+                          <img
+                            src={sp.photoUrl}
+                            alt={sp.commonName}
+                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                          />
+                        </div>
+                      )}
+                      <div className="p-4">
+                        <div className="text-xs font-mono text-[var(--brand-primary)] font-semibold uppercase">
+                          {sp.categoryLabel}
+                        </div>
+                        <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)] mt-1 group-hover:text-[var(--brand-primary)]">
+                          {sp.commonName}
+                        </div>
+                        <div className="text-[11px] italic text-[var(--text-muted)]">
+                          {sp.scientificName}
+                        </div>
+                        <div className="mt-3 inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)]">
+                          Statut : {sp.iucnStatus} · {sp.iucnLabel}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
@@ -250,7 +254,7 @@ export default function App() {
               </div>
             </ImmersiveSection>
 
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+            <div className="eco-container space-y-10">
               {/* Interactive Topographic Map (F16) */}
               <InteractiveTopoMap scrubPoint={scrubPoint} />
 
@@ -299,7 +303,7 @@ export default function App() {
               </div>
             </ImmersiveSection>
 
-            <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="eco-container">
               <BookingWizard />
             </div>
           </div>
@@ -327,7 +331,7 @@ export default function App() {
               </div>
             </ImmersiveSection>
 
-            <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
+            <div className="eco-container space-y-12">
               {/* Feature F22 & F23: Interactive Digital Eco-Pass Card */}
               <section aria-label="Mon Éco-Pass Actif">
                 <DigitalEcoPass />

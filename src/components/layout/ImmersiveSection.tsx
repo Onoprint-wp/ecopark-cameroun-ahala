@@ -108,7 +108,7 @@ export const ImmersiveSection: React.FC<ImmersiveSectionProps> = ({
       )}
 
       {/* Content wrapper */}
-      <div className={`relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 ${containerClassName}`}>
+      <div className={`relative z-10 eco-container ${containerClassName}`}>
         {children}
       </div>
     </section>

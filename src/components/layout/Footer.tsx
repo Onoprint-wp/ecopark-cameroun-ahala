@@ -45,7 +45,7 @@ export const Footer: React.FC = () => {
       role="contentinfo"
       aria-label="Pied de page ECOPARK CAMEROUN Yaoundé-Ahala"
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="eco-container">
         {/* Top Grid: Brand, Nav, Contacts Ahala, Telemetry */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-10 pb-12 border-b border-[#36403A]/70">
           {/* Column 1: Identity & Legal MPECK MULTI-SERVICES */}

@@ -171,7 +171,7 @@ export const SpeciesAtlas: React.FC = () => {
       {/* Editorial Header Section */}
       <ImmersiveSection variant="forest" className="py-12 sm:py-16">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
-          <div className="space-y-3 max-w-3xl">
+          <div className="space-y-3 max-w-4xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-mono text-[#B7E4C7]">
               <Sparkles className="w-3.5 h-3.5 text-[#74C69D]" />
               <span>Jardin Zoologique, Bassins Piscicoles &amp; Flore Tropicale · Yaoundé – Ahala</span>
@@ -195,7 +195,7 @@ export const SpeciesAtlas: React.FC = () => {
       </ImmersiveSection>
 
       {/* Main Container */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-8">
+      <div className="eco-container space-y-8">
         {/* Category Tabs & Search Bar */}
         <div className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-4">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">

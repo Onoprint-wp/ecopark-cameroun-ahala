@@ -99,15 +99,15 @@ export const Navbar: React.FC = () => {
   return (
     <header className="eco-sticky-navbar sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-canvas)]/95 border-b border-[var(--border-default)] transition-colors duration-200">
       {/* Official Production Topbar: Yaoundé – Ahala Barrière */}
-      <div className="bg-[#1B4332] text-[#E9F5ED] text-[11px] py-1.5 px-4 border-b border-[#2D6A4F]/60">
-        <div className="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2">
-          <div className="flex items-center gap-2 font-medium">
+      <div className="bg-[#1B4332] text-[#E9F5ED] text-[11px] py-1.5 border-b border-[#2D6A4F]/60">
+        <div className="eco-container flex flex-wrap items-center justify-between gap-2">
+          <div className="flex items-center gap-2 font-medium min-w-0">
             <MapPin className="w-3.5 h-3.5 text-[#74C69D] shrink-0" />
-            <span>
+            <span className="truncate sm:whitespace-normal">
               <strong>Yaoundé – Ahala Barrière (Face station Tradex, RN3)</strong> • Parc : Mar–Dim 09h00–18h00 • Hôtels 24h/24 • Restaurant 07h–23h • Parking gratuit
             </span>
           </div>
-          <div className="hidden md:flex items-center gap-4 font-mono text-[#B7E4C7]">
+          <div className="hidden lg:flex items-center gap-4 font-mono text-[#B7E4C7] shrink-0">
             <a
               href="https://wa.me/237672564598"
               target="_blank"
@@ -123,12 +123,12 @@ export const Navbar: React.FC = () => {
         </div>
       </div>
 
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 md:h-20 gap-2">
+      <div className="eco-container">
+        <div className="flex items-center justify-between h-16 md:h-20 gap-2 w-full min-w-0">
           {/* Official Brand Logo & Title */}
           <button
             onClick={(e) => handleNavClick('accueil', e)}
-            className="flex items-center gap-2.5 text-left group shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg p-1 cursor-pointer"
+            className="flex items-center gap-2.5 text-left group shrink-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg py-1 pr-1 cursor-pointer"
             aria-label="ECOPARK CAMEROUN - Retour à l'accueil"
           >
             <img
@@ -147,7 +147,7 @@ export const Navbar: React.FC = () => {
           </button>
 
           {/* Desktop Navigation Links */}
-          <nav className="hidden xl:flex items-center gap-0.5 2xl:gap-1 shrink-0" aria-label="Navigation principale">
+          <nav className="hidden xl:flex items-center justify-center gap-0.5 2xl:gap-1.5 min-w-0" aria-label="Navigation principale">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeView === item.id;
@@ -156,7 +156,7 @@ export const Navbar: React.FC = () => {
                   key={item.id}
                   data-motion-target={item.id === 'pass' ? 'nav-pass' : undefined}
                   onClick={(e) => handleNavClick(item.id, e)}
-                  className={`flex items-center gap-1.5 px-2.5 2xl:px-3 py-2 rounded-lg text-xs 2xl:text-sm font-semibold whitespace-nowrap shrink-0 transition-all duration-150 relative cursor-pointer ${
+                  className={`flex items-center gap-1.5 px-2 2xl:px-3 py-2 rounded-lg text-xs 2xl:text-sm font-semibold whitespace-nowrap shrink-0 transition-all duration-150 relative cursor-pointer ${
                     isActive
                       ? 'text-[var(--brand-primary)] bg-[var(--bg-surface)] font-bold shadow-xs'
                       : 'text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)]/60'
@@ -178,7 +178,7 @@ export const Navbar: React.FC = () => {
           </nav>
 
           {/* Telemetry Badges & Quick Controls */}
-          <div className="flex items-center gap-1.5 sm:gap-2 shrink-0">
+          <div className="flex items-center gap-1.5 2xl:gap-2 shrink-0">
             {/* Live Occupancy Liquid Gauge Badge (« Respiration écologique ») */}
             <div
               data-motion-target="nav-quota"

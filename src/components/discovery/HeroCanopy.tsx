@@ -52,97 +52,108 @@ export const HeroCanopy: React.FC = () => {
         aria-hidden="true"
       />
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-stretch">
         {/* Left Column: Official ECOPARK CAMEROUN Editorial Headline & Actions */}
-        <div className="lg:col-span-7 space-y-5 text-center md:text-left">
-          {/* Top Location Pill Tag */}
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-medium text-[#B7E4C7] shadow-xs">
-            <MapPin className="w-4 h-4 text-[#74C69D] shrink-0" />
-            <span className="font-mono tracking-tight">
-              Yaoundé – Ahala Barrière (Face station Tradex, RN3) • À 15 min du Centre-Ville
-            </span>
-          </div>
-
-          {/* Main Title in Barlow Semi Condensed */}
-          <h1 className="font-['Barlow_Semi_Condensed'] text-3xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-white leading-[1.1]">
-            Le Plus Grand Complexe Écologique &amp; de Loisirs <br className="hidden sm:inline" />
-            <span className="text-[#74C69D]">à Yaoundé – Ahala.</span>
-          </h1>
-
-          {/* Official Validated Subtitle in Source Sans 3 */}
-          <p className="text-base sm:text-lg text-[#E9F5ED]/95 max-w-2xl leading-relaxed mx-auto md:mx-0 font-sans">
-            Jardin Zoologique (Gorille <strong>« ToTo »</strong>, chimpanzés, tortues), Balade en Pirogue sur le lac, Piscine Semi-Olympique, Manège Équestre, Restaurant gastronomique{' '}
-            <strong>« Le Château des Saveurs »</strong> (07h–23h), <strong>30 Unités d&apos;Hébergement</strong> (Hôtels Ewondo, Chanthel &amp; Bene 24h/24) et <strong>CFP agréé MINEFOP</strong>.
-          </p>
-
-          {/* Official Price & Offer Pills */}
-          <div className="flex flex-wrap items-center justify-center md:justify-start gap-2 pt-1">
-            <span className="px-3 py-1 rounded-lg bg-[#D4A373]/25 border border-[#D4A373]/50 text-[#F4E3CF] text-xs font-bold">
-              Entrée Parc : 1 000 FCFA Ad. / 500 FCFA Enf.
-            </span>
-            <span className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-semibold">
-              Pass Tout-Inclus : 2 500 à 8 500 FCFA
-            </span>
-            <span className="px-3 py-1 rounded-lg bg-white/10 border border-white/20 text-white text-xs font-semibold">
-              Hôtels : 10 000 à 45 000 FCFA / nuit
-            </span>
-          </div>
-
-          {/* Core CTAs */}
-          <div className="pt-2 flex flex-wrap gap-3.5 justify-center md:justify-start">
-            <button
-              type="button"
-              onClick={(e) => {
-                recordMotionOrigin(e);
-                setActiveView('billetterie');
-              }}
-              className="px-6 py-3.5 rounded-xl bg-[#52B788] hover:bg-[#40916C] text-[#0B1D15] font-bold text-sm shadow-lg hover:shadow-emerald-950/40 transition-all flex items-center gap-2 cursor-pointer active:scale-95 group focus:outline-none focus:ring-2 focus:ring-emerald-400"
-            >
-              <Ticket className="w-4 h-4 text-[#0B1D15] group-hover:rotate-12 transition-transform" />
-              <span>Réserver mon Pass QR (dès 500 FCFA)</span>
-              <span className="text-xs bg-[#1B4332]/20 px-2 py-0.5 rounded-md font-mono">
-                {availablePlaces} pl.
+        <div className="lg:col-span-7 flex flex-col justify-between space-y-5 text-center md:text-left">
+          <div className="space-y-5">
+            {/* Top Location Pill Tag */}
+            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-medium text-[#B7E4C7] shadow-xs">
+              <MapPin className="w-4 h-4 text-[#74C69D] shrink-0" />
+              <span className="font-mono tracking-tight">
+                Yaoundé – Ahala Barrière (Face station Tradex, RN3) • À 15 min du Centre-Ville
               </span>
-            </button>
+            </div>
 
-            <button
-              type="button"
-              onPointerDown={() => setSelectedTrailId('canopee')}
-              onClick={(e) => {
-                recordMotionOrigin(e);
-                setSelectedTrailId('canopee');
-                setActiveView('sentiers');
-              }}
-              className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 backdrop-blur-xs transition-all flex items-center gap-2 cursor-pointer active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50"
-            >
-              <Compass className="w-4 h-4 text-[#74C69D]" />
-              <span>Plan du Parc &amp; 6 Circuits</span>
-              <ArrowRight className="w-3.5 h-3.5 text-[#B7E4C7]" />
-            </button>
+            {/* Main Title in Barlow Semi Condensed */}
+            <h1 className="font-['Barlow_Semi_Condensed'] text-3xl sm:text-5xl xl:text-6xl font-bold tracking-tight text-white leading-[1.08]">
+              Le Plus Grand Complexe Écologique &amp; de Loisirs{' '}
+              <span className="text-[#74C69D]">à Yaoundé – Ahala.</span>
+            </h1>
+
+            {/* Official Validated Subtitle in Source Sans 3 */}
+            <p className="text-base sm:text-lg text-[#E9F5ED]/95 leading-relaxed font-sans">
+              Jardin Zoologique (Gorille <strong>« ToTo »</strong>, chimpanzés, tortues), Balade en Pirogue sur le lac, Piscine Semi-Olympique, Manège Équestre, Restaurant gastronomique{' '}
+              <strong>« Le Château des Saveurs »</strong> (07h–23h), <strong>30 Unités d&apos;Hébergement</strong> (Hôtels Ewondo, Chanthel &amp; Bene 24h/24) et <strong>CFP agréé MINEFOP</strong>.
+            </p>
+
+            {/* Official Price & Offer Cards (Full Width 3-Col Grid) */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 text-left">
+              <div className="px-3.5 py-2.5 rounded-xl bg-[#D4A373]/20 border border-[#D4A373]/50 text-[#F4E3CF]">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#EBD5BE]">Entrée Parc &amp; Zoo</div>
+                <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-white mt-0.5">
+                  1 000 FCFA Ad. · 500 FCFA Enf.
+                </div>
+              </div>
+              <div className="px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#B7E4C7]">3 Pass Tout-Inclus</div>
+                <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-white mt-0.5">
+                  2 500 · 4 500 · 8 500 FCFA
+                </div>
+              </div>
+              <div className="px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white">
+                <div className="text-[10px] font-mono uppercase tracking-wider text-[#B7E4C7]">Hôtels &amp; Suites 24h/24</div>
+                <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-white mt-0.5">
+                  10 000 à 45 000 FCFA / nuit
+                </div>
+              </div>
+            </div>
+
+            {/* Core CTAs */}
+            <div className="pt-1 flex flex-wrap gap-3.5 justify-center md:justify-start">
+              <button
+                type="button"
+                onClick={(e) => {
+                  recordMotionOrigin(e);
+                  setActiveView('billetterie');
+                }}
+                className="px-6 py-3.5 rounded-xl bg-[#52B788] hover:bg-[#40916C] text-[#0B1D15] font-bold text-sm shadow-lg hover:shadow-emerald-950/40 transition-all flex items-center gap-2 cursor-pointer active:scale-95 group focus:outline-none focus:ring-2 focus:ring-emerald-400"
+              >
+                <Ticket className="w-4 h-4 text-[#0B1D15] group-hover:rotate-12 transition-transform" />
+                <span>Réserver mon Pass QR (dès 500 FCFA)</span>
+                <span className="text-xs bg-[#1B4332]/20 px-2 py-0.5 rounded-md font-mono">
+                  {availablePlaces} pl.
+                </span>
+              </button>
+
+              <button
+                type="button"
+                onPointerDown={() => setSelectedTrailId('canopee')}
+                onClick={(e) => {
+                  recordMotionOrigin(e);
+                  setSelectedTrailId('canopee');
+                  setActiveView('sentiers');
+                }}
+                className="px-6 py-3.5 rounded-xl bg-white/10 hover:bg-white/20 text-white font-semibold text-sm border border-white/20 backdrop-blur-xs transition-all flex items-center gap-2 cursor-pointer active:scale-95 focus:outline-none focus:ring-2 focus:ring-white/50"
+              >
+                <Compass className="w-4 h-4 text-[#74C69D]" />
+                <span>Plan du Parc &amp; 6 Circuits</span>
+                <ArrowRight className="w-3.5 h-3.5 text-[#B7E4C7]" />
+              </button>
+            </div>
           </div>
 
-          {/* Value props reassurance */}
-          <div className="pt-2 flex flex-wrap items-center justify-center md:justify-start gap-4 sm:gap-5 text-xs text-[#C8E6D3]/90 font-sans">
+          {/* Bottom Reassurance & Key Operational Metrics Bar */}
+          <div className="pt-4 border-t border-white/15 flex flex-wrap items-center justify-center md:justify-between gap-3 text-xs text-[#C8E6D3]/95 font-sans">
             <span className="flex items-center gap-1.5">
-              <CheckCircle2 className="w-4 h-4 text-[#52B788]" />
+              <CheckCircle2 className="w-4 h-4 text-[#52B788] shrink-0" />
               Orange Money (#150#) · MTN MoMo (*126#) · Guichet
             </span>
             <span className="flex items-center gap-1.5">
-              <ShieldCheck className="w-4 h-4 text-[#52B788]" />
-              Garantie Météo RN3 (report gratuit 90j)
+              <ShieldCheck className="w-4 h-4 text-[#52B788] shrink-0" />
+              Garantie Météo RN3 (report 90j)
             </span>
             <span className="flex items-center gap-1.5">
-              <Sparkles className="w-4 h-4 text-[#52B788]" />
+              <Sparkles className="w-4 h-4 text-[#52B788] shrink-0" />
               Route 100% goudronnée &amp; Parking gratuit
             </span>
           </div>
         </div>
 
         {/* Right Column: Official Photos Mosaic + Live Ahala Telemetry Card */}
-        <div className="lg:col-span-5 space-y-4">
+        <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
           {/* 3-Photo Authentic Collage from Production */}
-          <div className="grid grid-cols-3 gap-2.5">
-            <div className="relative h-28 rounded-xl overflow-hidden border border-white/20 shadow-md">
+          <div className="grid grid-cols-3 gap-3">
+            <div className="relative h-28 sm:h-32 xl:h-36 rounded-xl overflow-hidden border border-white/20 shadow-md">
               <img
                 src="/images/ahala/balade_pirogue3.jpg"
                 alt="Balade en pirogue sur le lac d'Ahala"
@@ -152,7 +163,7 @@ export const HeroCanopy: React.FC = () => {
                 Pirogue · 1 000 FCFA
               </span>
             </div>
-            <div className="relative h-28 rounded-xl overflow-hidden border border-white/20 shadow-md">
+            <div className="relative h-28 sm:h-32 xl:h-36 rounded-xl overflow-hidden border border-white/20 shadow-md">
               <img
                 src="/images/ahala/local_cameroon_gastronomy_pergola.png"
                 alt="Le Château des Saveurs à EcoPark Ahala"
@@ -162,7 +173,7 @@ export const HeroCanopy: React.FC = () => {
                 Château des Saveurs
               </span>
             </div>
-            <div className="relative h-28 rounded-xl overflow-hidden border border-white/20 shadow-md">
+            <div className="relative h-28 sm:h-32 xl:h-36 rounded-xl overflow-hidden border border-white/20 shadow-md">
               <img
                 src="/images/ahala/chambre.jpeg"
                 alt="Hôtels Ewondo, Chanthel & Bene à EcoPark Cameroun"
@@ -174,7 +185,7 @@ export const HeroCanopy: React.FC = () => {
             </div>
           </div>
 
-          <div className="p-6 rounded-2xl bg-[#1F2421]/95 backdrop-blur-md border border-[#36403A] shadow-2xl text-white space-y-4">
+          <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-[#1F2421]/95 backdrop-blur-md border border-[#36403A] shadow-2xl text-white flex flex-col justify-between space-y-4">
             {/* Telemetry Header */}
             <div className="flex items-center justify-between border-b border-[#36403A] pb-3.5">
               <div className="flex items-center gap-2.5">
