@@ -1,24 +1,27 @@
 {
-  "name": "ecopark-cameroun-ahala",
+  "name": "eco-park",
   "private": true,
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "node scripts/dev-server.mjs",
-    "test:db": "npm --prefix supabase/tests test",
-    "sim:db": "node supabase/tests/simulation_scenarios.mjs",
-    "sim:ui": "python scripts/simulate_admin_preview_ui.py",
-    "test:e2e:local": "node -e \"process.env.ECOPARK_BASE_URL='http://localhost:3000'; require('child_process').execSync('python verify_live_monochrome_prod.py', {stdio: 'inherit', env: process.env})\"",
-    "test:data": "node supabase/tests/data_layer.contract.test.mjs",
-    "test:browser": "python scripts/test_data_layer_browser.py",
-    "snapshot": "node supabase/tests/build_content_snapshot.mjs",
-    "build:data": "python build_data_layer.py",
-    "test:admin": "python scripts/test_admin_console.py",
-    "test:responsive": "python scripts/test_admin_responsive.py",
-    "test:phase5": "python scripts/test_phase5_integration.py",
-    "test:phase6": "python scripts/test_phase6_caisse_horsligne.py",
-    "test:phase7": "python scripts/test_phase7_orchestration_360.py",
-    "test:phase9": "python scripts/test_phase9_v4_and_recette.py",
-    "test:sim": "python scripts/run_progressive_simulations_360.py",
-    "build": "python build_data_layer.py && python build_admin_console.py && python build_escape_legacy.py && python build_phase5_public_and_viability.py && python build_phase6_caisse_and_offline.py && python build_phase7_orchestration_360.py && python build_phase8_totem_11_services.py && python build_phase9_v4_canopee_immersive_and_recette.py"
+    "dev": "vite",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview",
+    "test": "node --test --experimental-strip-types \"src/utils/*.test.ts\""
+  },
+  "dependencies": {
+    "lucide-react": "^1.16.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.0.9",
+    "@types/node": "^22.13.0",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@vitejs/plugin-react": "^4.3.4",
+    "tailwindcss": "^4.0.9",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.0"
   }
 }

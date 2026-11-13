@@ -1,0 +1,187 @@
+/* ==========================================================================
+   ECO-PARK — Design Tokens & Tailwind CSS v4 Theme
+   Source : Adobe Color (Explore + Color Wheel + WCAG Contrast + Daltonism)
+   ========================================================================== */
+
+/* 1. Primitive Color Scales & Core Adobe Color Swatches */
+:root {
+  /* Core 5 Swatches (Adobe Color Custom Theme) */
+  --eco-forest-brand: #1B4332; /* rgb(27, 67, 50)   — Primary Deep Forest */
+  --eco-leaf-brand:   #52B788; /* rgb(82, 183, 136) — Secondary Fresh Leaf */
+  --eco-earth-brand:  #D4A373; /* rgb(212, 163, 115)— Tertiary Warm Earth */
+  --eco-mist-brand:   #E9F5ED; /* rgb(233, 245, 237)— Light Sage Mist Surface */
+  --eco-bark-brand:   #1F2421; /* rgb(31, 36, 33)   — High-Contrast Bark Ink */
+
+  /* Forest Scale (Canopy Primary) */
+  --color-forest-50:  #EDF7F2;
+  --color-forest-100: #D8F3DC;
+  --color-forest-200: #B7E4C7;
+  --color-forest-300: #95D5B2;
+  --color-forest-400: #74C69D;
+  --color-forest-500: #52B788;
+  --color-forest-600: #40916C;
+  --color-forest-700: #2D6A4F;
+  --color-forest-800: #1B4332;
+  --color-forest-900: #112A1F;
+  --color-forest-950: #081C15;
+
+  /* Leaf Scale (Emerald Secondary) */
+  --color-leaf-50:  #F0FAF5;
+  --color-leaf-100: #D8F3DC;
+  --color-leaf-200: #B7E4C7;
+  --color-leaf-300: #95D5B2;
+  --color-leaf-400: #74C69D;
+  --color-leaf-500: #52B788;
+  --color-leaf-600: #3D996E;
+  --color-leaf-700: #2D7A56;
+  --color-leaf-800: #215C41;
+  --color-leaf-900: #163E2C;
+  --color-leaf-950: #0B2218;
+
+  /* Earth Scale (Warm Ochre Accent) */
+  --color-earth-50:  #FBF6F0;
+  --color-earth-100: #F5EBE0;
+  --color-earth-200: #EBD5BE;
+  --color-earth-300: #E0BC99;
+  --color-earth-400: #D4A373;
+  --color-earth-500: #C08852;
+  --color-earth-600: #A46E3B;
+  --color-earth-700: #84562D;
+  --color-earth-800: #684324;
+  --color-earth-900: #4E321B;
+  --color-earth-950: #2E1C0E;
+
+  /* Mist Scale (Organic Light Surfaces) */
+  --color-mist-50:  #F6FBF8;
+  --color-mist-100: #E9F5ED;
+  --color-mist-200: #D4E9DC;
+  --color-mist-300: #B5D6C2;
+  --color-mist-400: #8EBAA0;
+  --color-mist-500: #699B7E;
+
+  /* Bark Scale (Natural Charcoal Neutrals) */
+  --color-bark-50:  #F4F6F5;
+  --color-bark-100: #E4E8E5;
+  --color-bark-200: #C9D1CC;
+  --color-bark-300: #A3B0A8;
+  --color-bark-400: #7B8C82;
+  --color-bark-500: #5C6B62;
+  --color-bark-600: #46534B;
+  --color-bark-700: #36403A;
+  --color-bark-800: #29302C;
+  --color-bark-900: #1F2421;
+  --color-bark-950: #121614;
+
+  /* 2. Semantic Tokens — Light Mode (WCAG AA/AAA Verified) */
+  --bg-canvas:         var(--color-mist-50);    /* #F6FBF8 */
+  --bg-surface:        var(--color-mist-100);   /* #E9F5ED — 14.07:1 with --text-primary */
+  --bg-elevated:       #FFFFFF;
+  --text-primary:      var(--color-bark-900);   /* #1F2421 */
+  --text-muted:        var(--color-bark-600);   /* #46534B */
+  --brand-primary:     var(--color-forest-800); /* #1B4332 — 11.08:1 with #FFFFFF */
+  --brand-primary-hover: var(--color-forest-700);
+  --on-primary:        #FFFFFF;
+  --brand-secondary:   var(--color-leaf-500);   /* #52B788 — 6.37:1 with #1F2421 */
+  --on-secondary:      var(--color-bark-900);
+  --brand-accent:      var(--color-earth-400);  /* #D4A373 — 6.97:1 with #1F2421 */
+  --on-accent:         var(--color-bark-900);
+  --border-subtle:     var(--color-mist-200);
+  --border-default:    var(--color-mist-300);
+  --focus-ring:        var(--color-leaf-500);
+}
+
+/* 3. Semantic Tokens — Dark Mode (Class `.dark` or `[data-theme="dark"]`) */
+.dark,
+[data-theme="dark"] {
+  --bg-canvas:         var(--color-bark-950);   /* #121614 */
+  --bg-surface:        var(--color-bark-900);   /* #1F2421 — 14.07:1 with #E9F5ED */
+  --bg-elevated:       var(--color-bark-800);   /* #29302C */
+  --text-primary:      var(--color-mist-100);   /* #E9F5ED */
+  --text-muted:        var(--color-bark-300);   /* #A3B0A8 */
+  --brand-primary:     var(--color-leaf-500);   /* #52B788 — 6.37:1+ with dark ink */
+  --brand-primary-hover: var(--color-leaf-400);
+  --on-primary:        var(--color-bark-950);
+  --brand-secondary:   var(--color-forest-700); /* #2D6A4F */
+  --on-secondary:      var(--color-mist-100);
+  --brand-accent:      var(--color-earth-400);  /* #D4A373 */
+  --on-accent:         var(--color-bark-900);
+  --border-subtle:     var(--color-bark-800);
+  --border-default:    var(--color-bark-700);
+  --focus-ring:        var(--color-earth-400);
+}
+
+/* 4. Tailwind CSS v4 Native CSS-First Configuration (`@import "tailwindcss";`) */
+@theme {
+  /* Semantic Utilities: bg-canvas, bg-surface, text-ink, bg-primary, bg-secondary, bg-accent */
+  --color-canvas: var(--bg-canvas);
+  --color-surface: var(--bg-surface);
+  --color-elevated: var(--bg-elevated);
+  --color-ink: var(--text-primary);
+  --color-ink-muted: var(--text-muted);
+
+  --color-primary: var(--brand-primary);
+  --color-primary-hover: var(--brand-primary-hover);
+  --color-on-primary: var(--on-primary);
+
+  --color-secondary: var(--brand-secondary);
+  --color-on-secondary: var(--on-secondary);
+
+  --color-accent: var(--brand-accent);
+  --color-on-accent: var(--on-accent);
+
+  /* Brand Scales: bg-forest-800, text-leaf-500, border-earth-400, bg-mist-100, text-bark-900 */
+  --color-forest-50:  #EDF7F2;
+  --color-forest-100: #D8F3DC;
+  --color-forest-200: #B7E4C7;
+  --color-forest-300: #95D5B2;
+  --color-forest-400: #74C69D;
+  --color-forest-500: #52B788;
+  --color-forest-600: #40916C;
+  --color-forest-700: #2D6A4F;
+  --color-forest-800: #1B4332;
+  --color-forest-900: #112A1F;
+  --color-forest-950: #081C15;
+
+  --color-leaf-50:  #F0FAF5;
+  --color-leaf-100: #D8F3DC;
+  --color-leaf-200: #B7E4C7;
+  --color-leaf-300: #95D5B2;
+  --color-leaf-400: #74C69D;
+  --color-leaf-500: #52B788;
+  --color-leaf-600: #3D996E;
+  --color-leaf-700: #2D7A56;
+  --color-leaf-800: #215C41;
+  --color-leaf-900: #163E2C;
+  --color-leaf-950: #0B2218;
+
+  --color-earth-50:  #FBF6F0;
+  --color-earth-100: #F5EBE0;
+  --color-earth-200: #EBD5BE;
+  --color-earth-300: #E0BC99;
+  --color-earth-400: #D4A373;
+  --color-earth-500: #C08852;
+  --color-earth-600: #A46E3B;
+  --color-earth-700: #84562D;
+  --color-earth-800: #684324;
+  --color-earth-900: #4E321B;
+  --color-earth-950: #2E1C0E;
+
+  --color-mist-50:  #F6FBF8;
+  --color-mist-100: #E9F5ED;
+  --color-mist-200: #D4E9DC;
+  --color-mist-300: #B5D6C2;
+  --color-mist-400: #8EBAA0;
+  --color-mist-500: #699B7E;
+
+  --color-bark-50:  #F4F6F5;
+  --color-bark-100: #E4E8E5;
+  --color-bark-200: #C9D1CC;
+  --color-bark-300: #A3B0A8;
+  --color-bark-400: #7B8C82;
+  --color-bark-500: #5C6B62;
+  --color-bark-600: #46534B;
+  --color-bark-700: #36403A;
+  --color-bark-800: #29302C;
+  --color-bark-900: #1F2421;
+  --color-bark-950: #121614;
+}

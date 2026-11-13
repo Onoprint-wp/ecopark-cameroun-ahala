@@ -1,0 +1,142 @@
+{
+  "$schema": "https://tr.designtokens.org/format/",
+  "meta": {
+    "project": "ECO-PARK",
+    "source": "Adobe Color (Explore + Color Wheel + WCAG Contrast Checker + Color Blindness Simulator)",
+    "wcagCompliance": "AA / AAA verified",
+    "colorBlindSafe": true
+  },
+  "core": {
+    "forest": {
+      "50":  { "$value": "#EDF7F2", "$type": "color" },
+      "100": { "$value": "#D8F3DC", "$type": "color" },
+      "200": { "$value": "#B7E4C7", "$type": "color" },
+      "300": { "$value": "#95D5B2", "$type": "color" },
+      "400": { "$value": "#74C69D", "$type": "color" },
+      "500": { "$value": "#52B788", "$type": "color" },
+      "600": { "$value": "#40916C", "$type": "color" },
+      "700": { "$value": "#2D6A4F", "$type": "color" },
+      "800": { "$value": "#1B4332", "$type": "color", "$description": "Adobe Color Swatch 1 — Deep Forest Green (Primary)" },
+      "900": { "$value": "#112A1F", "$type": "color" },
+      "950": { "$value": "#081C15", "$type": "color" }
+    },
+    "leaf": {
+      "50":  { "$value": "#F0FAF5", "$type": "color" },
+      "100": { "$value": "#D8F3DC", "$type": "color" },
+      "200": { "$value": "#B7E4C7", "$type": "color" },
+      "300": { "$value": "#95D5B2", "$type": "color" },
+      "400": { "$value": "#74C69D", "$type": "color" },
+      "500": { "$value": "#52B788", "$type": "color", "$description": "Adobe Color Swatch 2 — Fresh Leaf / Emerald (Secondary)" },
+      "600": { "$value": "#3D996E", "$type": "color" },
+      "700": { "$value": "#2D7A56", "$type": "color" },
+      "800": { "$value": "#215C41", "$type": "color" },
+      "900": { "$value": "#163E2C", "$type": "color" },
+      "950": { "$value": "#0B2218", "$type": "color" }
+    },
+    "earth": {
+      "50":  { "$value": "#FBF6F0", "$type": "color" },
+      "100": { "$value": "#F5EBE0", "$type": "color" },
+      "200": { "$value": "#EBD5BE", "$type": "color" },
+      "300": { "$value": "#E0BC99", "$type": "color" },
+      "400": { "$value": "#D4A373", "$type": "color", "$description": "Adobe Color Swatch 3 — Warm Earth / Ochre (Accent)" },
+      "500": { "$value": "#C08852", "$type": "color" },
+      "600": { "$value": "#A46E3B", "$type": "color" },
+      "700": { "$value": "#84562D", "$type": "color" },
+      "800": { "$value": "#684324", "$type": "color" },
+      "900": { "$value": "#4E321B", "$type": "color" },
+      "950": { "$value": "#2E1C0E", "$type": "color" }
+    },
+    "mist": {
+      "50":  { "$value": "#F6FBF8", "$type": "color" },
+      "100": { "$value": "#E9F5ED", "$type": "color", "$description": "Adobe Color Swatch 4 — Soft Mist / Sage (Light Surface)" },
+      "200": { "$value": "#D4E9DC", "$type": "color" },
+      "300": { "$value": "#B5D6C2", "$type": "color" },
+      "400": { "$value": "#8EBAA0", "$type": "color" },
+      "500": { "$value": "#699B7E", "$type": "color" }
+    },
+    "bark": {
+      "50":  { "$value": "#F4F6F5", "$type": "color" },
+      "100": { "$value": "#E4E8E5", "$type": "color" },
+      "200": { "$value": "#C9D1CC", "$type": "color" },
+      "300": { "$value": "#A3B0A8", "$type": "color" },
+      "400": { "$value": "#7B8C82", "$type": "color" },
+      "500": { "$value": "#5C6B62", "$type": "color" },
+      "600": { "$value": "#46534B", "$type": "color" },
+      "700": { "$value": "#36403A", "$type": "color" },
+      "800": { "$value": "#29302C", "$type": "color" },
+      "900": { "$value": "#1F2421", "$type": "color", "$description": "Adobe Color Swatch 5 — Deep Bark / Charcoal (Ink & Dark UI)" },
+      "950": { "$value": "#121614", "$type": "color" }
+    }
+  },
+  "semantic": {
+    "light": {
+      "bg": { "$value": "#F6FBF8", "$type": "color" },
+      "surface": { "$value": "#E9F5ED", "$type": "color" },
+      "surfaceElevated": { "$value": "#FFFFFF", "$type": "color" },
+      "text": { "$value": "#1F2421", "$type": "color" },
+      "textMuted": { "$value": "#46534B", "$type": "color" },
+      "primary": { "$value": "#1B4332", "$type": "color" },
+      "primaryHover": { "$value": "#2D6A4F", "$type": "color" },
+      "onPrimary": { "$value": "#FFFFFF", "$type": "color" },
+      "secondary": { "$value": "#52B788", "$type": "color" },
+      "onSecondary": { "$value": "#1F2421", "$type": "color" },
+      "accent": { "$value": "#D4A373", "$type": "color" },
+      "onAccent": { "$value": "#1F2421", "$type": "color" },
+      "border": { "$value": "#B5D6C2", "$type": "color" }
+    },
+    "dark": {
+      "bg": { "$value": "#121614", "$type": "color" },
+      "surface": { "$value": "#1F2421", "$type": "color" },
+      "surfaceElevated": { "$value": "#29302C", "$type": "color" },
+      "text": { "$value": "#E9F5ED", "$type": "color" },
+      "textMuted": { "$value": "#A3B0A8", "$type": "color" },
+      "primary": { "$value": "#52B788", "$type": "color" },
+      "primaryHover": { "$value": "#74C69D", "$type": "color" },
+      "onPrimary": { "$value": "#121614", "$type": "color" },
+      "secondary": { "$value": "#2D6A4F", "$type": "color" },
+      "onSecondary": { "$value": "#E9F5ED", "$type": "color" },
+      "accent": { "$value": "#D4A373", "$type": "color" },
+      "onAccent": { "$value": "#1F2421", "$type": "color" },
+      "border": { "$value": "#36403A", "$type": "color" }
+    }
+  },
+  "exploredAdobePalettes": [
+    {
+      "name": "Forest & Nature",
+      "query": "forest nature",
+      "swatches": ["#0D2329", "#203B3A", "#395246", "#6D7F6A", "#AAB89B"]
+    },
+    {
+      "name": "This Green",
+      "query": "forest nature",
+      "swatches": ["#616C59", "#354737", "#2F392B", "#302E1E", "#0A110B"]
+    },
+    {
+      "name": "Green bokeh background forest",
+      "query": "forest nature",
+      "swatches": ["#295937", "#0B2516", "#163625", "#7AA968", "#4D814B"]
+    },
+    {
+      "name": "Green Eco Tree",
+      "query": "eco green",
+      "swatches": ["#0D590A", "#148C11", "#25D91A", "#63F250", "#C2F2B8"]
+    },
+    {
+      "name": "Eco friendly",
+      "query": "eco green",
+      "swatches": ["#2D5A27", "#84A98C", "#CAD2C5", "#52796F", "#354F52"]
+    }
+  ],
+  "accessibilityAudit": {
+    "deuteranopiaConflicts": 0,
+    "protanopiaConflicts": 0,
+    "tritanopiaConflicts": 0,
+    "contrastPairs": [
+      { "pair": "Bark (#1F2421) on Mist (#E9F5ED)", "ratio": "14.07:1", "wcagAA": true, "wcagAAA": true },
+      { "pair": "White (#FFFFFF) on Forest (#1B4332)", "ratio": "11.08:1", "wcagAA": true, "wcagAAA": true },
+      { "pair": "Mist (#E9F5ED) on Forest (#1B4332)", "ratio": "9.89:1", "wcagAA": true, "wcagAAA": true },
+      { "pair": "Bark (#1F2421) on Earth (#D4A373)", "ratio": "6.97:1", "wcagAA": true, "wcagAAA": "large-only" },
+      { "pair": "Bark (#1F2421) on Leaf (#52B788)", "ratio": "6.37:1", "wcagAA": true, "wcagAAA": "large-only" }
+    ]
+  }
+}

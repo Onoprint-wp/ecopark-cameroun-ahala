@@ -2,13 +2,23 @@ name: ECOPARK Zero-Error Gate & Full QA Suite
 
 on:
   push:
-    branches: [main, master]
+    branches: [main, master, 'feat/**', 'release/**']
   pull_request:
     branches: [main, master]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   verify-ecopark-360:
+    name: TypeScript, Unit/E2E Workflows & Production Bundle Gate
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -17,24 +27,79 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
 
-      - name: Install Supabase PGlite test dependencies
-        run: npm --prefix supabase/tests install
+      - name: Install clean dependencies
+        run: npm ci
 
-      - name: Run PostgreSQL / Supabase RLS & Governance Contract Tests (81 assertions)
-        run: npm run test:db
+      - name: Run Unit, Accessibility, Motion & E2E Workflow Tests
+        run: npm test
 
-      - name: Run Dual Data Layer Contract Tests (112 assertions)
-        run: npm run test:data
+      - name: Build Production Bundle (Strict TypeScript + Vite)
+        run: npm run build
 
-      - name: Verify Zero U+2014 Em-Dash & JSON Syntax
+      - name: Verify Static Configs, Vercel Rewrites, SEO/GEO & Dist Integrity
+        shell: bash
         run: |
-          node -e "
-            const fs = require('fs');
-            JSON.parse(fs.readFileSync('tokens.json', 'utf8'));
-            JSON.parse(fs.readFileSync('etape0-site-live/content-snapshot.json', 'utf8'));
-            JSON.parse(fs.readFileSync('etape0-site-live/manifest.json', 'utf8'));
-            const html = fs.readFileSync('etape0-site-live/index.html', 'utf8');
-            if (html.includes('\u2014')) { throw new Error('U+2014 detected in index.html'); }
-            console.log('Zero-Error static verification passed.');
-          "
+          node --input-type=module -e '
+            import fs from "node:fs";
+            import path from "node:path";
+
+            const jsonFiles = [
+              "package.json",
+              "vercel.json",
+              "tokens/color-tokens.json",
+              "public/manifest.json"
+            ];
+            for (const file of jsonFiles) {
+              if (!fs.existsSync(file)) throw new Error(`Missing JSON config: ${file}`);
+              JSON.parse(fs.readFileSync(file, "utf8"));
+            }
+
+            const vercel = JSON.parse(fs.readFileSync("vercel.json", "utf8"));
+            if (!Array.isArray(vercel.rewrites) || vercel.rewrites.length < 20) {
+              throw new Error("vercel.json must define production SPA rewrites");
+            }
+            for (const rw of vercel.rewrites) {
+              if (!rw.source.startsWith("/") || rw.destination !== "/index.html") {
+                throw new Error(`Invalid Vercel rewrite rule: ${JSON.stringify(rw)}`);
+              }
+            }
+
+            const requiredDistFiles = [
+              "dist/index.html",
+              "dist/manifest.json",
+              "dist/llms.txt",
+              "dist/agents.txt",
+              "dist/sitemap.xml",
+              "dist/robots.txt",
+              "dist/favicon.svg"
+            ];
+            for (const distFile of requiredDistFiles) {
+              if (!fs.existsSync(distFile) || fs.statSync(distFile).size === 0) {
+                throw new Error(`Missing or empty production artifact: ${distFile}`);
+              }
+            }
+
+            const assetsDir = "dist/assets";
+            const assets = fs.readdirSync(assetsDir);
+            const jsChunks = assets.filter((f) => f.endsWith(".js"));
+            const cssChunks = assets.filter((f) => f.endsWith(".css"));
+            if (jsChunks.length === 0 || cssChunks.length === 0) {
+              throw new Error("Production dist/assets must contain compiled JS and CSS chunks");
+            }
+
+            if (!fs.existsSync("supabase/config.toml")) {
+              throw new Error("Missing supabase/config.toml");
+            }
+            const sqlMigrations = fs.readdirSync("supabase/migrations").filter((f) => f.endsWith(".sql"));
+            if (sqlMigrations.length < 8) {
+              throw new Error(`Expected >= 8 Supabase SQL migrations, found ${sqlMigrations.length}`);
+            }
+
+            const totalBytes = assets.reduce(
+              (sum, f) => sum + fs.statSync(path.join(assetsDir, f)).size,
+              0
+            );
+            console.log(`CI Gate OK: ${vercel.rewrites.length} Vercel rewrites, ${sqlMigrations.length} SQL migrations, ${jsChunks.length} JS chunk(s), ${cssChunks.length} CSS chunk(s), ${(totalBytes / 1024).toFixed(1)} KB uncompressed assets.`);
+          '

@@ -1,39 +1,21 @@
-# Vercel
-.vercel/
-etape0-site-live/.vercel/
-
-# Python
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Temporary files
-tmp_*
-*.tmp
-.DS_Store
-Thumbs.db
-
-# Tests base de donnees (PGlite)
+# Dependencies
 node_modules/
 
+# Build output
+dist/
+dist-ssr/
+*.local
 
-# Journaux temporaires multi-agents
-.agents/teamwork/
+# Agent / workspace internal scratch
+.agents/
 
-# Variables d'environnement et secrets API (ne jamais versionner)
+# Environment variables
 .env
 .env.*
 !.env.example
 
-# Sorties brutes de generation Higgsfield (versionner uniquement les medias retenus)
-audit-assets/higgsfield-outputs/
-
-# === GUARDRAILS T0 (AUTO-PROTECTION) ===
-.env.local
-.env.*.local
-.env.vercel*
-.env.production*
-*.db
-*.db-journal
-_ARCHIVE_DEBUG/
-00_BRIEF_ET_INTRANTS/_COFFRE_ACCES_HORS_GIT/
+# Logs & OS files
+*.log
+npm-debug.log*
+.DS_Store
+Thumbs.db
