@@ -159,7 +159,7 @@ export const Co2BotanicalSprout: React.FC<Co2BotanicalSproutProps> = ({
 
       {/* Live Rolling CO2 Telemetry & Guidance */}
       <div className="flex-1 space-y-1.5 text-center sm:text-left">
-        <div className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
+        <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
           <Leaf className="w-3.5 h-3.5 text-[#52B788]" />
           <span>Simulateur « De la graine à l&apos;arbre »</span>
         </div>
@@ -168,8 +168,8 @@ export const Co2BotanicalSprout: React.FC<Co2BotanicalSproutProps> = ({
           <span
             className={`font-mono text-2xl sm:text-3xl font-extrabold tracking-tight ${
               growth.isWilted
-                ? 'text-amber-700 dark:text-amber-400'
-                : 'text-emerald-700 dark:text-emerald-400'
+                ? 'text-[var(--status-caution-text)]'
+                : 'text-[var(--status-open-text)]'
             }`}
           >
             +{animatedKg.toFixed(1)} kg CO₂
@@ -184,7 +184,7 @@ export const Co2BotanicalSprout: React.FC<Co2BotanicalSproutProps> = ({
           <span>{growth.stageLabel}</span>
         </p>
 
-        <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
+        <p className="text-xs text-[var(--text-muted)] leading-relaxed">
           {mobilityMode === 'voiture_solo'
             ? 'Astuce : optez pour la Prévente Orange Money / MTN MoMo, la Navette Climatisée ou le Tarif Groupe 20+ (-30 %) pour amplifier votre bonus écologique.'
             : 'Chaque kilogramme de CO₂ évité contribue directement à la préservation du microclimat forestier d’Ahala.'}

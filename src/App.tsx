@@ -97,7 +97,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-[var(--bg-canvas)] text-[var(--text-primary)] antialiased transition-colors duration-200">
+    <div className="min-h-screen flex flex-col overflow-x-clip bg-[var(--bg-canvas)] text-[var(--text-primary)] antialiased transition-colors duration-200">
       {/* Sticky Navigation Header */}
       <Navbar />
 
@@ -166,17 +166,17 @@ export default function App() {
                           </span>
                         </div>
 
-                        <h3 className="type-h3 !text-xl text-[var(--text-primary)] group-hover:text-[var(--brand-primary)] transition-colors">
+                        <h3 className="type-card-title text-[var(--text-primary)] group-hover:text-[var(--brand-primary)] transition-colors">
                           {trail.name}
                         </h3>
 
-                        <p className="type-body !text-xs sm:!text-sm text-[var(--text-muted)] line-clamp-2">
+                        <p className="type-body-compact text-[var(--text-muted)]">
                           {trail.description}
                         </p>
                       </div>
 
-                      <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between text-xs text-[var(--text-muted)] tabular-nums">
-                        <span className="truncate pr-2">{trail.biomeLabel}</span>
+                      <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex flex-wrap items-center justify-between gap-2 type-footnote text-[var(--text-muted)] tabular-nums">
+                        <span className="min-w-0 leading-snug">{trail.biomeLabel}</span>
                         <span className="font-mono text-[var(--text-primary)] font-semibold shrink-0">Alt. {trail.maxElevationM}m</span>
                       </div>
                     </div>
@@ -230,16 +230,16 @@ export default function App() {
                         </div>
                       )}
                       <div className="p-4">
-                        <div className="text-xs font-mono text-[var(--brand-primary)] font-semibold uppercase">
+                        <div className="type-badge font-mono text-[var(--brand-primary)] font-semibold uppercase">
                           {sp.categoryLabel}
                         </div>
-                        <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)] mt-1 group-hover:text-[var(--brand-primary)]">
+                        <div className="type-card-title text-[var(--text-primary)] mt-1 group-hover:text-[var(--brand-primary)]">
                           {sp.commonName}
                         </div>
-                        <div className="text-[11px] italic text-[var(--text-muted)]">
+                        <div className="text-xs italic text-[var(--text-muted)] mt-0.5">
                           {sp.scientificName}
                         </div>
-                        <div className="mt-3 inline-block px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)]">
+                        <div className="mt-3 inline-block px-2 py-0.5 rounded type-badge font-mono font-bold bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)]">
                           Statut : {sp.iucnStatus} · {sp.iucnLabel}
                         </div>
                       </div>
@@ -263,7 +263,7 @@ export default function App() {
                     <Compass className="w-4 h-4 text-[#74C69D]" />
                     <span>Cartographie Interactive d&apos;ECOPARK CAMEROUN (Yaoundé - Ahala, RN3)</span>
                   </div>
-                  <h1 className="type-h2 text-white mt-1">
+                  <h1 className="type-page-title text-white mt-1">
                     Plan du parc et six circuits officiels.
                   </h1>
                 </div>
@@ -312,7 +312,7 @@ export default function App() {
                     <Ticket className="w-4 h-4 text-[#74C69D]" />
                     <span>Billetterie Officielle en FCFA · Orange Money (#150#) · MTN MoMo (*126#) · Guichet</span>
                   </div>
-                  <h1 className="type-h2 text-white mt-1">
+                  <h1 className="type-page-title text-white mt-1">
                     Réservez votre Pass QR à Yaoundé, Ahala.
                   </h1>
                 </div>
@@ -340,7 +340,7 @@ export default function App() {
                     <QrCode className="w-4 h-4 text-[#52B788]" />
                     <span>Espace Cliente Sécurisé &amp; Pass QR Code (ECP-2026-XXXXX)</span>
                   </div>
-                  <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
+                  <h1 className="type-page-title text-white mt-1">
                     {isAuthenticated && user
                       ? `Bienvenue, ${user.fullName}`
                       : 'Mon Espace Cliente & Mes Réservations QR'}
@@ -352,7 +352,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => setActiveView('connexion')}
-                      className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold text-white inline-flex items-center gap-1.5 cursor-pointer"
+                      className="min-h-[44px] px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold text-white inline-flex items-center gap-1.5 cursor-pointer"
                     >
                       <User className="w-3.5 h-3.5 text-[#74C69D]" />
                       <span>Mon Compte ({getRoleDisplayLabel(user.role)})</span>
@@ -363,7 +363,7 @@ export default function App() {
                         await logout();
                         setActiveView('accueil');
                       }}
-                      className="px-3.5 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/40 text-xs font-semibold text-rose-200 inline-flex items-center gap-1.5 cursor-pointer"
+                      className="min-h-[44px] px-3.5 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/40 text-xs font-semibold text-rose-200 inline-flex items-center gap-1.5 cursor-pointer"
                     >
                       <LogOut className="w-3.5 h-3.5" />
                       <span>Déconnexion</span>
@@ -377,7 +377,7 @@ export default function App() {
               </div>
             </ImmersiveSection>
 
-            <div className="eco-container space-y-12">
+            <div className="eco-container space-y-12 min-h-[70vh]">
               {isAuthLoading ? (
                 <div className="max-w-xl mx-auto p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center text-sm text-[var(--text-muted)] font-mono">
                   Vérification de votre session chiffrée...
@@ -389,8 +389,8 @@ export default function App() {
                   </section>
 
                   <div className="pt-6 border-t border-[var(--border-default)] space-y-5">
-                    <div className="max-w-xl mx-auto p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-start gap-3 text-xs text-emerald-950 dark:text-emerald-100">
-                      <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <div className="max-w-xl mx-auto p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-start gap-3 text-sm text-emerald-950 dark:text-emerald-100">
+                      <Lock className="w-4 h-4 text-[var(--status-open-text)] shrink-0 mt-0.5" />
                       <div>
                         <strong>Onboarding Espace Cliente (60s · Session 7 jours) :</strong> Créez gratuitement votre compte ou connectez-vous pour centraliser tous vos Pass QR, pré-remplir vos réservations et accéder aux signalements Sentinelle Nature.
                       </div>
@@ -424,7 +424,7 @@ export default function App() {
         {activeView === 'ranger' && (
           <div className="eco-view-enter">
             {isAuthLoading ? (
-              <div className="eco-container py-16">
+              <div className="eco-container py-16 min-h-screen">
                 <div className="max-w-xl mx-auto p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center text-sm text-[var(--text-muted)] font-mono">
                   Vérification des habilitations Cockpit Pro...
                 </div>
@@ -434,11 +434,11 @@ export default function App() {
                 <div className="eco-container">
                   <div className="p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div>
-                      <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                      <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--status-caution-text)]">
                         <ShieldAlert className="w-4 h-4" />
                         <span>Accès Professionnel Protégé · RBAC ECOPARK CAMEROUN</span>
                       </div>
-                      <h1 className="font-sans text-base font-bold text-[var(--text-primary)] mt-0.5">
+                      <h1 className="type-cockpit-h1 text-[var(--text-primary)] mt-0.5">
                         Authentification Cockpit Pro &amp; Exploitation Ahala
                       </h1>
                     </div>
@@ -455,17 +455,17 @@ export default function App() {
             ) : !isStaff ? (
               <div className="eco-container py-16 font-sans">
                 <div className="max-w-xl mx-auto p-8 rounded-3xl bg-[var(--bg-surface)] border border-amber-400/60 shadow-xl text-center space-y-5">
-                  <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 mx-auto flex items-center justify-center">
+                  <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950 text-[var(--status-caution-text)] mx-auto flex items-center justify-center">
                     <ShieldAlert className="w-7 h-7" />
                   </div>
                   <div className="space-y-2">
-                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--status-caution-text)]">
                       Erreur 403 · Habilitation Insuffisante
                     </span>
-                    <h1 className="font-sans text-base font-bold text-[var(--text-primary)]">
+                    <h1 className="type-cockpit-h1 text-[var(--text-primary)]">
                       Zone Réservée au Personnel d&apos;Exploitation
                     </h1>
-                    <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                    <p className="type-body-compact text-[var(--text-muted)]">
                       Vous êtes actuellement connecté(e) en tant que <strong>{user?.fullName}</strong> (<code>Espace Cliente</code>). Le Cockpit Pro d&apos;Ahala est strictement réservé aux agents habilités de MPECK MULTI-SERVICES.
                     </p>
                   </div>
@@ -473,7 +473,7 @@ export default function App() {
                     <button
                       type="button"
                       onClick={() => setActiveView('pass')}
-                      className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)] text-white text-xs font-bold cursor-pointer"
+                      className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-sm font-bold cursor-pointer"
                     >
                       Retourner à mon Espace Cliente
                     </button>

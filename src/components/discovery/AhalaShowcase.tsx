@@ -9,7 +9,7 @@
 // - Loi 1 & Loi 2 : 0 tiret cadratin/demi-cadratin, tabular-nums intégral, cadrage visages 4:3/16:9
 // ============================================================================
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import {
   type ShowcaseTab,
@@ -44,6 +44,7 @@ export const AhalaShowcase: React.FC = () => {
   const [activeTab, setActiveTab] = useState<ShowcaseTab>(() =>
     typeof window !== 'undefined' ? resolveShowcaseTabFromPath(window.location.pathname) : 'hebergements'
   );
+  const tabButtonRefs = useRef<Partial<Record<ShowcaseTab, HTMLButtonElement | null>>>({});
 
   useEffect(() => {
     if (typeof window === 'undefined') return;
@@ -386,7 +387,7 @@ export const AhalaShowcase: React.FC = () => {
 
                 <div>
                   <h3 className="type-h3 text-[var(--text-primary)]">{pass.name}</h3>
-                  <p className="type-body !text-[14px] !leading-[20px] text-[var(--text-muted)] mt-1">
+                  <p className="type-body-compact text-[var(--text-muted)] mt-1">
                     {pass.tagline}
                   </p>
                 </div>
@@ -408,7 +409,7 @@ export const AhalaShowcase: React.FC = () => {
 
                 <ul className="space-y-2 pt-1">
                   {pass.features.map((feat, i) => (
-                    <li key={i} className="flex items-start gap-2 text-xs sm:text-sm text-[var(--text-primary)] leading-snug">
+                    <li key={i} className="flex items-start gap-2 text-sm text-[var(--text-primary)] leading-snug">
                       <CheckCircle2 className="w-4 h-4 text-[var(--brand-primary)] shrink-0 mt-0.5" />
                       <span>{feat}</span>
                     </li>
@@ -456,11 +457,11 @@ export const AhalaShowcase: React.FC = () => {
         className="eco-container space-y-8 scroll-mt-36"
       >
         {/* Section Header */}
-        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-5 border-b border-[var(--border-default)] pb-6">
-          <div className="space-y-2 flex-1">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-primary)]/10 type-eyebrow uppercase">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>Complexe Intégré · MPECK MULTI-SERVICES (Fondateur : Dr Christophe FOE NDI)</span>
+        <div className="flex flex-col xl:flex-row xl:items-end justify-between gap-5 border-b border-[var(--border-default)] pb-6 min-w-0">
+          <div className="space-y-2 flex-1 min-w-0">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[var(--brand-primary)]/10 type-eyebrow uppercase max-w-full">
+              <Sparkles className="w-3.5 h-3.5 shrink-0" />
+              <span className="break-words">Complexe Intégré · MPECK MULTI-SERVICES (Fondateur : Dr Christophe FOE NDI)</span>
             </div>
             <h2 className="type-h2 text-[var(--text-primary)]">
               Explorez les cinq pôles du domaine d&apos;Ahala.
@@ -471,24 +472,49 @@ export const AhalaShowcase: React.FC = () => {
           </div>
 
           {/* Navigation Pill Tabs (>= 48px touch box) */}
-          <div className="flex flex-wrap gap-2 shrink-0" role="tablist" aria-label="Pôles d'ECOPARK CAMEROUN">
-            {[
-              { id: 'hebergements', label: 'Hôtels & Suites (30)', icon: BedDouble },
-              { id: 'saveurs', label: 'Château des Saveurs', icon: Utensils },
-              { id: 'tarifs', label: 'Tarifs Activités FCFA', icon: Ticket },
-              { id: 'entreprise', label: 'Groupes & Salle 500 pl.', icon: Building2 },
-              { id: 'formation', label: 'CFP Agréé MINEFOP', icon: GraduationCap },
-            ].map((tab) => {
+          <div className="flex flex-wrap gap-2 min-w-0 max-w-full" role="tablist" aria-label="Pôles d'ECOPARK CAMEROUN">
+            {(
+              [
+                { id: 'hebergements', label: 'Hôtels & Suites (30)', icon: BedDouble },
+                { id: 'saveurs', label: 'Château des Saveurs', icon: Utensils },
+                { id: 'tarifs', label: 'Tarifs Activités FCFA', icon: Ticket },
+                { id: 'entreprise', label: 'Groupes & Salle 500 pl.', icon: Building2 },
+                { id: 'formation', label: 'CFP Agréé MINEFOP', icon: GraduationCap },
+              ] as const
+            ).map((tab, index, tabs) => {
               const Icon = tab.icon;
               const isActive = activeTab === tab.id;
+              const handleTabKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+                let nextIndex: number | null = null;
+                if (event.key === 'ArrowRight' || event.key === 'ArrowDown') {
+                  nextIndex = (index + 1) % tabs.length;
+                } else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') {
+                  nextIndex = (index - 1 + tabs.length) % tabs.length;
+                } else if (event.key === 'Home') {
+                  nextIndex = 0;
+                } else if (event.key === 'End') {
+                  nextIndex = tabs.length - 1;
+                }
+                if (nextIndex === null) return;
+                event.preventDefault();
+                const nextTab = tabs[nextIndex].id;
+                handleSelectShowcaseTab(nextTab);
+                tabButtonRefs.current[nextTab]?.focus();
+              };
               return (
                 <button
                   key={tab.id}
+                  id={`showcase-tab-${tab.id}`}
+                  ref={(el) => {
+                    tabButtonRefs.current[tab.id] = el;
+                  }}
                   type="button"
                   role="tab"
+                  tabIndex={isActive ? 0 : -1}
                   aria-selected={isActive}
                   aria-controls={`panel-${tab.id}`}
-                  onClick={() => handleSelectShowcaseTab(tab.id as ShowcaseTab)}
+                  onClick={() => handleSelectShowcaseTab(tab.id)}
+                  onKeyDown={handleTabKeyDown}
                   className={`min-h-[48px] px-4 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all flex items-center gap-2 cursor-pointer ${
                     isActive
                       ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] shadow-sm'
@@ -509,6 +535,7 @@ export const AhalaShowcase: React.FC = () => {
         <div
           id="panel-hebergements"
           role="tabpanel"
+          aria-labelledby="showcase-tab-hebergements"
           className={activeTab === 'hebergements' ? 'space-y-8 block' : 'hidden'}
         >
           {/* Top Highlight Banner: Pack Escapade Couple VIP */}
@@ -518,16 +545,16 @@ export const AhalaShowcase: React.FC = () => {
                 <Heart className="w-3.5 h-3.5 text-amber-300" />
                 <span>Offre Signature Tout-Inclus · Réception Hôtellerie 24h/24 &amp; 7j/7</span>
               </div>
-              <h3 className="type-h3 !text-2xl sm:!text-3xl text-white">
+              <h3 className="type-h3 text-2xl sm:text-3xl text-white">
                 Pack Escapade Couple VIP : 22 500 FCFA / pers. (45 000 FCFA pour 2).
               </h3>
-              <p className="type-body !text-sm text-[#E9F5ED]/90">
+              <p className="type-body-compact text-[#E9F5ED]/90">
                 Inclut <strong>1 nuitée en Mini-Suite VIP (Hôtel Ewondo)</strong> + <strong>Dîner gastronomique pour 2 au restaurant « Le Château des Saveurs »</strong> + <strong>Accès illimité au Parc &amp; Jardin Zoologique</strong>. Check-in 14h00 · Check-out 11h00.
               </p>
             </div>
 
             {/* Tandem Double CTA */}
-            <div className="flex flex-wrap items-center gap-3 shrink-0">
+            <div className="flex flex-wrap items-center gap-3 max-w-full">
               <button
                 type="button"
                 onClick={() => {
@@ -571,24 +598,24 @@ export const AhalaShowcase: React.FC = () => {
 
                   <div className="p-5 space-y-3">
                     <div className="flex flex-wrap items-center justify-between gap-2">
-                      <span className="px-2.5 py-1 rounded-md bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] text-[11px] font-mono font-bold">
+                      <span className="px-2.5 py-1 rounded-md bg-[var(--brand-primary)]/10 text-[var(--brand-primary)] type-badge font-mono font-bold">
                         {hotel.badge}
                       </span>
-                      <span className="px-2.5 py-1 rounded-lg bg-[#1B4332] text-white font-['Barlow_Semi_Condensed'] font-bold text-sm shadow-2xs tabular-nums">
+                      <span className="px-2.5 py-1 rounded-lg bg-[#1B4332] text-white font-sans font-bold text-sm shadow-2xs tabular-nums">
                         {hotel.priceFraming}{' '}
-                        <span className="text-[11px] font-normal text-[#B7E4C7]">{hotel.unit}</span>
+                        <span className="text-xs font-normal text-[#B7E4C7]">{hotel.unit}</span>
                       </span>
                     </div>
 
-                    <h3 className="type-h3 !text-xl text-[var(--text-primary)]">
+                    <h3 className="type-card-title text-[var(--text-primary)]">
                       {hotel.name}
                     </h3>
-                    <p className="type-body !text-xs sm:!text-sm text-[var(--text-muted)]">
+                    <p className="type-body-compact text-[var(--text-muted)]">
                       {hotel.description}
                     </p>
                     <ul className="space-y-1.5 pt-1">
                       {hotel.features.map((feat, idx) => (
-                        <li key={idx} className="flex items-start gap-2 text-xs text-[var(--text-primary)]">
+                        <li key={idx} className="flex items-start gap-2 text-sm text-[var(--text-primary)]">
                           <CheckCircle2 className="w-4 h-4 text-[var(--brand-primary)] shrink-0 mt-0.5" />
                           <span>{feat}</span>
                         </li>
@@ -597,8 +624,8 @@ export const AhalaShowcase: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="px-5 py-2.5 bg-[var(--bg-card)] border-t border-[var(--border-default)] flex items-center justify-between gap-2">
-                  <span className="type-footnote font-mono truncate tabular-nums">
+                <div className="px-5 py-2.5 bg-[var(--bg-card)] border-t border-[var(--border-default)] flex flex-wrap items-center justify-between gap-2">
+                  <span className="type-footnote font-mono min-w-0 leading-snug tabular-nums">
                     {hotel.priceRange}
                   </span>
                   <a
@@ -607,7 +634,7 @@ export const AhalaShowcase: React.FC = () => {
                     )}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="cta-chevron !px-3"
+                    className="cta-chevron px-3 shrink-0"
                   >
                     <span>Disponibilité</span>
                     <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
@@ -643,7 +670,7 @@ export const AhalaShowcase: React.FC = () => {
                 <h3 className="type-h3 text-white">
                   Pergolas du Lac, Salle VIP New Look (60 pl.) et Boukarous.
                 </h3>
-                <p className="type-body !text-xs sm:!text-sm text-[#C9D1CC]">
+                <p className="type-body-compact text-[#C9D1CC]">
                   Philosophie <strong>« Du bassin à la braise »</strong> : poissons pêchés à la demande dans nos étangs d&apos;Ahala et légumes récoltés sur nos parcelles agroécologiques.
                 </p>
                 <div className="pt-2 flex flex-wrap items-center gap-2">
@@ -678,17 +705,17 @@ export const AhalaShowcase: React.FC = () => {
                 >
                   <div className="space-y-1.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="text-[11px] font-mono font-bold uppercase text-[var(--brand-primary)]">
+                      <span className="type-badge font-mono font-bold uppercase text-[var(--brand-primary)]">
                         {item.tag}
                       </span>
-                      <span className="px-2.5 py-1 rounded-lg bg-[var(--brand-primary)] text-[var(--on-primary)] font-['Barlow_Semi_Condensed'] font-bold text-sm tabular-nums">
+                      <span className="px-2.5 py-1 rounded-lg bg-[var(--brand-primary)] text-[var(--on-primary)] font-sans font-bold text-sm tabular-nums">
                         {item.price}
                       </span>
                     </div>
-                    <h4 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+                    <h4 className="type-card-title text-[var(--text-primary)]">
                       {item.name}
                     </h4>
-                    <p className="type-body !text-xs sm:!text-sm text-[var(--text-muted)]">
+                    <p className="type-body-compact text-[var(--text-muted)]">
                       {item.desc}
                     </p>
                   </div>
@@ -741,7 +768,7 @@ export const AhalaShowcase: React.FC = () => {
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse text-xs sm:text-sm tabular-nums">
+              <table className="w-full text-left border-collapse text-[0.8125rem] sm:text-sm tabular-nums">
                 <thead>
                   <tr className="border-b border-[var(--border-default)] bg-[var(--bg-canvas)] text-[var(--text-muted)] font-mono text-xs uppercase">
                     <th className="py-3.5 px-4 font-semibold">Activité / Service à Yaoundé - Ahala</th>
@@ -756,7 +783,7 @@ export const AhalaShowcase: React.FC = () => {
                       <td className="py-3 px-4 font-semibold text-[var(--text-primary)]">{act.name}</td>
                       <td className="py-3 px-4 font-mono font-bold text-[var(--brand-primary)] tabular-nums">{act.child}</td>
                       <td className="py-3 px-4 font-mono font-bold text-[var(--text-primary)] tabular-nums">{act.adult}</td>
-                      <td className="py-3 px-4 text-xs text-[var(--text-muted)]">{act.note}</td>
+                      <td className="py-3 px-4 text-[0.8125rem] text-[var(--text-muted)]">{act.note}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -781,7 +808,7 @@ export const AhalaShowcase: React.FC = () => {
               <h3 className="type-h3 text-[var(--text-primary)]">
                 À partir de 1 350 FCFA / élève · Excursion Scolaire Clé en Main.
               </h3>
-              <p className="type-body !text-sm text-[var(--text-muted)]">
+              <p className="type-body-compact text-[var(--text-muted)]">
                 Circuit pédagogique encadré incluant le Jardin Zoologique (Gorille « ToTo », chimpanzés, tortues), la découverte des bassins piscicoles, l&apos;aire de pique-nique sécurisée et la <strong>gratuité pour les enseignants accompagnateurs</strong>.
               </p>
             </div>
@@ -790,7 +817,7 @@ export const AhalaShowcase: React.FC = () => {
                 href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20un%20devis%20Excursion%20Scolaire%20(1%20350%20FCFA%20%2F%20%C3%A9l%C3%A8ve)."
                 target="_blank"
                 rel="noreferrer"
-                className="cta-chevron !px-0"
+                className="cta-chevron px-2"
               >
                 <span>Demander un devis école</span>
                 <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
@@ -806,7 +833,7 @@ export const AhalaShowcase: React.FC = () => {
               <h3 className="type-h3 text-[var(--text-primary)]">
                 À partir de 15 000 FCFA / participant · Journée Séminaire au Vert.
               </h3>
-              <p className="type-body !text-sm text-[var(--text-muted)]">
+              <p className="type-body-compact text-[var(--text-muted)]">
                 Salle climatisée équipée (vidéoprojecteur, sonorisation, Wi-Fi), 2 pauses-café, déjeuner gastronomique au restaurant « Le Château des Saveurs » et détente (Piscine Semi-Olympique ou Pirogue).
               </p>
             </div>
@@ -815,7 +842,7 @@ export const AhalaShowcase: React.FC = () => {
                 href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20nous%20souhaitons%20organiser%20un%20S%C3%A9minaire%20B2B%20(15%20000%20FCFA%20%2F%20participant)."
                 target="_blank"
                 rel="noreferrer"
-                className="cta-chevron !px-0"
+                className="cta-chevron px-2"
               >
                 <span>Demander un devis B2B</span>
                 <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
@@ -831,7 +858,7 @@ export const AhalaShowcase: React.FC = () => {
               <h3 className="type-h3 text-[var(--text-primary)]">
                 Salle Polyvalente « Menkii Essomba Anton » · 500 Places Assises.
               </h3>
-              <p className="type-body !text-sm text-[var(--text-muted)]">
+              <p className="type-body-compact text-[var(--text-muted)]">
                 500 places assises climatisées, scène modulable, régie son &amp; lumière professionnelle, loges VIP, groupe électrogène de secours et service traiteur du Château des Saveurs.
               </p>
             </div>
@@ -840,7 +867,7 @@ export const AhalaShowcase: React.FC = () => {
                 href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20privatiser%20la%20Salle%20Polyvalente%20Menkii%20Essomba%20Anton%20(500%20places)."
                 target="_blank"
                 rel="noreferrer"
-                className="cta-chevron !px-0"
+                className="cta-chevron px-2"
               >
                 <span>Vérifier une date de salle</span>
                 <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
@@ -856,7 +883,7 @@ export const AhalaShowcase: React.FC = () => {
               <h3 className="type-h3 text-[var(--text-primary)]">
                 À partir de 700 FCFA / adulte · Remise Groupe 20+ (-30 %).
               </h3>
-              <p className="type-body !text-sm text-[var(--text-muted)]">
+              <p className="type-body-compact text-[var(--text-muted)]">
                 Dès 20 participants, l&apos;entrée adulte au Parc &amp; Jardin Zoologique passe à <strong>700 FCFA au lieu de 1 000 FCFA</strong> (enfant à 500 FCFA). Référence devis <code>DEV-2026-XXXX</code> au <strong>+237 672 56 45 98</strong>.
               </p>
             </div>
@@ -898,7 +925,7 @@ export const AhalaShowcase: React.FC = () => {
                 <h3 className="type-h3 text-white">
                   À partir de 50 000 FCFA / tranche · Scolarité 250 000 FCFA / an.
                 </h3>
-                <p className="type-body !text-xs sm:!text-sm text-[#C9D1CC]">
+                <p className="type-body-compact text-[#C9D1CC]">
                   Inscription officielle : <strong>50 000 FCFA</strong>. Scolarité réglable en <strong>4 tranches souples</strong> : 100 000 FCFA à la rentrée + 3 tranches de 50 000 FCFA. Cursus de 12 mois avec <strong>70 % de pratique réelle</strong> sur le complexe d&apos;Ahala.
                 </p>
                 <div className="pt-2">
@@ -929,10 +956,10 @@ export const AhalaShowcase: React.FC = () => {
                       {prog.num}
                     </span>
                     <div>
-                      <h4 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+                      <h4 className="type-card-title text-[var(--text-primary)]">
                         {prog.title}
                       </h4>
-                      <p className="type-body !text-xs sm:!text-sm text-[var(--text-muted)] mt-0.5">
+                      <p className="type-body-compact text-[var(--text-muted)] mt-0.5">
                         {prog.outcome}
                       </p>
                     </div>
@@ -981,11 +1008,11 @@ export const AhalaShowcase: React.FC = () => {
                       {opt.badge}
                     </span>
                   </div>
-                  <h3 className="type-h3 !text-xl text-[var(--text-primary)]">{opt.title}</h3>
-                  <div className="font-['Barlow_Semi_Condensed'] font-bold text-lg text-[var(--brand-primary)] tabular-nums">
+                  <h3 className="type-card-title text-[var(--text-primary)]">{opt.title}</h3>
+                  <div className="font-sans font-bold text-lg text-[var(--brand-primary)] tabular-nums">
                     {opt.price}
                   </div>
-                  <p className="type-body !text-xs sm:!text-sm text-[var(--text-muted)]">
+                  <p className="type-body-compact text-[var(--text-muted)]">
                     {opt.desc}
                   </p>
                 </div>
@@ -994,7 +1021,7 @@ export const AhalaShowcase: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => setActiveView('billetterie')}
-                    className="cta-chevron !px-2"
+                    className="cta-chevron px-2"
                   >
                     <span>Simuler</span>
                     <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
@@ -1003,7 +1030,7 @@ export const AhalaShowcase: React.FC = () => {
                     href={`https://wa.me/237672564598?text=${encodeURIComponent(opt.waText)}`}
                     target="_blank"
                     rel="noreferrer"
-                    className="cta-chevron !px-2"
+                    className="cta-chevron px-2"
                   >
                     <span>WhatsApp</span>
                     <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
@@ -1015,7 +1042,7 @@ export const AhalaShowcase: React.FC = () => {
         </div>
 
         {/* Bottom Practical Info Strip */}
-        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-wrap items-center justify-between gap-4 text-xs tabular-nums">
+        <div className="p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-wrap items-center justify-between gap-4 type-footnote tabular-nums">
           <div className="flex items-center gap-2 text-[var(--text-primary)] font-medium">
             <MapPin className="w-4 h-4 text-[var(--brand-primary)] shrink-0" />
             <span>

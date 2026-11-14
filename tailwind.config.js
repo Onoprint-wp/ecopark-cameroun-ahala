@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
-/* Compatibilité Tailwind CSS v3 (pour Tailwind v4, importez directement `styles/theme.css`) */
+/* ARCHIVE / REFERENCE IDE UNIQUEMENT (Tailwind v3 legacy).
+   Tailwind CSS v4 en production lit exclusivement src/index.css (@theme & @custom-variant dark). */
 export default {
   darkMode: "class",
   content: [

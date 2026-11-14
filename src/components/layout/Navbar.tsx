@@ -5,7 +5,7 @@
 // & Scission stricte Profil B (Public) vs Profil C (Exploitation / Guichet)
 // ============================================================================
 
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   Trees,
   Sun,
@@ -58,19 +58,74 @@ export const Navbar: React.FC = () => {
   const { user, isAuthenticated, isStaff, setAuthPortalMode } = useAuth();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [daltonismDropdownOpen, setDaltonismDropdownOpen] = useState(false);
+  const daltonismContainerRef = useRef<HTMLDivElement | null>(null);
+  const daltonismButtonRef = useRef<HTMLButtonElement | null>(null);
+  const mobileMenuButtonRef = useRef<HTMLButtonElement | null>(null);
+  const mobileDrawerRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    if (!mobileMenuOpen && !daltonismDropdownOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Escape') return;
+      const activeEl = document.activeElement;
+      if (daltonismDropdownOpen) {
+        event.preventDefault();
+        const wasInsideDropdown =
+          activeEl instanceof HTMLElement &&
+          Boolean(daltonismContainerRef.current?.contains(activeEl));
+        setDaltonismDropdownOpen(false);
+        if (wasInsideDropdown) {
+          daltonismButtonRef.current?.focus();
+        }
+        return;
+      }
+      if (mobileMenuOpen) {
+        event.preventDefault();
+        const wasInsideDrawer =
+          activeEl instanceof HTMLElement &&
+          Boolean(
+            mobileDrawerRef.current?.contains(activeEl) ||
+              mobileMenuButtonRef.current?.contains(activeEl)
+          );
+        setMobileMenuOpen(false);
+        if (wasInsideDrawer) {
+          mobileMenuButtonRef.current?.focus();
+        }
+      }
+    };
+
+    const handlePointerDown = (event: MouseEvent) => {
+      if (
+        daltonismDropdownOpen &&
+        daltonismContainerRef.current &&
+        event.target instanceof Node &&
+        !daltonismContainerRef.current.contains(event.target)
+      ) {
+        setDaltonismDropdownOpen(false);
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('mousedown', handlePointerDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('mousedown', handlePointerDown);
+    };
+  }, [mobileMenuOpen, daltonismDropdownOpen]);
 
   // Scission stricte Profil C : aucune bannière promo ni Chapternav commercial en console métier
   const isOperationalCockpit = activeView === 'ranger';
   const showColorAtlasBtn = isDevEnvironment() || activeView === 'color_atlas';
 
   // Nav views definition (Supervision affichée uniquement au staff connecté ; accès discret en pied de page)
-  const NAV_ITEMS: { id: ActiveView; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-    { id: 'accueil', label: 'Accueil & 5 Pôles', icon: Trees },
-    { id: 'sentiers', label: 'Carte & Activités', icon: Compass },
-    { id: 'biodiversite', label: 'Zoo & Faune', icon: Eye },
-    { id: 'billetterie', label: 'Réserver (FCFA)', icon: Ticket },
-    { id: 'pass', label: 'Mon Espace QR', icon: QrCode },
-    ...(isStaff ? [{ id: 'ranger' as ActiveView, label: 'Cockpit Pro', icon: ShieldAlert }] : []),
+  const NAV_ITEMS: { id: ActiveView; label: string; shortLabel: string; icon: React.ComponentType<{ className?: string }> }[] = [
+    { id: 'accueil', label: 'Accueil & 5 Pôles', shortLabel: 'Accueil', icon: Trees },
+    { id: 'sentiers', label: 'Carte & Activités', shortLabel: 'Activités', icon: Compass },
+    { id: 'biodiversite', label: 'Zoo & Faune', shortLabel: 'Zoo & Faune', icon: Eye },
+    { id: 'billetterie', label: 'Réserver (FCFA)', shortLabel: 'Réserver', icon: Ticket },
+    { id: 'pass', label: 'Mon Espace QR', shortLabel: 'Mon Espace', icon: QrCode },
+    ...(isStaff ? [{ id: 'ranger' as ActiveView, label: 'Cockpit Pro', shortLabel: 'Cockpit Pro', icon: ShieldAlert }] : []),
   ];
 
   // Temps 2 : Chapternav visuel 1 clic (>= 5 gammes / pôles métiers)
@@ -241,15 +296,15 @@ export const Navbar: React.FC = () => {
     <header className="eco-sticky-navbar sticky top-0 z-40 w-full backdrop-blur-md bg-[var(--bg-canvas)]/95 border-b border-[var(--border-default)] transition-colors duration-200">
       {/* TEMPS 1 (Fiche mémo n°4) : Bandeau Levée de Friction Prix / Garantie dès 0s (désactivé en Profil C Métier) */}
       {!isOperationalCockpit && (
-        <div className="bg-[#1B4332] text-[#E9F5ED] text-[12px] leading-4 py-1.5 border-b border-[#2D6A4F]/60 tabular-nums">
-          <div className="eco-container flex items-center justify-between gap-3 min-w-0">
-            <div className="flex items-center gap-2 font-medium min-w-0 flex-1 overflow-hidden">
-              <ShieldCheck className="w-3.5 h-3.5 text-[#74C69D] shrink-0" />
-              <span className="truncate sm:whitespace-normal block min-w-0">
+        <div className="bg-[#1B4332] text-[#E9F5ED] text-xs leading-snug py-1.5 border-b border-[#2D6A4F]/60 tabular-nums">
+          <div className="eco-container flex flex-wrap items-center justify-between gap-x-4 gap-y-1 min-w-0">
+            <div className="flex items-start sm:items-center gap-2 font-medium min-w-0 flex-1 basis-[260px]">
+              <ShieldCheck className="w-3.5 h-3.5 text-[#74C69D] shrink-0 mt-0.5 sm:mt-0" />
+              <span className="whitespace-normal break-words block min-w-0">
                 <strong>Entrée dès 500 FCFA enf. / 1 000 FCFA ad.</strong> • Garantie Météo RN3 (report gratuit 90j) • Parking gratuit face Tradex Ahala • Hôtels 24h/24
               </span>
             </div>
-            <div className="hidden lg:flex items-center gap-2.5 font-mono text-[11px] text-[#B7E4C7] shrink-0 tabular-nums">
+            <div className="hidden xl:flex flex-wrap items-center gap-x-2 gap-y-1 font-mono text-xs text-[#B7E4C7] min-w-0 tabular-nums">
               <span className="inline-flex items-center gap-1">
                 <PhoneCall className="w-3 h-3 text-[#74C69D] shrink-0" />
                 <span>WhatsApp :</span>
@@ -286,32 +341,32 @@ export const Navbar: React.FC = () => {
         </div>
       )}
 
-      {/* Niveau 1 : Global Nav (.type-nav : 12px, -0.010em, 44px Desktop / 48px Mobile) */}
+      {/* Niveau 1 : Global Nav (.type-nav : 14px V3, 44px Desktop / 48px Mobile) */}
       <div className="eco-container">
-        <div className="flex items-center justify-between min-h-[56px] md:min-h-[64px] py-1.5 gap-2 w-full min-w-0">
+        <div className="flex flex-wrap items-center justify-between min-h-[56px] md:min-h-[64px] py-1.5 gap-2 w-full min-w-0">
           {/* Official Brand Logo & Title */}
           <button
             onClick={(e) => handleNavClick('accueil', e)}
-            className="touch-target-48 flex items-center gap-2 sm:gap-2.5 text-left group min-w-0 shrink focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg py-1 pr-1 cursor-pointer"
+            className="touch-target-48 flex-1 xl:flex-initial min-w-[168px] max-w-full flex items-center gap-2 sm:gap-2.5 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg py-1 pr-1 cursor-pointer overflow-x-clip"
             aria-label="ECOPARK CAMEROUN - Retour à l'accueil"
           >
             <img
               src="/images/ahala/cropped-LOGO-ECOPARK-Youtube.png"
               alt="Logo Officiel ECOPARK CAMEROUN"
-              className="w-9 h-9 sm:w-10 sm:h-10 shrink-0 rounded-full object-cover border-2 border-[var(--brand-primary)] shadow-sm group-hover:scale-105 transition-transform duration-200 bg-white"
+              className="w-9 h-9 sm:w-10 sm:h-10 max-w-[44px] max-h-[44px] shrink-0 rounded-full object-cover border-2 border-[var(--brand-primary)] shadow-sm group-hover:scale-105 transition-transform duration-200 bg-white"
             />
             <div className="flex flex-col min-w-0">
-              <span className="font-['Barlow_Semi_Condensed'] font-bold text-base sm:text-lg md:text-xl tracking-tight text-[var(--text-primary)] leading-none truncate">
+              <span className="font-sans font-bold text-[0.9375rem] sm:text-lg tracking-tight text-[var(--text-primary)] leading-tight whitespace-normal xl:whitespace-nowrap">
                 ECOPARK CAMEROUN
               </span>
-              <span className="text-[10px] sm:text-[11px] text-[var(--text-muted)] font-semibold tracking-wide uppercase mt-0.5 tabular-nums truncate">
+              <span className="text-xs text-[var(--text-muted)] font-semibold tracking-wide uppercase mt-0.5 tabular-nums leading-tight whitespace-normal">
                 {isOperationalCockpit ? 'Poste Exploitation RN3' : 'Yaoundé - Ahala • Dès 500 FCFA'}
               </span>
             </div>
           </button>
 
-          {/* Desktop Navigation Links (.type-nav) */}
-          <nav className="hidden xl:flex items-center justify-center gap-0.5 shrink-0" aria-label="Navigation principale">
+          {/* Desktop Navigation Links (.type-nav : 14px V3) */}
+          <nav className="hidden xl:flex flex-wrap items-center justify-center gap-0.5 min-w-0" aria-label="Navigation principale">
             {NAV_ITEMS.map((item) => {
               const Icon = item.icon;
               const isActive = activeView === item.id;
@@ -320,20 +375,21 @@ export const Navbar: React.FC = () => {
                   key={item.id}
                   data-motion-target={item.id === 'pass' ? 'nav-pass' : undefined}
                   onClick={(e) => handleNavClick(item.id, e)}
-                  className={`type-nav flex items-center gap-1.5 px-2.5 rounded-lg whitespace-nowrap shrink-0 transition-all duration-150 relative cursor-pointer ${
+                  className={`type-nav flex items-center gap-1.5 px-2 2xl:px-2.5 rounded-lg whitespace-nowrap shrink-0 transition-all duration-150 relative cursor-pointer ${
                     isActive
                       ? 'text-[var(--brand-primary)] bg-[var(--bg-surface)] font-semibold shadow-xs'
                       : 'text-[var(--text-primary)]/85 hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)]/60'
                   }`}
                 >
                   <Icon
-                    className={`w-3.5 h-3.5 shrink-0 ${
+                    className={`w-3.5 h-3.5 hidden 2xl:block shrink-0 ${
                       isActive ? 'text-[var(--brand-primary)]' : 'text-[var(--text-muted)]'
                     }`}
                   />
-                  <span>{item.label}</span>
+                  <span className="2xl:hidden">{item.shortLabel}</span>
+                  <span className="hidden 2xl:inline">{item.label}</span>
                   {item.id === 'pass' && activePassesCount > 0 && (
-                    <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-[var(--brand-primary)]/15 text-[var(--brand-primary)] font-mono text-[10px] font-bold tabular-nums">
+                    <span className="ml-0.5 px-1.5 py-0.5 rounded-full bg-[var(--brand-primary)]/15 text-[var(--brand-primary)] font-mono text-xs font-bold tabular-nums">
                       {activePassesCount}
                     </span>
                   )}
@@ -429,8 +485,10 @@ export const Navbar: React.FC = () => {
             </button>
 
             {/* Daltonism Accessibility Selector (masqué sous md et placé dans le tiroir mobile) */}
-            <div className="hidden md:block relative">
+            <div ref={daltonismContainerRef} className="hidden md:block relative">
               <button
+                ref={daltonismButtonRef}
+                type="button"
                 onClick={() => setDaltonismDropdownOpen(!daltonismDropdownOpen)}
                 className={`touch-target-48 lg:min-h-[44px] flex items-center justify-center gap-1 px-2.5 rounded-lg border text-xs font-medium transition-colors shadow-2xs cursor-pointer ${
                   daltonismMode !== 'normal'
@@ -450,7 +508,7 @@ export const Navbar: React.FC = () => {
 
               {daltonismDropdownOpen && (
                 <div className="absolute right-0 mt-2 w-52 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-xl py-1.5 z-50">
-                  <div className="px-3 py-1.5 text-[11px] font-semibold text-[var(--text-muted)] uppercase tracking-wider border-b border-[var(--border-default)] mb-1">
+                  <div className="px-3 py-1.5 text-xs font-semibold text-[var(--text-muted)] uppercase tracking-wider border-b border-[var(--border-default)] mb-1">
                     Vision des Couleurs
                   </div>
                   {(['normal', 'deuteranopia', 'protanopia', 'tritanopia'] as DaltonismMode[]).map((mode) => (
@@ -512,10 +570,13 @@ export const Navbar: React.FC = () => {
 
             {/* Mobile Hamburger Toggle Button (>= 48x48px) */}
             <button
+              ref={mobileMenuButtonRef}
+              type="button"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
               className="xl:hidden touch-target-48 flex items-center justify-center p-2 rounded-lg text-[var(--text-primary)] hover:bg-[var(--bg-surface)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] cursor-pointer"
               aria-label={mobileMenuOpen ? 'Fermer le menu mobile' : 'Ouvrir le menu mobile'}
               aria-expanded={mobileMenuOpen}
+              aria-controls="mobile-nav-drawer"
             >
               {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
             </button>
@@ -545,7 +606,7 @@ export const Navbar: React.FC = () => {
                     </span>
                     <span className="flex flex-col text-left">
                       <span className="font-semibold leading-tight">{chap.label}</span>
-                      <span className="text-[10px] text-[var(--text-muted)] leading-tight tabular-nums">
+                      <span className="text-xs text-[var(--text-muted)] leading-tight tabular-nums">
                         {chap.sub}
                       </span>
                     </span>
@@ -559,7 +620,11 @@ export const Navbar: React.FC = () => {
 
       {/* Mobile Navigation Dropdown Drawer */}
       {mobileMenuOpen && (
-        <div className="xl:hidden border-t border-[var(--border-default)] bg-[var(--bg-canvas)] px-4 pt-3 pb-6 space-y-3 shadow-lg">
+        <div
+          id="mobile-nav-drawer"
+          ref={mobileDrawerRef}
+          className="xl:hidden border-t border-[var(--border-default)] bg-[var(--bg-canvas)] px-4 pt-3 pb-6 space-y-3 shadow-lg"
+        >
           <div className="flex items-center justify-between py-2 px-1 text-xs text-[var(--text-muted)] border-b border-[var(--border-default)] font-mono tabular-nums">
             <span>
               Affluence: {telemetry.currentOccupancy}/{telemetry.dailyCapacityMax} ({occupancyPercent}%)
@@ -641,8 +706,8 @@ export const Navbar: React.FC = () => {
               }}
               className="min-h-[48px] px-3 py-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-semibold text-[var(--text-primary)] flex items-center justify-center gap-2 cursor-pointer"
             >
-              <Eye className="w-4 h-4 text-[var(--brand-primary)]" />
-              <span className="truncate">Vision : {daltonismLabels[daltonismMode]}</span>
+              <Eye className="w-4 h-4 text-[var(--brand-primary)] shrink-0" />
+              <span className="leading-tight text-left">Vision : {daltonismLabels[daltonismMode]}</span>
             </button>
           </div>
         </div>

@@ -41,27 +41,23 @@ export const HeroCanopy: React.FC = () => {
   return (
     <ImmersiveSection
       variant="canopy"
-      className="py-10 sm:py-14 lg:py-16 relative overflow-hidden"
+      className="py-10 sm:py-14 lg:py-16 relative overflow-x-clip"
       containerClassName="relative z-10"
     >
-      {/* Subtle organic background decoration */}
-      <div
-        className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
-      <div
-        className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-emerald-800/20 blur-3xl pointer-events-none"
-        aria-hidden="true"
-      />
+      {/* Subtle organic background decoration (clipped inside pointer-events-none backdrop) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-emerald-500/10 blur-3xl" />
+        <div className="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-emerald-800/20 blur-3xl" />
+      </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 xl:gap-12 items-stretch">
         {/* Left Column : Optical Flagship Hierarchy + Ternary Rhythm + Double CTA */}
         <div className="lg:col-span-7 flex flex-col justify-between space-y-5 text-left">
           <div className="space-y-4">
-            {/* Niveau 3 : Eyebrow (.type-eyebrow : 14px Desktop / 12px Mobile) */}
+            {/* Niveau 3 : Eyebrow (.type-eyebrow : 14px Desktop / 13px Mobile) */}
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 shadow-xs">
               <MapPin className="w-4 h-4 text-[#74C69D] shrink-0" />
-              <span className="type-eyebrow !text-[#B7E4C7] tabular-nums">
+              <span className="type-eyebrow text-[#B7E4C7] tabular-nums">
                 Yaoundé - Ahala Barrière (Face station Tradex, RN3) • À 15 min du centre
               </span>
             </div>
@@ -77,7 +73,7 @@ export const HeroCanopy: React.FC = () => {
               Respirez en forêt. Savourez au bord de l&apos;eau. 30 chambres et loisirs dès 500 FCFA.
             </p>
 
-            {/* Niveau 8 : Corps éditorial fluide (.type-body : 17px/25px Desktop, 15px/22px Mobile) */}
+            {/* Niveau 8 : Corps éditorial fluide (.type-body : 17px/1.60 Desktop, 16px/1.55 Mobile) */}
             <p className="type-body text-[#E9F5ED]/90 max-w-3xl tabular-nums">
               Jardin Zoologique (Gorille <strong>« ToTo »</strong>, chimpanzés, tortues), pirogue sur le lac, piscine semi-olympique, manège équestre, restaurant{' '}
               <strong>« Le Château des Saveurs »</strong> (07h à 23h), hôtels Ewondo, Chanthel et Bene (24h/24) et <strong>CFP agréé MINEFOP</strong>.
@@ -86,19 +82,19 @@ export const HeroCanopy: React.FC = () => {
             {/* Price Framing Inversé : unité la plus accessible d'abord, tabular-nums strict */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5 pt-1 tabular-nums">
               <div className="px-3.5 py-2.5 rounded-xl bg-[#D4A373]/20 border border-[#D4A373]/50 text-[#F4E3CF]">
-                <div className="type-footnote !text-[#EBD5BE] uppercase font-semibold">Entrée Parc &amp; Zoo</div>
+                <div className="type-footnote text-[#EBD5BE] uppercase font-semibold">Entrée Parc &amp; Zoo</div>
                 <div className="font-bold text-base text-white mt-0.5 tabular-nums">
                   Dès 500 FCFA enf. · 1 000 FCFA ad.
                 </div>
               </div>
               <div className="px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white">
-                <div className="type-footnote !text-[#B7E4C7] uppercase font-semibold">3 Pass Tout-Inclus</div>
+                <div className="type-footnote text-[#B7E4C7] uppercase font-semibold">3 Pass Tout-Inclus</div>
                 <div className="font-bold text-base text-white mt-0.5 tabular-nums">
                   Dès 1 500 FCFA · 2 500 à 8 500 FCFA
                 </div>
               </div>
               <div className="px-3.5 py-2.5 rounded-xl bg-white/10 border border-white/20 text-white">
-                <div className="type-footnote !text-[#B7E4C7] uppercase font-semibold">30 Hôtels &amp; Suites 24h/24</div>
+                <div className="type-footnote text-[#B7E4C7] uppercase font-semibold">30 Hôtels &amp; Suites 24h/24</div>
                 <div className="font-bold text-base text-white mt-0.5 tabular-nums">
                   Dès 10 000 FCFA / nuit (ou 45 000 VIP)
                 </div>
@@ -154,7 +150,7 @@ export const HeroCanopy: React.FC = () => {
           </div>
 
           {/* Niveau 10 : Réassurance factuelle (.type-footnote >= 4.5:1) */}
-          <div className="pt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3 type-footnote !text-[#D8F3DC] tabular-nums">
+          <div className="pt-4 border-t border-white/15 flex flex-wrap items-center justify-between gap-3 type-footnote text-[#D8F3DC] tabular-nums">
             <span className="flex items-center gap-1.5">
               <CheckCircle2 className="w-4 h-4 text-[#52B788] shrink-0" />
               Orange Money (#150#) · MTN MoMo (*126#) · Guichet
@@ -172,9 +168,9 @@ export const HeroCanopy: React.FC = () => {
 
         {/* Right Column : Preuve Visuelle Authentique (Face-Safe 4:3) + Télémétrie Temps Réel (tabular-nums) */}
         <div className="lg:col-span-5 flex flex-col justify-between space-y-4">
-          {/* 3-Photo Authentic Collage (aspect-4/3 + face-safe objectPosition + non-overlapping caption bar) */}
-          <div className="grid grid-cols-3 gap-3 tabular-nums">
-            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614]">
+          {/* 3-Photo Authentic Collage (aspect-4/3 + face-safe objectPosition + wrapped caption >= 12px) */}
+          <div className="grid grid-cols-3 gap-2 sm:gap-3 tabular-nums">
+            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614] min-w-0">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
                 <img
                   src="/images/ahala/balade_pirogue3.jpg"
@@ -183,11 +179,11 @@ export const HeroCanopy: React.FC = () => {
                   style={{ objectPosition: getPhotoObjectPosition('/images/ahala/balade_pirogue3.jpg') }}
                 />
               </div>
-              <div className="px-2 py-1.5 bg-[#121614] border-t border-white/10 text-[11px] font-bold text-[#E9F5ED] truncate text-center">
+              <div className="px-1.5 sm:px-2 py-1.5 bg-[#121614] border-t border-white/10 type-badge font-bold text-[#E9F5ED] text-center leading-snug break-words">
                 Pirogue · 500 FCFA enf.
               </div>
             </div>
-            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614]">
+            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614] min-w-0">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
                 <img
                   src="/images/ahala/local_cameroon_gastronomy_pergola.png"
@@ -196,11 +192,11 @@ export const HeroCanopy: React.FC = () => {
                   style={{ objectPosition: getPhotoObjectPosition('/images/ahala/local_cameroon_gastronomy_pergola.png') }}
                 />
               </div>
-              <div className="px-2 py-1.5 bg-[#121614] border-t border-white/10 text-[11px] font-bold text-[#E9F5ED] truncate text-center">
+              <div className="px-1.5 sm:px-2 py-1.5 bg-[#121614] border-t border-white/10 type-badge font-bold text-[#E9F5ED] text-center leading-snug break-words">
                 Château des Saveurs
               </div>
             </div>
-            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614]">
+            <div className="flex flex-col rounded-xl overflow-hidden border border-white/20 shadow-md bg-[#121614] min-w-0">
               <div className="relative aspect-[4/3] w-full overflow-hidden bg-[#1F2421]">
                 <img
                   src="/images/ahala/chambre.jpeg"
@@ -209,7 +205,7 @@ export const HeroCanopy: React.FC = () => {
                   style={{ objectPosition: getPhotoObjectPosition('/images/ahala/chambre.jpeg') }}
                 />
               </div>
-              <div className="px-2 py-1.5 bg-[#121614] border-t border-white/10 text-[11px] font-bold text-[#E9F5ED] truncate text-center">
+              <div className="px-1.5 sm:px-2 py-1.5 bg-[#121614] border-t border-white/10 type-badge font-bold text-[#E9F5ED] text-center leading-snug break-words">
                 Hôtels dès 10 000 FCFA
               </div>
             </div>
@@ -217,17 +213,17 @@ export const HeroCanopy: React.FC = () => {
 
           <div className="flex-1 p-5 sm:p-6 rounded-2xl bg-[#1F2421]/95 backdrop-blur-md border border-[#36403A] shadow-2xl text-white flex flex-col justify-between space-y-4 tabular-nums">
             {/* Telemetry Header */}
-            <div className="flex items-center justify-between border-b border-[#36403A] pb-3.5">
-              <div className="flex items-center gap-2.5">
-                <span className="relative flex h-3 w-3">
+            <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[#36403A] pb-3.5">
+              <div className="flex items-center gap-2.5 min-w-0">
+                <span className="relative flex h-3 w-3 shrink-0">
                   <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
                   <span className="relative inline-flex rounded-full h-3 w-3 bg-emerald-500" />
                 </span>
-                <span className="font-['Barlow_Semi_Condensed'] font-semibold text-base tracking-wide text-white">
+                <span className="font-sans font-semibold text-base tracking-wide text-white">
                   État du Complexe d&apos;Ahala en Direct
                 </span>
               </div>
-              <span className="text-[11px] font-mono text-[#8EBAA0] bg-[#121614] px-2.5 py-1 rounded-md border border-[#29302C]">
+              <span className="text-xs font-mono text-[#B7E4C7] bg-[#121614] px-2.5 py-1 rounded-md border border-[#29302C] shrink-0">
                 RN3 · Face Tradex
               </span>
             </div>
@@ -269,7 +265,7 @@ export const HeroCanopy: React.FC = () => {
                 />
               </div>
 
-              <div className="flex justify-between text-[11px] font-mono text-[#B7E4C7] tabular-nums">
+              <div className="flex justify-between text-xs font-mono text-[#B7E4C7] tabular-nums">
                 <span>0</span>
                 <span>{availablePlaces} places restantes aujourd&apos;hui</span>
                 <span>{telemetry.dailyCapacityMax} max</span>
@@ -279,60 +275,60 @@ export const HeroCanopy: React.FC = () => {
             {/* 4 Telemetry Metrics Grid */}
             <div className="grid grid-cols-2 gap-3 pt-1 tabular-nums">
               <div className="p-3 rounded-xl bg-[#29302C] border border-[#36403A]/80 flex flex-col justify-between">
-                <div className="text-[11px] text-[#C9D1CC] flex items-center gap-1.5 font-sans">
-                  <Wind className="w-3.5 h-3.5 text-sky-400" />
+                <div className="text-xs text-[#C9D1CC] flex items-center gap-1.5 font-sans">
+                  <Wind className="w-3.5 h-3.5 text-sky-400 shrink-0" />
                   Air &amp; Microclimat
                 </div>
                 <div className="mt-1.5">
                   <div className="text-lg font-bold text-sky-300 font-mono tabular-nums">
                     IQA {telemetry.airQualityIqa}
                   </div>
-                  <div className="text-[11px] text-[#C9D1CC] font-sans mt-0.5">
+                  <div className="text-xs text-[#C9D1CC] font-sans mt-0.5">
                     {telemetry.airQualityStatus} · Forêt d&apos;Ahala
                   </div>
                 </div>
               </div>
 
               <div className="p-3 rounded-xl bg-[#29302C] border border-[#36403A]/80 flex flex-col justify-between">
-                <div className="text-[11px] text-[#C9D1CC] flex items-center gap-1.5 font-sans">
-                  <Sun className="w-3.5 h-3.5 text-amber-400" />
+                <div className="text-xs text-[#C9D1CC] flex items-center gap-1.5 font-sans">
+                  <Sun className="w-3.5 h-3.5 text-amber-400 shrink-0" />
                   Autonomie &amp; Eau
                 </div>
                 <div className="mt-1.5">
                   <div className="text-lg font-bold text-amber-300 font-mono tabular-nums">
                     {telemetry.solarAutonomyPercent}%
                   </div>
-                  <div className="text-[11px] text-[#C9D1CC] font-sans mt-0.5">
+                  <div className="text-xs text-[#C9D1CC] font-sans mt-0.5">
                     Solaire &amp; Groupe secours
                   </div>
                 </div>
               </div>
 
               <div className="p-3 rounded-xl bg-[#29302C] border border-[#36403A]/80 flex flex-col justify-between">
-                <div className="text-[11px] text-[#C9D1CC] flex items-center gap-1.5 font-sans">
-                  <Leaf className="w-3.5 h-3.5 text-[#52B788]" />
+                <div className="text-xs text-[#C9D1CC] flex items-center gap-1.5 font-sans">
+                  <Leaf className="w-3.5 h-3.5 text-[#52B788] shrink-0" />
                   Navettes &amp; Groupes
                 </div>
                 <div className="mt-1.5">
                   <div className="text-lg font-bold text-emerald-300 font-mono tabular-nums">
                     {telemetry.totalCo2AvoidedKg.toLocaleString('fr-FR')} kg
                   </div>
-                  <div className="text-[11px] text-[#C9D1CC] font-sans mt-0.5">
+                  <div className="text-xs text-[#C9D1CC] font-sans mt-0.5">
                     CO₂ évité (Bus 5/18/32 pl.)
                   </div>
                 </div>
               </div>
 
               <div className="p-3 rounded-xl bg-[#29302C] border border-[#36403A]/80 flex flex-col justify-between">
-                <div className="text-[11px] text-[#C9D1CC] flex items-center gap-1.5 font-sans">
-                  <Trees className="w-3.5 h-3.5 text-[#52B788]" />
+                <div className="text-xs text-[#C9D1CC] flex items-center gap-1.5 font-sans">
+                  <Trees className="w-3.5 h-3.5 text-[#52B788] shrink-0" />
                   Circuits du Parc
                 </div>
                 <div className="mt-1.5">
                   <div className="text-lg font-bold text-white font-mono tabular-nums">
                     {openTrailsCount} / {trails.length}
                   </div>
-                  <div className="text-[11px] text-[#C9D1CC] font-sans mt-0.5">
+                  <div className="text-xs text-[#C9D1CC] font-sans mt-0.5">
                     {cautionedTrailsCount > 0 && `${cautionedTrailsCount} encadré · `}
                     {closedTrailsCount > 0 && `${closedTrailsCount} résidents VIP`}
                   </div>

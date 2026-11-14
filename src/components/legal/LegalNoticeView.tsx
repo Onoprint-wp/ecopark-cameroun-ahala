@@ -38,14 +38,14 @@ export const LegalNoticeView: React.FC = () => {
               <Scale className="w-4 h-4 text-[#74C69D]" />
               <span>Informations Légales &amp; Réglementaires · MPECK MULTI-SERVICES</span>
             </div>
-            <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
+            <h1 className="type-page-title text-white mt-1">
               Mentions Légales, CGV &amp; Protection des Données
             </h1>
           </div>
           <button
             type="button"
             onClick={() => setActiveView('accueil')}
-            className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs font-bold inline-flex items-center gap-2 cursor-pointer self-start md:self-auto"
+            className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold inline-flex items-center gap-2 cursor-pointer self-start md:self-auto"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Retour à l&apos;accueil</span>
@@ -58,9 +58,9 @@ export const LegalNoticeView: React.FC = () => {
           <button
             type="button"
             onClick={() => selectTab('mentions', '/mentions-legales')}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors ${
+            className={`min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 cursor-pointer transition-colors ${
               tab === 'mentions'
-                ? 'bg-[var(--brand-primary)] text-white'
+                ? 'bg-[var(--brand-primary)] text-[var(--on-primary)]'
                 : 'bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)]'
             }`}
           >
@@ -70,9 +70,9 @@ export const LegalNoticeView: React.FC = () => {
           <button
             type="button"
             onClick={() => selectTab('cgv', '/cgv')}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors ${
+            className={`min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 cursor-pointer transition-colors ${
               tab === 'cgv'
-                ? 'bg-[var(--brand-primary)] text-white'
+                ? 'bg-[var(--brand-primary)] text-[var(--on-primary)]'
                 : 'bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)]'
             }`}
           >
@@ -82,9 +82,9 @@ export const LegalNoticeView: React.FC = () => {
           <button
             type="button"
             onClick={() => selectTab('confidentialite', '/confidentialite')}
-            className={`px-4 py-2.5 rounded-xl text-xs font-bold flex items-center gap-2 cursor-pointer transition-colors ${
+            className={`min-h-[44px] px-4 py-2.5 rounded-xl text-sm font-bold flex items-center gap-2 cursor-pointer transition-colors ${
               tab === 'confidentialite'
-                ? 'bg-[var(--brand-primary)] text-white'
+                ? 'bg-[var(--brand-primary)] text-[var(--on-primary)]'
                 : 'bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)]'
             }`}
           >
@@ -93,17 +93,17 @@ export const LegalNoticeView: React.FC = () => {
           </button>
         </div>
 
-        <div className="p-6 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-5 text-sm text-[var(--text-primary)] leading-relaxed">
+        <div className="p-6 sm:p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-5 type-body text-[var(--text-primary)]">
           {tab === 'mentions' && (
             <div className="space-y-4">
-              <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold">
+              <h2 className="type-h3 text-[var(--text-primary)]">
                 1. Éditeur &amp; Exploitant du Complexe ECOPARK CAMEROUN
               </h2>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)]">
+              <p className="type-body text-[var(--text-muted)]">
                 Le complexe écologique, touristique, hôtelier, gastronomique et de formation professionnelle{' '}
                 <strong>ECOPARK CAMEROUN</strong> est exploité par la société <strong>MPECK MULTI-SERVICES</strong>, fondée et promue par le <strong>Dr Christophe FOE NDI</strong>.
               </p>
-              <ul className="space-y-2 text-xs sm:text-sm list-disc pl-5">
+              <ul className="space-y-2 type-body list-disc pl-5">
                 <li>
                   <strong>Siège &amp; Site d&apos;exploitation :</strong> Quartier Ahala Barrière, Route Nationale N°3 (RN3), en face de la station-service Tradex Ahala, Yaoundé, République du Cameroun.
                 </li>
@@ -128,10 +128,10 @@ export const LegalNoticeView: React.FC = () => {
 
           {tab === 'cgv' && (
             <div className="space-y-4">
-              <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold">
+              <h2 className="type-h3 text-[var(--text-primary)]">
                 2. Conditions Générales de Vente, Tarifs FCFA &amp; Garantie Météo
               </h2>
-              <ul className="space-y-2.5 text-xs sm:text-sm list-disc pl-5">
+              <ul className="space-y-2.5 type-body list-disc pl-5">
                 <li>
                   <strong>Devise officielle :</strong> Tous les tarifs du Parc, du Jardin Zoologique, de la Piscine Semi-Olympique, des Cités Hôtelières (Ewondo, Chanthel, Bene), du restaurant <em>Le Château des Saveurs</em> et du CFP sont exprimés en <strong>Francs CFA (XAF / FCFA) TTC</strong>.
                 </li>
@@ -153,14 +153,14 @@ export const LegalNoticeView: React.FC = () => {
 
           {tab === 'confidentialite' && (
             <div className="space-y-4">
-              <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold flex items-center gap-2">
+              <h2 className="type-h3 text-[var(--text-primary)] flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-[var(--brand-primary)]" />
                 <span>3. Protection des Données Personnelles (Loi n° 2010/012 &amp; RGPD)</span>
               </h2>
-              <p className="text-xs sm:text-sm text-[var(--text-muted)]">
+              <p className="type-body text-[var(--text-muted)]">
                 Conformément à la Loi camerounaise n° 2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité ainsi qu&apos;aux standards internationaux RGPD :
               </p>
-              <ul className="space-y-2.5 text-xs sm:text-sm list-disc pl-5">
+              <ul className="space-y-2.5 type-body list-disc pl-5">
                 <li>
                   <strong>Finalité stricte :</strong> Vos nom, email et numéro de téléphone ne sont collectés que pour l&apos;émission de vos Pass QR nominatifs, vos réservations hôtelières, vos devis B2B/CFP et la sécurité d&apos;accès au domaine.
                 </li>

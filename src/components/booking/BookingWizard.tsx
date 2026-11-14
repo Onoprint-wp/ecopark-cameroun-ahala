@@ -343,7 +343,7 @@ export const BookingWizard: React.FC = () => {
             <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
               Parcours de Réservation Éco-Régulé
             </span>
-            <h2 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-0.5">
+            <h2 className="type-h3 text-[var(--text-primary)] mt-0.5">
               Étape {currentStep} sur 3 :{' '}
               {currentStep === 1 && 'Expérience & Date Régulée'}
               {currentStep === 2 && 'Créneau Horodaté & Visiteurs'}
@@ -352,18 +352,18 @@ export const BookingWizard: React.FC = () => {
           </div>
 
           {/* Step Bubbles */}
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-y-2 gap-x-1 sm:gap-2 max-w-full">
             {[1, 2, 3].map((stepNum) => {
               const isPast = currentStep > stepNum;
               const isCurrent = currentStep === stepNum;
               return (
-                <div key={stepNum} className="flex items-center">
+                <div key={stepNum} className="flex items-center shrink-0">
                   <div
-                    className={`w-9 h-9 rounded-full flex items-center justify-center text-xs font-bold transition-all ${
+                    className={`w-11 h-11 rounded-full flex items-center justify-center text-sm font-bold transition-all ${
                       isCurrent
-                        ? 'bg-[var(--brand-primary)] text-white ring-4 ring-[var(--brand-primary)]/20 shadow-xs'
+                        ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] ring-4 ring-[var(--brand-primary)]/20 shadow-xs'
                         : isPast
-                        ? 'bg-emerald-600 text-white'
+                        ? 'bg-emerald-800 text-white dark:bg-emerald-300 dark:text-[#081C15]'
                         : 'bg-[var(--bg-elevated)] text-[var(--text-muted)] border border-[var(--border-default)]'
                     }`}
                   >
@@ -371,8 +371,8 @@ export const BookingWizard: React.FC = () => {
                   </div>
                   {stepNum < 3 && (
                     <div
-                      className={`w-6 sm:w-10 h-0.5 mx-1 transition-colors ${
-                        isPast ? 'bg-emerald-600' : 'bg-[var(--border-default)]'
+                      className={`w-4 sm:w-10 h-0.5 mx-1 transition-colors ${
+                        isPast ? 'bg-emerald-700 dark:bg-emerald-400' : 'bg-[var(--border-default)]'
                       }`}
                     />
                   )}
@@ -386,14 +386,14 @@ export const BookingWizard: React.FC = () => {
       {/* Booking Success Banner */}
       {bookingSuccess && (
         <div className="p-6 rounded-2xl bg-emerald-50 dark:bg-emerald-950/80 border border-emerald-400 dark:border-emerald-700 text-emerald-950 dark:text-emerald-100 flex items-center gap-4 animate-fade-in shadow-md">
-          <div className="p-3 rounded-xl bg-emerald-600 text-white shrink-0">
+          <div className="p-3 rounded-xl bg-emerald-800 text-white dark:bg-emerald-300 dark:text-[#081C15] shrink-0">
             <CheckCircle2 className="w-6 h-6" />
           </div>
           <div>
-            <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold">
+            <h3 className="type-card-title">
               Éco-Pass émis avec succès !
             </h3>
-            <p className="text-xs text-emerald-800 dark:text-emerald-200 mt-1">
+            <p className="text-xs text-emerald-900 dark:text-emerald-200 mt-1">
               Référence : <span className="font-mono font-bold">{bookingSuccess}</span>. Redirection immédiate vers votre compagnon terrain vectoriel...
             </p>
           </div>
@@ -407,14 +407,14 @@ export const BookingWizard: React.FC = () => {
           className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/50 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs"
         >
           <div className="flex items-start gap-2.5">
-            <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+            <AlertTriangle className="w-4 h-4 text-[var(--status-danger-text)] shrink-0 mt-0.5" />
             <div>
               <div className="font-bold">
                 {selectedTrail?.status === 'ferme'
                   ? `Mise à jour temps réel : le circuit « ${selectedTrail.name} » vient d être fermé par le poste de garde`
                   : `Mise à jour temps réel : jauge restante insuffisante (${capacityMetrics.available} place(s) disponible(s) pour ${totalGuests} demandée(s))`}
               </div>
-              <div className="opacity-90 mt-0.5">
+              <div className="opacity-95 mt-0.5">
                 {selectedTrail?.status === 'ferme'
                   ? selectedTrail.closureReason ||
                     'Basculez en un clic sur les zones ouvertes du complexe ou choisissez un autre circuit.'
@@ -430,7 +430,7 @@ export const BookingWizard: React.FC = () => {
                   setSelectedTrailId(null);
                   setFormErrors({});
                 }}
-                className="px-3 py-1.5 rounded-xl bg-[var(--brand-primary)] text-white font-bold cursor-pointer"
+                className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] font-bold cursor-pointer"
               >
                 Poursuivre sur les zones ouvertes
               </button>
@@ -438,7 +438,7 @@ export const BookingWizard: React.FC = () => {
             <button
               type="button"
               onClick={() => setCurrentStep(selectedTrail?.status === 'ferme' ? 1 : 2)}
-              className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold cursor-pointer"
+              className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold cursor-pointer"
             >
               Ajuster ma sélection
             </button>
@@ -464,10 +464,10 @@ export const BookingWizard: React.FC = () => {
                 <span
                   className={
                     capacityMetrics.occupancyRatio >= 90
-                      ? 'text-red-600 dark:text-red-400'
+                      ? 'text-[var(--status-danger-text)]'
                       : capacityMetrics.occupancyRatio >= 70
-                      ? 'text-amber-600 dark:text-amber-400'
-                      : 'text-emerald-600 dark:text-emerald-400'
+                      ? 'text-[var(--status-caution-text)]'
+                      : 'text-[var(--status-open-text)]'
                   }
                 >
                   {capacityMetrics.available} places disponibles
@@ -491,7 +491,7 @@ export const BookingWizard: React.FC = () => {
                 style={{ width: `${capacityMetrics.occupancyRatio}%` }}
               />
             </div>
-            <p className="text-[11px] text-[var(--text-muted)]">
+            <p className="type-footnote">
               Le plafond est fixé par le garde-forestier pour protéger les périodes sensibles de reproduction et éviter l érosion des sentiers.
             </p>
           </div>
@@ -513,7 +513,7 @@ export const BookingWizard: React.FC = () => {
                   value={visitDate}
                   min={todayStr}
                   onChange={(e) => setVisitDate(e.target.value)}
-                  className="w-full px-4 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] cursor-pointer"
+                  className="w-full min-h-[44px] px-4 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)] cursor-pointer"
                 />
               </div>
 
@@ -523,13 +523,13 @@ export const BookingWizard: React.FC = () => {
             </div>
 
             {formErrors.date && (
-              <p className="text-xs text-red-600 dark:text-red-400 font-semibold flex items-center gap-1.5">
+              <p className="text-xs text-[var(--status-danger-text)] font-semibold flex items-center gap-1.5">
                 <AlertTriangle className="w-3.5 h-3.5" />
                 {formErrors.date}
               </p>
             )}
             {formErrors.capacity && (
-              <p className="text-xs text-red-600 dark:text-red-400 font-semibold flex items-center gap-1.5">
+              <p className="text-xs text-[var(--status-danger-text)] font-semibold flex items-center gap-1.5">
                 <AlertTriangle className="w-3.5 h-3.5" />
                 {formErrors.capacity}
               </p>
@@ -547,9 +547,9 @@ export const BookingWizard: React.FC = () => {
             >
               <div className="flex items-start gap-2.5">
                 {selectedTrail.status === 'ferme' ? (
-                  <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+                  <AlertTriangle className="w-4 h-4 text-[var(--status-danger-text)] shrink-0 mt-0.5" />
                 ) : (
-                  <Compass className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                  <Compass className="w-4 h-4 text-[var(--status-open-text)] shrink-0 mt-0.5" />
                 )}
                 <div>
                   <div className="font-bold">
@@ -557,7 +557,7 @@ export const BookingWizard: React.FC = () => {
                       ? `Secteur « ${selectedTrail.name} » actuellement fermé (réservation suspendue sur ce tracé)`
                       : `Formule pré-sélectionnée pour « ${selectedTrail.name} »`}
                   </div>
-                  <div className="opacity-90 mt-0.5">
+                  <div className="opacity-95 mt-0.5">
                     {selectedTrail.status === 'ferme'
                       ? selectedTrail.closureReason ||
                         'Basculez sur les secteurs ouverts du domaine d Ahala ou sélectionnez un autre circuit.'
@@ -574,7 +574,7 @@ export const BookingWizard: React.FC = () => {
                       setSelectedTrailId(null);
                       setFormErrors({});
                     }}
-                    className="px-3 py-1.5 rounded-xl bg-[var(--brand-primary)] text-white font-bold cursor-pointer"
+                    className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] font-bold cursor-pointer"
                   >
                     Poursuivre sur les zones ouvertes
                   </button>
@@ -582,7 +582,7 @@ export const BookingWizard: React.FC = () => {
                 <button
                   type="button"
                   onClick={() => setActiveView('sentiers')}
-                  className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer"
                 >
                   Changer de circuit
                 </button>
@@ -591,7 +591,7 @@ export const BookingWizard: React.FC = () => {
           )}
 
           {formErrors.trail && (
-            <p className="text-xs text-red-600 dark:text-red-400 font-semibold flex items-center gap-1.5">
+            <p className="text-xs text-[var(--status-danger-text)] font-semibold flex items-center gap-1.5">
               <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
               <span>{formErrors.trail}</span>
             </p>
@@ -599,7 +599,7 @@ export const BookingWizard: React.FC = () => {
 
           {/* Experiences Grid */}
           <div className="space-y-3">
-            <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+            <h3 className="type-h3 text-[var(--text-primary)]">
               Sélectionnez votre formule de découverte
             </h3>
 
@@ -618,15 +618,15 @@ export const BookingWizard: React.FC = () => {
                   >
                     <div className="space-y-2">
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
+                        <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
                           {exp.badge}
                         </span>
-                        <span className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                        <span className="font-sans font-bold text-base text-[var(--text-primary)]">
                           {formatEur(exp.adultPrice)} <span className="text-xs font-normal text-[var(--text-muted)]">/ adulte</span>
                         </span>
                       </div>
 
-                      <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
+                      <h4 className="type-card-title text-[var(--text-primary)]">
                         {exp.title}
                       </h4>
 
@@ -636,8 +636,8 @@ export const BookingWizard: React.FC = () => {
 
                       <ul className="pt-2 space-y-1 text-xs text-[var(--text-primary)]">
                         {exp.features.map((feat, idx) => (
-                          <li key={idx} className="flex items-center gap-1.5 text-[11px] text-[var(--text-muted)]">
-                            <Check className="w-3.5 h-3.5 text-emerald-600 shrink-0" />
+                          <li key={idx} className="flex items-center gap-1.5 text-xs text-[var(--text-muted)]">
+                            <Check className="w-3.5 h-3.5 text-[var(--status-open-text)] shrink-0" />
                             <span>{feat}</span>
                           </li>
                         ))}
@@ -645,13 +645,13 @@ export const BookingWizard: React.FC = () => {
                     </div>
 
                     <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between tabular-nums">
-                      <span className="text-[11px] text-[var(--text-muted)]">
+                      <span className="text-xs text-[var(--text-muted)]">
                         Enfant (3 à 12 ans) : {formatEur(exp.childPrice)}
                       </span>
                       <div
                         className={`w-5 h-5 rounded-full border flex items-center justify-center ${
                           isSelected
-                            ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)] text-white'
+                            ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)] text-[var(--on-primary)]'
                             : 'border-[var(--border-default)]'
                         }`}
                       >
@@ -674,7 +674,7 @@ export const BookingWizard: React.FC = () => {
                 }
               }}
               disabled={capacityMetrics.available <= 0}
-              className="px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-white font-bold text-sm shadow-xs hover:bg-[var(--brand-secondary)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2"
+              className="min-h-[48px] px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] font-bold text-sm shadow-xs hover:bg-[var(--brand-primary-hover)] disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2"
             >
               <span>Continuer vers le créneau & visiteurs</span>
               <ArrowRight className="w-4 h-4" />
@@ -692,7 +692,7 @@ export const BookingWizard: React.FC = () => {
           <div className="space-y-3">
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[var(--brand-primary)]" />
-              <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+              <h3 className="type-h3 text-[var(--text-primary)]">
                 Sélectionnez votre créneau d arrivée
               </h3>
             </div>
@@ -714,23 +714,23 @@ export const BookingWizard: React.FC = () => {
                       <div className="text-xs font-mono font-bold text-[var(--brand-primary)]">
                         {slot.period}
                       </div>
-                      <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)] mt-1">
+                      <div className="font-sans font-bold text-base text-[var(--text-primary)] mt-1">
                         {slot.label}
                       </div>
-                      <p className="text-[11px] text-[var(--text-muted)] mt-1 leading-snug">
+                      <p className="text-xs text-[var(--text-muted)] mt-1 leading-snug">
                         {slot.recommendation}
                       </p>
                     </div>
 
                     <div className="pt-3 mt-3 border-t border-[var(--border-default)]/60 flex items-center justify-end">
                       <div
-                        className={`w-4 h-4 rounded-full border flex items-center justify-center ${
+                        className={`w-5 h-5 rounded-full border flex items-center justify-center ${
                           isSelected
-                            ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)] text-white'
+                            ? 'border-[var(--brand-primary)] bg-[var(--brand-primary)] text-[var(--on-primary)]'
                             : 'border-[var(--border-default)]'
                         }`}
                       >
-                        {isSelected && <Check className="w-2.5 h-2.5 stroke-[3]" />}
+                        {isSelected && <Check className="w-3 h-3 stroke-[3]" />}
                       </div>
                     </div>
                   </div>
@@ -741,10 +741,10 @@ export const BookingWizard: React.FC = () => {
 
           {/* Guest Breakdown Counters */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
               <div className="flex items-center gap-2">
                 <Users className="w-4 h-4 text-[var(--brand-primary)]" />
-                <h4 className="font-bold text-sm text-[var(--text-primary)]">
+                <h4 className="font-sans font-bold text-sm text-[var(--text-primary)]">
                   Composition du groupe (Total : {totalGuests} personnes)
                 </h4>
               </div>
@@ -755,29 +755,31 @@ export const BookingWizard: React.FC = () => {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-2">
               {/* Adults Counter */}
-              <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-between gap-2">
                 <div>
-                  <div className="font-bold text-xs text-[var(--text-primary)]">Adultes</div>
-                  <div className="text-[11px] text-[var(--text-muted)]">18 ans et plus</div>
+                  <div className="font-bold text-xs sm:text-sm text-[var(--text-primary)]">Adultes</div>
+                  <div className="text-xs text-[var(--text-muted)]">18 ans et plus</div>
                 </div>
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
+                    aria-label="Retirer un adulte"
                     onClick={() => setAdultCount(Math.max(1, adultCount - 1))}
-                    className="w-8 h-8 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 flex items-center justify-center cursor-pointer"
+                    className="w-11 h-11 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 flex items-center justify-center cursor-pointer"
                   >
                     -
                   </button>
-                  <span className="font-mono font-bold text-sm w-4 text-center">{adultCount}</span>
+                  <span className="font-mono font-bold text-sm w-5 text-center">{adultCount}</span>
                   <button
                     type="button"
+                    aria-label="Ajouter un adulte"
                     onClick={() => {
                       if (totalGuests < capacityMetrics.available) {
                         setAdultCount(adultCount + 1);
                       }
                     }}
                     disabled={totalGuests >= capacityMetrics.available}
-                    className="w-8 h-8 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
+                    className="w-11 h-11 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -785,29 +787,31 @@ export const BookingWizard: React.FC = () => {
               </div>
 
               {/* Children Counter */}
-              <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-between gap-2">
                 <div>
-                  <div className="font-bold text-xs text-[var(--text-primary)]">Enfants</div>
-                  <div className="text-[11px] text-[var(--text-muted)]">3 à 17 ans (-50%)</div>
+                  <div className="font-bold text-xs sm:text-sm text-[var(--text-primary)]">Enfants</div>
+                  <div className="text-xs text-[var(--text-muted)]">3 à 17 ans (-50%)</div>
                 </div>
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
+                    aria-label="Retirer un enfant"
                     onClick={() => setChildCount(Math.max(0, childCount - 1))}
-                    className="w-8 h-8 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 flex items-center justify-center cursor-pointer"
+                    className="w-11 h-11 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 flex items-center justify-center cursor-pointer"
                   >
                     -
                   </button>
-                  <span className="font-mono font-bold text-sm w-4 text-center">{childCount}</span>
+                  <span className="font-mono font-bold text-sm w-5 text-center">{childCount}</span>
                   <button
                     type="button"
+                    aria-label="Ajouter un enfant"
                     onClick={() => {
                       if (totalGuests < capacityMetrics.available) {
                         setChildCount(childCount + 1);
                       }
                     }}
                     disabled={totalGuests >= capacityMetrics.available}
-                    className="w-8 h-8 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
+                    className="w-11 h-11 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -815,29 +819,31 @@ export const BookingWizard: React.FC = () => {
               </div>
 
               {/* PMR Counter */}
-              <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-between">
+              <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex items-center justify-between gap-2">
                 <div>
-                  <div className="font-bold text-xs text-[var(--text-primary)]">Accès PMR</div>
-                  <div className="text-[11px] text-[var(--text-muted)]">Mobilité réduite</div>
+                  <div className="font-bold text-xs sm:text-sm text-[var(--text-primary)]">Accès PMR</div>
+                  <div className="text-xs text-[var(--text-muted)]">Mobilité réduite</div>
                 </div>
-                <div className="flex items-center gap-2.5">
+                <div className="flex items-center gap-2">
                   <button
                     type="button"
+                    aria-label="Retirer une place PMR"
                     onClick={() => setPmrCount(Math.max(0, pmrCount - 1))}
-                    className="w-8 h-8 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 flex items-center justify-center cursor-pointer"
+                    className="w-11 h-11 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 flex items-center justify-center cursor-pointer"
                   >
                     -
                   </button>
-                  <span className="font-mono font-bold text-sm w-4 text-center">{pmrCount}</span>
+                  <span className="font-mono font-bold text-sm w-5 text-center">{pmrCount}</span>
                   <button
                     type="button"
+                    aria-label="Ajouter une place PMR"
                     onClick={() => {
                       if (totalGuests < capacityMetrics.available) {
                         setPmrCount(pmrCount + 1);
                       }
                     }}
                     disabled={totalGuests >= capacityMetrics.available}
-                    className="w-8 h-8 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
+                    className="w-11 h-11 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] font-bold text-sm text-[var(--text-primary)] hover:bg-[var(--border-default)]/30 disabled:opacity-40 disabled:cursor-not-allowed flex items-center justify-center cursor-pointer"
                   >
                     +
                   </button>
@@ -846,7 +852,7 @@ export const BookingWizard: React.FC = () => {
             </div>
 
             {formErrors.capacity && (
-              <p className="text-xs text-red-600 dark:text-red-400 font-semibold flex items-center gap-1.5 pt-1">
+              <p className="text-xs text-[var(--status-danger-text)] font-semibold flex items-center gap-1.5 pt-1">
                 <AlertTriangle className="w-3.5 h-3.5" />
                 {formErrors.capacity}
               </p>
@@ -855,7 +861,7 @@ export const BookingWizard: React.FC = () => {
 
           {/* Lead Visitor Details */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
-            <h4 className="font-bold text-sm text-[var(--text-primary)]">
+            <h4 className="font-sans font-bold text-sm text-[var(--text-primary)]">
               Coordonnées du visiteur référent
             </h4>
 
@@ -869,10 +875,10 @@ export const BookingWizard: React.FC = () => {
                   placeholder="Ex : Jean-Paul Mbarga"
                   value={leadName}
                   onChange={(e) => setLeadName(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                  className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                 />
                 {formErrors.leadName && (
-                  <p className="text-[11px] text-red-600 dark:text-red-400 mt-1 font-semibold">
+                  <p className="text-xs text-[var(--status-danger-text)] mt-1 font-semibold">
                     {formErrors.leadName}
                   </p>
                 )}
@@ -887,10 +893,10 @@ export const BookingWizard: React.FC = () => {
                   placeholder="jp.mbarga@exemple.cm"
                   value={leadEmail}
                   onChange={(e) => setLeadEmail(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                  className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                 />
                 {formErrors.leadEmail && (
-                  <p className="text-[11px] text-red-600 dark:text-red-400 mt-1 font-semibold">
+                  <p className="text-xs text-[var(--status-danger-text)] mt-1 font-semibold">
                     {formErrors.leadEmail}
                   </p>
                 )}
@@ -905,10 +911,10 @@ export const BookingWizard: React.FC = () => {
                   placeholder="Ex : +237 6XX XX XX XX"
                   value={leadPhone}
                   onChange={(e) => setLeadPhone(e.target.value)}
-                  className="w-full px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                  className="w-full min-h-[44px] px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                 />
                 {formErrors.leadPhone && (
-                  <p className="text-[11px] text-red-600 dark:text-red-400 mt-1 font-semibold">
+                  <p className="text-xs text-[var(--status-danger-text)] mt-1 font-semibold">
                     {formErrors.leadPhone}
                   </p>
                 )}
@@ -916,18 +922,18 @@ export const BookingWizard: React.FC = () => {
             </div>
 
             {!user && (
-              <p className="text-[11px] text-[var(--text-muted)] pt-1">
+              <p className="type-footnote pt-1">
                 💡 Astuce : créez ensuite votre Espace Cliente avec la même adresse email pour retrouver automatiquement tous vos Pass QR en toute confidentialité.
               </p>
             )}
           </div>
 
           {/* Step 2 Actions */}
-          <div className="pt-4 flex items-center justify-between">
+          <div className="pt-4 flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => setCurrentStep(1)}
-              className="px-5 py-2.5 rounded-xl border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-2"
+              className="min-h-[48px] px-5 py-2.5 rounded-xl border border-[var(--border-default)] text-xs sm:text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Retour à l étape 1</span>
@@ -940,7 +946,7 @@ export const BookingWizard: React.FC = () => {
                   setCurrentStep(3);
                 }
               }}
-              className="px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-white font-bold text-sm shadow-xs hover:bg-[var(--brand-secondary)] cursor-pointer flex items-center gap-2"
+              className="min-h-[48px] px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] font-bold text-sm shadow-xs hover:bg-[var(--brand-primary-hover)] cursor-pointer flex items-center gap-2"
             >
               <span>Continuer vers l Éco-Mobilité</span>
               <ArrowRight className="w-4 h-4" />
@@ -956,10 +962,10 @@ export const BookingWizard: React.FC = () => {
         <form onSubmit={handleFinalBooking} className="space-y-6">
           {/* Transport Selector (F21 Engine) */}
           <div className="space-y-3">
-            <div className="flex items-center justify-between">
+            <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <Leaf className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                  <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+                  <Leaf className="w-4 h-4 text-[var(--status-open-text)]" />
+                  <h3 className="type-h3 text-[var(--text-primary)]">
                     Mode d&apos;accès, Paiement &amp; Avantage Groupe
                   </h3>
                 </div>
@@ -970,7 +976,7 @@ export const BookingWizard: React.FC = () => {
 
               {mobilityMode === 'velo' && totalGuests < 20 && (
                 <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
-                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <AlertTriangle className="w-4 h-4 text-[var(--status-caution-text)] shrink-0" />
                   <span className="tabular-nums">
                     La remise officielle Groupe de <strong>-30 %</strong> s&apos;active automatiquement dès <strong>20 participants</strong> (votre groupe comporte actuellement {totalGuests} pers., tarif unitaire normal appliqué).
                   </span>
@@ -995,12 +1001,12 @@ export const BookingWizard: React.FC = () => {
                     </div>
 
                     <div className="space-y-1 flex-1">
-                      <div className="flex items-center justify-between gap-2">
-                        <div className="font-bold text-xs text-[var(--text-primary)]">
+                      <div className="flex flex-wrap items-center justify-between gap-2">
+                        <div className="font-bold text-xs sm:text-sm text-[var(--text-primary)]">
                           {opt.label}
                         </div>
                         <span
-                          className={`text-[10px] font-mono font-bold px-2 py-0.5 rounded-full ${
+                          className={`text-xs font-mono font-bold px-2 py-0.5 rounded-full ${
                             opt.discountPercent > 0
                               ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800'
                               : 'bg-[var(--bg-canvas)] text-[var(--text-muted)] border border-[var(--border-default)]'
@@ -1010,11 +1016,11 @@ export const BookingWizard: React.FC = () => {
                         </span>
                       </div>
 
-                      <p className="text-[11px] text-[var(--text-muted)] leading-relaxed">
+                      <p className="text-xs text-[var(--text-muted)] leading-relaxed">
                         {opt.description}
                       </p>
 
-                      <div className="text-[10px] text-emerald-700 dark:text-emerald-400 font-mono pt-1">
+                      <div className="text-xs text-[var(--status-open-text)] font-mono pt-1">
                         Avantage Ahala : {opt.ademeNote}
                       </div>
                     </div>
@@ -1026,7 +1032,7 @@ export const BookingWizard: React.FC = () => {
 
           {/* Dynamic Price & Avoided CO2 Summary Card */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-4">
-            <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-[var(--text-primary)]">
+            <h4 className="font-sans text-base font-bold text-[var(--text-primary)]">
               Récapitulatif Écologique & Tarifaire
             </h4>
 
@@ -1054,14 +1060,14 @@ export const BookingWizard: React.FC = () => {
 
               <div>
                 <div className="text-[var(--text-muted)]">Réduction Éco ({pricing.discountPercent}%)</div>
-                <div className="font-bold text-emerald-600 dark:text-emerald-400 mt-0.5">
+                <div className="font-bold text-[var(--status-open-text)] mt-0.5">
                   -{formatEur(pricing.discountAmountEur)}
                 </div>
               </div>
 
               <div>
                 <div className="text-[var(--text-muted)]">CO₂ Évité Certifié</div>
-                <div className="font-mono font-bold text-emerald-600 dark:text-emerald-400 mt-0.5 flex items-center gap-1">
+                <div className="font-mono font-bold text-[var(--status-open-text)] mt-0.5 flex items-center gap-1">
                   <Sparkles className="w-3.5 h-3.5" />
                   +{formatCo2(pricing.totalCo2AvoidedKg)}
                 </div>
@@ -1076,7 +1082,7 @@ export const BookingWizard: React.FC = () => {
                 </span>
                 <div className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--brand-primary)]">
                   {formatEur(pricing.netTotalEur)}
-                  <span className="text-xs font-normal text-[var(--text-muted)] ml-2">
+                  <span className="font-sans text-xs font-normal text-[var(--text-muted)] ml-2">
                     ({formatEur(pricing.unitPriceEur)} / personne)
                   </span>
                 </div>
@@ -1090,9 +1096,9 @@ export const BookingWizard: React.FC = () => {
 
           {/* Zero-Trace Charter Commitment */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
-            <div className="flex items-center gap-2 text-emerald-700 dark:text-emerald-400">
+            <div className="flex items-center gap-2 text-[var(--status-open-text)]">
               <ShieldCheck className="w-5 h-5" />
-              <h4 className="font-bold text-sm text-[var(--text-primary)]">
+              <h4 className="font-sans font-bold text-sm text-[var(--text-primary)]">
                 Engagement Solennel : Charte Zéro-Trace du Parc
               </h4>
             </div>
@@ -1117,15 +1123,15 @@ export const BookingWizard: React.FC = () => {
                 type="checkbox"
                 checked={charterAccepted}
                 onChange={(e) => setCharterAccepted(e.target.checked)}
-                className="mt-0.5 w-4 h-4 rounded text-emerald-600 focus:ring-emerald-500 cursor-pointer"
+                className="mt-0.5 w-4 h-4 shrink-0 rounded accent-[var(--brand-primary)] cursor-pointer"
               />
-              <span className="text-xs text-[var(--text-primary)] font-medium leading-relaxed">
+              <span className="text-xs sm:text-sm text-[var(--text-primary)] font-medium leading-relaxed">
                 J ai pris connaissance de la Charte Zéro-Trace et je m engage, pour moi-même et les membres de mon groupe, à respecter la tranquillité de la réserve forestière.
               </span>
             </label>
 
             {formErrors.charter && (
-              <p className="text-xs text-red-600 dark:text-red-400 font-semibold flex items-center gap-1.5">
+              <p className="text-xs text-[var(--status-danger-text)] font-semibold flex items-center gap-1.5">
                 <AlertTriangle className="w-3.5 h-3.5" />
                 {formErrors.charter}
               </p>
@@ -1135,18 +1141,18 @@ export const BookingWizard: React.FC = () => {
                 role="alert"
                 className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-300 dark:border-red-800 text-xs text-red-800 dark:text-red-200 font-semibold flex items-center gap-2"
               >
-                <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
+                <AlertTriangle className="w-4 h-4 text-[var(--status-danger-text)] shrink-0" />
                 <span>{formErrors.submit}</span>
               </div>
             )}
           </div>
 
           {/* Step 3 Actions */}
-          <div className="pt-4 flex items-center justify-between">
+          <div className="pt-4 flex flex-wrap items-center justify-between gap-3">
             <button
               type="button"
               onClick={() => setCurrentStep(2)}
-              className="px-5 py-2.5 rounded-xl border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-2"
+              className="min-h-[48px] px-5 py-2.5 rounded-xl border border-[var(--border-default)] text-xs sm:text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
               <span>Retour aux coordonnées</span>
@@ -1156,7 +1162,7 @@ export const BookingWizard: React.FC = () => {
               ref={submitBtnRef}
               type="submit"
               disabled={!charterAccepted || bookingSuccess !== null}
-              className="px-7 py-3.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-sm shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2 transition-all active:scale-95"
+              className="min-h-[48px] px-7 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white dark:bg-emerald-300 dark:hover:bg-emerald-200 dark:text-[#081C15] font-bold text-sm shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2 transition-all active:scale-95"
             >
               <CheckCircle2 className="w-4 h-4" />
               <span>Confirmer la réservation & Émettre l Éco-Pass</span>

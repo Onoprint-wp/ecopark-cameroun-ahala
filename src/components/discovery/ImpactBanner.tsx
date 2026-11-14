@@ -106,7 +106,7 @@ export const ImpactBanner: React.FC = () => {
       {/* Editorial Header (Échelle optique : .type-eyebrow, .type-h2 <= 12 mots + point final, .type-body) */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2">
         <div className="space-y-2.5 max-w-4xl">
-          <div className="inline-flex items-center gap-2 type-eyebrow !text-[#74C69D] uppercase">
+          <div className="inline-flex items-center gap-2 type-eyebrow text-[#74C69D] uppercase">
             <Sparkles className="w-3.5 h-3.5 text-[#52B788]" />
             <span>Preuves Factuelles &amp; Tarifs Officiels · Yaoundé - Ahala Barrière (RN3)</span>
           </div>
@@ -176,17 +176,17 @@ export const ImpactBanner: React.FC = () => {
                   <div className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold tracking-tight text-white tabular-nums">
                     {metric.value}
                   </div>
-                  <h3 className="type-h3 !text-[21px] sm:!text-[22px] text-[#E9F5ED]">
+                  <h3 className="type-h3 text-[#E9F5ED]">
                     {metric.title}
                   </h3>
                 </div>
 
-                <p className="type-body !text-[14px] !leading-[20px] text-[#C9D1CC] mt-2">
+                <p className="type-body-compact text-[#C9D1CC] mt-2">
                   {metric.summary}
                 </p>
               </div>
 
-              <div className="pt-3.5 mt-4 border-t border-[#36403A]/80 flex items-center justify-between type-footnote !text-[#B7E4C7] font-mono tabular-nums">
+              <div className="pt-3.5 mt-4 border-t border-[#36403A]/80 flex items-center justify-between type-footnote text-[#B7E4C7] font-mono tabular-nums">
                 <span>{metric.unit}</span>
                 <span>{isExpanded ? 'Réduire' : 'Preuves +'}</span>
               </div>
@@ -200,7 +200,7 @@ export const ImpactBanner: React.FC = () => {
               >
                 <div className="overflow-hidden space-y-3">
                   {/* Synthèse BLUF (Bottom Line Up Front : 40 à 55 mots calibrés Google XYZ) */}
-                  <p className="text-xs leading-relaxed text-[#E9F5ED] bg-[#1F2421] p-3 rounded-xl border border-[#36403A] tabular-nums">
+                  <p className="text-sm leading-relaxed text-[#E9F5ED] bg-[#1F2421] p-3 rounded-xl border border-[#36403A] tabular-nums">
                     {metric.bluf}
                   </p>
 
@@ -208,15 +208,15 @@ export const ImpactBanner: React.FC = () => {
                     {metric.breakdown.map((item, i) => (
                       <li
                         key={i}
-                        className="flex items-start gap-2 text-xs text-[#C9D1CC] leading-relaxed tabular-nums"
+                        className="flex items-start gap-2 text-[0.8125rem] sm:text-sm text-[#C9D1CC] leading-relaxed tabular-nums"
                       >
-                        <CheckCircle2 className="w-3.5 h-3.5 text-[#52B788] shrink-0 mt-0.5" />
+                        <CheckCircle2 className="w-3.5 h-3.5 text-[#74C69D] shrink-0 mt-1" />
                         <span>{item}</span>
                       </li>
                     ))}
                   </ul>
 
-                  <div className="text-[11px] font-mono text-[#74C69D] pt-1 tabular-nums">
+                  <div className="text-xs font-mono text-[#74C69D] pt-1 tabular-nums">
                     {metric.kpiNote}
                   </div>
                 </div>

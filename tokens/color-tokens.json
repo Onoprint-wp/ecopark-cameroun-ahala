@@ -16,7 +16,7 @@
       "500": { "$value": "#52B788", "$type": "color" },
       "600": { "$value": "#40916C", "$type": "color" },
       "700": { "$value": "#2D6A4F", "$type": "color" },
-      "800": { "$value": "#1B4332", "$type": "color", "$description": "Adobe Color Swatch 1 — Deep Forest Green (Primary)" },
+      "800": { "$value": "#1B4332", "$type": "color", "$description": "Adobe Color Swatch 1 - Deep Forest Green (Primary)" },
       "900": { "$value": "#112A1F", "$type": "color" },
       "950": { "$value": "#081C15", "$type": "color" }
     },
@@ -26,7 +26,7 @@
       "200": { "$value": "#B7E4C7", "$type": "color" },
       "300": { "$value": "#95D5B2", "$type": "color" },
       "400": { "$value": "#74C69D", "$type": "color" },
-      "500": { "$value": "#52B788", "$type": "color", "$description": "Adobe Color Swatch 2 — Fresh Leaf / Emerald (Secondary)" },
+      "500": { "$value": "#52B788", "$type": "color", "$description": "Adobe Color Swatch 2 - Fresh Leaf / Emerald (Secondary)" },
       "600": { "$value": "#3D996E", "$type": "color" },
       "700": { "$value": "#2D7A56", "$type": "color" },
       "800": { "$value": "#215C41", "$type": "color" },
@@ -38,7 +38,7 @@
       "100": { "$value": "#F5EBE0", "$type": "color" },
       "200": { "$value": "#EBD5BE", "$type": "color" },
       "300": { "$value": "#E0BC99", "$type": "color" },
-      "400": { "$value": "#D4A373", "$type": "color", "$description": "Adobe Color Swatch 3 — Warm Earth / Ochre (Accent)" },
+      "400": { "$value": "#D4A373", "$type": "color", "$description": "Adobe Color Swatch 3 - Warm Earth / Ochre (Accent)" },
       "500": { "$value": "#C08852", "$type": "color" },
       "600": { "$value": "#A46E3B", "$type": "color" },
       "700": { "$value": "#84562D", "$type": "color" },
@@ -48,7 +48,7 @@
     },
     "mist": {
       "50":  { "$value": "#F6FBF8", "$type": "color" },
-      "100": { "$value": "#E9F5ED", "$type": "color", "$description": "Adobe Color Swatch 4 — Soft Mist / Sage (Light Surface)" },
+      "100": { "$value": "#E9F5ED", "$type": "color", "$description": "Adobe Color Swatch 4 - Soft Mist / Sage (Light Surface)" },
       "200": { "$value": "#D4E9DC", "$type": "color" },
       "300": { "$value": "#B5D6C2", "$type": "color" },
       "400": { "$value": "#8EBAA0", "$type": "color" },
@@ -64,7 +64,7 @@
       "600": { "$value": "#46534B", "$type": "color" },
       "700": { "$value": "#36403A", "$type": "color" },
       "800": { "$value": "#29302C", "$type": "color" },
-      "900": { "$value": "#1F2421", "$type": "color", "$description": "Adobe Color Swatch 5 — Deep Bark / Charcoal (Ink & Dark UI)" },
+      "900": { "$value": "#1F2421", "$type": "color", "$description": "Adobe Color Swatch 5 - Deep Bark / Charcoal (Ink & Dark UI)" },
       "950": { "$value": "#121614", "$type": "color" }
     }
   },
@@ -74,7 +74,7 @@
       "surface": { "$value": "#E9F5ED", "$type": "color" },
       "surfaceElevated": { "$value": "#FFFFFF", "$type": "color" },
       "text": { "$value": "#1F2421", "$type": "color" },
-      "textMuted": { "$value": "#46534B", "$type": "color" },
+      "textMuted": { "$value": "#36403A", "$type": "color" },
       "primary": { "$value": "#1B4332", "$type": "color" },
       "primaryHover": { "$value": "#2D6A4F", "$type": "color" },
       "onPrimary": { "$value": "#FFFFFF", "$type": "color" },
@@ -82,22 +82,57 @@
       "onSecondary": { "$value": "#1F2421", "$type": "color" },
       "accent": { "$value": "#D4A373", "$type": "color" },
       "onAccent": { "$value": "#1F2421", "$type": "color" },
-      "border": { "$value": "#B5D6C2", "$type": "color" }
+      "border": { "$value": "#B5D6C2", "$type": "color" },
+      "statusOpenText": { "$value": "#166534", "$type": "color" },
+      "statusCautionText": { "$value": "#92400E", "$type": "color" },
+      "statusDangerText": { "$value": "#991B1B", "$type": "color" }
     },
     "dark": {
       "bg": { "$value": "#121614", "$type": "color" },
       "surface": { "$value": "#1F2421", "$type": "color" },
       "surfaceElevated": { "$value": "#29302C", "$type": "color" },
       "text": { "$value": "#E9F5ED", "$type": "color" },
-      "textMuted": { "$value": "#A3B0A8", "$type": "color" },
-      "primary": { "$value": "#52B788", "$type": "color" },
-      "primaryHover": { "$value": "#74C69D", "$type": "color" },
-      "onPrimary": { "$value": "#121614", "$type": "color" },
+      "textMuted": { "$value": "#C9D1CC", "$type": "color" },
+      "primary": { "$value": "#74C69D", "$type": "color" },
+      "primaryHover": { "$value": "#95D5B2", "$type": "color" },
+      "onPrimary": { "$value": "#081C15", "$type": "color" },
       "secondary": { "$value": "#2D6A4F", "$type": "color" },
       "onSecondary": { "$value": "#E9F5ED", "$type": "color" },
       "accent": { "$value": "#D4A373", "$type": "color" },
       "onAccent": { "$value": "#1F2421", "$type": "color" },
-      "border": { "$value": "#36403A", "$type": "color" }
+      "border": { "$value": "#36403A", "$type": "color" },
+      "statusOpenText": { "$value": "#74C69D", "$type": "color" },
+      "statusCautionText": { "$value": "#FCD34D", "$type": "color" },
+      "statusDangerText": { "$value": "#FCA5A5", "$type": "color" }
+    }
+  },
+  "typography": {
+    "runtimeSource": "src/index.css",
+    "families": {
+      "display": "'Barlow Semi Condensed', -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "sans": "'Source Sans 3', -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif",
+      "mono": "'JetBrains Mono', \"Courier New\", monospace"
+    },
+    "scaleRem": {
+      "hero": { "mobile": "clamp(2.25rem, 1.5rem + 4.5vw, 3rem)", "desktop": "clamp(3.25rem, 5.2vw, 5rem)", "lineHeight": "1.08 / 1.05" },
+      "pageTitle": { "mobile": "clamp(1.75rem, 1.5rem + 2vw, 2.25rem)", "desktop": "clamp(2.25rem, 2.5vw + 0.75rem, 3rem)", "lineHeight": "1.14 / 1.10" },
+      "h2": { "mobile": "2rem", "desktop": "clamp(2.25rem, 3.2vw, 3rem)", "lineHeight": "1.15 / 1.10" },
+      "h3": { "mobile": "1.3125rem", "desktop": "1.5rem", "lineHeight": "1.24 / 1.20" },
+      "cardTitle": { "mobile": "1.125rem", "desktop": "1.1875rem", "lineHeight": "1.30" },
+      "tagline": { "mobile": "1.25rem", "desktop": "1.5rem", "lineHeight": "1.25 / 1.20" },
+      "body": { "mobile": "1rem", "desktop": "1.0625rem", "lineHeight": "1.55 / 1.60" },
+      "bodyCompact": { "mobile": "0.9375rem", "desktop": "1rem", "lineHeight": "1.50" },
+      "eyebrow": { "mobile": "0.8125rem", "desktop": "0.875rem", "lineHeight": "1.30" },
+      "nav": { "mobile": "0.875rem", "desktop": "0.875rem", "lineHeight": "1.35" },
+      "chapternav": { "mobile": "0.8125rem", "desktop": "0.8125rem", "lineHeight": "1.30" },
+      "cta": { "mobile": "0.9375rem", "desktop": "0.9375rem", "lineHeight": "1.25" },
+      "footnote": { "mobile": "0.8125rem", "desktop": "0.8125rem", "lineHeight": "1.42" },
+      "badge": { "mobile": "0.75rem", "desktop": "0.75rem", "lineHeight": "1.33" },
+      "cockpitH1": { "mobile": "1.1875rem", "desktop": "1.1875rem", "lineHeight": "1.26" },
+      "cockpitH2": { "mobile": "1.0625rem", "desktop": "1.0625rem", "lineHeight": "1.30" },
+      "cockpitH3": { "mobile": "1rem", "desktop": "1rem", "lineHeight": "1.35" },
+      "cockpitKpi": { "mobile": "1.125rem", "desktop": "1.125rem", "lineHeight": "1.20" },
+      "cockpitMeta": { "mobile": "0.75rem", "desktop": "0.75rem", "lineHeight": "1.35" }
     }
   },
   "exploredAdobePalettes": [

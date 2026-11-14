@@ -3,7 +3,7 @@
 // Feature F22 & F23: Pure SVG QR code pass, Outdoor Mode & Ticket Management
 // ============================================================================
 
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useEffect } from 'react';
 import {
   Calendar,
   Clock,
@@ -61,6 +61,109 @@ export const DigitalEcoPass: React.FC = () => {
   const [isFlippedBack, setIsFlippedBack] = useState<boolean>(false);
   const [isPointerActive, setIsPointerActive] = useState<boolean>(false);
   const card3dRef = useRef<HTMLDivElement | null>(null);
+  const rectoFaceRef = useRef<HTMLDivElement | null>(null);
+  const versoFaceRef = useRef<HTMLDivElement | null>(null);
+  const rectoFlipBtnRef = useRef<HTMLButtonElement | null>(null);
+  const versoFlipBtnRef = useRef<HTMLButtonElement | null>(null);
+  const cancelDialogRef = useRef<HTMLDivElement | null>(null);
+  const cancelPreviousFocusRef = useRef<HTMLElement | null>(null);
+
+  useEffect(() => {
+    type InertDivElement = HTMLDivElement & { inert: boolean };
+    const setFaceInert = (element: HTMLDivElement | null, isInert: boolean) => {
+      if (!element) return;
+      if ('inert' in element) {
+        (element as InertDivElement).inert = isInert;
+      }
+      if (isInert) {
+        element.setAttribute('inert', '');
+      } else {
+        element.removeAttribute('inert');
+      }
+    };
+
+    const rectoEl = rectoFaceRef.current;
+    const versoEl = versoFaceRef.current;
+    const activeEl = document.activeElement;
+
+    if (isFlippedBack) {
+      setFaceInert(versoEl, false);
+      if (rectoEl && activeEl instanceof HTMLElement && rectoEl.contains(activeEl)) {
+        versoFlipBtnRef.current?.focus();
+      }
+      setFaceInert(rectoEl, true);
+    } else {
+      setFaceInert(rectoEl, false);
+      if (versoEl && activeEl instanceof HTMLElement && versoEl.contains(activeEl)) {
+        rectoFlipBtnRef.current?.focus();
+      }
+      setFaceInert(versoEl, true);
+    }
+  }, [isFlippedBack]);
+
+  useEffect(() => {
+    if (!showCancelModal) {
+      const targetToRestore = cancelPreviousFocusRef.current;
+      cancelPreviousFocusRef.current = null;
+      if (targetToRestore && targetToRestore.isConnected) {
+        targetToRestore.focus();
+      }
+      return;
+    }
+
+    if (!cancelPreviousFocusRef.current && document.activeElement instanceof HTMLElement) {
+      cancelPreviousFocusRef.current = document.activeElement;
+    }
+
+    const dialogEl = cancelDialogRef.current;
+    const focusableSelector =
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+    if (dialogEl) {
+      const focusables = Array.from(dialogEl.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+        (el) => el.offsetParent !== null || el.getClientRects().length > 0
+      );
+      if (focusables.length > 0) {
+        focusables[0].focus();
+      } else {
+        dialogEl.focus();
+      }
+    }
+
+    const handleCancelKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        setShowCancelModal(false);
+        return;
+      }
+      if (event.key === 'Tab' && dialogEl) {
+        const focusables = Array.from(dialogEl.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+          (el) => el.offsetParent !== null || el.getClientRects().length > 0
+        );
+        if (focusables.length === 0) {
+          event.preventDefault();
+          dialogEl.focus();
+          return;
+        }
+        const firstEl = focusables[0];
+        const lastEl = focusables[focusables.length - 1];
+        const activeEl = document.activeElement;
+        if (event.shiftKey) {
+          if (activeEl === firstEl || !dialogEl.contains(activeEl)) {
+            event.preventDefault();
+            lastEl.focus();
+          }
+        } else if (activeEl === lastEl || !dialogEl.contains(activeEl)) {
+          event.preventDefault();
+          firstEl.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleCancelKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleCancelKeyDown);
+    };
+  }, [showCancelModal]);
 
   // Claim existing pass state
   const [showClaimForm, setShowClaimForm] = useState<boolean>(false);
@@ -274,12 +377,12 @@ export const DigitalEcoPass: React.FC = () => {
             <Ticket className="w-8 h-8" />
           </div>
           <div>
-            <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--text-primary)]">
+            <h2 className="type-h3 text-[var(--text-primary)]">
               {user
                 ? 'Aucun Pass QR rattaché à votre Espace Cliente'
                 : 'Récupération Unitaire de Pass QR (Visiteur sans compte)'}
             </h2>
-            <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1.5 max-w-md mx-auto leading-relaxed">
+            <p className="type-body-compact text-[var(--text-muted)] mt-1.5 max-w-md mx-auto">
               {user
                 ? 'Réservez votre prochain créneau en FCFA (Orange Money, MTN MoMo ou Guichet) ou rattachez ci-dessous un billet déjà émis.'
                 : 'Affichez immédiatement un Pass QR acheté sans compte avec sa référence (ECP-2026-XXXXX) et le téléphone ou e-mail de réservation, ou réservez votre visite.'}
@@ -291,7 +394,7 @@ export const DigitalEcoPass: React.FC = () => {
               recordMotionOrigin(e);
               setActiveView('billetterie');
             }}
-            className="px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-white font-bold text-sm shadow-xs hover:bg-[var(--brand-secondary)] cursor-pointer inline-flex items-center gap-2"
+            className="min-h-[48px] px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] font-bold text-sm shadow-xs hover:bg-[var(--brand-primary-hover)] cursor-pointer inline-flex items-center gap-2 transition-colors"
           >
             <span>Réserver un Pass QR (dès 500 FCFA)</span>
             <ArrowRight className="w-4 h-4" />
@@ -306,13 +409,13 @@ export const DigitalEcoPass: React.FC = () => {
         >
           <div className="flex items-center gap-2">
             <KeyRound className="w-4 h-4 text-[var(--brand-primary)]" />
-            <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+            <h3 className="type-card-title text-[var(--text-primary)]">
               {user
                 ? 'Vous avez déjà réservé un billet (ECP-2026-XXXXX) ?'
                 : 'Afficher mon Pass QR unitaire (ECP-2026-XXXXX)'}
             </h3>
           </div>
-          <p className="text-xs text-[var(--text-muted)]">
+          <p className="type-body-compact text-[var(--text-muted)]">
             {user
               ? "Saisissez la référence de votre Pass ainsi que l'adresse email ou le numéro de téléphone utilisé lors de la réservation pour l'ajouter à votre portefeuille personnel."
               : "Saisissez la référence exacte de votre billet ainsi que le numéro de téléphone ou l'adresse e-mail utilisés lors de l'achat (déverrouillage strictement limité à cet onglet)."}
@@ -322,8 +425,8 @@ export const DigitalEcoPass: React.FC = () => {
             <div
               className={`p-3 rounded-xl text-xs border ${
                 claimFeedback.ok
-                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-emerald-800 dark:text-emerald-200'
-                  : 'bg-red-50 dark:bg-red-950/60 border-red-300 text-red-800 dark:text-red-200'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-[var(--status-open-text)]'
+                  : 'bg-red-50 dark:bg-red-950/60 border-red-300 text-[var(--status-danger-text)]'
               }`}
             >
               {claimFeedback.text}
@@ -338,7 +441,7 @@ export const DigitalEcoPass: React.FC = () => {
               placeholder="Référence (ex: ECP-2026-8942)"
               value={claimRefInput}
               onChange={(e) => setClaimRefInput(e.target.value)}
-              className="px-3.5 py-2.5 min-h-[44px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono text-[var(--text-primary)]"
+              className="px-3.5 py-2.5 min-h-[44px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm font-mono text-[var(--text-primary)]"
             />
             <input
               type="text"
@@ -347,13 +450,13 @@ export const DigitalEcoPass: React.FC = () => {
               placeholder="Email ou téléphone du billet"
               value={claimContactInput}
               onChange={(e) => setClaimContactInput(e.target.value)}
-              className="px-3.5 py-2.5 min-h-[44px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)]"
+              className="px-3.5 py-2.5 min-h-[44px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)]"
             />
           </div>
 
           <button
             type="submit"
-            className="px-4 py-2.5 min-h-[44px] rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)] text-white text-xs font-bold transition-colors cursor-pointer"
+            className="px-5 py-2.5 min-h-[48px] rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-sm font-bold transition-colors cursor-pointer"
           >
             {user ? 'Rattacher ce billet à mon compte' : 'Afficher mon Pass QR'}
           </button>
@@ -373,7 +476,7 @@ export const DigitalEcoPass: React.FC = () => {
       {/* Pass Switcher & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)]">
         <div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
             <span className="text-xs font-semibold text-[var(--brand-primary)] uppercase tracking-wider">
               {isStaff
                 ? `Registre Global des Pass (${scopedPasses.length})`
@@ -385,7 +488,7 @@ export const DigitalEcoPass: React.FC = () => {
               <button
                 type="button"
                 onClick={() => setShowClaimForm(!showClaimForm)}
-                className="text-[11px] font-semibold text-[var(--text-muted)] hover:text-[var(--brand-primary)] underline cursor-pointer"
+                className="min-h-[44px] inline-flex items-center px-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--brand-primary)] underline cursor-pointer"
               >
                 {user ? '+ Rattacher un billet' : '+ Chercher un autre billet'}
               </button>
@@ -400,9 +503,9 @@ export const DigitalEcoPass: React.FC = () => {
                   setActivePassId(pass.id);
                   setIsFlippedBack(false);
                 }}
-                className={`px-3 py-1.5 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
+                className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-mono font-bold transition-all cursor-pointer flex items-center gap-1.5 ${
                   pass.id === currentPass.id
-                    ? 'bg-[var(--brand-primary)] text-white shadow-xs'
+                    ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] shadow-xs'
                     : 'bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] hover:border-[var(--brand-primary)]'
                 }`}
               >
@@ -425,13 +528,14 @@ export const DigitalEcoPass: React.FC = () => {
         <div className="flex flex-wrap items-center gap-2">
           <button
             type="button"
+            aria-pressed={isFlippedBack}
             onClick={() => {
               resetCardTiltAndGlare();
               setIsFlippedBack((prev) => !prev);
             }}
-            className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
               isFlippedBack
-                ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-xs'
+                ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] border-[var(--brand-primary)] shadow-xs'
                 : 'bg-[var(--bg-elevated)] border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-surface)]'
             }`}
             title="Retourner le Pass en 3D pour consulter le Certificat Carbone & la Charte Zéro-Trace"
@@ -445,9 +549,9 @@ export const DigitalEcoPass: React.FC = () => {
               resetCardTiltAndGlare();
               setHighContrastOutdoor(!highContrastOutdoor);
             }}
-            className={`px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
+            className={`min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold border transition-all cursor-pointer flex items-center gap-1.5 ${
               highContrastOutdoor
-                ? 'bg-amber-500 text-black border-amber-600 font-bold shadow-xs'
+                ? 'bg-amber-400 text-[#121614] border-amber-600 font-bold shadow-xs'
                 : 'bg-[var(--bg-elevated)] border-[var(--border-default)] text-[var(--text-primary)] hover:bg-[var(--bg-surface)]'
             }`}
             title="Activer le mode contraste élevé pour lecture sous le soleil ou en économie OLED"
@@ -460,23 +564,25 @@ export const DigitalEcoPass: React.FC = () => {
             <div className="flex items-center gap-1 bg-[var(--bg-canvas)] p-1 rounded-xl border border-[var(--border-default)]">
               <button
                 onClick={() => setOutdoorVariant('sunlight')}
-                className={`p-1.5 rounded-lg text-xs cursor-pointer ${
+                className={`min-w-[44px] min-h-[44px] p-2 rounded-lg text-xs cursor-pointer inline-flex items-center justify-center ${
                   outdoorVariant === 'sunlight'
-                    ? 'bg-amber-400 text-black font-bold'
+                    ? 'bg-amber-400 text-[#121614] font-bold'
                     : 'text-[var(--text-muted)]'
                 }`}
                 title="Plein Soleil (Fond blanc éclatant)"
+                aria-label="Mode Plein Soleil"
               >
                 <Sun className="w-4 h-4" />
               </button>
               <button
                 onClick={() => setOutdoorVariant('oled')}
-                className={`p-1.5 rounded-lg text-xs cursor-pointer ${
+                className={`min-w-[44px] min-h-[44px] p-2 rounded-lg text-xs cursor-pointer inline-flex items-center justify-center ${
                   outdoorVariant === 'oled'
-                    ? 'bg-black text-emerald-400 font-bold ring-1 ring-emerald-500'
+                    ? 'bg-black text-emerald-300 font-bold ring-1 ring-emerald-400'
                     : 'text-[var(--text-muted)]'
                 }`}
                 title="Éco-Énergie OLED (Noir absolu #000000)"
+                aria-label="Mode Éco-Énergie OLED"
               >
                 <Moon className="w-4 h-4" />
               </button>
@@ -502,8 +608,8 @@ export const DigitalEcoPass: React.FC = () => {
             <div
               className={`p-2.5 rounded-xl text-xs border ${
                 claimFeedback.ok
-                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-emerald-800 dark:text-emerald-200'
-                  : 'bg-red-50 dark:bg-red-950/60 border-red-300 text-red-800 dark:text-red-200'
+                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-[var(--status-open-text)]'
+                  : 'bg-red-50 dark:bg-red-950/60 border-red-300 text-[var(--status-danger-text)]'
               }`}
             >
               {claimFeedback.text}
@@ -516,7 +622,7 @@ export const DigitalEcoPass: React.FC = () => {
               placeholder="ECP-2026-XXXXX"
               value={claimRefInput}
               onChange={(e) => setClaimRefInput(e.target.value)}
-              className="flex-1 px-3 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono text-[var(--text-primary)]"
+              className="flex-1 min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm font-mono text-[var(--text-primary)]"
             />
             <input
               type="text"
@@ -524,11 +630,11 @@ export const DigitalEcoPass: React.FC = () => {
               placeholder="Email ou téléphone du billet"
               value={claimContactInput}
               onChange={(e) => setClaimContactInput(e.target.value)}
-              className="flex-1 px-3 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)]"
+              className="flex-1 min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)]"
             />
             <button
               type="submit"
-              className="px-4 py-2 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-bold cursor-pointer"
+              className="min-h-[44px] px-4 py-2 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-xs font-bold cursor-pointer transition-colors"
             >
               Rattacher
             </button>
@@ -546,13 +652,42 @@ export const DigitalEcoPass: React.FC = () => {
           style={
             {
               '--pass-flip-y': isFlippedBack ? '180deg' : '0deg',
+              ...(highContrastOutdoor && outdoorVariant === 'oled'
+                ? {
+                    '--bg-canvas': '#000000',
+                    '--bg-surface': '#081C15',
+                    '--bg-elevated': '#121614',
+                    '--text-primary': '#E9F5ED',
+                    '--text-muted': '#C9D1CC',
+                    '--brand-primary': '#74C69D',
+                    '--on-primary': '#081C15',
+                    '--border-default': '#2D6A4F',
+                    '--status-open-text': '#74C69D',
+                    '--status-caution-text': '#FCD34D',
+                    '--status-danger-text': '#FCA5A5',
+                  }
+                : highContrastOutdoor && outdoorVariant === 'sunlight'
+                ? {
+                    '--bg-canvas': '#FFFFFF',
+                    '--bg-surface': '#FFFFFF',
+                    '--bg-elevated': '#F6FBF8',
+                    '--text-primary': '#000000',
+                    '--text-muted': '#1F2421',
+                    '--brand-primary': '#1B4332',
+                    '--on-primary': '#FFFFFF',
+                    '--border-default': '#1F2421',
+                    '--status-open-text': '#166534',
+                    '--status-caution-text': '#92400E',
+                    '--status-danger-text': '#991B1B',
+                  }
+                : {}),
             } as React.CSSProperties
           }
           className={`eco-pass-3d-card ${
             isPointerActive ? 'is-pointer-active' : ''
           } relative grid rounded-3xl shadow-lg border ${
             highContrastOutdoor && outdoorVariant === 'oled'
-              ? 'bg-black text-[#52B788] border-emerald-900 ring-2 ring-emerald-500/30'
+              ? 'bg-black text-[#E9F5ED] border-emerald-900 ring-2 ring-emerald-500/30'
               : highContrastOutdoor && outdoorVariant === 'sunlight'
               ? 'bg-white text-black border-4 border-black'
               : 'bg-[var(--bg-surface)] text-[var(--text-primary)] border-[var(--border-default)]'
@@ -570,6 +705,7 @@ export const DigitalEcoPass: React.FC = () => {
           {/* FACE RECTO : QR CODE GERMINATIF & CONTRÔLE D'ACCÈS              */}
           {/* =============================================================== */}
           <div
+            ref={rectoFaceRef}
             aria-hidden={isFlippedBack}
             className={`eco-pass-face [grid-area:1/1] flex flex-col justify-between overflow-hidden rounded-3xl ${
               isFlippedBack ? 'pointer-events-none' : ''
@@ -587,22 +723,22 @@ export const DigitalEcoPass: React.FC = () => {
                 }`}
               >
                 <div>
-                  <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#B7E4C7]">
+                  <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#B7E4C7]">
                     ECOPARK CAMEROUN · YAOUNDÉ, AHALA BARRIÈRE (FACE TRADEX RN3)
                   </span>
-                  <h2 className="type-h3 !text-white mt-0.5">
+                  <h2 className="type-h3 text-white mt-0.5">
                     Pass QR Officiel : Complexe Écologique &amp; Loisirs
                   </h2>
                 </div>
 
                 <div className="flex items-center gap-2">
                   <span
-                    className={`px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider ${
+                    className={`px-3 py-1 rounded-full text-xs font-mono font-bold uppercase tracking-wider border ${
                       currentPass.status === 'confirmed'
-                        ? 'bg-emerald-500/20 text-emerald-300 border border-emerald-400'
+                        ? 'bg-[#081C15]/80 text-[#95D5B2] border-[#74C69D]/60'
                         : currentPass.status === 'checked_in'
-                        ? 'bg-blue-500/20 text-blue-300 border border-blue-400'
-                        : 'bg-red-500/20 text-red-300 border border-red-400'
+                        ? 'bg-[#0C2233]/85 text-sky-200 border-sky-300/60'
+                        : 'bg-[#3B0A0A]/85 text-red-200 border-red-300/60'
                     }`}
                   >
                     {currentPass.status === 'confirmed' && 'Confirmé · Accès Valide'}
@@ -618,17 +754,17 @@ export const DigitalEcoPass: React.FC = () => {
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-4 border-b border-[var(--border-default)]/60">
                   <div>
                     <div className="text-xs font-mono text-[var(--text-muted)]">Numéro de Billet</div>
-                    <div className="font-['JetBrains_Mono'] text-xl font-bold tracking-tight text-[var(--brand-primary)]">
+                    <div className="font-mono text-xl font-bold tracking-tight text-[var(--brand-primary)]">
                       {currentPass.id}
                     </div>
                   </div>
 
                   <div className="sm:text-right">
                     <div className="text-xs text-[var(--text-muted)]">Formule Souscrite</div>
-                    <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                    <div className="font-sans font-bold text-base text-[var(--text-primary)]">
                       {experienceInfo.title}
                     </div>
-                    <div className="text-[11px] font-mono text-[var(--brand-primary)] font-semibold">
+                    <div className="text-xs font-mono text-[var(--brand-primary)] font-semibold">
                       {experienceInfo.badge}
                     </div>
                   </div>
@@ -653,7 +789,7 @@ export const DigitalEcoPass: React.FC = () => {
                     <span className="text-xs font-mono font-semibold text-[var(--text-primary)]">
                       Scannable aux portiques et par les Éco-Gardes
                     </span>
-                    <p className="text-[11px] text-[var(--text-muted)] font-mono">
+                    <p className="text-xs text-[var(--text-muted)] font-mono">
                       Germination spirale botanique · Vecteur ISO/IEC 18004 1-nœud
                     </p>
                   </div>
@@ -662,22 +798,23 @@ export const DigitalEcoPass: React.FC = () => {
                     <button
                       type="button"
                       onClick={() => setGerminationReplayCount((c) => c + 1)}
-                      className="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-[11px] font-mono font-semibold text-[var(--text-primary)] hover:border-[var(--brand-primary)] cursor-pointer inline-flex items-center gap-1.5 transition-colors"
+                      className="min-h-[44px] px-3.5 py-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-mono font-semibold text-[var(--text-primary)] hover:border-[var(--brand-primary)] cursor-pointer inline-flex items-center gap-1.5 transition-colors"
                       title="Rejouer l'éclosion organique des modules QR"
                     >
-                      <Sparkles className="w-3 h-3 text-[#52B788]" />
+                      <Sparkles className="w-3.5 h-3.5 text-[var(--status-open-text)]" />
                       <span>Rejouer la germination</span>
                     </button>
 
                     <button
+                      ref={rectoFlipBtnRef}
                       type="button"
                       onClick={() => {
                         resetCardTiltAndGlare();
                         setIsFlippedBack(true);
                       }}
-                      className="px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-[11px] font-mono font-semibold text-[var(--brand-primary)] hover:bg-[var(--bg-canvas)] cursor-pointer inline-flex items-center gap-1.5 transition-colors"
+                      className="min-h-[44px] px-3.5 py-2 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-mono font-semibold text-[var(--brand-primary)] hover:bg-[var(--bg-canvas)] cursor-pointer inline-flex items-center gap-1.5 transition-colors"
                     >
-                      <RotateCcw className="w-3 h-3" />
+                      <RotateCcw className="w-3.5 h-3.5" />
                       <span>Voir le certificat carbone (Verso 3D)</span>
                     </button>
                   </div>
@@ -693,7 +830,7 @@ export const DigitalEcoPass: React.FC = () => {
                     <div className="font-bold text-sm text-[var(--text-primary)]">
                       {currentPass.leadVisitor.fullName}
                     </div>
-                    <div className="text-[var(--text-muted)] font-mono text-[11px]">
+                    <div className="text-[var(--text-muted)] font-mono text-xs break-all">
                       {currentPass.leadVisitor.email} · {currentPass.leadVisitor.phone}
                     </div>
                   </div>
@@ -706,34 +843,34 @@ export const DigitalEcoPass: React.FC = () => {
                     <div className="font-bold text-sm text-[var(--text-primary)]">
                       {currentPass.visitDate}
                     </div>
-                    <div className="text-[var(--brand-primary)] font-mono font-semibold text-[11px] flex items-center gap-1">
-                      <Clock className="w-3 h-3" />
+                    <div className="text-[var(--brand-primary)] font-mono font-semibold text-xs flex items-center gap-1">
+                      <Clock className="w-3.5 h-3.5" />
                       {currentPass.timeSlot}
                     </div>
                   </div>
 
                   <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                     <div className="text-[var(--text-muted)] flex items-center gap-1.5">
-                      <Leaf className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <Leaf className="w-3.5 h-3.5 text-[var(--status-open-text)]" />
                       <span>Mode d Acheminement</span>
                     </div>
                     <div className="font-bold text-sm text-[var(--text-primary)]">
                       {mobilityInfo.label}
                     </div>
-                    <div className="text-emerald-700 dark:text-emerald-400 font-mono text-[11px] font-semibold">
+                    <div className="text-[var(--status-open-text)] font-mono text-xs font-semibold">
                       Réduction de {currentPass.discountAppliedPercent}% appliquée
                     </div>
                   </div>
 
                   <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                     <div className="text-[var(--text-muted)] flex items-center gap-1.5">
-                      <Sparkles className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+                      <Sparkles className="w-3.5 h-3.5 text-[var(--status-open-text)]" />
                       <span>Bilan Carbone Évité</span>
                     </div>
-                    <div className="font-mono font-bold text-sm text-emerald-600 dark:text-emerald-400">
+                    <div className="font-mono font-bold text-sm text-[var(--status-open-text)]">
                       +{formatCo2(currentPass.co2AvoidedKg)}
                     </div>
-                    <div className="text-[var(--text-muted)] text-[11px]">
+                    <div className="text-[var(--text-muted)] text-xs">
                       Pour {currentPass.guestCount} visiteur(s)
                     </div>
                   </div>
@@ -742,7 +879,7 @@ export const DigitalEcoPass: React.FC = () => {
                 {/* Price & Charter Badge */}
                 <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs">
                   <div className="flex items-center gap-2">
-                    <ShieldCheck className="w-4 h-4 text-emerald-600 shrink-0" />
+                    <ShieldCheck className="w-4 h-4 text-[var(--status-open-text)] shrink-0" />
                     <span className="text-[var(--text-muted)]">
                       Charte Zéro-Trace acceptée · Randonnée éco-responsable
                     </span>
@@ -761,34 +898,34 @@ export const DigitalEcoPass: React.FC = () => {
                   <button
                     type="button"
                     onClick={() => checkInPass(currentPass.id)}
-                    className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-95 transition-transform"
+                    className="min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-900 dark:bg-amber-300 dark:hover:bg-amber-200 dark:text-[#121614] text-white font-bold text-xs shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-95 transition-transform"
                   >
                     <CheckCircle2 className="w-4 h-4" />
                     <span>Valider Check-In Guichet RN3 (Staff)</span>
                   </button>
                 ) : (
-                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono font-semibold text-emerald-800 dark:text-emerald-300">
-                    <QrCode className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono font-semibold text-[var(--status-open-text)]">
+                    <QrCode className="w-3.5 h-3.5 text-[var(--status-open-text)] shrink-0" />
                     <span>À présenter au contrôle QR d&apos;Ahala Barrière (RN3)</span>
                   </span>
                 )
               ) : currentPass.status === 'checked_in' ? (
-                <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
+                <span className="text-xs font-mono font-bold text-[var(--status-open-text)] flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
                   Entrée validée le {new Date(currentPass.checkInTimestamp || '').toLocaleTimeString('fr-FR')}
                 </span>
               ) : (
-                <span className="text-xs font-mono font-bold text-red-600 dark:text-red-400 flex items-center gap-1.5">
+                <span className="text-xs font-mono font-bold text-[var(--status-danger-text)] flex items-center gap-1.5">
                   <XCircle className="w-4 h-4" />
                   Pass annulé
                 </span>
               )}
 
               {/* Utility Action Buttons */}
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <button
                   onClick={handleDownloadSvg}
-                  className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
                   title="Télécharger le fichier vectoriel SVG de l Éco-Pass"
                 >
                   <Download className="w-3.5 h-3.5" />
@@ -797,7 +934,7 @@ export const DigitalEcoPass: React.FC = () => {
 
                 <button
                   onClick={handlePrint}
-                  className="px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
+                  className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
                   title="Imprimer ou enregistrer en PDF"
                 >
                   <Printer className="w-3.5 h-3.5" />
@@ -807,7 +944,7 @@ export const DigitalEcoPass: React.FC = () => {
                 {canActorCancelPass(currentPass, user, sessionUnlockedPassIds) && (
                   <button
                     onClick={() => setShowCancelModal(true)}
-                    className="px-3.5 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-300 dark:hover:border-red-900 cursor-pointer flex items-center gap-1"
+                    className="min-h-[44px] px-3.5 py-2 rounded-xl text-xs font-semibold text-[var(--status-danger-text)] hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-300 dark:hover:border-red-900 cursor-pointer flex items-center gap-1"
                     title="Annuler ce pass et libérer la jauge du parc"
                   >
                     <span>Annuler</span>
@@ -821,6 +958,7 @@ export const DigitalEcoPass: React.FC = () => {
           {/* FACE VERSO 3D : CERTIFICAT CARBONE & CHARTE ZÉRO-TRACE          */}
           {/* =============================================================== */}
           <div
+            ref={versoFaceRef}
             aria-hidden={!isFlippedBack}
             className={`eco-pass-face eco-pass-face-back [grid-area:1/1] flex flex-col justify-between overflow-hidden rounded-3xl print:hidden ${
               !isFlippedBack ? 'pointer-events-none' : ''
@@ -830,10 +968,10 @@ export const DigitalEcoPass: React.FC = () => {
               {/* Verso Top Banner */}
               <div className="p-6 sm:p-7 bg-[#1F2421] text-[#E9F5ED] border-b border-[#2D6A4F]/50 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div>
-                  <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#D4A373]">
+                  <span className="text-xs font-mono font-semibold uppercase tracking-widest text-[#D4A373]">
                     VERSO OFFICIEL · ATTESTATION D&apos;IMPACT ÉCOLOGIQUE
                   </span>
-                  <h3 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold mt-0.5 text-white flex items-center gap-2">
+                  <h3 className="type-h3 mt-0.5 text-white flex items-center gap-2">
                     <Award className="w-6 h-6 text-[#52B788] shrink-0" />
                     <span>Certificat Carbone &amp; Serment Zéro-Trace</span>
                   </h3>
@@ -856,35 +994,35 @@ export const DigitalEcoPass: React.FC = () => {
                 {/* 4 Pillars of Signed Zero-Trace Charter */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-2 text-xs font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
-                    <ShieldCheck className="w-4 h-4 text-[#52B788]" />
+                    <ShieldCheck className="w-4 h-4 text-[var(--status-open-text)]" />
                     <span>Engagements Zéro-Trace signés par {currentPass.leadVisitor.fullName}</span>
                   </div>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-xs">
                     <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
                       <div className="font-bold text-[var(--text-primary)]">1. Quiétude de la Faune</div>
-                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                      <p className="text-[var(--text-muted)] text-xs leading-relaxed">
                         Silence acoustique aux abords du Sanctuaire du Gorille « ToTo » et des zones de nidification.
                       </p>
                     </div>
 
                     <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
                       <div className="font-bold text-[var(--text-primary)]">2. Zéro Déchet Intégral</div>
-                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                      <p className="text-[var(--text-muted)] text-xs leading-relaxed">
                         Aucun rejet plastique ou organique hors des points de tri sélectif d&apos;Ahala.
                       </p>
                     </div>
 
                     <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
                       <div className="font-bold text-[var(--text-primary)]">3. Respect des Tracés</div>
-                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                      <p className="text-[var(--text-muted)] text-xs leading-relaxed">
                         Maintien strict sur les sentiers balisés pour protéger l&apos;humus forestier de l&apos;érosion.
                       </p>
                     </div>
 
                     <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1">
                       <div className="font-bold text-[var(--text-primary)]">4. Garantie Météo RN3</div>
-                      <p className="text-[var(--text-muted)] text-[11px] leading-relaxed">
+                      <p className="text-[var(--text-muted)] text-xs leading-relaxed">
                         Report gratuit sous 90 jours en cas d&apos;alerte orage tropical émise par les Éco-Gardes.
                       </p>
                     </div>
@@ -892,7 +1030,7 @@ export const DigitalEcoPass: React.FC = () => {
                 </div>
 
                 {/* Cryptographic / Field Verification Stamp */}
-                <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-[11px] font-mono text-[var(--text-muted)]">
+                <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs font-mono text-[var(--text-muted)]">
                   <span>
                     Émis le {new Date(currentPass.createdAt).toLocaleDateString('fr-FR')} · Poste de garde RN3 Ahala Barrière
                   </span>
@@ -904,18 +1042,19 @@ export const DigitalEcoPass: React.FC = () => {
             </div>
 
             {/* Verso Footer Bar */}
-            <div className="p-6 bg-[var(--bg-canvas)] border-t border-[var(--border-default)] flex items-center justify-between gap-3">
+            <div className="p-6 bg-[var(--bg-canvas)] border-t border-[var(--border-default)] flex flex-wrap items-center justify-between gap-3">
               <span className="text-xs font-mono text-[var(--text-muted)]">
                 Face 2/2 · Certificat écologique vérifié
               </span>
 
               <button
+                ref={versoFlipBtnRef}
                 type="button"
                 onClick={() => {
                   resetCardTiltAndGlare();
                   setIsFlippedBack(false);
                 }}
-                className="px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] font-bold text-xs shadow-xs cursor-pointer inline-flex items-center gap-1.5 hover:opacity-95 transition-opacity"
+                className="min-h-[48px] px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] font-bold text-xs shadow-xs cursor-pointer inline-flex items-center gap-1.5 transition-colors"
               >
                 <RotateCcw className="w-3.5 h-3.5" />
                 <span>Retourner vers le QR Code (Recto 3D)</span>
@@ -927,8 +1066,8 @@ export const DigitalEcoPass: React.FC = () => {
 
       {/* Download Success Toast */}
       {downloadSuccess && (
-        <div className="p-3.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-200 border border-emerald-300 dark:border-emerald-800 text-xs font-semibold flex items-center gap-2 max-w-md mx-auto shadow-sm animate-fade-in">
-          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+        <div className="p-3.5 rounded-xl bg-emerald-100 text-[var(--status-open-text)] dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 text-xs font-semibold flex items-center gap-2 max-w-md mx-auto shadow-sm animate-fade-in">
+          <CheckCircle2 className="w-4 h-4 text-[var(--status-open-text)] shrink-0" />
           <span>Fichier SVG vectoriel téléchargé avec succès !</span>
         </div>
       )}
@@ -936,23 +1075,30 @@ export const DigitalEcoPass: React.FC = () => {
       {/* Cancel Confirmation Modal */}
       {showCancelModal && (
         <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-xs flex items-center justify-center p-4 animate-fade-in">
-          <div className="w-full max-w-md p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xl space-y-4">
-            <div className="flex items-center gap-3 text-red-600 dark:text-red-400">
-              <AlertCircle className="w-6 h-6" />
-              <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+          <div
+            ref={cancelDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ecopass-cancel-title"
+            tabIndex={-1}
+            className="w-full max-w-md p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xl space-y-4"
+          >
+            <div className="flex items-center gap-3 text-[var(--status-danger-text)]">
+              <AlertCircle className="w-6 h-6 shrink-0" />
+              <h3 id="ecopass-cancel-title" className="font-sans text-lg font-bold text-[var(--text-primary)]">
                 Annuler cet Éco-Pass ?
               </h3>
             </div>
 
-            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            <p className="type-body-compact text-[var(--text-muted)]">
               En annulant le pass <strong className="text-[var(--text-primary)] font-mono">{currentPass.id}</strong>,
               vos {currentPass.guestCount} places seront immédiatement réattribuées à la jauge écologique du parc pour d autres visiteurs.
             </p>
 
-            <div className="pt-2 flex items-center justify-end gap-3">
+            <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
               <button
                 onClick={() => setShowCancelModal(false)}
-                className="px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer"
+                className="min-h-[44px] px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer"
               >
                 Garder mon pass
               </button>
@@ -961,7 +1107,7 @@ export const DigitalEcoPass: React.FC = () => {
                   cancelPass(currentPass.id);
                   setShowCancelModal(false);
                 }}
-                className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white font-bold text-xs shadow-xs cursor-pointer"
+                className="min-h-[44px] px-4 py-2 rounded-xl bg-red-800 hover:bg-red-900 dark:bg-red-300 dark:hover:bg-red-200 dark:text-[#121614] text-white font-bold text-xs shadow-xs cursor-pointer transition-colors"
               >
                 Confirmer l annulation
               </button>

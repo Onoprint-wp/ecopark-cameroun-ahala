@@ -233,7 +233,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 <ShieldCheck className="w-4 h-4 text-[#74C69D]" />
                 <span>Session Authentifiée · {getRoleDisplayLabel(user.role)}</span>
               </div>
-              <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
+              <h1 className="type-page-title text-white mt-1">
                 Mon Compte &amp; Sécurité : {user.fullName}
               </h1>
             </div>
@@ -243,7 +243,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 await logout();
                 setActiveView('accueil');
               }}
-              className="px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs font-bold inline-flex items-center gap-2 cursor-pointer self-start sm:self-auto"
+              className="min-h-[44px] px-4 py-2.5 rounded-xl bg-white/10 hover:bg-white/20 text-white border border-white/25 text-xs sm:text-sm font-bold inline-flex items-center gap-2 cursor-pointer self-start sm:self-auto"
             >
               <LogOut className="w-4 h-4 text-rose-300" />
               <span>Se déconnecter</span>
@@ -259,10 +259,10 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 <span className="text-xs font-mono font-bold uppercase text-[var(--brand-primary)]">
                   Identité Vérifiée
                 </span>
-                <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--text-primary)] mt-0.5">
+                <h2 className="type-h3 text-[var(--text-primary)] mt-0.5">
                   {user.fullName}
                 </h2>
-                <p className="text-xs text-[var(--text-muted)] font-mono mt-0.5">
+                <p className="type-footnote font-mono mt-0.5">
                   {user.email} {user.phone ? `· ${user.phone}` : ''}
                   {user.matricule ? ` · ${user.matricule}` : ''}
                 </p>
@@ -273,7 +273,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                   <button
                     type="button"
                     onClick={() => setActiveView('ranger')}
-                    className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                    className="min-h-[48px] px-4 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-900 text-white dark:bg-amber-300 dark:hover:bg-amber-200 dark:text-[#121614] text-sm font-bold inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <ShieldAlert className="w-4 h-4" />
                     <span>Ouvrir le Cockpit Pro</span>
@@ -282,7 +282,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                   <button
                     type="button"
                     onClick={() => setActiveView('pass')}
-                    className="px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)] text-white text-xs font-bold inline-flex items-center gap-1.5 cursor-pointer"
+                    className="min-h-[48px] px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-sm font-bold inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <Ticket className="w-4 h-4" />
                     <span>Accéder à mon Espace Cliente</span>
@@ -306,13 +306,13 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
 
             {/* Password Update Form */}
             <form onSubmit={handleChangePassword} className="space-y-4">
-              <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)] flex items-center gap-2">
+              <h3 className="type-card-title text-[var(--text-primary)] flex items-center gap-2">
                 <KeyRound className="w-4 h-4 text-[var(--brand-primary)]" />
                 <span>Modifier mon mot de passe</span>
               </h3>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                  <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
+                  <label className="block text-sm font-semibold text-[var(--text-primary)] mb-1">
                     Mot de passe actuel
                   </label>
                   <input
@@ -325,7 +325,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                   />
                 </div>
                 <div>
-                  <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
+                  <label className="block text-sm font-semibold text-[var(--text-primary)] mb-1">
                     Nouveau mot de passe (8+ car., Maj, chiffre)
                   </label>
                   <input
@@ -341,7 +341,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
               <button
                 type="submit"
                 disabled={submitting}
-                className="px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)] text-white text-xs font-bold cursor-pointer disabled:opacity-60"
+                className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-sm font-bold cursor-pointer disabled:opacity-60"
               >
                 Mettre à jour le mot de passe
               </button>
@@ -352,17 +352,17 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
               <div className="pt-5 border-t border-[var(--border-default)] space-y-3">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                   <div>
-                    <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-red-700 dark:text-red-400">
+                    <h4 className="font-sans text-base font-bold text-[var(--status-danger-text)]">
                       Droit à l&apos;effacement &amp; Suppression de compte
                     </h4>
-                    <p className="text-xs text-[var(--text-muted)]">
+                    <p className="type-footnote">
                       Conformément à la Loi camerounaise n° 2010/012 et au RGPD, vous pouvez anonymiser et supprimer votre compte client à tout moment.
                     </p>
                   </div>
                   <button
                     type="button"
                     onClick={() => setShowDeleteConfirm(!showDeleteConfirm)}
-                    className="px-3.5 py-2 rounded-xl border border-red-300 dark:border-red-800 text-red-700 dark:text-red-300 hover:bg-red-50 dark:hover:bg-red-950/40 text-xs font-semibold inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
+                    className="min-h-[44px] px-3.5 py-2 rounded-xl border border-red-300 dark:border-red-800 text-[var(--status-danger-text)] hover:bg-red-50 dark:hover:bg-red-950/40 text-xs sm:text-sm font-semibold inline-flex items-center gap-1.5 cursor-pointer self-start sm:self-auto"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                     <span>Supprimer mon compte</span>
@@ -389,7 +389,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                       <button
                         type="submit"
                         disabled={submitting}
-                        className="px-4 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold cursor-pointer"
+                        className="min-h-[44px] px-4 py-2 rounded-xl bg-red-800 hover:bg-red-900 text-white dark:bg-red-300 dark:hover:bg-red-200 dark:text-[#121614] text-xs sm:text-sm font-bold cursor-pointer"
                       >
                         Confirmer l&apos;effacement
                       </button>
@@ -411,11 +411,11 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
     <div className="max-w-xl mx-auto w-full">
       <div className="rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xl overflow-hidden">
         {/* Top Mode Tabs */}
-        <div className="grid grid-cols-3 bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-xs font-semibold">
+        <div className="grid grid-cols-3 bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-xs sm:text-sm font-semibold">
           <button
             type="button"
             onClick={() => switchMode('client_login')}
-            className={`py-3.5 px-2 text-center transition-colors cursor-pointer border-b-2 ${
+            className={`min-h-[48px] py-3.5 px-2 text-center transition-colors cursor-pointer border-b-2 ${
               mode === 'client_login' || mode === 'recover'
                 ? 'border-[var(--brand-primary)] text-[var(--brand-primary)] bg-[var(--bg-surface)] font-bold'
                 : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -426,7 +426,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
           <button
             type="button"
             onClick={() => switchMode('client_register')}
-            className={`py-3.5 px-2 text-center transition-colors cursor-pointer border-b-2 ${
+            className={`min-h-[48px] py-3.5 px-2 text-center transition-colors cursor-pointer border-b-2 ${
               mode === 'client_register'
                 ? 'border-[var(--brand-primary)] text-[var(--brand-primary)] bg-[var(--bg-surface)] font-bold'
                 : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -437,9 +437,9 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
           <button
             type="button"
             onClick={() => switchMode('staff_login')}
-            className={`py-3.5 px-2 text-center transition-colors cursor-pointer border-b-2 ${
+            className={`min-h-[48px] py-3.5 px-2 text-center transition-colors cursor-pointer border-b-2 ${
               mode === 'staff_login'
-                ? 'border-amber-600 text-amber-700 dark:text-amber-400 bg-[var(--bg-surface)] font-bold'
+                ? 'border-amber-600 dark:border-amber-400 text-[var(--status-caution-text)] bg-[var(--bg-surface)] font-bold'
                 : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
@@ -450,11 +450,11 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
         <div className="p-6 sm:p-8 space-y-5">
           {/* Contextual Header */}
           <div className="space-y-1">
-            <div className="inline-flex items-center gap-1.5 text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
+            <div className="inline-flex items-center gap-1.5 text-xs font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)]">
               {mode === 'staff_login' ? (
                 <>
-                  <ShieldAlert className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-                  <span className="text-amber-700 dark:text-amber-400">
+                  <ShieldAlert className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />
+                  <span className="text-[var(--status-caution-text)]">
                     Accès Réservé au Personnel Habilité (RBAC)
                   </span>
                 </>
@@ -470,13 +470,17 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
               )}
             </div>
 
-            <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--text-primary)]">
+            <h2
+              className={`${
+                mode === 'staff_login' ? 'type-cockpit-h2' : 'type-h3'
+              } text-[var(--text-primary)]`}
+            >
               {mode === 'client_login' && 'Accéder à votre Espace Cliente & Pass QR'}
               {mode === 'client_register' && 'Créer votre Espace Cliente ECOPARK'}
               {mode === 'staff_login' && 'Connexion Cockpit Pro & Supervision Ahala'}
               {mode === 'recover' && 'Réinitialiser votre mot de passe'}
             </h2>
-            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            <p className="type-body-compact text-[var(--text-muted)]">
               {mode === 'client_login' &&
                 'Retrouvez vos Pass QR réservés en FCFA, téléchargez vos billets officiels et gérez vos visites en toute confidentialité.'}
               {mode === 'client_register' &&
@@ -555,7 +559,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                     <button
                       type="button"
                       onClick={() => switchMode('recover')}
-                      className="text-xs font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
+                      className="inline-flex items-center min-h-[44px] py-1.5 text-xs font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
                     >
                       Mot de passe oublié ?
                     </button>
@@ -577,7 +581,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                     type="button"
                     onClick={() => setShowPassword(!showPassword)}
                     aria-label={showPassword ? 'Masquer le mot de passe' : 'Afficher le mot de passe'}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                    className="absolute right-1 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                   >
                     {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                   </button>
@@ -587,10 +591,10 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
               <button
                 type="submit"
                 disabled={submitting}
-                className={`w-full py-3.5 px-5 rounded-xl font-bold text-sm text-white shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 ${
+                className={`w-full min-h-[48px] py-3.5 px-5 rounded-xl font-bold text-sm shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60 ${
                   mode === 'staff_login'
-                    ? 'bg-amber-600 hover:bg-amber-700'
-                    : 'bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)]'
+                    ? 'bg-amber-800 hover:bg-amber-900 text-white dark:bg-amber-300 dark:hover:bg-amber-200 dark:text-[#121614]'
+                    : 'bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)]'
                 }`}
               >
                 <span>
@@ -609,7 +613,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                   <button
                     type="button"
                     onClick={() => switchMode('client_register')}
-                    className="font-bold text-[var(--brand-primary)] hover:underline cursor-pointer"
+                    className="inline-flex items-center min-h-[44px] px-1 font-bold text-[var(--brand-primary)] hover:underline cursor-pointer"
                   >
                     Créer mon compte gratuitement
                   </button>
@@ -709,13 +713,13 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Min. 8 caractères"
-                      className="w-full pl-10 pr-10 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)]"
+                      className="w-full pl-10 pr-12 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)]"
                     />
                     <button
                       type="button"
                       onClick={() => setShowPassword(!showPassword)}
                       aria-label={showPassword ? 'Masquer' : 'Afficher'}
-                      className="absolute right-2.5 top-1/2 -translate-y-1/2 p-1 text-[var(--text-muted)] cursor-pointer"
+                      className="absolute right-1 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                     >
                       {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                     </button>
@@ -759,7 +763,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                       />
                     ))}
                   </div>
-                  <p className="text-[11px] text-[var(--text-muted)]">
+                  <p className="type-footnote">
                     {pwdStrength.valid
                       ? 'Robustesse conforme (PBKDF2-SHA256).'
                       : pwdStrength.errors[0]}
@@ -767,30 +771,33 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 </div>
               )}
 
-              <label className="flex items-start gap-2.5 text-xs text-[var(--text-muted)] cursor-pointer select-none pt-1">
-                <input
-                  type="checkbox"
-                  checked={privacyAccepted}
-                  onChange={(e) => setPrivacyAccepted(e.target.checked)}
-                  className="mt-0.5 w-4 h-4 rounded accent-[var(--brand-primary)] shrink-0"
-                />
-                <span>
-                  J&apos;accepte le traitement sécurisé de mes données de réservation conformément à la{' '}
+              <div className="space-y-1 pt-1">
+                <label className="min-h-[44px] flex items-center gap-2.5 text-xs text-[var(--text-muted)] cursor-pointer select-none">
+                  <input
+                    type="checkbox"
+                    checked={privacyAccepted}
+                    onChange={(e) => setPrivacyAccepted(e.target.checked)}
+                    className="w-4 h-4 rounded accent-[var(--brand-primary)] shrink-0"
+                  />
+                  <span>
+                    J&apos;accepte le traitement sécurisé de mes données de réservation conformément à la politique ci-dessous.
+                  </span>
+                </label>
+                <div className="pl-6">
                   <button
                     type="button"
                     onClick={() => setActiveView('legal')}
-                    className="text-[var(--brand-primary)] font-semibold hover:underline cursor-pointer"
+                    className="min-h-[44px] inline-flex items-center text-left text-xs text-[var(--brand-primary)] font-semibold hover:underline cursor-pointer"
                   >
-                    Politique de Confidentialité (Loi n° 2010/012)
+                    Lire la Politique de Confidentialité (Loi n° 2010/012)
                   </button>
-                  .
-                </span>
-              </label>
+                </div>
+              </div>
 
               <button
                 type="submit"
                 disabled={submitting}
-                className="w-full py-3.5 px-5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)] font-bold text-sm text-white shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
+                className="w-full min-h-[48px] py-3.5 px-5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] font-bold text-sm text-[var(--on-primary)] shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
               >
                 <span>{submitting ? 'Création sécurisée...' : 'Créer mon Espace Cliente'}</span>
                 <ArrowRight className="w-4 h-4" />
@@ -852,14 +859,14 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 <button
                   type="button"
                   onClick={() => switchMode('client_login')}
-                  className="text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                  className="min-h-[44px] inline-flex items-center text-xs sm:text-sm font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                 >
                   ← Retour à la connexion
                 </button>
                 <button
                   type="submit"
                   disabled={submitting}
-                  className="px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-bold cursor-pointer"
+                  className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-sm font-bold cursor-pointer"
                 >
                   Réinitialiser
                 </button>
@@ -884,11 +891,11 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
               <Lock className="w-4 h-4 text-[#74C69D]" />
               <span>Authentification Sécurisée · ECOPARK CAMEROUN (Yaoundé, Ahala)</span>
             </div>
-            <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
+            <h1 className="type-page-title text-white mt-1">
               Connexion Espace Cliente &amp; Cockpit Pro
             </h1>
           </div>
-          <div className="text-xs text-[#E9F5ED]/85 font-mono bg-[#0B1D15]/60 px-3.5 py-2 rounded-xl border border-[#36403A]">
+          <div className="text-xs text-[#E9F5ED] font-mono bg-[#0B1D15]/75 px-3.5 py-2 rounded-xl border border-[#36403A]">
             Protection des données · Loi n° 2010/012 &amp; RBAC
           </div>
         </div>

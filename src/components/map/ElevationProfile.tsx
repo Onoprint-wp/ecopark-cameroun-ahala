@@ -240,22 +240,22 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
     switch (activeTrail.status) {
       case 'fluide':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-            <CheckCircle2 className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[var(--status-open-text)]" />
             Ouvert / Fluide
           </span>
         );
       case 'balise':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-            <AlertTriangle className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
+            <AlertTriangle className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />
             Balisé / Prudence
           </span>
         );
       case 'ferme':
         return (
-          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-[11px] font-semibold bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300 dark:border-red-800">
-            <XCircle className="w-3 h-3 text-red-600 dark:text-red-400" />
+          <span className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300 dark:border-red-800">
+            <XCircle className="w-3.5 h-3.5 text-[var(--status-danger-text)]" />
             Fermé (Nidification)
           </span>
         );
@@ -287,9 +287,9 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
                   setIsSimulatingWalk(true);
                 }
               }}
-              className={`inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold transition-all cursor-pointer border ${
+              className={`min-h-[44px] xl:min-h-[36px] inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-mono font-bold transition-all cursor-pointer border ${
                 isSimulatingWalk
-                  ? 'bg-[#E76F51] text-white border-[#E76F51] shadow-xs'
+                  ? 'bg-amber-800 text-white border-amber-800 dark:bg-amber-300 dark:text-[#121614] dark:border-amber-300 shadow-xs'
                   : 'bg-[var(--bg-elevated)] text-[var(--brand-primary)] border-[var(--border-default)] hover:border-[var(--brand-primary)]'
               }`}
               title="Animer un randonneur le long du tracé topographique et du profil altimétrique"
@@ -307,31 +307,31 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
               )}
             </button>
           </div>
-          <h3 className="font-['Barlow_Semi_Condensed'] text-lg sm:text-xl font-bold text-[var(--text-primary)]">
+          <h3 className="type-card-title text-[var(--text-primary)]">
             {activeTrail.name}
           </h3>
-          <p className="text-xs text-[var(--text-muted)] italic font-serif">
+          <p className="type-footnote italic">
             {activeTrail.subtitle}
           </p>
         </div>
 
         {/* Trail Quick Metrics */}
         <div className="flex flex-wrap items-center gap-2.5 sm:gap-3.5 text-xs font-mono">
-          <div className="p-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[70px]">
-            <div className="text-[10px] text-[var(--text-muted)] font-sans">Distance</div>
-            <div className="font-bold text-[var(--text-primary)]">{activeTrail.lengthKm} km</div>
+          <div className="p-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[74px]">
+            <div className="text-xs text-[var(--text-muted)] font-sans">Distance</div>
+            <div className="font-bold text-sm text-[var(--text-primary)]">{activeTrail.lengthKm} km</div>
           </div>
-          <div className="p-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[70px]">
-            <div className="text-[10px] text-[var(--text-muted)] font-sans">D+ Gain</div>
-            <div className="font-bold text-[var(--brand-primary)]">+{activeTrail.elevationGainM}m</div>
+          <div className="p-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[74px]">
+            <div className="text-xs text-[var(--text-muted)] font-sans">D+ Gain</div>
+            <div className="font-bold text-sm text-[var(--brand-primary)]">+{activeTrail.elevationGainM}m</div>
           </div>
-          <div className="p-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[70px]">
-            <div className="text-[10px] text-[var(--text-muted)] font-sans">Alt. Max</div>
-            <div className="font-bold text-[var(--text-primary)]">{activeTrail.maxElevationM}m</div>
+          <div className="p-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[74px]">
+            <div className="text-xs text-[var(--text-muted)] font-sans">Alt. Max</div>
+            <div className="font-bold text-sm text-[var(--text-primary)]">{activeTrail.maxElevationM}m</div>
           </div>
-          <div className="p-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[70px]">
-            <div className="text-[10px] text-[var(--text-muted)] font-sans">Durée</div>
-            <div className="font-bold text-[var(--text-primary)]">
+          <div className="p-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-center min-w-[74px]">
+            <div className="text-xs text-[var(--text-muted)] font-sans">Durée</div>
+            <div className="font-bold text-sm text-[var(--text-primary)]">
               {Math.floor(activeTrail.durationMin / 60)}h{activeTrail.durationMin % 60 > 0 ? `${activeTrail.durationMin % 60}` : '00'}
             </div>
           </div>
@@ -341,15 +341,15 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
       {/* SVG Elevation Chart Container */}
       <div className="relative w-full rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] overflow-hidden p-2 sm:p-3 select-none">
         {/* Scrubber instructions badge */}
-        <div className="absolute top-3 right-3 z-10 hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--bg-surface)]/90 backdrop-blur-xs border border-[var(--border-default)] text-[10px] font-mono text-[var(--text-muted)]">
+        <div className="absolute top-3 right-3 z-10 hidden sm:flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-[var(--bg-surface)]/95 backdrop-blur-xs border border-[var(--border-default)] text-xs font-mono text-[var(--text-muted)]">
           {isSimulatingWalk ? (
             <>
-              <Footprints className="w-3 h-3 text-[#E76F51] animate-pulse" />
+              <Footprints className="w-3.5 h-3.5 text-[var(--status-caution-text)] animate-pulse" />
               <span className="text-[var(--text-primary)] font-semibold">Parcours en direct sur la carte…</span>
             </>
           ) : (
             <>
-              <Info className="w-3 h-3 text-[var(--brand-primary)]" />
+              <Info className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
               <span>Survolez le relief pour guider le randonneur sur la carte</span>
             </>
           )}
@@ -358,16 +358,16 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
         {/* Floating Tooltip during Scrub or Simulation */}
         {hoverPoint && scrubCursor && (
           <div
-            className="absolute z-20 pointer-events-none px-2.5 py-1.5 rounded-lg bg-[#1F2421] text-white text-[11px] font-mono shadow-xl border border-[#52B788] -translate-x-1/2 -translate-y-full mb-2 transition-transform duration-75"
+            className="absolute z-20 pointer-events-none px-2.5 py-1.5 rounded-lg bg-[#1F2421] text-white text-xs font-mono shadow-xl border border-[#74C69D] -translate-x-1/2 -translate-y-full mb-2 transition-transform duration-75"
             style={{
               left: `${Math.min(88, Math.max(12, (scrubCursor.px / svgWidth) * 100))}%`,
               top: `${Math.max(24, (scrubCursor.py / svgHeight) * 100)}%`,
             }}
           >
-            <div className="font-bold text-[#52B788]">
+            <div className="font-bold text-[#74C69D]">
               {hoverPoint.poiLabel ? hoverPoint.poiLabel : `Km ${hoverPoint.distanceKm.toFixed(1)}`}
             </div>
-            <div className="text-[#C9D1CC] text-[10px]">
+            <div className="text-[#E9F5ED] text-xs">
               Alt: <strong>{hoverPoint.elevationM} m</strong>
               {hoverPoint.slopePercent !== undefined && ` · Pente: ${hoverPoint.slopePercent}%`}
             </div>
@@ -413,8 +413,8 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
                   y={y + 3}
                   textAnchor="end"
                   fill="currentColor"
-                  fillOpacity="0.55"
-                  className="font-mono text-[10px]"
+                  fillOpacity="0.78"
+                  className="font-mono text-[12px]"
                 >
                   {alt}m
                 </text>
@@ -441,8 +441,8 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
                     y={padTop + plotHeight + 16}
                     textAnchor="middle"
                     fill="currentColor"
-                    fillOpacity="0.55"
-                    className="font-mono text-[10px]"
+                    fillOpacity="0.78"
+                    className="font-mono text-[12px]"
                   >
                     {dist.toFixed(1)} km
                   </text>
@@ -509,8 +509,8 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
                   y={pt.py - 9}
                   textAnchor="middle"
                   fill="currentColor"
-                  fillOpacity="0.85"
-                  className="font-mono text-[9px] font-semibold"
+                  fillOpacity="0.9"
+                  className="font-mono text-[12px] font-semibold"
                 >
                   {pt.poiLabel}
                 </text>
@@ -555,9 +555,9 @@ export const ElevationProfile: React.FC<ElevationProfileProps> = ({
               key={trail.id}
               type="button"
               onClick={() => setSelectedTrailId(trail.id)}
-              className={`px-3 py-1.5 rounded-xl text-xs font-semibold font-mono transition-all cursor-pointer ${
+              className={`min-h-[44px] xl:min-h-[38px] max-w-full text-left px-3.5 py-2 rounded-xl text-xs font-semibold font-mono transition-all cursor-pointer ${
                 isCurrent
-                  ? 'bg-[var(--brand-primary)] text-white shadow-xs scale-[1.02]'
+                  ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] shadow-xs ring-2 ring-[var(--brand-primary)]/25'
                   : 'bg-[var(--bg-elevated)] hover:bg-[var(--bg-surface)] text-[var(--text-primary)] border border-[var(--border-default)]'
               }`}
             >

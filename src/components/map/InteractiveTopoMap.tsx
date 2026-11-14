@@ -211,83 +211,83 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
       {/* Top Map Toolbar: Layers, Zoom & Mode Status */}
       <div className="absolute top-3 left-3 right-3 z-20 flex flex-wrap items-center justify-between gap-2.5 pointer-events-none">
         {/* Layer Visibility Toggles */}
-        <div className="flex items-center gap-1.5 p-1.5 rounded-xl bg-[#1F2421]/90 backdrop-blur-md border border-[#36403A] text-xs font-mono pointer-events-auto shadow-md">
-          <span className="px-2 text-[10px] text-[#8EBAA0] flex items-center gap-1 font-semibold uppercase">
-            <Layers className="w-3 h-3 text-[#52B788]" />
+        <div className="flex flex-wrap items-center gap-1.5 p-1.5 rounded-xl bg-[#1F2421]/95 backdrop-blur-md border border-[#36403A] text-xs font-mono pointer-events-auto shadow-md max-w-full min-w-0">
+          <span className="px-2 text-xs text-[#B7E4C7] flex items-center gap-1 font-semibold uppercase">
+            <Layers className="w-3.5 h-3.5 text-[#74C69D]" />
             Calques
           </span>
 
           <button
             type="button"
             onClick={() => setShowContours((v) => !v)}
-            className={`px-2 py-1 rounded-lg text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`min-h-[44px] xl:min-h-[36px] px-2.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-1 ${
               showContours
-                ? 'bg-[#29302C] text-[#52B788] font-bold border border-[#52B788]/40'
-                : 'text-[#8EBAA0] hover:text-white'
+                ? 'bg-[#29302C] text-[#74C69D] font-bold border border-[#74C69D]/50'
+                : 'text-[#C9D1CC] hover:text-white'
             }`}
             title="Activer/désactiver les courbes de niveau isohypses"
           >
-            {showContours ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3 opacity-60" />}
+            {showContours ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 opacity-75" />}
             <span>Courbes</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowHydroBiomes((v) => !v)}
-            className={`px-2 py-1 rounded-lg text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`min-h-[44px] xl:min-h-[36px] px-2.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-1 ${
               showHydroBiomes
-                ? 'bg-[#29302C] text-[#52B788] font-bold border border-[#52B788]/40'
-                : 'text-[#8EBAA0] hover:text-white'
+                ? 'bg-[#29302C] text-[#74C69D] font-bold border border-[#74C69D]/50'
+                : 'text-[#C9D1CC] hover:text-white'
             }`}
             title="Activer/désactiver l hydrographie et biomes"
           >
-            {showHydroBiomes ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3 opacity-60" />}
+            {showHydroBiomes ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 opacity-75" />}
             <span>Biomes & Eau</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowTrails((v) => !v)}
-            className={`px-2 py-1 rounded-lg text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`min-h-[44px] xl:min-h-[36px] px-2.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-1 ${
               showTrails
-                ? 'bg-[#29302C] text-[#52B788] font-bold border border-[#52B788]/40'
-                : 'text-[#8EBAA0] hover:text-white'
+                ? 'bg-[#29302C] text-[#74C69D] font-bold border border-[#74C69D]/50'
+                : 'text-[#C9D1CC] hover:text-white'
             }`}
             title="Activer/désactiver le tracé des 6 sentiers"
           >
-            {showTrails ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3 opacity-60" />}
+            {showTrails ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 opacity-75" />}
             <span>Sentiers</span>
           </button>
 
           <button
             type="button"
             onClick={() => setShowPois((v) => !v)}
-            className={`px-2 py-1 rounded-lg text-[11px] transition-colors cursor-pointer flex items-center gap-1 ${
+            className={`min-h-[44px] xl:min-h-[36px] px-2.5 py-1.5 rounded-lg text-xs transition-colors cursor-pointer flex items-center gap-1 ${
               showPois
-                ? 'bg-[#29302C] text-[#52B788] font-bold border border-[#52B788]/40'
-                : 'text-[#8EBAA0] hover:text-white'
+                ? 'bg-[#29302C] text-[#74C69D] font-bold border border-[#74C69D]/50'
+                : 'text-[#C9D1CC] hover:text-white'
             }`}
             title="Activer/désactiver les 10 points d intérêt"
           >
-            {showPois ? <Eye className="w-3 h-3" /> : <EyeOff className="w-3 h-3 opacity-60" />}
+            {showPois ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 opacity-75" />}
             <span>POIs</span>
           </button>
         </div>
 
         {/* Zoom & View Controls */}
-        <div className="flex items-center gap-1 p-1 rounded-xl bg-[#1F2421]/90 backdrop-blur-md border border-[#36403A] pointer-events-auto shadow-md">
+        <div className="flex items-center gap-1 p-1 rounded-xl bg-[#1F2421]/95 backdrop-blur-md border border-[#36403A] pointer-events-auto shadow-md max-w-full">
           <button
             type="button"
             onClick={handleZoomIn}
             disabled={zoomLevel >= 2.5}
-            className="p-1.5 rounded-lg text-[#C9D1CC] hover:text-white hover:bg-[#29302C] disabled:opacity-40 transition-colors cursor-pointer"
+            className="min-w-[44px] min-h-[44px] xl:min-w-[36px] xl:min-h-[36px] flex items-center justify-center rounded-lg text-[#C9D1CC] hover:text-white hover:bg-[#29302C] disabled:opacity-40 transition-colors cursor-pointer"
             title="Zoom avant"
             aria-label="Zoom avant"
           >
-            <ZoomIn className="w-3.5 h-3.5" />
+            <ZoomIn className="w-4 h-4" />
           </button>
 
-          <span className="px-1.5 text-[10px] font-mono font-bold text-[#52B788]">
+          <span className="px-1.5 text-xs font-mono font-bold text-[#74C69D]">
             {Math.round(zoomLevel * 100)}%
           </span>
 
@@ -295,21 +295,21 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
             type="button"
             onClick={handleZoomOut}
             disabled={zoomLevel <= 0.75}
-            className="p-1.5 rounded-lg text-[#C9D1CC] hover:text-white hover:bg-[#29302C] disabled:opacity-40 transition-colors cursor-pointer"
+            className="min-w-[44px] min-h-[44px] xl:min-w-[36px] xl:min-h-[36px] flex items-center justify-center rounded-lg text-[#C9D1CC] hover:text-white hover:bg-[#29302C] disabled:opacity-40 transition-colors cursor-pointer"
             title="Zoom arrière"
             aria-label="Zoom arrière"
           >
-            <ZoomOut className="w-3.5 h-3.5" />
+            <ZoomOut className="w-4 h-4" />
           </button>
 
           <button
             type="button"
             onClick={handleResetView}
-            className="p-1.5 rounded-lg text-[#8EBAA0] hover:text-white hover:bg-[#29302C] transition-colors cursor-pointer ml-1 border-l border-[#36403A]"
+            className="min-w-[44px] min-h-[44px] xl:min-w-[36px] xl:min-h-[36px] flex items-center justify-center rounded-lg text-[#B7E4C7] hover:text-white hover:bg-[#29302C] transition-colors cursor-pointer ml-1 border-l border-[#36403A]"
             title="Réinitialiser l affichage"
             aria-label="Réinitialiser"
           >
-            <RotateCcw className="w-3.5 h-3.5" />
+            <RotateCcw className="w-4 h-4" />
           </button>
         </div>
       </div>
@@ -428,7 +428,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
               </g>
 
               {/* Altitude Numeric Labels (WCAG high contrast) */}
-              <g fill="#B7E4C7" className="font-mono text-[10px] font-bold" opacity="0.75">
+              <g fill="#B7E4C7" className="font-mono text-[12px] font-bold" opacity="0.85">
                 <text x="110" y="665">120m</text>
                 <text x="90" y="525">150m</text>
                 <text x="130" y="405">200m</text>
@@ -461,9 +461,9 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="185"
                 y="635"
                 textAnchor="middle"
-                fill="#B7E4C7"
-                className="font-serif italic text-[11px] font-semibold"
-                opacity="0.85"
+                fill="#D8F3DC"
+                className="font-sans italic text-[12px] font-semibold"
+                opacity="0.9"
               >
                 Étang des Hérons
               </text>
@@ -482,9 +482,9 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="470"
                 y="410"
                 transform="rotate(-28, 470, 410)"
-                fill="#74C69D"
-                className="font-serif italic text-[9px]"
-                opacity="0.75"
+                fill="#B7E4C7"
+                className="font-sans italic text-[12px] font-medium"
+                opacity="0.85"
               >
                 Ruisseau des Mousses
               </text>
@@ -500,8 +500,8 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="810"
                 y="65"
                 fill="#E9F5ED"
-                className="font-['Barlow_Semi_Condensed'] font-bold text-[13px] tracking-wide"
-                opacity="0.9"
+                className="font-sans font-bold text-[13px] tracking-wide"
+                opacity="0.95"
               >
                 Crête des Cèdres (420m)
               </text>
@@ -509,8 +509,8 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="620"
                 y="150"
                 fill="#B7E4C7"
-                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
-                opacity="0.8"
+                className="font-sans font-semibold text-[12px]"
+                opacity="0.85"
               >
                 Chaos Géologique & Karsts
               </text>
@@ -518,35 +518,35 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 x="470"
                 y="345"
                 fill="#B7E4C7"
-                className="font-['Barlow_Semi_Condensed'] font-semibold text-[12px]"
-                opacity="0.8"
+                className="font-sans font-semibold text-[12px]"
+                opacity="0.85"
               >
                 Canopée Primaire
               </text>
               <text
                 x="320"
                 y="325"
-                fill="#8EBAA0"
-                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
-                opacity="0.75"
+                fill="#B7E4C7"
+                className="font-sans font-semibold text-[12px]"
+                opacity="0.85"
               >
                 Vallée des Fougères
               </text>
               <text
                 x="260"
                 y="630"
-                fill="#8EBAA0"
-                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
-                opacity="0.75"
+                fill="#B7E4C7"
+                className="font-sans font-semibold text-[12px]"
+                opacity="0.85"
               >
                 Marais & Roselières
               </text>
               <text
                 x="130"
                 y="370"
-                fill="#8EBAA0"
-                className="font-['Barlow_Semi_Condensed'] font-semibold text-[11px]"
-                opacity="0.75"
+                fill="#B7E4C7"
+                className="font-sans font-semibold text-[12px]"
+                opacity="0.85"
               >
                 Vallon Bocager PMR
               </text>
@@ -788,10 +788,10 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                     {/* Label on hover or active */}
                     {(isActive || zoomLevel >= 1.4) && (
                       <text
-                        y={-14}
+                        y={-15}
                         textAnchor="middle"
                         fill="#FFFFFF"
-                        className="font-mono text-[9px] font-bold drop-shadow-md pointer-events-none"
+                        className="font-mono text-[12px] font-bold drop-shadow-md pointer-events-none"
                       >
                         {poi.name.split('&')[0].trim()}
                       </text>
@@ -829,18 +829,18 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 <rect
                   x="0"
                   y="0"
-                  width="138"
-                  height="38"
+                  width="156"
+                  height="42"
                   rx="6"
                   fill="#1F2421"
                   stroke="#E76F51"
                   strokeWidth="1.5"
                   className="shadow-xl"
                 />
-                <text x="8" y="15" fill="#E76F51" className="font-mono text-[10px] font-bold">
+                <text x="8" y="15" fill="#F4A261" className="font-mono text-[12px] font-bold">
                   {scrubPoint.poiLabel ? scrubPoint.poiLabel : `Km ${scrubPoint.distanceKm.toFixed(2)}`}
                 </text>
-                <text x="8" y="29" fill="#E9F5ED" className="font-mono text-[9px]">
+                <text x="8" y="30" fill="#E9F5ED" className="font-mono text-[12px]">
                   Alt: {scrubPoint.elevationM} m
                   {scrubPoint.slopePercent !== undefined ? ` · ${scrubPoint.slopePercent}%` : ''}
                 </text>
@@ -858,7 +858,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
               {/* North Pointer Needle */}
               <polygon points="0,-18 5,0 0,-4 -5,0" fill="#52B788" />
               <polygon points="0,18 5,0 0,4 -5,0" fill="#36403A" />
-              <text x="0" y="-8" textAnchor="middle" fill="#FFFFFF" className="font-mono text-[9px] font-bold">
+              <text x="0" y="-8" textAnchor="middle" fill="#FFFFFF" className="font-mono text-[12px] font-bold">
                 N
               </text>
             </g>
@@ -869,14 +869,14 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
               <line x1="0" y1="-3" x2="0" y2="7" stroke="#52B788" strokeWidth="1.5" />
               <line x1="55" y1="-2" x2="55" y2="6" stroke="#52B788" strokeWidth="1" />
               <line x1="110" y1="-3" x2="110" y2="7" stroke="#52B788" strokeWidth="1.5" />
-              <text x="0" y="18" fill="#8EBAA0" className="font-mono text-[9px]">0</text>
-              <text x="55" y="18" textAnchor="middle" fill="#8EBAA0" className="font-mono text-[9px]">500m</text>
-              <text x="110" y="18" textAnchor="end" fill="#8EBAA0" className="font-mono text-[9px]">1 km</text>
+              <text x="0" y="18" fill="#B7E4C7" className="font-mono text-[12px]">0</text>
+              <text x="55" y="18" textAnchor="middle" fill="#B7E4C7" className="font-mono text-[12px]">500m</text>
+              <text x="110" y="18" textAnchor="end" fill="#B7E4C7" className="font-mono text-[12px]">1 km</text>
             </g>
 
             {/* Park Cartographic Badge at Bottom-Left */}
             <g transform="translate(30, 665)">
-              <text fill="#8EBAA0" className="font-mono text-[9px]">
+              <text fill="#B7E4C7" className="font-mono text-[12px]">
                 ECO-PARK R.B.I. · RGF93 / Lambert-93 · Dénivelé 110m - 420m
               </text>
             </g>
@@ -886,17 +886,17 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
 
       {/* POI Detailed Popover Modal when a POI is clicked */}
       {activePoi && (
-        <div className="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 z-30 p-5 rounded-2xl bg-[#1F2421]/95 backdrop-blur-md border border-[#52B788] shadow-2xl text-white space-y-3 animate-in fade-in zoom-in-95 duration-150">
+        <div className="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-4 sm:w-96 z-30 p-5 rounded-2xl bg-[#1F2421]/95 backdrop-blur-md border border-[#74C69D] shadow-2xl text-white space-y-3 animate-in fade-in zoom-in-95 duration-150">
           <div className="flex items-start justify-between gap-3">
             <div className="flex items-center gap-2">
-              <div className="p-2 rounded-xl bg-[#29302C] text-[#52B788] border border-[#36403A]">
+              <div className="p-2 rounded-xl bg-[#29302C] text-[#74C69D] border border-[#36403A]">
                 {renderPoiIcon(activePoi.category)}
               </div>
               <div>
-                <span className="text-[10px] font-mono font-semibold uppercase text-[#74C69D]">
+                <span className="text-xs font-mono font-semibold uppercase text-[#74C69D]">
                   {activePoi.categoryLabel} · Alt. {activePoi.altitudeM} m
                 </span>
-                <h4 className="font-['Barlow_Semi_Condensed'] text-base font-bold text-white">
+                <h4 className="font-sans text-base font-bold text-white">
                   {activePoi.name}
                 </h4>
               </div>
@@ -905,14 +905,14 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
             <button
               type="button"
               onClick={() => setActivePoi(null)}
-              className="p-1.5 rounded-lg text-[#C9D1CC] hover:text-white hover:bg-[#29302C] transition-colors cursor-pointer"
+              className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[#C9D1CC] hover:text-white hover:bg-[#29302C] transition-colors cursor-pointer"
               aria-label="Fermer le détail du POI"
             >
               <X className="w-4 h-4" />
             </button>
           </div>
 
-          <p className="text-xs text-[#C9D1CC] leading-relaxed">
+          <p className="text-xs text-[#E9F5ED] leading-relaxed">
             {activePoi.description}
           </p>
 
@@ -921,7 +921,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
               {activePoi.services.map((svc, i) => (
                 <span
                   key={i}
-                  className="px-2 py-0.5 rounded-md bg-[#29302C] border border-[#36403A] text-[10px] font-mono text-[#8EBAA0]"
+                  className="px-2.5 py-1 rounded-md bg-[#29302C] border border-[#36403A] text-xs font-mono text-[#B7E4C7]"
                 >
                   ✓ {svc}
                 </span>
@@ -932,24 +932,24 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
       )}
 
       {/* Bottom Daltonism & Status Legend Bar */}
-      <div className="p-3 bg-[#1F2421] border-t border-[#2D6A4F]/60 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-[#C9D1CC]">
+      <div className="p-3.5 bg-[#1F2421] border-t border-[#2D6A4F]/60 flex flex-wrap items-center justify-between gap-3 text-xs font-mono text-[#E9F5ED]">
         <div className="flex flex-wrap items-center gap-4">
-          <span className="text-[#8EBAA0] font-semibold text-[11px]">Légende :</span>
+          <span className="text-[#B7E4C7] font-semibold text-xs">Légende :</span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block w-4 h-1 bg-[#52B788] rounded-full" />
-            <span className="text-emerald-300 font-medium">Fluide (Trait plein)</span>
+            <span className="text-[#74C69D] font-medium">Fluide (Trait plein)</span>
           </span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block w-4 h-1 bg-[#E76F51] border-b border-dashed border-[#E76F51]" />
-            <span className="text-amber-300 font-medium">Balisé (Trait mixte)</span>
+            <span className="text-[#FCD34D] font-medium">Balisé (Trait mixte)</span>
           </span>
           <span className="flex items-center gap-1.5">
             <span className="inline-block w-4 h-1 bg-[#DC2626] border-b border-dotted border-[#DC2626]" />
-            <span className="text-red-300 font-medium">Fermé (Pointillés barrière)</span>
+            <span className="text-[#FCA5A5] font-medium">Fermé (Pointillés barrière)</span>
           </span>
         </div>
 
-        <div className="text-[11px] text-[#8EBAA0]">
+        <div className="text-xs text-[#C9D1CC]">
           Cliquez sur un sentier ou POI pour voir ses données détaillées
         </div>
       </div>

@@ -127,26 +127,26 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
       case 'tres_facile':
       case 'facile':
         return (
-          <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-emerald-50 text-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
+          <span className="px-2 py-0.5 rounded text-xs font-semibold bg-emerald-50 text-emerald-800 dark:bg-emerald-950/60 dark:text-emerald-300 border border-emerald-200 dark:border-emerald-800">
             Facile
           </span>
         );
       case 'moyen':
         return (
-          <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-blue-50 text-blue-700 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
+          <span className="px-2 py-0.5 rounded text-xs font-semibold bg-blue-50 text-blue-800 dark:bg-blue-950/60 dark:text-blue-300 border border-blue-200 dark:border-blue-800">
             Modéré
           </span>
         );
       case 'difficile':
       case 'sportif':
         return (
-          <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-amber-50 text-amber-700 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
+          <span className="px-2 py-0.5 rounded text-xs font-semibold bg-amber-50 text-amber-800 dark:bg-amber-950/60 dark:text-amber-300 border border-amber-200 dark:border-amber-800">
             Sportif
           </span>
         );
       case 'expert':
         return (
-          <span className="px-2 py-0.5 rounded text-[11px] font-semibold bg-purple-50 text-purple-700 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
+          <span className="px-2 py-0.5 rounded text-xs font-semibold bg-purple-50 text-purple-800 dark:bg-purple-950/60 dark:text-purple-300 border border-purple-200 dark:border-purple-800">
             Expert
           </span>
         );
@@ -190,10 +190,10 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
           <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
             Topographie & Randonnée Responsable
           </span>
-          <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
+          <h2 className="type-h2 text-[var(--text-primary)] mt-1">
             Catalogue des Sentiers de la Réserve
           </h2>
-          <p className="text-xs text-[var(--text-muted)] mt-1">
+          <p className="type-body-compact text-[var(--text-muted)] mt-1">
             Découvrez nos 6 parcours tracés dans le respect des aires de quiétude animale.
           </p>
         </div>
@@ -207,20 +207,21 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
       <div className="p-4 sm:p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-4">
         {/* Row 1: Search Input & PMR Toggle */}
         <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-3">
-          <div className="relative flex-1">
+          <div className="relative flex-1 min-w-0">
             <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Rechercher par nom de sentier, biome, crête..."
-              className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
+              className="w-full min-h-[44px] pl-10 pr-12 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery('')}
-                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)]"
+                aria-label="Effacer la recherche"
+                className="absolute right-1 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] flex items-center justify-center text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 ✕
               </button>
@@ -228,7 +229,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
           </div>
 
           {/* PMR Checkbox Toggle */}
-          <label className="inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] cursor-pointer hover:bg-[var(--bg-surface)] transition-colors select-none">
+          <label className="min-h-[44px] inline-flex items-center gap-2 px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] cursor-pointer hover:bg-[var(--bg-surface)] transition-colors select-none">
             <input
               type="checkbox"
               checked={pmrOnly}
@@ -241,13 +242,14 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
         </div>
 
         {/* Row 2: Biome Selector, Difficulty Chips & Status Filter */}
-        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[var(--border-default)]/60 text-xs">
-          <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center justify-between gap-3 pt-2 border-t border-[var(--border-default)]/60 text-xs min-w-0">
+          <div className="flex flex-wrap items-center gap-2.5 min-w-0 flex-1">
             <span className="font-mono text-[var(--text-muted)]">Secteur :</span>
             <select
               value={selectedBiome}
               onChange={(e) => setSelectedBiome(e.target.value)}
-              className="px-3 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
+              aria-label="Filtrer par secteur"
+              className="min-h-[44px] min-w-0 max-w-full flex-1 sm:flex-initial px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
             >
               <option value="all">Tous les secteurs</option>
               <option value="canopee">Jardin Zoologique &amp; Canopée</option>
@@ -258,8 +260,8 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
               <option value="vallon">Grande Boucle Royale (5 Pôles)</option>
             </select>
 
-            <span className="font-mono text-[var(--text-muted)] ml-2">Difficulté :</span>
-            <div className="inline-flex flex-wrap gap-1">
+            <span className="font-mono text-[var(--text-muted)] sm:ml-2">Difficulté :</span>
+            <div className="inline-flex flex-wrap gap-1.5">
               {[
                 { id: 'all', label: 'Toutes' },
                 { id: 'facile', label: 'Facile' },
@@ -271,9 +273,9 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
                   key={diff.id}
                   type="button"
                   onClick={() => setSelectedDifficulty(diff.id)}
-                  className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-colors cursor-pointer ${
+                  className={`min-h-[44px] xl:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors cursor-pointer ${
                     selectedDifficulty === diff.id
-                      ? 'bg-[var(--brand-primary)] text-white'
+                      ? 'bg-[var(--brand-primary)] text-[var(--on-primary)]'
                       : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] hover:bg-[var(--border-default)]'
                   }`}
                 >
@@ -282,11 +284,12 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
               ))}
             </div>
 
-            <span className="font-mono text-[var(--text-muted)] ml-2">Statut :</span>
+            <span className="font-mono text-[var(--text-muted)] sm:ml-2">Statut :</span>
             <select
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
-              className="px-3 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
+              aria-label="Filtrer par statut"
+              className="min-h-[44px] min-w-0 max-w-full flex-1 sm:flex-initial px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
             >
               <option value="all">Tous les états</option>
               <option value="fluide">Fluide / Ouvert</option>
@@ -300,7 +303,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
             <button
               type="button"
               onClick={handleResetFilters}
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 text-xs text-[var(--text-muted)] hover:text-red-500 transition-colors cursor-pointer ml-auto"
+              className="min-h-[44px] inline-flex items-center gap-1.5 px-3 py-2 text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--status-danger-text)] transition-colors cursor-pointer ml-auto"
             >
               <RotateCcw className="w-3.5 h-3.5" />
               <span>Réinitialiser les filtres</span>
@@ -313,16 +316,16 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
       {filteredTrails.length === 0 ? (
         <div className="p-12 text-center rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-3">
           <Trees className="w-10 h-10 text-[var(--text-muted)] mx-auto opacity-40" />
-          <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+          <h3 className="type-card-title text-[var(--text-primary)]">
             Aucun sentier ne correspond à vos filtres
           </h3>
-          <p className="text-xs text-[var(--text-muted)]">
+          <p className="type-footnote">
             Essayez d élargir vos critères de recherche ou réinitialisez les filtres.
           </p>
           <button
             type="button"
             onClick={handleResetFilters}
-            className="px-4 py-2 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-semibold cursor-pointer"
+            className="min-h-[44px] px-4 py-2 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] text-xs font-semibold cursor-pointer"
           >
             Afficher tous les sentiers
           </button>
@@ -356,7 +359,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
                             setSelectedTrailId(trail.id);
                             setActiveView('pass');
                           }}
-                          className="px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-amber-500/15 text-amber-800 dark:text-amber-300 border border-amber-500/30 hover:bg-amber-500/25 cursor-pointer"
+                          className="min-h-[44px] xl:min-h-[32px] px-2.5 py-1 rounded-full text-xs font-mono font-bold bg-amber-500/15 text-[var(--status-caution-text)] border border-amber-500/35 hover:bg-amber-500/25 cursor-pointer inline-flex items-center"
                           title="Consulter les observations Sentinelle actives sur ce secteur"
                         >
                           {activeTrailReportsCount} obs. terrain
@@ -369,49 +372,49 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
                   </div>
 
                   <div>
-                    <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+                    <h3 className="type-card-title text-[var(--text-primary)]">
                       {trail.name}
                     </h3>
-                    <p className="text-xs text-[var(--text-muted)] italic font-serif mt-0.5">
+                    <p className="type-footnote italic mt-0.5">
                       {trail.subtitle}
                     </p>
                   </div>
 
-                  <p className="text-xs text-[var(--text-muted)] leading-relaxed line-clamp-3">
+                  <p className="type-body-compact text-[var(--text-muted)]">
                     {trail.description}
                   </p>
 
                   {/* Closure Notice Warning if Closed or Balisé */}
                   {trail.closureReason && (
-                    <div className="p-3 rounded-xl bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/30 text-xs text-amber-800 dark:text-amber-200 space-y-1">
-                      <div className="font-semibold flex items-center gap-1.5 text-amber-700 dark:text-amber-300">
+                    <div className="p-3 rounded-xl bg-amber-500/10 dark:bg-amber-950/40 border border-amber-500/30 text-xs text-amber-900 dark:text-amber-200 space-y-1">
+                      <div className="font-semibold flex items-center gap-1.5 text-[var(--status-caution-text)]">
                         <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
                         <span>Avis Éco-Garde :</span>
                       </div>
-                      <p className="text-[11px] leading-relaxed opacity-90">{trail.closureReason}</p>
+                      <p className="text-xs leading-relaxed opacity-95">{trail.closureReason}</p>
                     </div>
                   )}
 
                   {/* Technical specs grid */}
                   <div className="grid grid-cols-4 gap-2 text-center text-xs font-mono pt-3 border-t border-[var(--border-default)]/60">
                     <div className="p-2 rounded-lg bg-[var(--bg-elevated)]">
-                      <div className="text-[10px] text-[var(--text-muted)]">D+</div>
+                      <div className="text-xs text-[var(--text-muted)]">D+</div>
                       <div className="font-bold text-[var(--brand-primary)]">+{trail.elevationGainM}m</div>
                     </div>
                     <div className="p-2 rounded-lg bg-[var(--bg-elevated)]">
-                      <div className="text-[10px] text-[var(--text-muted)]">Durée</div>
+                      <div className="text-xs text-[var(--text-muted)]">Durée</div>
                       <div className="font-bold text-[var(--text-primary)]">
                         {Math.floor(trail.durationMin / 60)}h{trail.durationMin % 60 > 0 ? `${trail.durationMin % 60}` : '00'}
                       </div>
                     </div>
                     <div className="p-2 rounded-lg bg-[var(--bg-elevated)]">
-                      <div className="text-[10px] text-[var(--text-muted)]">Niveau</div>
+                      <div className="text-xs text-[var(--text-muted)]">Niveau</div>
                       <div className="font-bold text-[var(--text-primary)] capitalize">
                         {renderDifficultyBadge(trail.difficulty)}
                       </div>
                     </div>
                     <div className="p-2 rounded-lg bg-[var(--bg-elevated)]">
-                      <div className="text-[10px] text-[var(--text-muted)]">PMR</div>
+                      <div className="text-xs text-[var(--text-muted)]">PMR</div>
                       <div className="font-bold text-[var(--text-primary)]">
                         {trail.pmrAccessible ? 'Oui' : 'Non'}
                       </div>
@@ -420,13 +423,13 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
 
                   {/* Mini Sparkline & Biome indicator */}
                   <div className="pt-2 flex items-center justify-between text-xs text-[var(--text-muted)]">
-                    <span className="font-mono text-[11px]">{trail.biomeLabel}</span>
+                    <span className="font-mono text-xs">{trail.biomeLabel}</span>
                     {renderSparkline(trail.elevationProfile)}
                   </div>
                 </div>
 
                 {/* Bottom Actions: Voir sur la carte / Réserver */}
-                <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center gap-2">
+                <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex flex-wrap items-center gap-2">
                   <button
                     type="button"
                     onClick={() => {
@@ -435,10 +438,10 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
                         onSelectTrailOnMap(trail.id);
                       }
                     }}
-                    className={`flex-1 py-2 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`min-h-[44px] flex-1 py-2.5 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       isSelected
-                        ? 'bg-[var(--brand-primary)] text-white shadow-xs'
-                        : 'bg-[var(--bg-elevated)] hover:bg-[var(--brand-primary)] hover:text-white text-[var(--text-primary)] border border-[var(--border-default)]'
+                        ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] shadow-xs'
+                        : 'bg-[var(--bg-elevated)] hover:bg-[var(--brand-primary)] hover:text-[var(--on-primary)] text-[var(--text-primary)] border border-[var(--border-default)]'
                     }`}
                   >
                     <Compass className="w-3.5 h-3.5" />
@@ -452,10 +455,10 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
                       setActiveView('billetterie');
                     }}
                     disabled={trail.status === 'ferme'}
-                    className={`py-2 px-3 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
+                    className={`min-h-[44px] py-2.5 px-3.5 rounded-xl text-xs font-semibold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
                       trail.status === 'ferme'
                         ? 'bg-[var(--bg-elevated)] text-[var(--text-muted)] opacity-50 cursor-not-allowed border border-[var(--border-default)]'
-                        : 'bg-[#52B788] hover:bg-[#40916C] text-[#0B1D15] font-bold shadow-xs'
+                        : 'bg-[#74C69D] hover:bg-[#95D5B2] text-[#081C15] font-bold shadow-xs'
                     }`}
                     title={trail.status === 'ferme' ? 'Sentier fermé à la réservation' : 'Réserver un Éco-Pass pour ce sentier'}
                   >

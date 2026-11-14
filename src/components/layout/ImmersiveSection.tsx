@@ -59,7 +59,7 @@ export const ImmersiveSection: React.FC<ImmersiveSectionProps> = ({
     <section
       id={id}
       aria-label={ariaLabel}
-      className={`relative overflow-hidden ${selected.background} ${selected.border} ${className}`}
+      className={`relative overflow-x-clip ${selected.background} ${selected.border} ${className}`}
       style={{
         // Ensure child elements default to light text colors even if CSS inheritance applies
         color: '#E9F5ED',
@@ -69,7 +69,7 @@ export const ImmersiveSection: React.FC<ImmersiveSectionProps> = ({
       {withTopographicPattern && (
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-[0.06] mix-blend-screen"
+          className="pointer-events-none absolute inset-0 overflow-hidden opacity-[0.06] mix-blend-screen"
         >
           <svg
             className="w-full h-full object-cover"

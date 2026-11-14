@@ -26,6 +26,7 @@ import {
   ArrowRight,
   X,
   Send,
+  ChevronDown,
 } from 'lucide-react';
 
 export const SpeciesAtlas: React.FC = () => {
@@ -172,21 +173,21 @@ export const SpeciesAtlas: React.FC = () => {
       <ImmersiveSection variant="forest" className="py-12 sm:py-16">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-6">
           <div className="space-y-3 max-w-4xl">
-            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-mono text-[#B7E4C7]">
+            <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-[#1F2421]/75 backdrop-blur-md border border-white/25 text-xs font-mono text-[#E9F5ED]">
               <Sparkles className="w-3.5 h-3.5 text-[#74C69D]" />
               <span>Jardin Zoologique, Bassins Piscicoles &amp; Flore Tropicale · Yaoundé, Ahala</span>
             </div>
 
-            <h1 className="font-['Barlow_Semi_Condensed'] text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
+            <h1 className="type-page-title text-white">
               Jardin Zoologique &amp; Atlas de la Biodiversité d&apos;Ahala
             </h1>
 
-            <p className="text-sm sm:text-base text-[#E9F5ED]/90 leading-relaxed font-sans">
+            <p className="type-body text-[#E9F5ED]/90">
               Découvrez les pensionnaires emblématiques d&apos;ECOPARK CAMEROUN à Yaoundé-Ahala : le Gorille des plaines <strong>« ToTo »</strong>, nos chimpanzés, les tortues géantes, les tilapias et carpes de nos bassins (« Du bassin à la braise »), les chevaux du manège équestre et notre flore tropicale.
             </p>
           </div>
 
-          <div className="p-4 rounded-2xl bg-[#1F2421]/90 border border-[#36403A] text-xs font-mono text-[#8EBAA0] space-y-1 self-start md:self-auto shrink-0 shadow-lg">
+          <div className="p-4 rounded-2xl bg-[#1F2421]/90 border border-[#36403A] type-footnote font-mono text-[#B7E4C7] space-y-1 self-start md:self-auto shrink-0 shadow-lg">
             <div className="text-white font-bold text-sm">Visites Guidées &amp; Écoles</div>
             <div>Entrée Zoo : 1 000 FCFA Ad. / 500 FCFA Enf.</div>
             <div>Forfait Scolaire : 1 350 FCFA / élève</div>
@@ -197,44 +198,51 @@ export const SpeciesAtlas: React.FC = () => {
       {/* Main Container */}
       <div className="eco-container space-y-8">
         {/* Category Tabs & Search Bar */}
-        <div className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-4">
+        <div className="p-2.5 sm:p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-xs space-y-4">
           <div className="flex flex-col md:flex-row items-stretch md:items-center justify-between gap-4">
             {/* Search Input */}
-            <div className="relative flex-1">
+            <div className="relative flex-1 min-w-0">
               <Search className="w-4 h-4 text-[var(--text-muted)] absolute left-3.5 top-1/2 -translate-y-1/2" />
               <input
                 type="text"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Rechercher une espèce par nom, habitat, nom latin..."
-                className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
+                className="w-full min-h-[44px] pl-10 pr-11 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] placeholder-[var(--text-muted)] focus:outline-none focus:ring-2 focus:ring-[var(--brand-primary)]"
               />
               {searchQuery && (
                 <button
                   type="button"
+                  aria-label="Effacer la recherche"
                   onClick={() => setSearchQuery('')}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                  className="touch-target-44 flex items-center justify-center absolute right-1 top-1/2 -translate-y-1/2 text-sm text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
                 >
                   ✕
                 </button>
               )}
             </div>
 
-            {/* UICN Conservation Filter Dropdown (replaces European temperate seasons) */}
-            <div className="flex items-center gap-2 text-xs font-mono">
-              <ShieldCheck className="w-4 h-4 text-[var(--brand-primary)]" />
-              <span className="text-[var(--text-muted)]">Statut UICN :</span>
-              <select
-                aria-label="Filtrer par statut de conservation UICN"
-                value={selectedSeason}
-                onChange={(e) => setSelectedSeason(e.target.value)}
-                className="px-3 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
-              >
-                <option value="all">Tous statuts (8)</option>
-                <option value="protegees">Protection maximale (CR / EN)</option>
-                <option value="menacees">Espèces menacées (CR / EN / VU)</option>
-                <option value="domaine">Élevage, Bassins &amp; Flore (LC / NT)</option>
-              </select>
+            {/* UICN Conservation Filter Dropdown */}
+            <div className="flex flex-wrap items-center gap-2 text-xs font-mono min-w-0">
+              <ShieldCheck className="w-4 h-4 text-[var(--brand-primary)] shrink-0" />
+              <span className="text-[var(--text-muted)] shrink-0">Statut UICN :</span>
+              <div className="relative min-w-0 max-w-full basis-[210px] grow w-full sm:w-auto sm:flex-initial">
+                <select
+                  aria-label="Filtrer par statut de conservation UICN"
+                  value={selectedSeason}
+                  onChange={(e) => setSelectedSeason(e.target.value)}
+                  className="w-full min-w-0 max-w-full appearance-none font-sans min-h-[44px] pl-[8px] pr-[22px] sm:pl-2.5 sm:pr-7 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
+                >
+                  <option value="all">Tous statuts (8)</option>
+                  <option value="protegees">Protection maximale (CR / EN)</option>
+                  <option value="menacees">Espèces menacées (CR / EN / VU)</option>
+                  <option value="domaine">Élevage, Bassins &amp; Flore (LC / NT)</option>
+                </select>
+                <ChevronDown
+                  aria-hidden="true"
+                  className="pointer-events-none w-3.5 h-3.5 text-[var(--text-muted)] absolute right-1.5 sm:right-2 top-1/2 -translate-y-1/2"
+                />
+              </div>
             </div>
           </div>
 
@@ -256,13 +264,13 @@ export const SpeciesAtlas: React.FC = () => {
                   key={tab.id}
                   type="button"
                   onClick={() => setSelectedGroup(tab.id)}
-                  className={`px-3.5 py-2 rounded-xl text-xs font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
+                  className={`min-h-[44px] max-w-full text-left px-3.5 py-2 rounded-xl text-sm font-semibold transition-all flex items-center gap-1.5 cursor-pointer ${
                     isSelected
-                      ? 'bg-[var(--brand-primary)] text-white shadow-xs'
+                      ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] shadow-xs'
                       : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] hover:bg-[var(--border-default)]/50'
                   }`}
                 >
-                  <TabIcon className="w-3.5 h-3.5" />
+                  <TabIcon className="w-3.5 h-3.5 shrink-0" />
                   <span>{tab.label}</span>
                 </button>
               );
@@ -272,9 +280,9 @@ export const SpeciesAtlas: React.FC = () => {
 
         {/* Focused Species Banner when navigated from Home */}
         {selectedSpeciesId && species.some((s) => s.id === selectedSpeciesId) && (
-          <div className="p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex flex-wrap items-center justify-between gap-3 text-xs">
-            <div className="flex items-center gap-2 text-emerald-900 dark:text-emerald-200 font-semibold">
-              <Sparkles className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+          <div className="p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/50 border border-emerald-300 dark:border-emerald-800 flex flex-wrap items-center justify-between gap-3 text-sm">
+            <div className="flex items-center gap-2 text-emerald-950 dark:text-emerald-200 font-semibold">
+              <Sparkles className="w-4 h-4 text-[var(--status-open-text)] shrink-0" />
               <span>
                 Fiche sélectionnée :{' '}
                 <strong>{species.find((s) => s.id === selectedSpeciesId)?.commonName}</strong>
@@ -283,7 +291,7 @@ export const SpeciesAtlas: React.FC = () => {
             <button
               type="button"
               onClick={() => setSelectedSpeciesId(null)}
-              className="inline-flex items-center gap-1 px-3 py-1 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer"
+              className="inline-flex items-center gap-1 min-h-[44px] px-3 py-1.5 rounded-lg bg-[var(--bg-surface)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer"
             >
               <X className="w-3.5 h-3.5" />
               <span>Désélectionner</span>
@@ -292,11 +300,11 @@ export const SpeciesAtlas: React.FC = () => {
         )}
 
         {/* Species Count Summary */}
-        <div className="flex items-center justify-between text-xs font-mono text-[var(--text-muted)]">
+        <div className="flex flex-wrap items-center justify-between gap-2 type-footnote font-mono text-[var(--text-muted)]">
           <span>
             Affichage de <strong>{filteredSpecies.length}</strong> espèce{filteredSpecies.length > 1 ? 's' : ''} sur {species.length}
           </span>
-          <span className="italic font-serif">Synchronisé avec les observations Sentinelle terrain</span>
+          <span className="italic font-sans">Synchronisé avec les observations Sentinelle terrain</span>
         </div>
 
         {/* Species Grid */}
@@ -340,8 +348,8 @@ export const SpeciesAtlas: React.FC = () => {
                       />
                     </div>
                   )}
-                  <div className="flex items-start justify-between gap-3">
-                    <div className="space-y-1">
+                  <div className="flex flex-wrap items-start justify-between gap-2">
+                    <div className="space-y-1 min-w-0 flex-1">
                       <div className="flex items-center gap-2">
                         <span className="p-1 rounded-md bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                           {renderCategoryIcon(sp.category)}
@@ -351,46 +359,46 @@ export const SpeciesAtlas: React.FC = () => {
                         </span>
                       </div>
 
-                      <h2 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)]">
+                      <h2 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] break-words">
                         {sp.commonName}
                       </h2>
 
-                      <div className="text-xs italic font-serif text-[var(--text-muted)]">
+                      <div className="type-footnote italic font-sans text-[var(--text-muted)]">
                         {sp.scientificName}
                       </div>
                     </div>
 
-                    <div className="shrink-0">{renderIucnBadge(sp.iucnStatus)}</div>
+                    <div className="shrink-0 max-w-full">{renderIucnBadge(sp.iucnStatus)}</div>
                   </div>
 
                   {/* Seasonal Observation, Best Time & Live Sentinel Sightings Badges */}
                   <div className="flex flex-wrap items-center gap-2 pt-1">
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[11px] font-mono text-[var(--text-primary)]">
-                      <Calendar className="w-3 h-3 text-[var(--brand-primary)]" />
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] type-badge font-mono text-[var(--text-primary)]">
+                      <Calendar className="w-3.5 h-3.5 text-[var(--brand-primary)] shrink-0" />
                       <span>Mar au Dim · Saisons sèche &amp; pluies</span>
                     </div>
 
-                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[11px] font-mono text-[var(--text-muted)]">
-                      <Moon className="w-3 h-3 text-amber-500" />
+                    <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] type-badge font-mono text-[var(--text-muted)]">
+                      <Moon className="w-3.5 h-3.5 text-[var(--status-caution-text)] shrink-0" />
                       <span>{sp.bestTime}</span>
                     </div>
 
                     <div
-                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 text-[11px] font-mono font-semibold text-emerald-800 dark:text-emerald-300"
+                      className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-emerald-500/10 border border-emerald-500/25 type-badge font-mono font-semibold text-[var(--status-open-text)]"
                       title="Cumul des relevés naturalistes et signalements Sentinelle validés sur ses circuits"
                     >
-                      <Eye className="w-3 h-3 text-emerald-600 dark:text-emerald-400" />
+                      <Eye className="w-3.5 h-3.5 shrink-0" />
                       <span>{liveSightingsCount} obs. recensées</span>
                     </div>
                   </div>
 
                   {/* Monograph Description */}
-                  <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                  <p className="type-body-compact text-[var(--text-muted)]">
                     {sp.description}
                   </p>
 
                   {/* Habitat & Diet */}
-                  <div className="space-y-1.5 text-xs text-[var(--text-muted)] pt-3 border-t border-[var(--border-default)]/60">
+                  <div className="space-y-1.5 text-sm text-[var(--text-muted)] pt-3 border-t border-[var(--border-default)]/60">
                     <div>
                       <strong className="text-[var(--text-primary)]">Habitat de prédilection :</strong>{' '}
                       {sp.habitat}
@@ -404,10 +412,10 @@ export const SpeciesAtlas: React.FC = () => {
                   {/* Field Identification Tips */}
                   {sp.identificationTips && sp.identificationTips.length > 0 && (
                     <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1.5">
-                      <span className="text-[11px] font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)] block">
+                      <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)] block">
                         Critères d identification sur le terrain :
                       </span>
-                      <ul className="text-xs text-[var(--text-primary)] space-y-1 pl-1">
+                      <ul className="text-sm text-[var(--text-primary)] space-y-1 pl-1">
                         {sp.identificationTips.map((tip, idx) => (
                           <li key={idx} className="flex items-start gap-1.5">
                             <span className="text-[var(--brand-primary)] font-bold">›</span>
@@ -419,7 +427,7 @@ export const SpeciesAtlas: React.FC = () => {
                   )}
 
                   {/* Field Indices & Eco-Ranger Guideline */}
-                  <div className="space-y-2 text-xs">
+                  <div className="space-y-2 text-sm">
                     {sp.fieldIndices && (
                       <div className="text-[var(--text-muted)]">
                         <strong className="text-[var(--text-primary)]">Indices de présence :</strong>{' '}
@@ -427,8 +435,8 @@ export const SpeciesAtlas: React.FC = () => {
                       </div>
                     )}
 
-                    <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-900 dark:text-emerald-200 text-xs flex items-start gap-2">
-                      <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <div className="p-3 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-emerald-950 dark:text-emerald-200 text-sm flex items-start gap-2">
+                      <ShieldCheck className="w-4 h-4 text-[var(--status-open-text)] shrink-0 mt-0.5" />
                       <div>
                         <strong>Consigne de quiétude éco-garde :</strong> {sp.protectionCharter}
                       </div>
@@ -441,8 +449,8 @@ export const SpeciesAtlas: React.FC = () => {
                   className="pt-4 border-t border-[var(--border-default)]/60 space-y-2"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="flex items-center justify-between gap-2">
-                    <span className="text-[11px] font-mono font-semibold text-[var(--text-muted)] uppercase tracking-wider">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <span className="text-xs font-mono font-semibold text-[var(--text-muted)] uppercase tracking-wider">
                       Sentiers propices à l observation :
                     </span>
                     <button
@@ -453,10 +461,10 @@ export const SpeciesAtlas: React.FC = () => {
                         }
                         setActiveView('pass');
                       }}
-                      className="inline-flex items-center gap-1 text-[11px] font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
+                      className="inline-flex items-center gap-1.5 min-h-[44px] px-2 text-xs font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
                       title="Transmettre une observation terrain via Sentinelle Nature"
                     >
-                      <Send className="w-3 h-3" />
+                      <Send className="w-3.5 h-3.5" />
                       <span>Signaler une observation</span>
                     </button>
                   </div>
@@ -467,12 +475,12 @@ export const SpeciesAtlas: React.FC = () => {
                         key={trail.id}
                         type="button"
                         onClick={() => handleJumpToTrail(trail.id)}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-[var(--bg-elevated)] hover:bg-[var(--brand-primary)] hover:text-white border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] transition-all cursor-pointer group"
+                        className="inline-flex items-center gap-1.5 max-w-full text-left min-h-[44px] px-3 py-1.5 rounded-xl bg-[var(--bg-elevated)] hover:bg-[var(--brand-primary)] hover:text-[var(--on-primary)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] transition-all cursor-pointer group"
                         title={`Localiser le ${trail.name} sur la carte`}
                       >
-                        <Compass className="w-3.5 h-3.5 text-[var(--brand-primary)] group-hover:text-white transition-colors" />
+                        <Compass className="w-3.5 h-3.5 text-[var(--brand-primary)] group-hover:text-[var(--on-primary)] transition-colors" />
                         <span>{trail.name.split('&')[0].trim()}</span>
-                        <ArrowRight className="w-3 h-3 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
+                        <ArrowRight className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all" />
                       </button>
                     ))}
                   </div>

@@ -203,6 +203,87 @@ export const RangerDashboard: React.FC = () => {
   // Resolution note dialog state
   const [resolvingReportId, setResolvingReportId] = useState<string | null>(null);
   const [interventionNoteInput, setInterventionNoteInput] = useState<string>('');
+  const modalDialogRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+  const activeModalKey: 'closure' | 'resolve' | 'reset' | null = activeClosureTrailId
+    ? 'closure'
+    : resolvingReportId
+      ? 'resolve'
+      : showResetConfirm
+        ? 'reset'
+        : null;
+
+  useEffect(() => {
+    if (!activeModalKey) {
+      const targetToRestore = previousFocusRef.current;
+      previousFocusRef.current = null;
+      if (targetToRestore && targetToRestore.isConnected) {
+        targetToRestore.focus();
+      }
+      return;
+    }
+
+    if (!previousFocusRef.current && document.activeElement instanceof HTMLElement) {
+      previousFocusRef.current = document.activeElement;
+    }
+
+    const dialogEl = modalDialogRef.current;
+    const focusableSelector =
+      'a[href], button:not([disabled]), textarea:not([disabled]), input:not([disabled]), select:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    if (dialogEl) {
+      const focusables = Array.from(dialogEl.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+        (el) => el.offsetParent !== null || el.getClientRects().length > 0
+      );
+      if (focusables.length > 0) {
+        focusables[0].focus();
+      } else {
+        dialogEl.focus();
+      }
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        event.preventDefault();
+        if (activeClosureTrailId) {
+          setActiveClosureTrailId(null);
+        } else if (resolvingReportId) {
+          setResolvingReportId(null);
+        } else if (showResetConfirm) {
+          setShowResetConfirm(false);
+        }
+        return;
+      }
+
+      if (event.key === 'Tab' && dialogEl) {
+        const focusables = Array.from(dialogEl.querySelectorAll<HTMLElement>(focusableSelector)).filter(
+          (el) => el.offsetParent !== null || el.getClientRects().length > 0
+        );
+        if (focusables.length === 0) {
+          event.preventDefault();
+          dialogEl.focus();
+          return;
+        }
+        const firstEl = focusables[0];
+        const lastEl = focusables[focusables.length - 1];
+        const activeEl = document.activeElement;
+        if (event.shiftKey) {
+          if (activeEl === firstEl || !dialogEl.contains(activeEl)) {
+            event.preventDefault();
+            lastEl.focus();
+          }
+        } else if (activeEl === lastEl || !dialogEl.contains(activeEl)) {
+          event.preventDefault();
+          firstEl.focus();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [activeModalKey, activeClosureTrailId, resolvingReportId, showResetConfirm]);
 
   const RESOLUTION_PRESETS = [
     'Équipe sentiers intervenue ce matin : obstacle débité et évacué.',
@@ -378,22 +459,22 @@ export const RangerDashboard: React.FC = () => {
     switch (status) {
       case 'fluide':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950/80 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800">
-            <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+          <span className="inline-flex flex-wrap items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-[var(--status-open-text)] dark:bg-emerald-950/80 border border-emerald-300 dark:border-emerald-800 max-w-full">
+            <CheckCircle2 className="w-3.5 h-3.5 text-[var(--status-open-text)]" />
             <span>Fluide / Ouvert</span>
           </span>
         );
       case 'balise':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950/80 dark:text-amber-300 border border-amber-300 dark:border-amber-800">
-            <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+          <span className="inline-flex flex-wrap items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-[var(--status-caution-text)] dark:bg-amber-950/80 border border-amber-300 dark:border-amber-800 max-w-full">
+            <AlertTriangle className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />
             <span>Balisé / Prudence</span>
           </span>
         );
       case 'ferme':
         return (
-          <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-800 dark:bg-red-950/80 dark:text-red-300 border border-red-300 dark:border-red-800 animate-pulse">
-            <XCircle className="w-3.5 h-3.5 text-red-600 dark:text-red-400" />
+          <span className="inline-flex flex-wrap items-center gap-1.5 px-2.5 py-1 rounded-full text-xs font-semibold bg-red-100 text-[var(--status-danger-text)] dark:bg-red-950/80 border border-red-300 dark:border-red-800 animate-pulse max-w-full">
+            <XCircle className="w-3.5 h-3.5 text-[var(--status-danger-text)]" />
             <span>Fermé / Protection</span>
           </span>
         );
@@ -404,15 +485,15 @@ export const RangerDashboard: React.FC = () => {
   const renderCategoryIcon = (type: CitizenReportType) => {
     switch (type) {
       case 'faune_rare':
-        return <Eye className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />;
+        return <Eye className="w-3.5 h-3.5 text-[var(--status-open-text)]" />;
       case 'flore_remarquable':
-        return <Flower2 className="w-3.5 h-3.5 text-teal-600 dark:text-teal-400" />;
+        return <Flower2 className="w-3.5 h-3.5 text-[var(--status-open-text)]" />;
       case 'obstacle_sentier':
-        return <AlertTriangle className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />;
+        return <AlertTriangle className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />;
       case 'dechet_incivisme':
-        return <Trash2 className="w-3.5 h-3.5 text-rose-600 dark:text-rose-400" />;
+        return <Trash2 className="w-3.5 h-3.5 text-[var(--status-danger-text)]" />;
       case 'danger_meteo':
-        return <CloudRain className="w-3.5 h-3.5 text-sky-600 dark:text-sky-400" />;
+        return <CloudRain className="w-3.5 h-3.5 text-sky-700 dark:text-sky-300" />;
     }
   };
 
@@ -421,26 +502,26 @@ export const RangerDashboard: React.FC = () => {
     switch (severity) {
       case 'critique':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-red-100 text-red-800 border border-red-300 dark:bg-red-950/80 dark:text-red-300">
-            <AlertOctagon className="w-3 h-3 text-red-600" />
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono font-bold bg-red-100 text-[var(--status-danger-text)] border border-red-300 dark:bg-red-950/80 dark:border-red-800">
+            <AlertOctagon className="w-3 h-3 text-[var(--status-danger-text)]" />
             CRITIQUE
           </span>
         );
       case 'modere':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-amber-100 text-amber-800 border border-amber-300 dark:bg-amber-950/80 dark:text-amber-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono font-bold bg-amber-100 text-[var(--status-caution-text)] border border-amber-300 dark:bg-amber-950/80 dark:border-amber-800">
             MODÉRÉ
           </span>
         );
       case 'mineur':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-zinc-100 text-zinc-700 border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono font-bold bg-zinc-100 text-[var(--text-primary)] border border-zinc-300 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700">
             MINEUR
           </span>
         );
       case 'info':
         return (
-          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 border border-emerald-300 dark:bg-emerald-950/80 dark:text-emerald-300">
+          <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded text-xs font-mono font-bold bg-emerald-100 text-[var(--status-open-text)] border border-emerald-300 dark:bg-emerald-950/80 dark:border-emerald-800">
             INFO
           </span>
         );
@@ -451,8 +532,8 @@ export const RangerDashboard: React.FC = () => {
     <div className="space-y-8 pt-6 pb-16 font-sans tabular-nums">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 p-4 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-semibold shadow-2xl flex items-center gap-2 border border-emerald-400">
-          <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
+        <div className="fixed bottom-6 right-6 z-50 p-4 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] text-xs font-semibold shadow-2xl flex items-center gap-2 border border-emerald-400">
+          <CheckCircle2 className="w-4 h-4 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
@@ -460,22 +541,22 @@ export const RangerDashboard: React.FC = () => {
       {/* Cockpit Officer & RBAC Session Bar (Profil C : palier strict < 20px, cibles >= 48px, Sun Mode ready) */}
       <div className="eco-container space-y-4">
         <div className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
-          <div className="flex items-center gap-3.5">
-            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white shadow-sm shrink-0">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3.5 min-w-0">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-700 to-amber-900 flex items-center justify-center text-white shadow-sm shrink-0">
               <ShieldAlert className="w-5 h-5" />
             </div>
-            <div>
+            <div className="min-w-0">
               <div className="flex flex-wrap items-center gap-2">
-                <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--status-caution-text)] max-w-full break-words">
                   {getRoleDisplayLabel(user?.role)}
                 </span>
-                <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300">
-                  <Radio className="w-2.5 h-2.5 animate-pulse text-emerald-500" />
+                <span className="inline-flex flex-wrap items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-emerald-100 text-[var(--status-open-text)] dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 max-w-full">
+                  <Radio className="w-3 h-3 animate-pulse text-[var(--status-open-text)]" />
                   SESSION AUTHENTIFIÉE
                 </span>
                 <span
                   data-testid="backoffice-sync-pill"
-                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-sky-100 text-sky-900 dark:bg-sky-950/80 dark:text-sky-200 border border-sky-300 dark:border-sky-800 tabular-nums"
+                  className="inline-flex flex-wrap items-center gap-1.5 px-2.5 py-0.5 rounded-full text-xs font-mono font-bold bg-sky-100 text-sky-900 dark:bg-sky-950/80 dark:text-sky-200 border border-sky-300 dark:border-sky-800 tabular-nums max-w-full"
                   title="Canal de synchronisation bidirectionnel Backoffice <-> Frontend"
                 >
                   <span>
@@ -493,11 +574,11 @@ export const RangerDashboard: React.FC = () => {
                   )}
                 </span>
               </div>
-              <h1 className="font-sans text-base font-bold text-[var(--text-primary)] mt-0.5">
+              <h1 className="type-cockpit-h1 text-[var(--text-primary)] mt-1">
                 Console Exploitation &amp; Guichet RN3 · {user?.fullName || 'Agent Habilité'}{' '}
                 {user?.matricule ? `(${user.matricule})` : ''}
               </h1>
-              <p className="text-xs text-[var(--text-muted)] font-mono">
+              <p className="type-cockpit-meta text-[var(--text-muted)] font-mono">
                 {user?.email} · Pôle affecté : {(user?.assignedPole || 'global').toUpperCase()}
               </p>
             </div>
@@ -511,7 +592,7 @@ export const RangerDashboard: React.FC = () => {
                 className="min-h-[48px] inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-surface)] text-xs font-semibold text-[var(--text-primary)] transition-all cursor-pointer shadow-xs active:scale-95"
                 title="Réinitialiser les données de développement"
               >
-                <RotateCcw className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <RotateCcw className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />
                 <span>Reset (DEV)</span>
               </button>
             )}
@@ -531,7 +612,7 @@ export const RangerDashboard: React.FC = () => {
                 await logout();
                 setActiveView('accueil');
               }}
-              className="min-h-[48px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold cursor-pointer shadow-xs"
+              className="min-h-[48px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-800 hover:bg-red-900 dark:bg-red-300 dark:hover:bg-red-200 dark:text-[#121614] text-white text-xs font-bold cursor-pointer shadow-xs transition-colors"
             >
               <LogOut className="w-3.5 h-3.5" />
               <span>Déconnexion</span>
@@ -540,8 +621,8 @@ export const RangerDashboard: React.FC = () => {
         </div>
 
         {!canManageOps && (
-          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2.5">
-            <Lock className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-[var(--status-caution-text)] flex items-center gap-2.5">
+            <Lock className="w-4 h-4 text-[var(--status-caution-text)] shrink-0" />
             <span>
               <strong>Habilitation RBAC ({getRoleDisplayLabel(user?.role)}) :</strong>{' '}
               {canCheckIn
@@ -567,11 +648,11 @@ export const RangerDashboard: React.FC = () => {
                 </div>
                 <h2
                   id="quota-regulator-title"
-                  className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                  className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
                 >
                   Régulateur de Capacité Journalière
                 </h2>
-                <p className="text-xs text-[var(--text-muted)] mt-1 max-w-xl">
+                <p className="type-cockpit-meta text-[var(--text-muted)] mt-1 max-w-xl">
                   Ajustez le plafond journalier de visiteurs pour moduler la pression anthropique selon
                   la fragilité saisonnière, la météo et les indices de reproduction de la faune.
                 </p>
@@ -579,19 +660,19 @@ export const RangerDashboard: React.FC = () => {
 
               {/* Operational Quota Indicator (< 20px Profil C) */}
               <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-right font-mono min-w-[200px] shadow-xs tabular-nums">
-                <div className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider">
+                <div className="type-cockpit-meta text-[var(--text-muted)] uppercase tracking-wider">
                   Plafond Fixé
                 </div>
-                <div className="text-[18px] leading-6 font-bold text-[var(--brand-primary)] tabular-nums mt-0.5">
+                <div className="type-cockpit-kpi text-[var(--brand-primary)] mt-0.5">
                   {telemetry.dailyCapacityMax} places
                 </div>
-                <div className="text-xs text-[var(--text-muted)] mt-0.5">
+                <div className="type-cockpit-meta text-[var(--text-muted)] mt-0.5">
                   visiteurs max / 24h
                 </div>
               </div>
             </div>
 
-            {/* Slider with visual track */}
+            {/* Slider with visual track (>= 44px touch hit-area on mobile) */}
             <div className="space-y-3 pt-2">
               <input
                 type="range"
@@ -601,11 +682,11 @@ export const RangerDashboard: React.FC = () => {
                 disabled={!canManageOps}
                 value={telemetry.dailyCapacityMax}
                 onChange={(e) => canManageOps && setDailyCapacity(Number(e.target.value))}
-                className="w-full h-3 rounded-lg bg-[var(--bg-canvas)] accent-[var(--brand-primary)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border border-[var(--border-default)]"
+                className="w-full min-h-[44px] py-3.5 rounded-lg bg-transparent accent-[var(--brand-primary)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                 aria-label="Ajuster le quota journalier de visiteurs"
               />
 
-              <div className="flex justify-between text-xs font-mono text-[var(--text-muted)] tabular-nums">
+              <div className="flex flex-wrap justify-between gap-2 text-xs font-mono text-[var(--text-muted)] tabular-nums">
                 <span>500 (Sanctuaire quiétude)</span>
                 <span>1750 (Régime nominal)</span>
                 <span>3000 (Plafond haute saison)</span>
@@ -631,7 +712,7 @@ export const RangerDashboard: React.FC = () => {
                     }}
                     className={`min-h-[48px] px-3.5 py-2 rounded-xl border text-xs font-mono font-bold tabular-nums transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                       isActive
-                        ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-xs'
+                        ? 'bg-[var(--brand-primary)] text-[var(--on-primary)] border-[var(--brand-primary)] shadow-xs'
                         : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:border-[var(--brand-primary)]'
                     }`}
                   >
@@ -644,43 +725,43 @@ export const RangerDashboard: React.FC = () => {
             {/* Live Capacity Telemetry Snapshot (< 20px strict Profil C) */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
+                <span className="type-cockpit-meta font-mono text-[var(--text-muted)] uppercase block">
                   Présents sur site
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-[var(--text-primary)] mt-1">
+                <div className="type-cockpit-kpi text-[var(--text-primary)] mt-1">
                   {telemetry.currentOccupancy}
                 </div>
-                <span className="text-[11px] text-[var(--text-muted)]">visiteurs enregistrés</span>
+                <span className="type-cockpit-meta text-[var(--text-muted)]">visiteurs enregistrés</span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
+                <span className="type-cockpit-meta font-mono text-[var(--text-muted)] uppercase block">
                   Places disponibles
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-emerald-700 dark:text-emerald-400 mt-1">
+                <div className="type-cockpit-kpi text-[var(--status-open-text)] mt-1">
                   {Math.max(0, telemetry.dailyCapacityMax - telemetry.currentOccupancy)}
                 </div>
-                <span className="text-[11px] text-[var(--text-muted)]">réservables aujourd hui</span>
+                <span className="type-cockpit-meta text-[var(--text-muted)]">réservables aujourd hui</span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
+                <span className="type-cockpit-meta font-mono text-[var(--text-muted)] uppercase block">
                   Taux de remplissage
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-[var(--brand-primary)] mt-1">
+                <div className="type-cockpit-kpi text-[var(--brand-primary)] mt-1">
                   {Math.round((telemetry.currentOccupancy / telemetry.dailyCapacityMax) * 100)}%
                 </div>
-                <span className="text-[11px] text-[var(--text-muted)]">de la jauge écologique</span>
+                <span className="type-cockpit-meta text-[var(--text-muted)]">de la jauge écologique</span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
+                <span className="type-cockpit-meta font-mono text-[var(--text-muted)] uppercase block">
                   Indice Qualité Air
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-emerald-700 dark:text-emerald-400 mt-1">
+                <div className="type-cockpit-kpi text-[var(--status-open-text)] mt-1">
                   {telemetry.airQualityIqa} / 100
                 </div>
-                <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-semibold">
+                <span className="type-cockpit-meta text-[var(--status-open-text)] font-semibold">
                   {telemetry.airQualityStatus}
                 </span>
               </div>
@@ -698,21 +779,21 @@ export const RangerDashboard: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-[var(--brand-primary)]" />
-                  <h3 className="font-sans text-base font-bold text-[var(--text-primary)]">
+                  <h3 className="type-cockpit-h3 text-[var(--text-primary)]">
                     Histogramme d Affluence Horaire (08h00 - 20h00)
                   </h3>
                 </div>
-                <p className="text-xs text-[var(--text-muted)]">
+                <p className="type-cockpit-meta text-[var(--text-muted)]">
                   Distribution continue des entrées et créneau de fréquentation de pointe
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-xs font-mono">
+              <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                   <span className="w-2.5 h-2.5 rounded-full bg-[var(--brand-primary)]" />
                   <span>Flux estimé</span>
                 </span>
-                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-amber-700 dark:text-amber-400">
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--status-caution-text)]">
                   <span className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
                   <span>Heure actuelle</span>
                 </span>
@@ -734,16 +815,16 @@ export const RangerDashboard: React.FC = () => {
                 <line x1="40" y1="170" x2="580" y2="170" stroke="currentColor" strokeOpacity="0.2" />
 
                 {/* Y-axis labels */}
-                <text x="32" y="34" textAnchor="end" className="text-[10px] font-mono fill-[var(--text-muted)]">
+                <text x="32" y="34" textAnchor="end" className="text-[12px] font-mono fill-[var(--text-muted)]">
                   {maxHourlyCount}
                 </text>
-                <text x="32" y="84" textAnchor="end" className="text-[10px] font-mono fill-[var(--text-muted)]">
+                <text x="32" y="84" textAnchor="end" className="text-[12px] font-mono fill-[var(--text-muted)]">
                   {Math.round(maxHourlyCount * 0.66)}
                 </text>
-                <text x="32" y="134" textAnchor="end" className="text-[10px] font-mono fill-[var(--text-muted)]">
+                <text x="32" y="134" textAnchor="end" className="text-[12px] font-mono fill-[var(--text-muted)]">
                   {Math.round(maxHourlyCount * 0.33)}
                 </text>
-                <text x="32" y="174" textAnchor="end" className="text-[10px] font-mono fill-[var(--text-muted)]">
+                <text x="32" y="174" textAnchor="end" className="text-[12px] font-mono fill-[var(--text-muted)]">
                   0
                 </text>
 
@@ -763,7 +844,7 @@ export const RangerDashboard: React.FC = () => {
                         width={barWidth}
                         height={barHeight}
                         rx="5"
-                        fill={bar.isCurrent ? '#E76F51' : '#52B788'}
+                        fill={bar.isCurrent ? '#D4A373' : '#52B788'}
                         className="transition-all duration-200 group-hover:opacity-80 group-hover:scale-y-105"
                       />
 
@@ -772,7 +853,7 @@ export const RangerDashboard: React.FC = () => {
                         x={x + barWidth / 2}
                         y={y - 5}
                         textAnchor="middle"
-                        className="text-[10px] font-mono font-bold fill-[var(--text-primary)] opacity-0 group-hover:opacity-100 transition-opacity"
+                        className="text-[12px] font-mono font-bold fill-[var(--text-primary)] opacity-0 group-hover:opacity-100 transition-opacity"
                       >
                         {bar.count}
                       </text>
@@ -782,9 +863,9 @@ export const RangerDashboard: React.FC = () => {
                         x={x + barWidth / 2}
                         y="186"
                         textAnchor="middle"
-                        className={`text-[10px] font-mono ${
+                        className={`text-[12px] font-mono ${
                           bar.isCurrent
-                            ? 'font-bold fill-[#E76F51]'
+                            ? 'font-bold fill-[var(--status-caution-text)]'
                             : 'fill-[var(--text-muted)]'
                         }`}
                       >
@@ -796,7 +877,7 @@ export const RangerDashboard: React.FC = () => {
               </svg>
             </div>
 
-            <div className="pt-3 border-t border-[var(--border-default)]/60 flex items-center justify-between text-xs text-[var(--text-muted)]">
+            <div className="pt-3 border-t border-[var(--border-default)]/60 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--text-muted)]">
               <span>Pic d affluence estimé : <strong>11h00 - 12h00</strong> et <strong>14h00 - 15h00</strong></span>
               <span className="font-mono">Rythme d écoulement nominal</span>
             </div>
@@ -807,17 +888,17 @@ export const RangerDashboard: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-[var(--brand-primary)]" />
-                <h3 className="font-sans text-base font-bold text-[var(--text-primary)]">
+                <h3 className="type-cockpit-h3 text-[var(--text-primary)]">
                   Part Modale Éco-Mobilité
                 </h3>
               </div>
-              <p className="text-xs text-[var(--text-muted)]">
+              <p className="type-cockpit-meta text-[var(--text-muted)]">
                 Origine des transports des visiteurs du parc
               </p>
             </div>
 
             {/* Doughnut SVG Chart */}
-            <div className="relative w-44 h-44 mx-auto my-2">
+            <div className="relative w-44 max-w-full aspect-square mx-auto my-2">
               <svg viewBox="0 0 200 200" className="w-full h-full">
                 {MOBILITY_BREAKDOWN.slices.map((slice) => {
                   const pathData = getDoughnutSlicePath(
@@ -843,13 +924,13 @@ export const RangerDashboard: React.FC = () => {
 
               {/* Central Avoided CO2 metric */}
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
-                <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
+                <span className="text-xs font-mono text-[var(--text-muted)] uppercase">
                   CO₂ Évité
                 </span>
                 <span className="text-base font-bold font-mono text-[var(--brand-primary)]">
                   {telemetry.totalCo2AvoidedKg} kg
                 </span>
-                <span className="text-[9px] text-[var(--text-muted)]">cumul global</span>
+                <span className="text-xs text-[var(--text-muted)]">cumul global</span>
               </div>
             </div>
 
@@ -885,7 +966,7 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="trail-status-manager-title"
-                className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
               >
                 Contrôle d État des 6 Sentiers Officiels
               </h2>
@@ -914,12 +995,12 @@ export const RangerDashboard: React.FC = () => {
                 >
                   <div className="space-y-3">
                     {/* Top Row: Title & Badge */}
-                    <div className="flex items-start justify-between gap-2">
-                      <div>
-                        <span className="text-[10px] font-mono uppercase text-[var(--brand-primary)] font-semibold">
+                    <div className="flex flex-wrap items-start justify-between gap-2">
+                      <div className="min-w-0">
+                        <span className="text-xs font-mono uppercase text-[var(--brand-primary)] font-semibold">
                           {trail.biomeLabel}
                         </span>
-                        <h3 className="font-sans font-bold text-sm text-[var(--text-primary)]">
+                        <h3 className="type-cockpit-h3 text-[var(--text-primary)]">
                           {trail.name}
                         </h3>
                       </div>
@@ -927,7 +1008,7 @@ export const RangerDashboard: React.FC = () => {
                     </div>
 
                     {/* Technical stats */}
-                    <div className="flex items-center gap-3 text-xs text-[var(--text-muted)] font-mono">
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-xs text-[var(--text-muted)] font-mono">
                       <span>{trail.lengthKm} km</span>
                       <span>·</span>
                       <span>+{trail.elevationGainM}m D+</span>
@@ -962,15 +1043,15 @@ export const RangerDashboard: React.FC = () => {
                       <div
                         className={`p-3 rounded-xl border text-xs flex items-start gap-2 ${
                           isClosed
-                            ? 'bg-red-100/80 dark:bg-red-900/40 border-red-300 dark:border-red-800 text-red-900 dark:text-red-200'
-                            : 'bg-amber-100/70 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200'
+                            ? 'bg-red-100/80 dark:bg-red-900/40 border-red-300 dark:border-red-800 text-[var(--status-danger-text)]'
+                            : 'bg-amber-100/70 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-[var(--status-caution-text)]'
                         }`}
                       >
                         <AlertTriangle
                           className={`w-4 h-4 shrink-0 mt-0.5 ${
                             isClosed
-                              ? 'text-red-600 dark:text-red-400'
-                              : 'text-amber-600 dark:text-amber-400'
+                              ? 'text-[var(--status-danger-text)]'
+                              : 'text-[var(--status-caution-text)]'
                           }`}
                         />
                         <div>
@@ -985,7 +1066,7 @@ export const RangerDashboard: React.FC = () => {
 
                   {/* Dynamic Action Buttons */}
                   <div className="pt-3 border-t border-[var(--border-default)]/60 space-y-2">
-                    <div className="flex items-center justify-between text-[11px] font-semibold text-[var(--text-muted)] uppercase">
+                    <div className="flex items-center justify-between text-xs font-semibold text-[var(--text-muted)] uppercase">
                       <span>Changer l état opérationnel :</span>
                       <button
                         type="button"
@@ -993,7 +1074,7 @@ export const RangerDashboard: React.FC = () => {
                           setSelectedTrailId(trail.id);
                           setActiveView('sentiers');
                         }}
-                        className="text-[var(--brand-primary)] hover:underline font-mono normal-case cursor-pointer"
+                        className="min-h-[44px] xl:min-h-[32px] inline-flex items-center px-2 text-[var(--brand-primary)] hover:underline font-mono normal-case cursor-pointer"
                       >
                         Carte →
                       </button>
@@ -1006,7 +1087,7 @@ export const RangerDashboard: React.FC = () => {
                         onClick={() => canManageOps && handleSetTrailStatus(trail.id, 'fluide')}
                         className={`min-h-[48px] p-2 rounded-xl border font-bold text-center transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                           trail.status === 'fluide'
-                            ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
+                            ? 'bg-emerald-800 text-white border-emerald-800 dark:bg-emerald-300 dark:text-[#081C15] dark:border-emerald-300 shadow-xs'
                             : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--bg-canvas)]'
                         }`}
                       >
@@ -1019,7 +1100,7 @@ export const RangerDashboard: React.FC = () => {
                         onClick={() => canManageOps && handleSetTrailStatus(trail.id, 'balise')}
                         className={`min-h-[48px] p-2 rounded-xl border font-bold text-center transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                           trail.status === 'balise'
-                            ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
+                            ? 'bg-amber-800 text-white border-amber-800 dark:bg-amber-300 dark:text-[#121614] dark:border-amber-300 shadow-xs'
                             : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--bg-canvas)]'
                         }`}
                       >
@@ -1032,7 +1113,7 @@ export const RangerDashboard: React.FC = () => {
                         onClick={() => canManageOps && handleSetTrailStatus(trail.id, 'ferme')}
                         className={`min-h-[48px] p-2 rounded-xl border font-bold text-center transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                           trail.status === 'ferme'
-                            ? 'bg-red-600 text-white border-red-600 shadow-xs'
+                            ? 'bg-red-800 text-white border-red-800 dark:bg-red-300 dark:text-[#121614] dark:border-red-300 shadow-xs'
                             : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--bg-canvas)]'
                         }`}
                       >
@@ -1058,23 +1139,23 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="guichet-pass-control-title"
-                className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
               >
                 Contrôle en Direct des Éco-Pass &amp; Validation Check-In
               </h2>
-              <p className="text-xs text-[var(--text-muted)] mt-1">
+              <p className="type-cockpit-meta text-[var(--text-muted)] mt-1">
                 Synchronisé en temps réel avec la Billetterie et l&apos;espace « Mon Pass QR » des visiteurs
               </p>
             </div>
 
             <div className="flex flex-wrap items-center gap-2 text-xs font-mono">
-              <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 font-bold">
+              <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-[var(--status-open-text)] dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 font-bold">
                 {passes.filter((p) => p.status === 'confirmed').length} à scanner
               </span>
-              <span className="px-3 py-1.5 rounded-xl bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 border border-sky-300 dark:border-sky-800 font-bold">
+              <span className="px-3 py-1.5 rounded-xl bg-sky-100 text-sky-900 dark:bg-sky-950 dark:text-sky-200 border border-sky-300 dark:border-sky-800 font-bold">
                 {passes.filter((p) => p.status === 'checked_in').length} entrés
               </span>
-              <span className="px-3 py-1.5 rounded-xl bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border border-zinc-300 dark:border-zinc-700 font-bold">
+              <span className="px-3 py-1.5 rounded-xl bg-zinc-100 text-[var(--text-primary)] dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700 font-bold">
                 {passes.filter((p) => p.status === 'cancelled').length} annulés
               </span>
             </div>
@@ -1090,16 +1171,16 @@ export const RangerDashboard: React.FC = () => {
                 >
                   <div className="space-y-2.5">
                     <div className="flex items-center justify-between gap-2">
-                      <span className="font-['JetBrains_Mono'] text-sm font-bold text-[var(--brand-primary)]">
+                      <span className="font-mono text-sm font-bold text-[var(--brand-primary)]">
                         {pass.id}
                       </span>
                       <span
-                        className={`px-2.5 py-0.5 rounded-full text-[11px] font-mono font-bold ${
+                        className={`px-2.5 py-0.5 rounded-full text-xs font-mono font-bold ${
                           pass.status === 'confirmed'
-                            ? 'bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300'
+                            ? 'bg-emerald-100 text-[var(--status-open-text)] dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800'
                             : pass.status === 'checked_in'
-                            ? 'bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 border border-sky-300'
-                            : 'bg-red-100 text-red-800 dark:bg-red-950 dark:text-red-300 border border-red-300'
+                            ? 'bg-sky-100 text-sky-900 dark:bg-sky-950 dark:text-sky-200 border border-sky-300 dark:border-sky-800'
+                            : 'bg-red-100 text-[var(--status-danger-text)] dark:bg-red-950 border border-red-300 dark:border-red-800'
                         }`}
                       >
                         {pass.status === 'confirmed'
@@ -1114,19 +1195,19 @@ export const RangerDashboard: React.FC = () => {
                       <div className="font-sans font-bold text-sm text-[var(--text-primary)]">
                         {pass.leadVisitor.fullName}
                       </div>
-                      <div className="text-xs text-[var(--text-muted)] line-clamp-1">
+                      <div className="text-xs text-[var(--text-muted)] break-words leading-snug">
                         {expInfo.title}
                       </div>
                     </div>
 
-                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[var(--border-default)]/60 text-[11px] font-mono text-[var(--text-muted)]">
+                    <div className="grid grid-cols-2 gap-2 pt-2 border-t border-[var(--border-default)]/60 text-xs font-mono text-[var(--text-muted)]">
                       <div>
-                        <span className="block text-[10px] uppercase">Date &amp; Créneau</span>
+                        <span className="block text-xs uppercase">Date &amp; Créneau</span>
                         <strong className="text-[var(--text-primary)]">{pass.visitDate}</strong>
                         <span className="block">{pass.timeSlot}</span>
                       </div>
                       <div className="text-right">
-                        <span className="block text-[10px] uppercase">Groupe &amp; Tarif</span>
+                        <span className="block text-xs uppercase">Groupe &amp; Tarif</span>
                         <strong className="text-[var(--text-primary)] inline-flex items-center gap-1 justify-end">
                           <Users className="w-3 h-3 text-[var(--brand-primary)]" />
                           {pass.guestCount} pers.
@@ -1159,7 +1240,7 @@ export const RangerDashboard: React.FC = () => {
                             checkInPass(pass.id);
                             showToast(`Entrée validée au guichet pour ${pass.id} (${pass.guestCount} pers.)`);
                           }}
-                          className="min-h-[48px] px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer inline-flex items-center gap-1 shadow-xs active:scale-95 transition-transform"
+                          className="min-h-[48px] px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-300 dark:hover:bg-emerald-200 dark:text-[#081C15] text-white text-xs font-bold cursor-pointer inline-flex items-center gap-1 shadow-xs active:scale-95 transition-all"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>Check-In</span>
@@ -1173,7 +1254,7 @@ export const RangerDashboard: React.FC = () => {
                             cancelPass(pass.id);
                             showToast(`Pass ${pass.id} annulé : quota mis à jour`);
                           }}
-                          className="min-h-[48px] px-3 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
+                          className="min-h-[48px] px-3 py-2 rounded-xl text-xs font-semibold text-[var(--status-danger-text)] hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
                           title="Annuler ce billet et restituer la jauge"
                         >
                           Annuler
@@ -1199,11 +1280,11 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="sentinel-moderation-title"
-                className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
               >
                 File de Modération des Signalements Sentinelle
               </h2>
-              <p className="text-xs text-[var(--text-muted)] mt-1">
+              <p className="type-cockpit-meta text-[var(--text-muted)] mt-1">
                 Authentifiez les découvertes naturalistes et régulez les alertes d obstacles terrain
               </p>
             </div>
@@ -1212,7 +1293,7 @@ export const RangerDashboard: React.FC = () => {
             <div className="flex flex-wrap items-center gap-1.5 p-1 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)]">
               <button
                 onClick={() => setReportStatusFilter('all')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`min-h-[44px] xl:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   reportStatusFilter === 'all'
                     ? 'bg-[var(--bg-elevated)] text-[var(--brand-primary)] font-bold shadow-xs'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -1222,9 +1303,9 @@ export const RangerDashboard: React.FC = () => {
               </button>
               <button
                 onClick={() => setReportStatusFilter('en_attente')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`min-h-[44px] xl:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   reportStatusFilter === 'en_attente'
-                    ? 'bg-[var(--bg-elevated)] text-amber-700 dark:text-amber-400 font-bold shadow-xs'
+                    ? 'bg-[var(--bg-elevated)] text-[var(--status-caution-text)] font-bold shadow-xs'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
               >
@@ -1232,9 +1313,9 @@ export const RangerDashboard: React.FC = () => {
               </button>
               <button
                 onClick={() => setReportStatusFilter('valide')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`min-h-[44px] xl:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   reportStatusFilter === 'valide'
-                    ? 'bg-[var(--bg-elevated)] text-emerald-700 dark:text-emerald-400 font-bold shadow-xs'
+                    ? 'bg-[var(--bg-elevated)] text-[var(--status-open-text)] font-bold shadow-xs'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
               >
@@ -1242,9 +1323,9 @@ export const RangerDashboard: React.FC = () => {
               </button>
               <button
                 onClick={() => setReportStatusFilter('resolu')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`min-h-[44px] xl:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   reportStatusFilter === 'resolu'
-                    ? 'bg-[var(--bg-elevated)] text-sky-700 dark:text-sky-400 font-bold shadow-xs'
+                    ? 'bg-[var(--bg-elevated)] text-sky-800 dark:text-sky-200 font-bold shadow-xs'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
               >
@@ -1252,9 +1333,9 @@ export const RangerDashboard: React.FC = () => {
               </button>
               <button
                 onClick={() => setReportStatusFilter('rejete')}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
+                className={`min-h-[44px] xl:min-h-[36px] px-3 py-1.5 rounded-lg text-xs font-semibold transition-all cursor-pointer ${
                   reportStatusFilter === 'rejete'
-                    ? 'bg-[var(--bg-elevated)] text-zinc-700 dark:text-zinc-400 font-bold shadow-xs'
+                    ? 'bg-[var(--bg-elevated)] text-[var(--text-primary)] dark:text-zinc-200 font-bold shadow-xs'
                     : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                 }`}
               >
@@ -1265,12 +1346,12 @@ export const RangerDashboard: React.FC = () => {
 
           {/* Additional Multi-criteria Filters */}
           <div className="flex flex-wrap items-center gap-3 p-3.5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs">
-            <div className="flex items-center gap-2">
-              <span className="text-[var(--text-muted)] font-semibold">Sentier :</span>
+            <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 min-w-0 max-w-full">
+              <span className="text-[var(--text-muted)] font-semibold shrink-0">Sentier :</span>
               <select
                 value={reportTrailFilter}
                 onChange={(e) => setReportTrailFilter(e.target.value)}
-                className="px-2.5 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] cursor-pointer"
+                className="min-h-[44px] min-w-[160px] max-w-full w-full sm:w-auto flex-1 px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] cursor-pointer"
               >
                 <option value="all">Tous les sentiers</option>
                 {trails.map((t) => (
@@ -1281,12 +1362,12 @@ export const RangerDashboard: React.FC = () => {
               </select>
             </div>
 
-            <div className="flex items-center gap-2">
-              <span className="text-[var(--text-muted)] font-semibold">Catégorie :</span>
+            <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 min-w-0 max-w-full">
+              <span className="text-[var(--text-muted)] font-semibold shrink-0">Catégorie :</span>
               <select
                 value={reportTypeFilter}
                 onChange={(e) => setReportTypeFilter(e.target.value as 'all' | CitizenReportType)}
-                className="px-2.5 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] cursor-pointer"
+                className="min-h-[44px] min-w-[160px] max-w-full w-full sm:w-auto flex-1 px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] cursor-pointer"
               >
                 <option value="all">Toutes catégories</option>
                 <option value="faune_rare">Faune rare</option>
@@ -1307,10 +1388,10 @@ export const RangerDashboard: React.FC = () => {
             {filteredReports.length === 0 ? (
               <div className="p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center space-y-2">
                 <Sparkles className="w-8 h-8 text-[var(--brand-primary)] mx-auto" />
-                <h4 className="font-sans font-bold text-sm text-[var(--text-primary)]">
+                <h4 className="type-cockpit-h3 text-[var(--text-primary)]">
                   Aucun signalement ne correspond à ces critères
                 </h4>
-                <p className="text-xs text-[var(--text-muted)]">
+                <p className="type-cockpit-meta text-[var(--text-muted)]">
                   Modifiez vos filtres de modération ou revenez plus tard.
                 </p>
               </div>
@@ -1330,7 +1411,7 @@ export const RangerDashboard: React.FC = () => {
                     {/* Top Row: ID, Category, Severity & Status */}
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-3 border-b border-[var(--border-default)]/60">
                       <div className="flex flex-wrap items-center gap-2 text-xs">
-                        <span className="font-['JetBrains_Mono'] font-bold text-xs text-[var(--brand-primary)]">
+                        <span className="font-mono font-bold text-xs text-[var(--brand-primary)]">
                           {rep.id}
                         </span>
                         <span className="text-[var(--text-muted)]">·</span>
@@ -1343,26 +1424,26 @@ export const RangerDashboard: React.FC = () => {
 
                       <div className="flex items-center gap-2">
                         {isPending && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300">
-                            <Clock className="w-3.5 h-3.5 text-amber-600" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-[var(--status-caution-text)] dark:bg-amber-950 border border-amber-300 dark:border-amber-800">
+                            <Clock className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />
                             En attente de revue
                           </span>
                         )}
                         {isValidated && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300">
-                            <Check className="w-3.5 h-3.5 text-emerald-600" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-[var(--status-open-text)] dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800">
+                            <Check className="w-3.5 h-3.5 text-[var(--status-open-text)]" />
                             Validé éco-garde
                           </span>
                         )}
                         {isResolved && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-800 dark:bg-sky-950 dark:text-sky-300 border border-sky-300">
-                            <CheckCircle2 className="w-3.5 h-3.5 text-sky-600" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-sky-100 text-sky-900 dark:bg-sky-950 dark:text-sky-200 border border-sky-300 dark:border-sky-800">
+                            <CheckCircle2 className="w-3.5 h-3.5 text-sky-700 dark:text-sky-300" />
                             Résolu sur le terrain
                           </span>
                         )}
                         {isRejected && (
-                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-zinc-100 text-zinc-700 dark:bg-zinc-800 dark:text-zinc-300 border border-zinc-300">
-                            <X className="w-3.5 h-3.5 text-zinc-500" />
+                          <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-zinc-100 text-[var(--text-primary)] dark:bg-zinc-800 dark:text-zinc-200 border border-zinc-300 dark:border-zinc-700">
+                            <X className="w-3.5 h-3.5 text-[var(--text-muted)]" />
                             Rejeté / Classé
                           </span>
                         )}
@@ -1371,16 +1452,16 @@ export const RangerDashboard: React.FC = () => {
 
                     {/* Report Content */}
                     <div className="space-y-1.5">
-                      <h4 className="font-sans text-sm sm:text-base font-bold text-[var(--text-primary)]">
+                      <h4 className="type-cockpit-h3 text-[var(--text-primary)]">
                         {rep.title}
                       </h4>
-                      <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+                      <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
                         {rep.description}
                       </p>
                     </div>
 
                     {/* Location & Sender Metadata */}
-                    <div className="flex flex-wrap items-center justify-between gap-3 text-[11px] text-[var(--text-muted)] pt-1">
+                    <div className="flex flex-wrap items-center justify-between gap-3 text-xs text-[var(--text-muted)] pt-1">
                       <div className="flex flex-wrap items-center gap-3">
                         <button
                           type="button"
@@ -1388,10 +1469,10 @@ export const RangerDashboard: React.FC = () => {
                             setSelectedTrailId(rep.trailId);
                             setActiveView('sentiers');
                           }}
-                          className="flex items-center gap-1 text-[var(--text-primary)] hover:text-[var(--brand-primary)] hover:underline font-semibold cursor-pointer"
+                          className="min-h-[44px] xl:min-h-[32px] inline-flex items-center gap-1 px-1.5 text-[var(--text-primary)] hover:text-[var(--brand-primary)] hover:underline font-semibold cursor-pointer"
                           title="Ouvrir ce circuit sur la carte interactive"
                         >
-                          <MapPin className="w-3 h-3 text-[var(--brand-primary)]" />
+                          <MapPin className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
                           <span>{trailMatch ? trailMatch.name : rep.trailId}</span>
                         </button>
                         <span>Repère : <strong className="text-[var(--text-primary)]">{rep.landmark}</strong></span>
@@ -1407,8 +1488,8 @@ export const RangerDashboard: React.FC = () => {
 
                     {/* Forester Intervention Note Banner */}
                     {rep.rangerNote && (
-                      <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-emerald-900 dark:text-emerald-100 flex items-start gap-2.5">
-                        <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-[var(--text-primary)] flex items-start gap-2.5">
+                        <ShieldCheck className="w-4 h-4 text-[var(--status-open-text)] shrink-0 mt-0.5" />
                         <div>
                           <strong className="font-semibold">Note d intervention de l Éco-Garde :</strong>{' '}
                           {rep.rangerNote}
@@ -1428,7 +1509,7 @@ export const RangerDashboard: React.FC = () => {
                             type="button"
                             disabled={!canManageOps}
                             onClick={() => canManageOps && handleValidateReport(rep.id)}
-                            className="min-h-[48px] px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs active:scale-95 flex items-center gap-1"
+                            className="min-h-[48px] px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-300 dark:hover:bg-emerald-200 dark:text-[#081C15] text-white text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs active:scale-95 flex items-center gap-1"
                           >
                             <Check className="w-3.5 h-3.5" />
                             <span>Valider</span>
@@ -1440,7 +1521,7 @@ export const RangerDashboard: React.FC = () => {
                             type="button"
                             disabled={!canManageOps}
                             onClick={() => canManageOps && handleOpenResolutionDialog(rep.id)}
-                            className="min-h-[48px] px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs active:scale-95 flex items-center gap-1"
+                            className="min-h-[48px] px-3.5 py-2 rounded-xl bg-sky-800 hover:bg-sky-900 dark:bg-sky-300 dark:hover:bg-sky-200 dark:text-[#081C15] text-white text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs active:scale-95 flex items-center gap-1"
                           >
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             <span>Résoudre &amp; Commenter</span>
@@ -1452,7 +1533,7 @@ export const RangerDashboard: React.FC = () => {
                             type="button"
                             disabled={!canManageOps}
                             onClick={() => canManageOps && handleRejectReport(rep.id)}
-                            className="min-h-[48px] px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/40 text-[var(--text-muted)] text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="min-h-[48px] px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-red-50 hover:text-[var(--status-danger-text)] dark:hover:bg-red-950/40 text-[var(--text-primary)] text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <span>Rejeter</span>
                           </button>
@@ -1482,64 +1563,64 @@ export const RangerDashboard: React.FC = () => {
                 </div>
                 <h2
                   id="syscohada-audit-title"
-                  className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                  className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
                 >
-                   Synthèse Comptable des Recettes FCFA &amp; Traçabilité Loi n° 2010/012
+                  Synthèse Comptable des Recettes FCFA &amp; Traçabilité Loi n° 2010/012
                 </h2>
-                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                <p className="type-cockpit-meta text-[var(--text-muted)] mt-0.5">
                   Montants calculés en entiers stricts FCFA (Loi 3) · Consultation réservée aux profils Comptable SYSCOHADA, Direction et Administrateur
                 </p>
               </div>
-              <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 text-xs font-mono font-bold">
+              <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-[var(--status-open-text)] dark:bg-emerald-950 border border-emerald-300 dark:border-emerald-800 text-xs font-mono font-bold self-start sm:self-center">
                 SYSCOHADA · FCFA (Int)
               </span>
             </div>
 
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                <span className="type-cockpit-meta font-mono uppercase text-[var(--text-muted)] block">
                   Recettes Nettes Actives
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-[var(--brand-primary)] mt-1">
+                <div className="type-cockpit-kpi text-[var(--brand-primary)] mt-1">
                   {formatEur(financialSummary.netActiveRevenueFcfa)}
                 </div>
-                <span className="text-[11px] text-[var(--text-muted)]">
+                <span className="type-cockpit-meta text-[var(--text-muted)]">
                   {financialSummary.activeCount} billet(s) actif(s)
                 </span>
               </div>
 
               <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                <span className="type-cockpit-meta font-mono uppercase text-[var(--text-muted)] block">
                   Validés Portique (Check-In)
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-sky-700 dark:text-sky-400 mt-1">
+                <div className="type-cockpit-kpi text-sky-800 dark:text-sky-300 mt-1">
                   {formatEur(financialSummary.checkedInRevenueFcfa)}
                 </div>
-                <span className="text-[11px] text-[var(--text-muted)]">
+                <span className="type-cockpit-meta text-[var(--text-muted)]">
                   {financialSummary.checkedInCount} entrée(s) constatée(s)
                 </span>
               </div>
 
               <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                <span className="type-cockpit-meta font-mono uppercase text-[var(--text-muted)] block">
                   Confirmés à Encaisser / Scanner
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-emerald-700 dark:text-emerald-400 mt-1">
+                <div className="type-cockpit-kpi text-[var(--status-open-text)] mt-1">
                   {formatEur(financialSummary.confirmedPendingFcfa)}
                 </div>
-                <span className="text-[11px] text-[var(--text-muted)]">
+                <span className="type-cockpit-meta text-[var(--text-muted)]">
                   {financialSummary.confirmedCount} réservation(s) ouverte(s)
                 </span>
               </div>
 
               <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
-                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                <span className="type-cockpit-meta font-mono uppercase text-[var(--text-muted)] block">
                   Remises Accordées / Annulés
                 </span>
-                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-amber-700 dark:text-amber-400 mt-1">
+                <div className="type-cockpit-kpi text-[var(--status-caution-text)] mt-1">
                   {formatEur(financialSummary.totalDiscountsFcfa)}
                 </div>
-                <span className="text-[11px] text-[var(--text-muted)]">
+                <span className="type-cockpit-meta text-[var(--text-muted)]">
                   Annulés : {formatEur(financialSummary.cancelledFcfa)} ({financialSummary.cancelledCount})
                 </span>
               </div>
@@ -1548,7 +1629,7 @@ export const RangerDashboard: React.FC = () => {
             <div className="overflow-x-auto rounded-2xl border border-[var(--border-default)]">
               <table className="w-full text-left border-collapse text-xs tabular-nums">
                 <thead>
-                  <tr className="bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-[11px] uppercase font-mono text-[var(--text-muted)]">
+                  <tr className="bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-xs uppercase font-mono text-[var(--text-muted)]">
                     <th className="p-3 font-semibold">Référence</th>
                     <th className="p-3 font-semibold">Date Visite</th>
                     <th className="p-3 font-semibold">Formule</th>
@@ -1582,9 +1663,9 @@ export const RangerDashboard: React.FC = () => {
                             ? 'Confirmé'
                             : 'Annulé'}
                         </td>
-                        <td className="p-3 font-mono text-[11px]">
+                        <td className="p-3 font-mono text-xs">
                           {isAnonymized ? (
-                            <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300">
+                            <span className="px-2 py-0.5 rounded bg-amber-100 text-[var(--status-caution-text)] dark:bg-amber-950">
                               Anonymisé
                             </span>
                           ) : (
@@ -1622,21 +1703,21 @@ export const RangerDashboard: React.FC = () => {
           >
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
-                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                  <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--status-caution-text)]">
+                  <ShieldCheck className="w-4 h-4 text-[var(--status-caution-text)]" />
                   <span>Gouvernance Sécurité &amp; Contrôle d Accès (RBAC)</span>
                 </div>
                 <h2
                   id="rbac-governance-title"
-                  className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                  className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
                 >
                   Matrice des Habilitations &amp; Annuaire des {staffDirectory.length} Postes Internes
                 </h2>
-                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                <p className="type-cockpit-meta text-[var(--text-muted)] mt-0.5">
                   Coffre cryptographique PBKDF2-HMAC-SHA256 (120 000 itér.) · Jeton signé HMAC-SHA256 · Bail Staff 12h / Client 7j
                 </p>
               </div>
-              <span className="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-mono font-bold">
+              <span className="px-3 py-1.5 rounded-xl bg-amber-100 text-[var(--status-caution-text)] dark:bg-amber-950 border border-amber-300 dark:border-amber-800 text-xs font-mono font-bold self-start sm:self-center">
                 {staffDirectory.length}/6 Rôles Staff Provisionnés
               </span>
             </div>
@@ -1644,7 +1725,7 @@ export const RangerDashboard: React.FC = () => {
             <div className="overflow-x-auto rounded-2xl border border-[var(--border-default)]">
               <table className="w-full text-left border-collapse text-xs tabular-nums">
                 <thead>
-                  <tr className="bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-[11px] uppercase font-mono text-[var(--text-muted)]">
+                  <tr className="bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-xs uppercase font-mono text-[var(--text-muted)]">
                     <th className="p-3 font-semibold">Matricule</th>
                     <th className="p-3 font-semibold">Poste / Rôle</th>
                     <th className="p-3 font-semibold">Identifiant Interne</th>
@@ -1664,7 +1745,7 @@ export const RangerDashboard: React.FC = () => {
                         {getRoleDisplayLabel(acc.role)}
                       </td>
                       <td className="p-3 font-mono text-[var(--text-muted)]">{acc.email}</td>
-                      <td className="p-3 font-mono text-[11px] text-[var(--text-primary)]">
+                      <td className="p-3 font-mono text-xs text-[var(--text-primary)]">
                         {acc.assignedPole}
                       </td>
                       <td className="p-3 text-center font-mono">
@@ -1690,14 +1771,21 @@ export const RangerDashboard: React.FC = () => {
       {/* =================================================================== */}
       {activeClosureTrailId && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-2xl p-6 sm:p-7 space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between">
+          <div
+            ref={modalDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ranger-modal-closure-title"
+            tabIndex={-1}
+            className="w-full max-w-lg rounded-3xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-2xl p-6 sm:p-7 space-y-5 animate-in fade-in zoom-in-95 duration-200"
+          >
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950 text-red-600 dark:text-red-400 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-red-100 dark:bg-red-950 text-[var(--status-danger-text)] flex items-center justify-center shrink-0">
                   <XCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
+                  <h3 id="ranger-modal-closure-title" className="type-cockpit-h3 text-[var(--text-primary)]">
                     Fermeture d Urgence de Sentier
                   </h3>
                   <span className="text-xs text-[var(--text-muted)] font-mono">
@@ -1707,8 +1795,10 @@ export const RangerDashboard: React.FC = () => {
               </div>
 
               <button
+                type="button"
+                aria-label="Fermer la fenêtre"
                 onClick={() => setActiveClosureTrailId(null)}
-                className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1731,7 +1821,7 @@ export const RangerDashboard: React.FC = () => {
                     key={preset}
                     type="button"
                     onClick={() => setClosureReasonInput(preset)}
-                    className={`w-full text-left p-2.5 rounded-xl border text-xs transition-colors cursor-pointer ${
+                    className={`min-h-[44px] w-full text-left px-3 py-2 rounded-xl border text-xs transition-colors cursor-pointer ${
                       closureReasonInput === preset
                         ? 'bg-[var(--brand-primary)]/10 border-[var(--brand-primary)] text-[var(--brand-primary)] font-semibold'
                         : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -1751,16 +1841,16 @@ export const RangerDashboard: React.FC = () => {
                   value={closureReasonInput}
                   onChange={(e) => setClosureReasonInput(e.target.value)}
                   placeholder="Précisez la raison et la durée estimée de la fermeture..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-red-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-red-500"
                 />
               </div>
             </div>
 
-            <div className="pt-3 border-t border-[var(--border-default)] flex items-center justify-end gap-3">
+            <div className="pt-3 border-t border-[var(--border-default)] flex flex-wrap items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setActiveClosureTrailId(null)}
-                className="px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                className="min-h-[44px] px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 Annuler
               </button>
@@ -1768,7 +1858,7 @@ export const RangerDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleConfirmClosure(activeClosureTrailId)}
-                className="px-5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold transition-all cursor-pointer shadow-md"
+                className="min-h-[44px] px-5 py-2 rounded-xl bg-red-800 hover:bg-red-900 dark:bg-red-300 dark:hover:bg-red-200 dark:text-[#121614] text-white text-xs font-bold transition-all cursor-pointer shadow-md"
               >
                 Appliquer la fermeture
               </button>
@@ -1782,14 +1872,21 @@ export const RangerDashboard: React.FC = () => {
       {/* =================================================================== */}
       {resolvingReportId && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-lg rounded-3xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-2xl p-6 sm:p-7 space-y-5 animate-in fade-in zoom-in-95 duration-200">
-            <div className="flex items-center justify-between">
+          <div
+            ref={modalDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ranger-modal-resolve-title"
+            tabIndex={-1}
+            className="w-full max-w-lg rounded-3xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-2xl p-6 sm:p-7 space-y-5 animate-in fade-in zoom-in-95 duration-200"
+          >
+            <div className="flex items-center justify-between gap-2">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-950 text-sky-600 dark:text-sky-400 flex items-center justify-center shrink-0">
+                <div className="w-10 h-10 rounded-xl bg-sky-100 dark:bg-sky-950 text-sky-800 dark:text-sky-300 flex items-center justify-center shrink-0">
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
+                  <h3 id="ranger-modal-resolve-title" className="type-cockpit-h3 text-[var(--text-primary)]">
                     Clôturer &amp; Résoudre le Signalement
                   </h3>
                   <span className="text-xs text-[var(--text-muted)] font-mono">
@@ -1799,8 +1896,10 @@ export const RangerDashboard: React.FC = () => {
               </div>
 
               <button
+                type="button"
+                aria-label="Fermer la fenêtre"
                 onClick={() => setResolvingReportId(null)}
-                className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                className="min-w-[44px] min-h-[44px] inline-flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -1822,9 +1921,9 @@ export const RangerDashboard: React.FC = () => {
                     key={preset}
                     type="button"
                     onClick={() => setInterventionNoteInput(preset)}
-                    className={`w-full text-left p-2.5 rounded-xl border text-xs transition-colors cursor-pointer ${
+                    className={`min-h-[44px] w-full text-left px-3 py-2 rounded-xl border text-xs transition-colors cursor-pointer ${
                       interventionNoteInput === preset
-                        ? 'bg-sky-500/10 border-sky-500 text-sky-700 dark:text-sky-300 font-semibold'
+                        ? 'bg-sky-500/10 border-sky-500 text-sky-800 dark:text-sky-200 font-semibold'
                         : 'bg-[var(--bg-surface)] border-[var(--border-default)] text-[var(--text-muted)] hover:text-[var(--text-primary)]'
                     }`}
                   >
@@ -1842,16 +1941,16 @@ export const RangerDashboard: React.FC = () => {
                   value={interventionNoteInput}
                   onChange={(e) => setInterventionNoteInput(e.target.value)}
                   placeholder="Décrivez les mesures prises sur place par l'équipe technique..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-sky-500"
                 />
               </div>
             </div>
 
-            <div className="pt-3 border-t border-[var(--border-default)] flex items-center justify-end gap-3">
+            <div className="pt-3 border-t border-[var(--border-default)] flex flex-wrap items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setResolvingReportId(null)}
-                className="px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                className="min-h-[44px] px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 Annuler
               </button>
@@ -1859,7 +1958,7 @@ export const RangerDashboard: React.FC = () => {
               <button
                 type="button"
                 onClick={() => handleConfirmResolution(resolvingReportId)}
-                className="px-5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-bold transition-all cursor-pointer shadow-md"
+                className="min-h-[44px] px-5 py-2 rounded-xl bg-sky-800 hover:bg-sky-900 dark:bg-sky-300 dark:hover:bg-sky-200 dark:text-[#081C15] text-white text-xs font-bold transition-all cursor-pointer shadow-md"
               >
                 Confirmer la résolution
               </button>
@@ -1873,12 +1972,19 @@ export const RangerDashboard: React.FC = () => {
       {/* =================================================================== */}
       {showResetConfirm && (
         <div className="fixed inset-0 z-50 overflow-y-auto bg-black/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="w-full max-w-md rounded-3xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-2xl p-6 sm:p-7 space-y-4 animate-in fade-in zoom-in-95 duration-200">
+          <div
+            ref={modalDialogRef}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="ranger-modal-reset-title"
+            tabIndex={-1}
+            className="w-full max-w-md rounded-3xl bg-[var(--bg-elevated)] border border-[var(--border-default)] shadow-2xl p-6 sm:p-7 space-y-4 animate-in fade-in zoom-in-95 duration-200"
+          >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-[var(--status-caution-text)] flex items-center justify-center shrink-0">
                 <RotateCcw className="w-5 h-5" />
               </div>
-              <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
+              <h3 id="ranger-modal-reset-title" className="type-cockpit-h3 text-[var(--text-primary)]">
                 Réinitialisation Démo
               </h3>
             </div>
@@ -1888,11 +1994,11 @@ export const RangerDashboard: React.FC = () => {
               et 5 signalements Sentinelle) ? Cette action réinitialisera le `localStorage`.
             </p>
 
-            <div className="pt-3 border-t border-[var(--border-default)] flex items-center justify-end gap-3">
+            <div className="pt-3 border-t border-[var(--border-default)] flex flex-wrap items-center justify-end gap-3">
               <button
                 type="button"
                 onClick={() => setShowResetConfirm(false)}
-                className="px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
+                className="min-h-[44px] px-4 py-2 rounded-xl border border-[var(--border-default)] text-xs font-semibold text-[var(--text-muted)] hover:text-[var(--text-primary)] cursor-pointer"
               >
                 Annuler
               </button>
@@ -1904,7 +2010,7 @@ export const RangerDashboard: React.FC = () => {
                   setShowResetConfirm(false);
                   showToast('Données réinitialisées aux valeurs de référence');
                 }}
-                className="px-5 py-2 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-bold transition-all cursor-pointer shadow-md"
+                className="min-h-[44px] px-5 py-2 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-xs font-bold transition-all cursor-pointer shadow-md"
               >
                 Confirmer la réinitialisation
               </button>

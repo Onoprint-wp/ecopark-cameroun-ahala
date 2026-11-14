@@ -307,13 +307,13 @@ export const ColorAtlasDrawer: React.FC = () => {
           {/* Header */}
           <div className="p-5 sm:p-6 border-b border-[var(--border-default)] flex items-center justify-between gap-4 bg-[var(--bg-surface)]/50">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#52B788] to-[#1B4332] flex items-center justify-center text-white shadow-sm shrink-0">
+              <div className="w-10 h-10 rounded-xl bg-[#1B4332] flex items-center justify-center text-white shadow-sm shrink-0">
                 <Palette className="w-5 h-5" />
               </div>
               <div>
                 <h2
                   id="color-atlas-title"
-                  className="font-['Barlow_Semi_Condensed'] font-bold text-lg sm:text-xl text-[var(--text-primary)] leading-tight"
+                  className="font-sans font-bold text-lg sm:text-xl text-[var(--text-primary)] leading-tight"
                 >
                   Atelier Chromatique
                 </h2>
@@ -328,7 +328,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                 href="/color-atlas-standalone.html"
                 target="_blank"
                 rel="noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-elevated)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors cursor-pointer"
+                className="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-3 py-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-elevated)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors cursor-pointer"
                 title="Ouvrir le prototype interactif autonome dans un nouvel onglet"
               >
                 <span>Plein écran</span>
@@ -337,7 +337,7 @@ export const ColorAtlasDrawer: React.FC = () => {
 
               <button
                 onClick={() => setColorDrawerOpen(false)}
-                className="p-2 rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors cursor-pointer"
+                className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors cursor-pointer"
                 aria-label="Fermer l atelier chromatique"
               >
                 <X className="w-5 h-5" />
@@ -349,7 +349,7 @@ export const ColorAtlasDrawer: React.FC = () => {
           <div className="px-5 sm:px-6 pt-3 border-b border-[var(--border-default)] flex gap-2 overflow-x-auto bg-[var(--bg-elevated)]">
             <button
               onClick={() => setActiveTab('pillars')}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-t-lg text-xs font-bold transition-all border-b-2 cursor-pointer shrink-0 ${
+              className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2.5 rounded-t-lg text-xs font-bold transition-all border-b-2 cursor-pointer shrink-0 ${
                 activeTab === 'pillars'
                   ? 'border-[var(--brand-primary)] text-[var(--brand-primary)] bg-[var(--bg-surface)]'
                   : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -361,7 +361,7 @@ export const ColorAtlasDrawer: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('scales')}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-t-lg text-xs font-bold transition-all border-b-2 cursor-pointer shrink-0 ${
+              className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2.5 rounded-t-lg text-xs font-bold transition-all border-b-2 cursor-pointer shrink-0 ${
                 activeTab === 'scales'
                   ? 'border-[var(--brand-primary)] text-[var(--brand-primary)] bg-[var(--bg-surface)]'
                   : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -373,7 +373,7 @@ export const ColorAtlasDrawer: React.FC = () => {
 
             <button
               onClick={() => setActiveTab('tester')}
-              className={`flex items-center gap-2 px-3.5 py-2.5 rounded-t-lg text-xs font-bold transition-all border-b-2 cursor-pointer shrink-0 ${
+              className={`min-h-[44px] flex items-center gap-2 px-3.5 py-2.5 rounded-t-lg text-xs font-bold transition-all border-b-2 cursor-pointer shrink-0 ${
                 activeTab === 'tester'
                   ? 'border-[var(--brand-primary)] text-[var(--brand-primary)] bg-[var(--bg-surface)]'
                   : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -388,12 +388,12 @@ export const ColorAtlasDrawer: React.FC = () => {
           <div className="flex-1 overflow-y-auto p-5 sm:p-6 space-y-6">
             {/* Notification Toast for Clipboard Copy */}
             {copiedItem && (
-              <div className="sticky top-0 z-30 p-2.5 rounded-xl bg-emerald-600 text-white text-xs font-semibold shadow-lg flex items-center justify-between animate-in fade-in duration-200">
+              <div className="sticky top-0 z-30 p-3 rounded-xl bg-emerald-800 text-white dark:bg-emerald-300 dark:text-[#081C15] text-xs font-semibold shadow-lg flex items-center justify-between animate-in fade-in duration-200">
                 <div className="flex items-center gap-2">
                   <Check className="w-4 h-4" />
                   <span>{copiedItem}</span>
                 </div>
-                <span className="text-[10px] opacity-80">Prêt à coller</span>
+                <span className="text-xs opacity-90">Prêt à coller</span>
               </div>
             )}
 
@@ -407,7 +407,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                     <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
                     <span>Charte d Accessibilité Validée sur Adobe Color</span>
                   </div>
-                  <p>
+                  <p className="type-footnote">
                     Les 5 piliers constituent l armature graphique d ECO-PARK. Chaque teinte a été choisie
                     sur le cercle chromatique pour concilier immersion naturelle et ratios WCAG AAA stricts.
                   </p>
@@ -427,7 +427,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                             style={{ backgroundColor: pillar.hex }}
                           />
                           <div>
-                            <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                            <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
                               {pillar.name}
                             </h3>
                             <div className="text-xs text-[var(--text-muted)]">
@@ -440,7 +440,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                         <div className="flex flex-wrap items-center gap-1.5">
                           <button
                             onClick={() => copyToClipboard(pillar.hex, `HEX ${pillar.hex} copié`)}
-                            className="px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] font-mono text-xs font-bold text-[var(--text-primary)] hover:border-[var(--brand-primary)] hover:text-[var(--brand-primary)] transition-colors cursor-pointer flex items-center gap-1"
+                            className="min-h-[44px] px-3 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] font-mono text-xs font-bold text-[var(--text-primary)] hover:border-[var(--brand-primary)] hover:text-[var(--brand-primary)] transition-colors cursor-pointer flex items-center gap-1"
                             title="Copier le code HEX"
                           >
                             <Copy className="w-3 h-3" />
@@ -449,7 +449,7 @@ export const ColorAtlasDrawer: React.FC = () => {
 
                           <button
                             onClick={() => copyToClipboard(pillar.rgb, `RGB ${pillar.rgb} copié`)}
-                            className="px-2 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] font-mono text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                            className="min-h-[44px] px-3 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] font-mono text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                             title="Copier la valeur RGB"
                           >
                             RGB
@@ -457,7 +457,7 @@ export const ColorAtlasDrawer: React.FC = () => {
 
                           <button
                             onClick={() => copyToClipboard(pillar.cssVar, `Variable ${pillar.cssVar} copiée`)}
-                            className="px-2 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] font-mono text-[11px] text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
+                            className="min-h-[44px] px-3 py-1.5 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] font-mono text-xs text-[var(--text-muted)] hover:text-[var(--text-primary)] transition-colors cursor-pointer"
                             title="Copier la variable CSS"
                           >
                             CSS
@@ -471,8 +471,8 @@ export const ColorAtlasDrawer: React.FC = () => {
                           <span className="font-semibold text-[var(--text-primary)]">Rôle : </span>
                           <span className="text-[var(--text-muted)]">{pillar.role}</span>
                         </div>
-                        <div className="flex items-center gap-1 text-[11px] text-emerald-800 dark:text-emerald-300 font-mono">
-                          <Sparkles className="w-3 h-3 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                        <div className="flex items-center gap-1 text-xs text-[var(--status-open-text)] font-mono">
+                          <Sparkles className="w-3.5 h-3.5 text-[var(--status-open-text)] shrink-0" />
                           <span>{pillar.auditNotes}</span>
                         </div>
                       </div>
@@ -493,7 +493,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                     <button
                       key={fam}
                       onClick={() => setActiveScaleFamily(fam)}
-                      className={`flex-1 min-w-[70px] py-1.5 px-2 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
+                      className={`min-h-[44px] flex-1 min-w-[70px] py-2 px-2 rounded-lg text-xs font-semibold capitalize transition-all cursor-pointer ${
                         activeScaleFamily === fam
                           ? 'bg-[var(--bg-elevated)] text-[var(--brand-primary)] shadow-xs font-bold border border-[var(--border-default)]'
                           : 'text-[var(--text-muted)] hover:text-[var(--text-primary)]'
@@ -517,15 +517,37 @@ export const ColorAtlasDrawer: React.FC = () => {
                     {COLOR_SCALES[activeScaleFamily].steps.map((st) => {
                       const rgb = hexToRgb(st.hex) || { r: 128, g: 128, b: 128 };
                       const lum = getRelativeLuminance(rgb);
-                      const isDark = lum < 0.25;
-                      const textColor = isDark ? '#FFFFFF' : '#121614';
-                      const badgeBg = isDark ? 'bg-white/15 text-white' : 'bg-black/10 text-black';
+                      const darkContrast = getContrastRatio('#121614', st.hex);
+                      const whiteContrast = getContrastRatio('#FFFFFF', st.hex);
+                      const blackContrast = getContrastRatio('#000000', st.hex);
+                      const useWhiteText =
+                        darkContrast >= 4.5 && darkContrast >= whiteContrast
+                          ? false
+                          : whiteContrast >= 4.5 && whiteContrast >= blackContrast
+                            ? true
+                            : whiteContrast > blackContrast;
+                      const textColor = useWhiteText
+                        ? '#FFFFFF'
+                        : darkContrast >= 4.5
+                          ? '#121614'
+                          : '#000000';
+                      const badgeBg = useWhiteText
+                        ? 'bg-[#081C15] text-white border border-white/25'
+                        : 'bg-white text-[#121614] border border-black/15';
 
                       return (
                         <div
-                          key={st.step}
+                          key={`${activeScaleFamily}-${st.step}`}
+                          role="button"
+                          tabIndex={0}
                           onClick={() => copyToClipboard(st.hex, `Échelon ${st.step} (${st.hex}) copié`)}
-                          className="group relative p-3 rounded-xl border border-black/10 flex items-center justify-between transition-transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-xs"
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              copyToClipboard(st.hex, `Échelon ${st.step} (${st.hex}) copié`);
+                            }
+                          }}
+                          className="group relative p-3 min-h-[44px] rounded-xl border border-black/10 flex items-center justify-between transition-transform hover:scale-[1.01] active:scale-[0.99] cursor-pointer shadow-xs"
                           style={{ backgroundColor: st.hex }}
                           title={`Cliquez pour copier ${st.hex}`}
                         >
@@ -544,10 +566,10 @@ export const ColorAtlasDrawer: React.FC = () => {
                           </div>
 
                           <div className="flex items-center gap-2 text-xs font-mono" style={{ color: textColor }}>
-                            <span className="text-[10px] opacity-75">
+                            <span className="text-xs font-semibold">
                               Lum: {Math.round(lum * 100)}%
                             </span>
-                            <Copy className="w-3.5 h-3.5 opacity-60 group-hover:opacity-100 transition-opacity" />
+                            <Copy className="w-3.5 h-3.5 opacity-90 group-hover:opacity-100 transition-opacity" aria-hidden="true" />
                           </div>
                         </div>
                       );
@@ -564,7 +586,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                         .join('\n');
                       copyToClipboard(snippet, `Variables CSS de l'échelle ${activeScaleFamily} copiées`);
                     }}
-                    className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-semibold text-[var(--brand-primary)] hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer"
+                    className="min-h-[44px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-surface)] text-xs font-semibold text-[var(--brand-primary)] hover:bg-[var(--bg-elevated)] transition-colors cursor-pointer"
                   >
                     <Copy className="w-3.5 h-3.5" />
                     <span>Copier les variables CSS de cette échelle</span>
@@ -580,11 +602,11 @@ export const ColorAtlasDrawer: React.FC = () => {
               <div className="space-y-6">
                 {/* 1. Explored Adobe Palettes */}
                 <div className="space-y-3">
-                  <div className="flex items-center justify-between">
-                    <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-sm text-[var(--text-primary)]">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
                       Palettes Thématiques Extraites d Adobe Color Explore
                     </h3>
-                    <span className="text-[11px] text-[var(--text-muted)] font-mono">
+                    <span className="text-xs text-[var(--text-muted)] font-mono">
                       5 harmonies certifiées
                     </span>
                   </div>
@@ -595,9 +617,9 @@ export const ColorAtlasDrawer: React.FC = () => {
                         key={pal.name}
                         className="p-3 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-2"
                       >
-                        <div className="flex items-center justify-between text-xs">
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
                           <span className="font-bold text-[var(--text-primary)]">{pal.name}</span>
-                          <span className="text-[10px] font-mono text-[var(--text-muted)]">
+                          <span className="text-xs font-mono text-[var(--text-muted)]">
                             req: {pal.query}
                           </span>
                         </div>
@@ -611,19 +633,19 @@ export const ColorAtlasDrawer: React.FC = () => {
                                 setFgColor(hex);
                                 copyToClipboard(hex, `Couleur ${hex} sélectionnée pour le texte`);
                               }}
-                              className="group relative h-9 rounded-md border border-black/10 flex flex-col items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer"
+                              className="group relative min-h-[44px] rounded-md border border-black/10 flex flex-col items-center justify-center transition-transform hover:scale-105 active:scale-95 cursor-pointer"
                               style={{ backgroundColor: hex }}
                               title={`Cliquer pour définir ${hex} comme couleur de texte`}
                             >
-                              <span className="text-[9px] font-mono text-white/90 drop-shadow-xs font-bold opacity-0 group-hover:opacity-100 transition-opacity">
+                              <span className="text-xs font-mono px-1 rounded bg-black/65 text-white font-bold opacity-0 group-hover:opacity-100 transition-opacity">
                                 FG
                               </span>
                             </button>
                           ))}
                         </div>
 
-                        <div className="flex items-center justify-between text-[11px]">
-                          <div className="flex gap-2 font-mono text-[10px] text-[var(--text-muted)]">
+                        <div className="flex flex-wrap items-center justify-between gap-2 text-xs">
+                          <div className="flex flex-wrap gap-2 font-mono text-xs text-[var(--text-muted)]">
                             {pal.swatches.map((h, i) => (
                               <span key={i}>{h}</span>
                             ))}
@@ -633,7 +655,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                               setFgColor(pal.swatches[0]);
                               setBgColor(pal.swatches[4]);
                             }}
-                            className="text-[10px] text-[var(--brand-primary)] font-semibold hover:underline cursor-pointer"
+                            className="min-h-[44px] px-2 text-xs text-[var(--brand-primary)] font-semibold hover:underline cursor-pointer"
                           >
                             Tester cette paire
                           </button>
@@ -645,9 +667,9 @@ export const ColorAtlasDrawer: React.FC = () => {
 
                 {/* 2. Interactive WCAG Contrast Calculator (Feature F30) */}
                 <div className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
-                  <div className="flex items-center justify-between">
+                  <div className="flex items-center justify-between gap-2">
                     <div>
-                      <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                      <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
                         Calculateur de Contraste WCAG 2.1 en Temps Réel
                       </h3>
                       <p className="text-xs text-[var(--text-muted)]">
@@ -657,7 +679,7 @@ export const ColorAtlasDrawer: React.FC = () => {
 
                     <button
                       onClick={swapColors}
-                      className="p-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] hover:border-[var(--brand-primary)] transition-all cursor-pointer flex items-center gap-1 text-xs font-semibold"
+                      className="min-h-[44px] px-3 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[var(--text-primary)] hover:border-[var(--brand-primary)] transition-all cursor-pointer flex items-center gap-1.5 text-xs font-semibold shrink-0"
                       title="Inverser Premier Plan et Arrière-Plan"
                     >
                       <ArrowRightLeft className="w-3.5 h-3.5" />
@@ -677,13 +699,13 @@ export const ColorAtlasDrawer: React.FC = () => {
                           type="color"
                           value={normalizeHex(fgColor)}
                           onChange={(e) => setFgColor(e.target.value.toUpperCase())}
-                          className="w-10 h-10 rounded-lg cursor-pointer border border-[var(--border-default)] bg-transparent p-0.5"
+                          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-lg cursor-pointer border border-[var(--border-default)] bg-transparent p-0.5 shrink-0"
                         />
                         <input
                           type="text"
                           value={fgColor}
                           onChange={(e) => setFgColor(e.target.value)}
-                          className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono font-bold text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                          className="flex-1 min-h-[44px] px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm font-mono font-bold text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                         />
                       </div>
                     </div>
@@ -698,13 +720,13 @@ export const ColorAtlasDrawer: React.FC = () => {
                           type="color"
                           value={normalizeHex(bgColor)}
                           onChange={(e) => setBgColor(e.target.value.toUpperCase())}
-                          className="w-10 h-10 rounded-lg cursor-pointer border border-[var(--border-default)] bg-transparent p-0.5"
+                          className="w-11 h-11 min-w-[44px] min-h-[44px] rounded-lg cursor-pointer border border-[var(--border-default)] bg-transparent p-0.5 shrink-0"
                         />
                         <input
                           type="text"
                           value={bgColor}
                           onChange={(e) => setBgColor(e.target.value)}
-                          className="flex-1 px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono font-bold text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
+                          className="flex-1 min-h-[44px] px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm font-mono font-bold text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                         />
                       </div>
                     </div>
@@ -712,7 +734,7 @@ export const ColorAtlasDrawer: React.FC = () => {
 
                   {/* Quick Preset Chips */}
                   <div className="flex flex-wrap items-center gap-1.5 pt-1">
-                    <span className="text-[10px] text-[var(--text-muted)] font-semibold uppercase">
+                    <span className="text-xs text-[var(--text-muted)] font-semibold uppercase">
                       Raccourcis :
                     </span>
                     {QUICK_PRESETS.map((p) => (
@@ -723,11 +745,11 @@ export const ColorAtlasDrawer: React.FC = () => {
                           e.preventDefault();
                           setBgColor(p.hex);
                         }}
-                        className="px-2 py-0.5 rounded text-[10px] font-mono border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-canvas)] transition-colors cursor-pointer flex items-center gap-1"
+                        className="min-h-[44px] px-2.5 py-1.5 rounded-lg text-xs font-mono border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-canvas)] transition-colors cursor-pointer flex items-center gap-1.5"
                         title="Clic gauche: Texte | Clic droit: Fond"
                       >
                         <span
-                          className="w-2 h-2 rounded-full border border-black/20"
+                          className="w-2.5 h-2.5 rounded-full border border-black/20"
                           style={{ backgroundColor: p.hex }}
                         />
                         <span>{p.label}</span>
@@ -740,17 +762,17 @@ export const ColorAtlasDrawer: React.FC = () => {
                     className="p-5 rounded-2xl border border-black/10 transition-colors shadow-inner space-y-3"
                     style={{ backgroundColor: bgColor, color: fgColor }}
                   >
-                    <div className="text-[10px] font-mono font-bold uppercase tracking-wider opacity-75">
+                    <div className="text-xs font-mono font-bold uppercase tracking-wider opacity-85">
                       Aperçu de Rendu Typographique &amp; Composant
                     </div>
                     <div className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold leading-tight">
                       Forêt &amp; Canopée Sauvage ECO-PARK
                     </div>
-                    <p className="text-xs leading-relaxed max-w-lg opacity-90 font-sans">
+                    <p className="text-sm leading-relaxed max-w-lg opacity-95 font-sans">
                       La réserve naturelle préserve les corridors biologiques essentiels. Cette surface
                       illustre le contraste perçu dans l interface en conditions réelles.
                     </p>
-                    <div className="pt-2 flex items-center gap-2">
+                    <div className="pt-2 flex flex-wrap items-center gap-2">
                       <span
                         className="px-3 py-1.5 rounded-lg text-xs font-bold border"
                         style={{
@@ -761,7 +783,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                       >
                         Composant UI Actif
                       </span>
-                      <span className="text-[11px] font-mono opacity-80">
+                      <span className="text-xs font-mono opacity-90">
                         {currentRatio >= 3.0 ? '✓ Ratio UI Valide' : '⚠ Non conforme UI'}
                       </span>
                     </div>
@@ -770,7 +792,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                   {/* Contrast Scoreboard & Conformance Badges */}
                   <div className="p-4 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                     <div>
-                      <div className="text-[10px] text-[var(--text-muted)] font-mono uppercase font-semibold">
+                      <div className="text-xs text-[var(--text-muted)] font-mono uppercase font-semibold">
                         Ratio Mathématique W3C
                       </div>
                       <div className="text-3xl font-['Barlow_Semi_Condensed'] font-bold text-[var(--text-primary)]">
@@ -796,7 +818,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                         className={`px-2.5 py-1 rounded-lg text-xs font-bold border flex items-center gap-1 ${
                           verdict.aaaNormalText
                             ? 'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800'
-                            : 'bg-zinc-100 text-zinc-600 border-zinc-300 dark:bg-zinc-800 dark:text-zinc-400 dark:border-zinc-700'
+                            : 'bg-zinc-100 text-zinc-700 border-zinc-300 dark:bg-zinc-800 dark:text-zinc-200 dark:border-zinc-700'
                         }`}
                       >
                         {verdict.aaaNormalText ? <Check className="w-3.5 h-3.5" /> : <X className="w-3.5 h-3.5" />}
@@ -821,7 +843,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                   <div className="space-y-2 pt-2 border-t border-[var(--border-default)]/60">
                     <div className="flex items-center gap-2">
                       <Eye className="w-4 h-4 text-[var(--brand-primary)]" />
-                      <h4 className="text-xs font-bold text-[var(--text-primary)]">
+                      <h4 className="font-sans text-xs font-bold text-[var(--text-primary)]">
                         Simulation Matricielle du Daltonisme (Brettel / Viénot)
                       </h4>
                     </div>
@@ -847,13 +869,13 @@ export const ColorAtlasDrawer: React.FC = () => {
                               />
                             </div>
 
-                            <span className="text-[11px] font-semibold text-[var(--text-primary)] truncate">
+                            <span className="text-xs font-semibold text-[var(--text-primary)] leading-snug">
                               {sim.label}
                             </span>
                           </div>
 
                           <div className="flex items-center gap-1.5 shrink-0 font-mono">
-                            <span className="text-[11px] font-bold text-[var(--text-primary)]">
+                            <span className="text-xs font-bold text-[var(--text-primary)]">
                               {sim.contrastFormatted}
                             </span>
                             {sim.aaNormalPass ? (
