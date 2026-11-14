@@ -2,7 +2,7 @@
 
 - **Branche cible** : `audit/typography-accessibility-v3`
 - **Condition d'entrée** : **Validation utilisateur requise après revue des livrables `01` à `05` et `ECOPARK_TYPOGRAPHY_TOKENS_V3.md`** avant toute modification de `src/`.
-- **Objectif mesurable après Phase 2** : **`0` P0** (`1 627 -> 0` : `0` contraste actif `< 4.5:1` Light & Dark, `0` `<select>`/`Calques`/`Footer` `parent-out`/`vp-right`, `0` troncature Temps 1 / marque `1440px` / prix hôtels / rognage Hero 200%), élimination des `6 665` P1 publics `< 12px` et `5 140` corps `< 16px`, cibles tactiles mobiles `>= 44px`, et **32/32 tests `npm test` verts**.
+- **Objectif mesurable après Phase 2** : **`0` P0** (`1 628 -> 0` : `0` contraste actif `< 4.5:1` Light & Dark, `0` `<select>`/`Calques`/`Footer` `parent-out`/`vp-right`, `0` troncature Temps 1 / marque `1440px` / prix hôtels / rognage Hero 200%), élimination des `6 665` P1 publics `< 12px` et `5 112` corps `< 16px`, cibles tactiles mobiles `>= 44px`, et **32/32 tests `npm test` verts**.
 
 ---
 
@@ -73,7 +73,7 @@
    - `Daltonism` (`#filter-deuteranopia`), `MobileDrawer`, `AuthPortal` (4 modes), `ColorAtlasDrawer` (`vite dev` 3 onglets ; rappel : en production `/atelier-couleurs` redirige vers Accueil),
    - `/exploitation` (`unauth`, `client_403`, `admin`, `agent_guichet`, `comptable`, modale fermeture).
 2. **Critères d'acceptation chiffrés ("After" vs "Before")** :
-   - `P0` CSV actifs : **`1 627 -> 0`** (`0` contraste actif `< 4.5:1` Light & Dark, `0` `<select>`/`Calques`/`Footer` `parent-out`/`vp-right`, `0` troncature Temps 1 / marque `1440px` / prix hôtels / rognage Hero 200%).
+   - `P0` CSV actifs : **`1 628 -> 0`** (`0` contraste actif `< 4.5:1` Light & Dark, `0` `<select>`/`Calques`/`Footer` `parent-out`/`vp-right`, `0` troncature Temps 1 / marque `1440px` / prix hôtels / rognage Hero 200%).
    - `.type-body` : `15px` -> **`16px`** mobile (`17px` desktop, `ls: 0em`), `.type-footnote.font-mono` rendu en **`JetBrains Mono`**.
    - Micro-textes `< 12px` sur routes publiques : `6 665` P1 -> **`0` nœud HTML `< 12px`**.
    - Zoom 200% (`font_size: 32px` sur `390x844` et `1440x900`) : `0` sonde publique figée en `px` et **`0` rognage `<h1>` Hero**.

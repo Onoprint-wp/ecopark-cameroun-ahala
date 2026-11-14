@@ -28,38 +28,38 @@
 
 ### Sondes typographiques calculées sur `/` (Mode Clair)
 
-| Élément mesuré | `320x700` | `390x844` | `1440x900` | Police calculée | Observation |
-| :--- | :--- | :--- | :--- | :--- | :--- |
-| Temps 1 `Garantie Météo RN3` | `12px / 16px` (`ellipsis:+418px`) | `12px / 16px` (`ellipsis:+351px`) | `12px / 16px` | Source Sans 3 | Coupé sur mobiles `< 640px` |
-| Marque `ECOPARK CAMEROUN` | `16px / 16px` (`ellipsis:+12px`) | `16px / 16px` | `20px / 20px` | Barlow Semi Condensed | Coupé à `320px` (et `1366–1440px` sur `/exploitation`) |
-| Sous-titre `Yaoundé - Ahala • Dès 500 FCFA` | `10px / 15px` (`ellipsis:+33px`) | `10px / 15px` | `11px / 16.5px` | Source Sans 3 | `< 12px` sur tous viewports |
-| Lien `.type-nav` (`Carte & Activités`) | *(drawer)* | *(drawer)* | `12px / 16px` (`ls -0.12px`) | Source Sans 3 | `< 14px` sur desktop |
-| `.type-hero` (`Complexe écologique et loisirs`) | `48px / 52px` (`ls -0.144px`) | `48px / 52px` | `74.88px / 78.62px` (`ls -1.1232px`) | Barlow Semi Condensed | `80px` à `1920px` ; `11.08:1` |
-| `.type-tagline` (`Respirez en forêt...`) | `19px / 23px` (`ls 0.228px`) | `19px / 23px` | `24px / 28px` (`ls 0.216px`) | Barlow Semi Condensed | `19px < 20px` display sur mobile |
-| `.type-body` (`Jardin Zoologique...`) | `15px / 22px` (`ls -0.24px`) | `15px / 22px` | `17px / 25px` (`ls -0.374px`) | Source Sans 3 | `< 16px` mobile + tracking négatif |
-| `hotel-price-range` (`10 000 à 15 000 FCFA`) | `12px / 16px` | `12px / 16px` | `12px / 16px` | **Source Sans 3** *(attendu JetBrains Mono)* | Écrasement cascade CSS par `.type-footnote` unlayered |
+| Élément mesuré | `320x700` | `390x844` | `430x932` | `1440x900` | Police calculée | Observation |
+| :--- | :--- | :--- | :--- | :--- | :--- | :--- |
+| Temps 1 `Garantie Météo RN3` | `12px / 16px` (`ellipsis:+418px`) | `12px / 16px` (`ellipsis:+351px`) | `12px / 16px` (`ellipsis:+312px`) | `12px / 16px` | Source Sans 3 | Coupé sur mobiles `< 640px` |
+| Marque `ECOPARK CAMEROUN` | `16px / 16px` (`ellipsis:+12px`) | `16px / 16px` | `16px / 16px` | `20px / 20px` | Barlow Semi Condensed | Coupé à `320px` (et `1366–1440px` sur `/exploitation`) |
+| Sous-titre `Yaoundé - Ahala • Dès 500 FCFA` | `10px / 15px` (`ellipsis:+33px`) | `10px / 15px` | `10px / 15px` | `11px / 16.5px` | Source Sans 3 | `< 12px` sur tous viewports |
+| Lien `.type-nav` (`Carte & Activités`) | *(drawer)* | *(drawer)* | *(drawer)* | `12px / 16px` (`ls -0.12px`) | Source Sans 3 | `< 14px` sur desktop |
+| `.type-hero` (`Complexe écologique et loisirs`) | `48px / 52px` (`ls -0.144px`) | `48px / 52px` | `48px / 52px` | `74.88px / 78.62px` (`ls -1.1232px`) | Barlow Semi Condensed | `80px` à `1920px` ; `11.08:1` |
+| `.type-tagline` (`Respirez en forêt...`) | `19px / 23px` (`ls 0.228px`) | `19px / 23px` | `19px / 23px` | `24px / 28px` (`ls 0.216px`) | Barlow Semi Condensed | `19px < 20px` display sur mobile |
+| `.type-body` (`Jardin Zoologique...`) | `15px / 22px` (`ls -0.24px`) | `15px / 22px` | `15px / 22px` | `17px / 25px` (`ls -0.374px`) | Source Sans 3 | `< 16px` mobile + tracking négatif |
+| `hotel-price-range` (`10 000 à 15 000 FCFA`) | `12px / 16px` | `12px / 16px` | `12px / 16px` | `12px / 16px` | **Source Sans 3** *(attendu JetBrains Mono)* | Écrasement cascade CSS par `.type-footnote` unlayered |
 
 ---
 
 ## 2. Matrice des 14 Routes Publiques + Cockpit `/exploitation` (Light vs Dark)
 
-| Route | Onglet / Vue vérifié | `390x844` Light (`clip` / `ovf` / `lowC` / `tap<44`) | `390x844` Dark (`lowC`) | `1440x900` Light (`clip` / `lowC`) | `1440x900` Dark (`lowC`) | Constats dominants |
-| :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| `/` | Accueil | `16` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Temps 1, légendes Hero, `line-clamp-2` sentiers |
-| `/hebergements` | `panel-hebergements` actif | `16` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | `.type-footnote.font-mono` rendu en `Source Sans 3` |
-| `/restaurant` | `panel-saveurs` actif | `16` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Titres tronqués sur cartes Showcase/Accueil |
-| `/tarifs` | `panel-tarifs` actif (`<table>`) | `16` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Idem |
-| `/pack-entreprise` | `panel-entreprise` actif | `16` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Idem |
-| `/formation` | `panel-formation` actif | `16` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Idem |
-| `/activites` | Carte SVG + Catalogue | `7` / **`6`** / **`1`** / **`41`** | **`6`** | `2` / **`1`** | **`6`** | `Calques` (`+44/+81px` à `390px`, `+112/+148px` à `320px`, `+5/+42px` `POIs` et `+4px` `Sportif` à `430x932`, `+24px` à `1024px`) ; `Avis Éco-Garde` `4.16:1` Light / `1.68–2.64:1` Dark |
-| `/decouvrir` | `SpeciesAtlas` | `1` / **`1`** / **`1`** / **`26`** | **`19`** | `0` / **`1`** | **`19`** | `<select>` UICN **`+132px`** à `390px` (`+199px` à `320px`, `+48/+93px` à `430x932`) ; `bg-emerald-50` Dark = **`1.40:1`** ; onglet `2.47:1` Dark |
-| `/reserver` | `BookingWizard` Étape 1 | `1` / `0` / **`1`** / **`14`** | **`3`** | `0` / **`1`** | **`3`** | `858 places` **`3.26:1`** Light ; pastille + CTA **`2.47:1`** Dark |
-| `/mon-espace` | `DigitalEcoPass` anon. | `1` / `0` / `0` / **`16`** | **`3`** | `0` / `0` | **`3`** | 3 boutons `--brand-primary` + `text-white` = **`2.47:1`** Dark |
-| `/connexion` | `AuthPortal` login | `1` / `0` / `0` / **`16`** | **`1`** | `0` / `0` | **`1`** | Bouton `Se connecter` = **`2.47:1`** Dark |
-| `/mentions-legales` | `LegalNoticeView` (`mentions`) | `1` / `0` / `0` / **`22`** | **`1`** | `0` / `0` | **`1`** | Corps légal `12px / 16px` ; onglet actif = **`2.47:1`** Dark |
-| `/cgv` | `LegalNoticeView` (`cgv`) | `1` / `0` / `0` / **`18`** | **`1`** | `0` / `0` | **`1`** | Corps légal `12px / 16px` ; onglet actif = **`2.47:1`** Dark |
-| `/confidentialite` | `LegalNoticeView` (`confid.`) | `1` / `0` / `0` / **`19`** | **`1`** | `0` / `0` | **`1`** | Corps légal `12px / 16px` ; onglet actif = **`2.47:1`** Dark |
-| `/exploitation` | `RangerDashboard` (`admin`) | `0` / **`1`** (`+226px`) / **`14`** / **`31`** | **`41`** | **`2`** (`marque`) / **`14`** | **`41`** | `<select>` `+226px` (`+293px` à `320px`, `+163px` à `430x932`), `Administration` `+7px` à `1280px`, marque coupée à `1366–1440px`, boutons `-600` & `amber-700` < AA, Dark `1.12–3.13:1` |
+| Route | Onglet / Vue vérifié | `390x844` Light (`clip` / `ovf` / `lowC` / `tap<44`) | `390x844` Dark (`lowC`) | `430x932` Light (`clip` / `ovf` / `lowC` / `tap<44`) | `430x932` Dark (`lowC`) | `1440x900` Light (`clip` / `lowC`) | `1440x900` Dark (`lowC`) | Constats dominants |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :--- |
+| `/` | Accueil | `16` / `0` / `0` / `14` | `0` | `13` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Temps 1, légendes Hero, `line-clamp-2` sentiers |
+| `/hebergements` | `panel-hebergements` actif | `16` / `0` / `0` / `14` | `0` | `13` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | `.type-footnote.font-mono` rendu en `Source Sans 3` |
+| `/restaurant` | `panel-saveurs` actif | `16` / `0` / `0` / `14` | `0` | `13` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Titres tronqués sur cartes Showcase/Accueil |
+| `/tarifs` | `panel-tarifs` actif (`<table>`) | `16` / `0` / `0` / `14` | `0` | `13` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Idem |
+| `/pack-entreprise` | `panel-entreprise` actif | `16` / `0` / `0` / `14` | `0` | `13` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Idem |
+| `/formation` | `panel-formation` actif | `16` / `0` / `0` / `14` | `0` | `13` / `0` / `0` / `14` | `0` | `7` / `0` | `0` | Idem |
+| `/activites` | Carte SVG + Catalogue | `7` / **`6`** / **`1`** / **`41`** | **`6`** | `6` / **`2`** / **`1`** / **`42`** | **`6`** | `2` / **`1`** | **`6`** | `Calques` (`+44/+81px` à `390px`, `+112/+148px` à `320px`, `+5/+42px` `POIs` et `+4px` `Sportif` à `430x932`, `+24px` à `1024px`) ; `Avis Éco-Garde` `4.16:1` Light / `1.68–2.64:1` Dark |
+| `/decouvrir` | `SpeciesAtlas` | `1` / **`1`** / **`1`** / **`26`** | **`19`** | `1` / **`1`** / **`1`** / **`27`** | **`19`** | `0` / **`1`** | **`19`** | `<select>` UICN **`+132px`** à `390px` (`+199px` à `320px`, `+48/+93px` à `430x932`) ; `bg-emerald-50` Dark = **`1.40:1`** ; onglet `2.47:1` Dark |
+| `/reserver` | `BookingWizard` Étape 1 | `1` / `0` / **`1`** / **`14`** | **`3`** | `1` / `0` / **`1`** / **`14`** | **`3`** | `0` / **`1`** | **`3`** | `858 places` **`3.26:1`** Light ; pastille + CTA **`2.47:1`** Dark |
+| `/mon-espace` | `DigitalEcoPass` anon. | `1` / `0` / `0` / **`16`** | **`3`** | `1` / `0` / `0` / **`16`** | **`3`** | `0` / `0` | **`3`** | 3 boutons `--brand-primary` + `text-white` = **`2.47:1`** Dark |
+| `/connexion` | `AuthPortal` login | `1` / `0` / `0` / **`16`** | **`1`** | `1` / `0` / `0` / **`16`** | **`1`** | `0` / `0` | **`1`** | Bouton `Se connecter` = **`2.47:1`** Dark |
+| `/mentions-legales` | `LegalNoticeView` (`mentions`) | `1` / `0` / `0` / **`22`** | **`1`** | `1` / `0` / `0` / **`22`** | **`1`** | `0` / `0` | **`1`** | Corps légal `12px / 16px` ; onglet actif = **`2.47:1`** Dark |
+| `/cgv` | `LegalNoticeView` (`cgv`) | `1` / `0` / `0` / **`18`** | **`1`** | `1` / `0` / `0` / **`18`** | **`1`** | `0` / `0` | **`1`** | Corps légal `12px / 16px` ; onglet actif = **`2.47:1`** Dark |
+| `/confidentialite` | `LegalNoticeView` (`confid.`) | `1` / `0` / `0` / **`19`** | **`1`** | `1` / `0` / `0` / **`19`** | **`1`** | `0` / `0` | **`1`** | Corps légal `12px / 16px` ; onglet actif = **`2.47:1`** Dark |
+| `/exploitation` | `RangerDashboard` (`admin`) | `0` / **`1`** (`+226px`) / **`14`** / **`31`** | **`41`** | `0` / **`1`** (`+188px`) / **`14`** / **`31`** | **`41`** | **`2`** (`marque`) / **`14`** | **`41`** | `<select>` `+226px` (`+293px` à `320px`, `+163/+188px` à `430x932`), `Administration` `+7px` à `1280px`, marque coupée à `1366–1440px`, boutons `-600` & `amber-700` < AA, Dark `1.12–3.13:1` |
 
 *(Les 6 routes principales `/`, `/activites`, `/decouvrir`, `/reserver`, `/tarifs` et `/exploitation` ont été contrôlées sans débordement documentaire racine `ovfDoc = 0px` sur l'ensemble des 10 viewports en mode clair ; les 9 autres routes publiques sur 5 viewports Light/Dark `320`, `390`, `430`, `768`, `1440` ; et toutes les 15 routes à `430x932` Light/Dark avec `ovfDoc = 0px`. Hors `/` et grilles `#`, `Footer` `24h/24 · 7j/7` déborde de `parent-out:+32px` à `1024x768`.)*
 
@@ -77,7 +77,7 @@
 | `/tarifs_640x400_reflow640` | `/tarifs` (`640x400`) | Viewport `640x400` (~200% d'un 1280px) | `0px` | *(reflow)* | **6** | Reflow sans barre horizontale racine ; `.type-hero` `48px` conforme ; `6` troncatures résiduelles (légendes Hero & cartes) | *(mesuré)* |
 | `/exploitation_1440x900_font200` | `/exploitation` (admin, `1440x900`) | `html { font-size: 32px }` | `0px` | **339** nœuds | **2** | Majorité du cockpit en `px` Tailwind/arbitraires reste figée ; `Cockpit Pro`, `642/1500`, `Administration` débordent ; `Difficile` `+30px` | *(mesuré)* |
 
-*(Contrôle complémentaire sur `/` à `430x932` avec `html { font-size: 32px }` : `ovfDoc = 0px`.)*
+*(Contrôle complémentaire sur `/` à `430x932` avec `html { font-size: 32px }` : `ovfDoc = 0px`, `.type-hero` calculé à `81.9px` [`h1.scrollWidth = 361px <= Section.clientWidth = 430px`], donc aucun `ancestor-clip` sur `ImmersiveSection` contrairement à `390x844`.)*
 
 ---
 
