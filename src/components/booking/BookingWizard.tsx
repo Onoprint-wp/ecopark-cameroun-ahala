@@ -41,6 +41,7 @@ import {
 } from '../../utils/ecoMobility';
 import { Co2BotanicalSprout } from './Co2BotanicalSprout';
 import { launchQuotaFlightToken, recordMotionOrigin } from '../../utils/ecoMotion';
+import { validateLiveBookingConstraints } from '../../utils/ecoSyncBus';
 
 export const BookingWizard: React.FC = () => {
   const {
@@ -48,6 +49,7 @@ export const BookingWizard: React.FC = () => {
     passes,
     trails,
     selectedTrailId,
+    setSelectedTrailId,
     bookPass,
     setActiveView,
     setActivePassId,
@@ -193,41 +195,51 @@ export const BookingWizard: React.FC = () => {
     }
   };
 
-  // Step 1 Validation (rejects past dates and Monday weekly closure)
+  // Step 1 Validation (rejects past dates, Monday weekly closure, closed trails & exceeded quota)
   const validateStep1 = () => {
-    if (!visitDate) {
-      setFormErrors({ date: 'Veuillez sélectionner une date de visite.' });
-      return false;
-    }
-    if (visitDate < todayStr) {
-      setFormErrors({ date: 'La date de visite ne peut pas être antérieure à aujourd’hui.' });
-      return false;
-    }
-    const dayOfWeek = new Date(`${visitDate}T12:00:00`).getDay();
-    if (dayOfWeek === 1) {
-      setFormErrors({
-        date: 'Le Parc & les Loisirs sont fermés le lundi pour repos biologique hebdomadaire (ouverture du mardi au dimanche de 09h00 à 18h00). Veuillez choisir un autre jour.',
-      });
-      return false;
-    }
-    if (capacityMetrics.available <= 0) {
-      setFormErrors({
-        capacity: 'Le quota écologique est complet pour cette date. Choisissez une autre date.',
-      });
+    const check = validateLiveBookingConstraints({
+      visitDate,
+      todayIso: todayStr,
+      guestCount: Math.max(1, totalGuests),
+      dailyCapacityMax: capacityMetrics.dailyMax,
+      currentBookedForDate: capacityMetrics.currentBooked,
+      selectedTrail,
+    });
+    if (!check.ok) {
+      if (check.code === 'TRAIL_CLOSED') {
+        setFormErrors({ trail: check.error || 'Ce secteur est actuellement fermé.' });
+      } else if (check.code === 'QUOTA_EXCEEDED') {
+        setFormErrors({ capacity: check.error || 'Le quota écologique est complet pour cette date.' });
+      } else {
+        setFormErrors({ date: check.error || 'Veuillez vérifier la date sélectionnée.' });
+      }
       return false;
     }
     setFormErrors({});
     return true;
   };
 
-  // Step 2 Validation
+  // Step 2 Validation (re-checks live trail status & live capacity from Backoffice)
   const validateStep2 = () => {
     const errors: Record<string, string> = {};
-    if (totalGuests <= 0) {
-      errors.guests = 'Veuillez inclure au moins un visiteur.';
-    }
-    if (totalGuests > capacityMetrics.available) {
-      errors.capacity = `Capacité insuffisante : seulement ${capacityMetrics.available} places restantes pour cette date.`;
+    const liveCheck = validateLiveBookingConstraints({
+      visitDate,
+      todayIso: todayStr,
+      guestCount: totalGuests,
+      dailyCapacityMax: capacityMetrics.dailyMax,
+      currentBookedForDate: capacityMetrics.currentBooked,
+      selectedTrail,
+    });
+    if (!liveCheck.ok) {
+      if (liveCheck.code === 'EMPTY_GUESTS') {
+        errors.guests = liveCheck.error || 'Veuillez inclure au moins un visiteur.';
+      } else if (liveCheck.code === 'TRAIL_CLOSED') {
+        errors.trail = liveCheck.error || 'Le circuit sélectionné vient d être fermé.';
+      } else if (liveCheck.code === 'QUOTA_EXCEEDED') {
+        errors.capacity = liveCheck.error || `Capacité insuffisante (${capacityMetrics.available} places restantes).`;
+      } else {
+        errors.date = liveCheck.error || 'Date de visite invalide.';
+      }
     }
     if (!leadName.trim()) {
       errors.leadName = 'Le nom du visiteur référent est obligatoire.';
@@ -243,11 +255,28 @@ export const BookingWizard: React.FC = () => {
     return Object.keys(errors).length === 0;
   };
 
-  // Step 3 Validation & Submit
+  // Step 3 Validation & Submit (blocks mid-funnel Backoffice trail closure or quota drop)
   const handleFinalBooking = (e: React.FormEvent) => {
     e.preventDefault();
     if (!charterAccepted) {
       setFormErrors({ charter: 'Vous devez accepter la Charte Zéro-Trace pour valider le pass.' });
+      return;
+    }
+
+    const liveCheck = validateLiveBookingConstraints({
+      visitDate,
+      todayIso: todayStr,
+      guestCount: totalGuests,
+      dailyCapacityMax: capacityMetrics.dailyMax,
+      currentBookedForDate: capacityMetrics.currentBooked,
+      selectedTrail,
+    });
+    if (!liveCheck.ok) {
+      setFormErrors({
+        submit:
+          liveCheck.error ||
+          'Mise à jour temps réel du parc : veuillez ajuster votre circuit ou votre effectif avant validation.',
+      });
       return;
     }
 
@@ -371,6 +400,52 @@ export const BookingWizard: React.FC = () => {
         </div>
       )}
 
+      {/* Live Backoffice Mid-Funnel Alert (if trail closed or quota lowered while on Step 2 or 3) */}
+      {currentStep > 1 && (selectedTrail?.status === 'ferme' || capacityMetrics.isOverbooked) && (
+        <div
+          role="alert"
+          className="p-4 rounded-2xl bg-red-50 dark:bg-red-950/50 border border-red-300 dark:border-red-800 text-red-900 dark:text-red-200 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs shadow-xs"
+        >
+          <div className="flex items-start gap-2.5">
+            <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
+            <div>
+              <div className="font-bold">
+                {selectedTrail?.status === 'ferme'
+                  ? `Mise à jour temps réel : le circuit « ${selectedTrail.name} » vient d être fermé par le poste de garde`
+                  : `Mise à jour temps réel : jauge restante insuffisante (${capacityMetrics.available} place(s) disponible(s) pour ${totalGuests} demandée(s))`}
+              </div>
+              <div className="opacity-90 mt-0.5">
+                {selectedTrail?.status === 'ferme'
+                  ? selectedTrail.closureReason ||
+                    'Basculez en un clic sur les zones ouvertes du complexe ou choisissez un autre circuit.'
+                  : 'Le plafond écologique vient d être ajusté. Réduisez la taille du groupe à l étape 2 ou choisissez une autre date.'}
+              </div>
+            </div>
+          </div>
+          <div className="flex flex-wrap items-center gap-2 shrink-0">
+            {selectedTrail?.status === 'ferme' && (
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedTrailId(null);
+                  setFormErrors({});
+                }}
+                className="px-3 py-1.5 rounded-xl bg-[var(--brand-primary)] text-white font-bold cursor-pointer"
+              >
+                Poursuivre sur les zones ouvertes
+              </button>
+            )}
+            <button
+              type="button"
+              onClick={() => setCurrentStep(selectedTrail?.status === 'ferme' ? 1 : 2)}
+              className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold cursor-pointer"
+            >
+              Ajuster ma sélection
+            </button>
+          </div>
+        </div>
+      )}
+
       {/* =================================================================== */}
       {/* ÉTAPE 1 : CHOIX DE L'EXPÉRIENCE & DATE                              */}
       {/* =================================================================== */}
@@ -466,39 +541,60 @@ export const BookingWizard: React.FC = () => {
             <div
               className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs ${
                 selectedTrail.status === 'ferme'
-                  ? 'bg-amber-50 dark:bg-amber-950/40 border-amber-300 dark:border-amber-800 text-amber-900 dark:text-amber-200'
+                  ? 'bg-red-50 dark:bg-red-950/40 border-red-300 dark:border-red-800 text-red-900 dark:text-red-200'
                   : 'bg-emerald-50/70 dark:bg-emerald-950/30 border-emerald-300 dark:border-emerald-800 text-emerald-900 dark:text-emerald-200'
               }`}
             >
               <div className="flex items-start gap-2.5">
                 {selectedTrail.status === 'ferme' ? (
-                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0 mt-0.5" />
+                  <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0 mt-0.5" />
                 ) : (
                   <Compass className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
                 )}
                 <div>
                   <div className="font-bold">
                     {selectedTrail.status === 'ferme'
-                      ? `Secteur « ${selectedTrail.name} » actuellement réservé / fermé`
+                      ? `Secteur « ${selectedTrail.name} » actuellement fermé (réservation suspendue sur ce tracé)`
                       : `Formule pré-sélectionnée pour « ${selectedTrail.name} »`}
                   </div>
                   <div className="opacity-90 mt-0.5">
                     {selectedTrail.status === 'ferme'
                       ? selectedTrail.closureReason ||
-                        'Votre Pass vous donne accès aux autres secteurs ouverts du domaine d’Ahala.'
+                        'Basculez sur les secteurs ouverts du domaine d Ahala ou sélectionnez un autre circuit.'
                       : 'La formule recommandée ci-dessous a été synchronisée avec votre circuit (modifiable librement).'}
                   </div>
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => setActiveView('sentiers')}
-                className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer shrink-0 self-start sm:self-center"
-              >
-                Changer de circuit
-              </button>
+              <div className="flex flex-wrap items-center gap-2 shrink-0 self-start sm:self-center">
+                {selectedTrail.status === 'ferme' && (
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedTrailId(null);
+                      setFormErrors({});
+                    }}
+                    className="px-3 py-1.5 rounded-xl bg-[var(--brand-primary)] text-white font-bold cursor-pointer"
+                  >
+                    Poursuivre sur les zones ouvertes
+                  </button>
+                )}
+                <button
+                  type="button"
+                  onClick={() => setActiveView('sentiers')}
+                  className="px-3 py-1.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-[var(--text-primary)] font-semibold hover:border-[var(--brand-primary)] cursor-pointer"
+                >
+                  Changer de circuit
+                </button>
+              </div>
             </div>
+          )}
+
+          {formErrors.trail && (
+            <p className="text-xs text-red-600 dark:text-red-400 font-semibold flex items-center gap-1.5">
+              <AlertTriangle className="w-3.5 h-3.5 shrink-0" />
+              <span>{formErrors.trail}</span>
+            </p>
           )}
 
           {/* Experiences Grid */}
@@ -1033,6 +1129,15 @@ export const BookingWizard: React.FC = () => {
                 <AlertTriangle className="w-3.5 h-3.5" />
                 {formErrors.charter}
               </p>
+            )}
+            {formErrors.submit && (
+              <div
+                role="alert"
+                className="p-3.5 rounded-xl bg-red-50 dark:bg-red-950/50 border border-red-300 dark:border-red-800 text-xs text-red-800 dark:text-red-200 font-semibold flex items-center gap-2"
+              >
+                <AlertTriangle className="w-4 h-4 text-red-600 dark:text-red-400 shrink-0" />
+                <span>{formErrors.submit}</span>
+              </div>
             )}
           </div>
 

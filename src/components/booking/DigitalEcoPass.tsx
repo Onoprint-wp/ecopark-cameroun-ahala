@@ -34,6 +34,7 @@ import { formatEur, formatCo2, MOBILITY_OPTIONS, getExperienceInfo } from '../..
 import { GerminatingQrCode } from './GerminatingQrCode';
 import { Co2BotanicalSprout } from './Co2BotanicalSprout';
 import { isReducedMotionPreferred, recordMotionOrigin } from '../../utils/ecoMotion';
+import { canActorCancelPass } from '../../utils/ecoSyncBus';
 
 export const DigitalEcoPass: React.FC = () => {
   const {
@@ -803,7 +804,7 @@ export const DigitalEcoPass: React.FC = () => {
                   <span>Imprimer</span>
                 </button>
 
-                {currentPass.status !== 'cancelled' && (
+                {canActorCancelPass(currentPass, user, sessionUnlockedPassIds) && (
                   <button
                     onClick={() => setShowCancelModal(true)}
                     className="px-3.5 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/50 border border-transparent hover:border-red-300 dark:hover:border-red-900 cursor-pointer flex items-center gap-1"

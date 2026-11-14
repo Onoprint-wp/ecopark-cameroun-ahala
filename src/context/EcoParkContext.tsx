@@ -1,5 +1,6 @@
 // ============================================================================
 // ECO-PARK CENTRAL REACTIVE STORE (src/context/EcoParkContext.tsx)
+// Bidirectional Backoffice (/exploitation) <-> Frontend Sync with RBAC Guards
 // ============================================================================
 
 import React, {
@@ -23,6 +24,7 @@ import {
   ReportStatus,
   ParkTelemetry,
   EcoParkContextType,
+  EcoParkRole,
 } from '../types/ecosystem';
 import {
   INITIAL_TELEMETRY,
@@ -33,16 +35,37 @@ import {
   INITIAL_REPORTS,
 } from '../data/initialParkData';
 import { useTheme } from './ThemeContext';
+import { useAuth } from './AuthContext';
 import { runEcoViewTransition, emitTrailStatusWave } from '../utils/ecoMotion';
 import { resolveViewFromPath, VIEW_PATH_MAP } from '../utils/ecoRouting';
-import { verifyAnonymousPassLookup, anonymizeClientPassesList } from '../utils/ecoAuth';
+import {
+  verifyAnonymousPassLookup,
+  anonymizeClientPassesList,
+  isSupabaseCloudConfigured,
+} from '../utils/ecoAuth';
+import {
+  createEcoSyncBus,
+  generateTabInstanceId,
+  isCrossTabSyncedKey,
+  canMutateBackofficeOps,
+  canMutatePassCheckIn,
+  canActorCancelPass,
+  syncPassToSupabaseCloudIfActive,
+  type EcoSyncBusHandle,
+  type SyncDomain,
+  type SyncEnvelope,
+  type SyncMeta,
+} from '../utils/ecoSyncBus';
 
 // Storage keys under strict eco_park_ahala_v2_* namespace
 export const STORAGE_KEYS = {
+  // Shared cross-tab domain keys (localStorage + BroadcastChannel)
   TRAILS: 'eco_park_ahala_v2_trails',
   TELEMETRY: 'eco_park_ahala_v2_telemetry',
   PASSES: 'eco_park_ahala_v2_passes',
   REPORTS: 'eco_park_ahala_v2_reports',
+
+  // Tab-isolated UI & navigation keys (sessionStorage ONLY - never hijacks other tabs)
   ACTIVE_VIEW: 'eco_park_ahala_v2_active_view',
   SELECTED_TRAIL: 'eco_park_ahala_v2_selected_trail',
   SELECTED_SPECIES: 'eco_park_ahala_v2_selected_species',
@@ -51,7 +74,7 @@ export const STORAGE_KEYS = {
   SESSION_UNLOCKED_PASSES: 'eco_park_ahala_v2_session_unlocked_passes',
 };
 
-// Resilient safeLocalStorage helper wrapping all browser storage operations
+// Resilient safeLocalStorage helper for shared cross-tab domain data
 export const safeLocalStorage = {
   getItem: <T,>(key: string, fallback: T): T => {
     if (typeof window === 'undefined') return fallback;
@@ -82,6 +105,36 @@ export const safeLocalStorage = {
   },
 };
 
+// Resilient safeSessionStorage helper for strictly tab-local navigation & UI state
+export const safeSessionStorage = {
+  getItem: <T,>(key: string, fallback: T): T => {
+    if (typeof window === 'undefined' || !window.sessionStorage) return fallback;
+    try {
+      const item = window.sessionStorage.getItem(key);
+      if (item === null) return fallback;
+      return JSON.parse(item) as T;
+    } catch {
+      return fallback;
+    }
+  },
+  setItem: <T,>(key: string, value: T): void => {
+    if (typeof window === 'undefined' || !window.sessionStorage) return;
+    try {
+      window.sessionStorage.setItem(key, JSON.stringify(value));
+    } catch {
+      // Ignore quota or privacy errors
+    }
+  },
+  removeItem: (key: string): void => {
+    if (typeof window === 'undefined' || !window.sessionStorage) return;
+    try {
+      window.sessionStorage.removeItem(key);
+    } catch {
+      // Ignore storage errors
+    }
+  },
+};
+
 const EcoParkContext = createContext<EcoParkContextType | undefined>(undefined);
 
 export interface EcoParkProviderProps {
@@ -89,7 +142,6 @@ export interface EcoParkProviderProps {
 }
 
 export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) => {
-  // Theme context bridge
   const {
     themeMode,
     effectiveTheme,
@@ -100,84 +152,90 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     setHighContrastOutdoor,
   } = useTheme();
 
-  // Navigation state (resolved from URL pathname via shared ecoRouting engine)
+  const { user } = useAuth();
+  const userRef = useRef(user);
+  userRef.current = user;
+
+  const tabIdRef = useRef<string>(generateTabInstanceId());
+  const syncBusRef = useRef<EcoSyncBusHandle | null>(null);
+
+  const [syncMeta, setSyncMeta] = useState<SyncMeta>(() => ({
+    tabId: tabIdRef.current,
+    transport: isSupabaseCloudConfigured() ? 'supabase_hybrid' : 'broadcast_storage',
+    lastSyncedAt: null,
+    lastDomain: 'init',
+    lastActorRole: null,
+    publishedCount: 0,
+    receivedCount: 0,
+  }));
+
+  // Tab-isolated navigation state (resolved from URL pathname first, then sessionStorage)
   const [activeView, setActiveViewState] = useState<ActiveView>(() => {
     if (typeof window !== 'undefined') {
       const fromUrl = resolveViewFromPath(window.location.pathname);
       if (fromUrl) return fromUrl;
     }
-    return safeLocalStorage.getItem<ActiveView>(STORAGE_KEYS.ACTIVE_VIEW, 'accueil');
+    return safeSessionStorage.getItem<ActiveView>(STORAGE_KEYS.ACTIVE_VIEW, 'accueil');
   });
 
-  // Architectural slide-over drawer state
+  // Tab-isolated UI states (never overwrite other tabs)
   const [colorDrawerOpen, setColorDrawerOpenState] = useState<boolean>(() =>
-    safeLocalStorage.getItem<boolean>(STORAGE_KEYS.DRAWER_OPEN, false)
+    safeSessionStorage.getItem<boolean>(STORAGE_KEYS.DRAWER_OPEN, false)
   );
 
-  // Telemetry & capacity state
+  const [selectedTrailId, setSelectedTrailIdState] = useState<string | null>(() =>
+    safeSessionStorage.getItem<string | null>(STORAGE_KEYS.SELECTED_TRAIL, null)
+  );
+
+  const [selectedSpeciesId, setSelectedSpeciesIdState] = useState<string | null>(() =>
+    safeSessionStorage.getItem<string | null>(STORAGE_KEYS.SELECTED_SPECIES, null)
+  );
+
+  const [activePassId, setActivePassIdState] = useState<string | null>(() =>
+    safeSessionStorage.getItem<string | null>(STORAGE_KEYS.ACTIVE_PASS_ID, null)
+  );
+
+  const [sessionUnlockedPassIds, setSessionUnlockedPassIdsState] = useState<string[]>(() =>
+    safeSessionStorage.getItem<string[]>(STORAGE_KEYS.SESSION_UNLOCKED_PASSES, [])
+  );
+  const sessionUnlockedRef = useRef<string[]>(sessionUnlockedPassIds);
+  sessionUnlockedRef.current = sessionUnlockedPassIds;
+
+  // Shared cross-tab domain states (persisted in localStorage + BroadcastChannel)
   const [telemetry, setTelemetryState] = useState<ParkTelemetry>(() =>
     safeLocalStorage.getItem<ParkTelemetry>(STORAGE_KEYS.TELEMETRY, INITIAL_TELEMETRY)
   );
 
-  // Trails state
   const [trails, setTrailsState] = useState<Trail[]>(() =>
     safeLocalStorage.getItem<Trail[]>(STORAGE_KEYS.TRAILS, INITIAL_TRAILS)
   );
 
-  // Selection states
-  const [selectedTrailId, setSelectedTrailIdState] = useState<string | null>(() =>
-    safeLocalStorage.getItem<string | null>(STORAGE_KEYS.SELECTED_TRAIL, null)
-  );
-
-  const [selectedSpeciesId, setSelectedSpeciesIdState] = useState<string | null>(() =>
-    safeLocalStorage.getItem<string | null>(STORAGE_KEYS.SELECTED_SPECIES, null)
-  );
-
-  // Booked Passes state
   const [passes, setPassesState] = useState<EcoPass[]>(() =>
     safeLocalStorage.getItem<EcoPass[]>(STORAGE_KEYS.PASSES, INITIAL_PASSES)
   );
 
-  const [activePassId, setActivePassIdState] = useState<string | null>(() =>
-    safeLocalStorage.getItem<string | null>(STORAGE_KEYS.ACTIVE_PASS_ID, null)
-  );
-
-  // Anonymous visitor tab-scoped unlocked pass IDs (just-booked or verified via reference + phone/email)
-  const [sessionUnlockedPassIds, setSessionUnlockedPassIdsState] = useState<string[]>(() => {
-    if (typeof window === 'undefined' || !window.sessionStorage) return [];
-    try {
-      const raw = window.sessionStorage.getItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
-      const parsed = raw ? JSON.parse(raw) : [];
-      return Array.isArray(parsed) ? (parsed as string[]) : [];
-    } catch {
-      return [];
-    }
-  });
-
-  const unlockPassForSession = useCallback((passId: string) => {
-    setSessionUnlockedPassIdsState((prev) => {
-      const next = prev.includes(passId) ? prev : [passId, ...prev];
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        try {
-          window.sessionStorage.setItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES, JSON.stringify(next));
-        } catch {
-          // Ignore storage quota errors
-        }
-      }
-      return next;
-    });
-  }, []);
-
-  // Citizen Reports state
   const [reports, setReportsState] = useState<CitizenReport[]>(() =>
     safeLocalStorage.getItem<CitizenReport[]>(STORAGE_KEYS.REPORTS, INITIAL_REPORTS)
   );
 
-  // Live synchronous refs so cross-domain mutators never read stale closures
+  // Live synchronous refs so cross-domain mutators & sync listeners never read stale closures
+  const telemetryRef = useRef<ParkTelemetry>(telemetry);
+  telemetryRef.current = telemetry;
   const trailsRef = useRef<Trail[]>(trails);
   trailsRef.current = trails;
   const passesRef = useRef<EcoPass[]>(passes);
   passesRef.current = passes;
+  const reportsRef = useRef<CitizenReport[]>(reports);
+  reportsRef.current = reports;
+
+  const unlockPassForSession = useCallback((passId: string) => {
+    setSessionUnlockedPassIdsState((prev) => {
+      const next = prev.includes(passId) ? prev : [passId, ...prev];
+      sessionUnlockedRef.current = next;
+      safeSessionStorage.setItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES, next);
+      return next;
+    });
+  }, []);
 
   // Reconcile global on-site occupancy = open trails headcount + today's net booked pass delta
   const reconcileTodayOccupancy = useCallback(
@@ -201,12 +259,40 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     []
   );
 
-  // Browser Back / Forward URL history synchronization
+  const publishSyncUpdate = useCallback(
+    (
+      domain: SyncDomain,
+      payload: {
+        trails?: Trail[];
+        telemetry?: ParkTelemetry;
+        passes?: EcoPass[];
+        reports?: CitizenReport[];
+      }
+    ) => {
+      const actorRole: EcoParkRole = userRef.current?.role || 'visiteur_anonyme';
+      const sent = syncBusRef.current?.publish({
+        domain,
+        actorRole,
+        ...payload,
+      });
+      const ts = sent?.timestamp || new Date().toISOString();
+      setSyncMeta((prev) => ({
+        ...prev,
+        lastSyncedAt: ts,
+        lastDomain: domain,
+        lastActorRole: actorRole,
+        publishedCount: prev.publishedCount + 1,
+      }));
+    },
+    []
+  );
+
+  // Browser Back / Forward URL history synchronization (tab-local)
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const handlePopState = () => {
       const resolved = resolveViewFromPath(window.location.pathname) || 'accueil';
-      safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, resolved);
+      safeSessionStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, resolved);
       setActiveViewState(resolved);
     };
     window.addEventListener('popstate', handlePopState);
@@ -214,11 +300,11 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
   }, []);
 
   // --------------------------------------------------------------------------
-  // Mutators with localStorage persistence
+  // Tab-Isolated UI Mutators (sessionStorage ONLY)
   // --------------------------------------------------------------------------
 
   const setActiveView = useCallback((view: ActiveView) => {
-    safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, view);
+    safeSessionStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, view);
     if (typeof window !== 'undefined') {
       const targetPath = VIEW_PATH_MAP[view] || '/';
       if (window.location.pathname !== targetPath) {
@@ -236,22 +322,61 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
   const setColorDrawerOpen = useCallback((open: boolean) => {
     setColorDrawerOpenState(open);
-    safeLocalStorage.setItem(STORAGE_KEYS.DRAWER_OPEN, open);
+    safeSessionStorage.setItem(STORAGE_KEYS.DRAWER_OPEN, open);
   }, []);
 
-  const setDailyCapacity = useCallback((newCap: number) => {
-    setTelemetryState((prev) => {
-      const updated: ParkTelemetry = {
-        ...prev,
-        dailyCapacityMax: Math.max(500, Math.min(3000, newCap)),
-      };
-      safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updated);
-      return updated;
-    });
+  const setSelectedTrailId = useCallback((trailId: string | null) => {
+    setSelectedTrailIdState(trailId);
+    safeSessionStorage.setItem(STORAGE_KEYS.SELECTED_TRAIL, trailId);
   }, []);
+
+  const setSelectedSpeciesId = useCallback((speciesId: string | null) => {
+    setSelectedSpeciesIdState(speciesId);
+    safeSessionStorage.setItem(STORAGE_KEYS.SELECTED_SPECIES, speciesId);
+  }, []);
+
+  const setActivePassId = useCallback((id: string | null) => {
+    setActivePassIdState(id);
+    safeSessionStorage.setItem(STORAGE_KEYS.ACTIVE_PASS_ID, id);
+  }, []);
+
+  // --------------------------------------------------------------------------
+  // RBAC-Guarded Backoffice & Bidirectional Domain Mutators
+  // --------------------------------------------------------------------------
+
+  const setDailyCapacity = useCallback(
+    (newCap: number) => {
+      if (!canMutateBackofficeOps(userRef.current?.role)) {
+        console.warn('[EcoPark RBAC] setDailyCapacity refused: operational staff role required.');
+        return;
+      }
+
+      const clampedMax = Math.max(500, Math.min(3000, Math.round(newCap)));
+      const updatedTelem: ParkTelemetry = {
+        ...telemetryRef.current,
+        dailyCapacityMax: clampedMax,
+        currentOccupancy: reconcileTodayOccupancy(
+          trailsRef.current,
+          passesRef.current,
+          clampedMax
+        ),
+      };
+
+      telemetryRef.current = updatedTelem;
+      safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updatedTelem);
+      setTelemetryState(updatedTelem);
+      publishSyncUpdate('telemetry', { telemetry: updatedTelem });
+    },
+    [publishSyncUpdate, reconcileTodayOccupancy]
+  );
 
   const updateTrailStatus = useCallback(
     (trailId: string, status: TrailStatus, closureReason?: string) => {
+      if (!canMutateBackofficeOps(userRef.current?.role)) {
+        console.warn('[EcoPark RBAC] updateTrailStatus refused: operational staff role required.');
+        return;
+      }
+
       emitTrailStatusWave(trailId, status);
       const nextTrails = trailsRef.current.map((trail) => {
         if (trail.id !== trailId && trail.slug !== trailId) return trail;
@@ -279,41 +404,25 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
         };
       });
 
+      const updatedTelem: ParkTelemetry = {
+        ...telemetryRef.current,
+        currentOccupancy: reconcileTodayOccupancy(
+          nextTrails,
+          passesRef.current,
+          telemetryRef.current.dailyCapacityMax
+        ),
+      };
+
       trailsRef.current = nextTrails;
+      telemetryRef.current = updatedTelem;
       safeLocalStorage.setItem(STORAGE_KEYS.TRAILS, nextTrails);
+      safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updatedTelem);
       setTrailsState(nextTrails);
-
-      // Reconcile global occupancy without clobbering today's active pass bookings
-      setTelemetryState((prevTelem) => {
-        const updatedTelem: ParkTelemetry = {
-          ...prevTelem,
-          currentOccupancy: reconcileTodayOccupancy(
-            nextTrails,
-            passesRef.current,
-            prevTelem.dailyCapacityMax
-          ),
-        };
-        safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updatedTelem);
-        return updatedTelem;
-      });
+      setTelemetryState(updatedTelem);
+      publishSyncUpdate('trails', { trails: nextTrails, telemetry: updatedTelem });
     },
-    [reconcileTodayOccupancy]
+    [publishSyncUpdate, reconcileTodayOccupancy]
   );
-
-  const setSelectedTrailId = useCallback((trailId: string | null) => {
-    setSelectedTrailIdState(trailId);
-    safeLocalStorage.setItem(STORAGE_KEYS.SELECTED_TRAIL, trailId);
-  }, []);
-
-  const setSelectedSpeciesId = useCallback((speciesId: string | null) => {
-    setSelectedSpeciesIdState(speciesId);
-    safeLocalStorage.setItem(STORAGE_KEYS.SELECTED_SPECIES, speciesId);
-  }, []);
-
-  const setActivePassId = useCallback((id: string | null) => {
-    setActivePassIdState(id);
-    safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_PASS_ID, id);
-  }, []);
 
   const bookPass = useCallback(
     (input: BookingInput): EcoPass => {
@@ -323,6 +432,8 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
       const newPass: EcoPass = {
         ...input,
+        unitPriceEur: Math.round(input.unitPriceEur),
+        totalPriceEur: Math.round(input.totalPriceEur),
         ownerEmail: (input.ownerEmail || input.leadVisitor.email || '').trim().toLowerCase(),
         id: newId,
         createdAt: nowIso,
@@ -331,85 +442,108 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
       };
 
       const nextPasses = [newPass, ...passesRef.current];
+      const nextTelem: ParkTelemetry = {
+        ...telemetryRef.current,
+        currentOccupancy: reconcileTodayOccupancy(
+          trailsRef.current,
+          nextPasses,
+          telemetryRef.current.dailyCapacityMax
+        ),
+        totalCo2AvoidedKg: Number(
+          (telemetryRef.current.totalCo2AvoidedKg + input.co2AvoidedKg).toFixed(1)
+        ),
+      };
+
       passesRef.current = nextPasses;
+      telemetryRef.current = nextTelem;
       safeLocalStorage.setItem(STORAGE_KEYS.PASSES, nextPasses);
+      safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, nextTelem);
       setPassesState(nextPasses);
+      setTelemetryState(nextTelem);
 
       setActivePassId(newId);
       unlockPassForSession(newId);
-
-      // Reconcile today's park occupancy (only increments if visitDate === today) & add avoided CO2
-      setTelemetryState((prev) => {
-        const next: ParkTelemetry = {
-          ...prev,
-          currentOccupancy: reconcileTodayOccupancy(
-            trailsRef.current,
-            nextPasses,
-            prev.dailyCapacityMax
-          ),
-          totalCo2AvoidedKg: Number((prev.totalCo2AvoidedKg + input.co2AvoidedKg).toFixed(1)),
-        };
-        safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, next);
-        return next;
-      });
+      publishSyncUpdate('passes', { passes: nextPasses, telemetry: nextTelem });
+      void syncPassToSupabaseCloudIfActive(newPass, 'upsert');
 
       return newPass;
     },
-    [reconcileTodayOccupancy, setActivePassId, unlockPassForSession]
+    [publishSyncUpdate, reconcileTodayOccupancy, setActivePassId, unlockPassForSession]
   );
 
   const cancelPass = useCallback(
     (passId: string) => {
-      let wasCancelled = false;
-      let releasedCo2Kg = 0;
+      const targetPass = passesRef.current.find((p) => p.id === passId);
+      if (!targetPass) return;
 
-      const nextPasses = passesRef.current.map((p) => {
-        if (p.id === passId && p.status !== 'cancelled') {
-          wasCancelled = true;
-          releasedCo2Kg = p.co2AvoidedKg;
-          return { ...p, status: 'cancelled' as const };
-        }
-        return p;
-      });
+      if (!canActorCancelPass(targetPass, userRef.current, sessionUnlockedRef.current)) {
+        console.warn('[EcoPark RBAC] cancelPass refused: caller does not own or manage this pass.');
+        return;
+      }
 
-      if (!wasCancelled) return;
+      const releasedCo2Kg = targetPass.co2AvoidedKg;
+      const cancelledPass: EcoPass = { ...targetPass, status: 'cancelled' };
+      const nextPasses = passesRef.current.map((p) => (p.id === passId ? cancelledPass : p));
+
+      const updatedTelem: ParkTelemetry = {
+        ...telemetryRef.current,
+        currentOccupancy: reconcileTodayOccupancy(
+          trailsRef.current,
+          nextPasses,
+          telemetryRef.current.dailyCapacityMax
+        ),
+        totalCo2AvoidedKg: Math.max(
+          0,
+          Number((telemetryRef.current.totalCo2AvoidedKg - releasedCo2Kg).toFixed(1))
+        ),
+      };
 
       passesRef.current = nextPasses;
+      telemetryRef.current = updatedTelem;
       safeLocalStorage.setItem(STORAGE_KEYS.PASSES, nextPasses);
+      safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updatedTelem);
       setPassesState(nextPasses);
-
-      setTelemetryState((prevTelem) => {
-        const updated: ParkTelemetry = {
-          ...prevTelem,
-          currentOccupancy: reconcileTodayOccupancy(
-            trailsRef.current,
-            nextPasses,
-            prevTelem.dailyCapacityMax
-          ),
-          totalCo2AvoidedKg: Math.max(
-            0,
-            Number((prevTelem.totalCo2AvoidedKg - releasedCo2Kg).toFixed(1))
-          ),
-        };
-        safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, updated);
-        return updated;
-      });
+      setTelemetryState(updatedTelem);
+      publishSyncUpdate('passes', { passes: nextPasses, telemetry: updatedTelem });
+      void syncPassToSupabaseCloudIfActive(
+        cancelledPass,
+        'cancel',
+        userRef.current?.matricule
+      );
     },
-    [reconcileTodayOccupancy]
+    [publishSyncUpdate, reconcileTodayOccupancy]
   );
 
-  const checkInPass = useCallback((passId: string) => {
-    const nowIso = new Date().toISOString();
-    const next = passesRef.current.map((p) => {
-      if (p.id === passId && p.status !== 'cancelled') {
-        return { ...p, status: 'checked_in' as const, checkInTimestamp: nowIso };
+  const checkInPass = useCallback(
+    (passId: string) => {
+      if (!canMutatePassCheckIn(userRef.current?.role)) {
+        console.warn('[EcoPark RBAC] checkInPass refused: check-in staff role required.');
+        return;
       }
-      return p;
-    });
-    passesRef.current = next;
-    safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
-    setPassesState(next);
-  }, []);
+
+      const target = passesRef.current.find((p) => p.id === passId);
+      if (!target || target.status === 'cancelled' || target.status === 'checked_in') return;
+
+      const nowIso = new Date().toISOString();
+      const checkedInPass: EcoPass = {
+        ...target,
+        status: 'checked_in',
+        checkInTimestamp: nowIso,
+      };
+      const next = passesRef.current.map((p) => (p.id === passId ? checkedInPass : p));
+
+      passesRef.current = next;
+      safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
+      setPassesState(next);
+      publishSyncUpdate('passes', { passes: next });
+      void syncPassToSupabaseCloudIfActive(
+        checkedInPass,
+        'check_in',
+        userRef.current?.matricule
+      );
+    },
+    [publishSyncUpdate]
+  );
 
   const claimPassByReference = useCallback(
     (
@@ -418,54 +552,35 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
       userId: string,
       userEmail: string
     ): { ok: boolean; error?: string; pass?: EcoPass } => {
-      const refClean = referenceCode.trim().toUpperCase();
-      const contactClean = contactEmailOrPhone.trim().toLowerCase();
-      const contactDigits = contactClean.replace(/[^\d]/g, '');
-
-      if (!refClean || !contactClean) {
+      const lookup = verifyAnonymousPassLookup(
+        passesRef.current,
+        referenceCode,
+        contactEmailOrPhone
+      );
+      if (!lookup.ok || !lookup.pass) {
         return {
           ok: false,
-          error: 'Veuillez saisir le code du Pass (ex: ECP-2026-XXXXX) ainsi que l’email ou téléphone utilisé lors de la réservation.',
-        };
-      }
-
-      const target = passesRef.current.find((p) => p.id.toUpperCase() === refClean);
-      if (!target) {
-        return {
-          ok: false,
-          error: 'Aucun billet trouvé avec cette référence ou coordonnées non concordantes.',
-        };
-      }
-
-      const passEmail = target.leadVisitor.email.trim().toLowerCase();
-      const passDigits = target.leadVisitor.phone.replace(/[^\d]/g, '');
-      const emailMatches = contactClean.includes('@') && passEmail === contactClean;
-      const phoneMatches =
-        contactDigits.length >= 8 &&
-        passDigits.length >= 8 &&
-        passDigits.slice(-8) === contactDigits.slice(-8);
-
-      if (!emailMatches && !phoneMatches) {
-        return {
-          ok: false,
-          error: 'Aucun billet trouvé avec cette référence ou coordonnées non concordantes.',
+          error:
+            lookup.error ||
+            'Aucun billet trouvé avec cette référence ou coordonnées non concordantes.',
         };
       }
 
       const claimedPass: EcoPass = {
-        ...target,
+        ...lookup.pass,
         ownerUserId: userId,
         ownerEmail: userEmail.trim().toLowerCase(),
       };
 
-      const next = passesRef.current.map((p) => (p.id === target.id ? claimedPass : p));
+      const next = passesRef.current.map((p) => (p.id === claimedPass.id ? claimedPass : p));
       passesRef.current = next;
       safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
       setPassesState(next);
       setActivePassId(claimedPass.id);
+      publishSyncUpdate('passes', { passes: next });
       return { ok: true, pass: claimedPass };
     },
-    [setActivePassId]
+    [publishSyncUpdate, setActivePassId]
   );
 
   const lookupPassAnonymously = useCallback(
@@ -498,143 +613,196 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
         passesRef.current = updatedPasses;
         safeLocalStorage.setItem(STORAGE_KEYS.PASSES, updatedPasses);
         setPassesState(updatedPasses);
+        publishSyncUpdate('passes', { passes: updatedPasses });
       }
+      sessionUnlockedRef.current = [];
       setSessionUnlockedPassIdsState([]);
-      if (typeof window !== 'undefined' && window.sessionStorage) {
-        try {
-          window.sessionStorage.removeItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
-        } catch {
-          // Ignore storage errors
-        }
-      }
+      safeSessionStorage.removeItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
       return anonymizedCount;
     },
-    []
+    [publishSyncUpdate]
   );
 
-  const submitCitizenReport = useCallback((input: ReportInput): CitizenReport => {
-    const reportIndex = Math.floor(100 + Math.random() * 900);
-    const newId = `REP-2026-${reportIndex}`;
-    const nowIso = new Date().toISOString();
+  const submitCitizenReport = useCallback(
+    (input: ReportInput): CitizenReport => {
+      const reportIndex = Math.floor(100 + Math.random() * 900);
+      const newId = `REP-2026-${reportIndex}`;
+      const nowIso = new Date().toISOString();
 
-    const newReport: CitizenReport = {
-      ...input,
-      id: newId,
-      timestamp: nowIso,
-      status: 'en_attente',
-      upvotes: 0,
-    };
+      const newReport: CitizenReport = {
+        ...input,
+        id: newId,
+        timestamp: nowIso,
+        status: 'en_attente',
+        upvotes: 0,
+      };
 
-    setReportsState((prev) => {
-      const next = [newReport, ...prev];
+      const next = [newReport, ...reportsRef.current];
+      reportsRef.current = next;
       safeLocalStorage.setItem(STORAGE_KEYS.REPORTS, next);
-      return next;
-    });
+      setReportsState(next);
+      publishSyncUpdate('reports', { reports: next });
 
-    return newReport;
-  }, []);
+      return newReport;
+    },
+    [publishSyncUpdate]
+  );
 
   const updateReportStatus = useCallback(
     (reportId: string, status: ReportStatus, rangerNote?: string) => {
-      setReportsState((prev) => {
-        const next = prev.map((rep) => {
-          if (rep.id === reportId) {
-            return {
-              ...rep,
-              status,
-              rangerNote: rangerNote !== undefined ? rangerNote : rep.rangerNote,
-              resolvedAt: status === 'resolu' ? new Date().toISOString() : rep.resolvedAt,
-            };
-          }
-          return rep;
-        });
-        safeLocalStorage.setItem(STORAGE_KEYS.REPORTS, next);
-        return next;
-      });
-    },
-    []
-  );
+      if (!canMutateBackofficeOps(userRef.current?.role)) {
+        console.warn('[EcoPark RBAC] updateReportStatus refused: operational staff role required.');
+        return;
+      }
 
-  const upvoteReport = useCallback((reportId: string) => {
-    setReportsState((prev) => {
-      const next = prev.map((rep) => {
+      const next = reportsRef.current.map((rep) => {
         if (rep.id === reportId) {
-          return { ...rep, upvotes: rep.upvotes + 1 };
+          return {
+            ...rep,
+            status,
+            rangerNote: rangerNote !== undefined ? rangerNote : rep.rangerNote,
+            resolvedAt: status === 'resolu' ? new Date().toISOString() : rep.resolvedAt,
+          };
         }
         return rep;
       });
+
+      reportsRef.current = next;
       safeLocalStorage.setItem(STORAGE_KEYS.REPORTS, next);
-      return next;
-    });
-  }, []);
+      setReportsState(next);
+      publishSyncUpdate('reports', { reports: next });
+    },
+    [publishSyncUpdate]
+  );
+
+  const upvoteReport = useCallback(
+    (reportId: string) => {
+      const next = reportsRef.current.map((rep) =>
+        rep.id === reportId ? { ...rep, upvotes: rep.upvotes + 1 } : rep
+      );
+      reportsRef.current = next;
+      safeLocalStorage.setItem(STORAGE_KEYS.REPORTS, next);
+      setReportsState(next);
+      publishSyncUpdate('reports', { reports: next });
+    },
+    [publishSyncUpdate]
+  );
 
   const resetToSeedData = useCallback(() => {
+    if (!canMutateBackofficeOps(userRef.current?.role)) {
+      console.warn('[EcoPark RBAC] resetToSeedData refused: operational staff role required.');
+      return;
+    }
+
     trailsRef.current = INITIAL_TRAILS;
+    telemetryRef.current = INITIAL_TELEMETRY;
     passesRef.current = INITIAL_PASSES;
+    reportsRef.current = INITIAL_REPORTS;
 
     safeLocalStorage.setItem(STORAGE_KEYS.TRAILS, INITIAL_TRAILS);
     safeLocalStorage.setItem(STORAGE_KEYS.TELEMETRY, INITIAL_TELEMETRY);
     safeLocalStorage.setItem(STORAGE_KEYS.PASSES, INITIAL_PASSES);
     safeLocalStorage.setItem(STORAGE_KEYS.REPORTS, INITIAL_REPORTS);
-    safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, 'accueil');
-    safeLocalStorage.setItem(STORAGE_KEYS.SELECTED_TRAIL, null);
-    safeLocalStorage.setItem(STORAGE_KEYS.SELECTED_SPECIES, null);
-    safeLocalStorage.setItem(STORAGE_KEYS.ACTIVE_PASS_ID, 'ECP-2026-8942');
-    safeLocalStorage.setItem(STORAGE_KEYS.DRAWER_OPEN, false);
 
     setTrailsState(INITIAL_TRAILS);
     setTelemetryState(INITIAL_TELEMETRY);
     setPassesState(INITIAL_PASSES);
     setReportsState(INITIAL_REPORTS);
-    setActiveViewState('accueil');
     setSelectedTrailIdState(null);
     setSelectedSpeciesIdState(null);
     setActivePassIdState('ECP-2026-8942');
     setColorDrawerOpenState(false);
+
+    sessionUnlockedRef.current = [];
     setSessionUnlockedPassIdsState([]);
-    if (typeof window !== 'undefined' && window.sessionStorage) {
-      try {
-        window.sessionStorage.removeItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
-      } catch {
-        // Ignore storage errors
-      }
-    }
-  }, []);
+    safeSessionStorage.removeItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
+
+    publishSyncUpdate('reset', {
+      trails: INITIAL_TRAILS,
+      telemetry: INITIAL_TELEMETRY,
+      passes: INITIAL_PASSES,
+      reports: INITIAL_REPORTS,
+    });
+  }, [publishSyncUpdate]);
 
   // --------------------------------------------------------------------------
-  // Cross-Tab Reactivity via window storage event
+  // Real-Time Bidirectional Sync: BroadcastChannel + StorageEvent Fallback
+  // (Strictly scoped to shared domain state; never hijacks tab navigation)
   // --------------------------------------------------------------------------
   useEffect(() => {
+    const applyIncomingEnvelope = (env: SyncEnvelope) => {
+      if (env.trails) {
+        trailsRef.current = env.trails;
+        setTrailsState(env.trails);
+      }
+      if (env.telemetry) {
+        telemetryRef.current = env.telemetry;
+        setTelemetryState(env.telemetry);
+      }
+      if (env.passes) {
+        passesRef.current = env.passes;
+        setPassesState(env.passes);
+      }
+      if (env.reports) {
+        reportsRef.current = env.reports;
+        setReportsState(env.reports);
+      }
+      setSyncMeta((prev) => ({
+        ...prev,
+        lastSyncedAt: env.timestamp,
+        lastDomain: env.domain,
+        lastActorRole: env.actorRole,
+        receivedCount: prev.receivedCount + 1,
+      }));
+    };
+
+    const bus = createEcoSyncBus(tabIdRef.current, applyIncomingEnvelope);
+    syncBusRef.current = bus;
+
     const handleStorageEvent = (event: StorageEvent) => {
       if (!event.key || event.newValue === null) return;
+      // Ignore all tab-local navigation & UI keys (ACTIVE_VIEW, SELECTED_TRAIL, etc.)
+      if (!isCrossTabSyncedKey(event.key)) return;
 
       try {
+        const nowIso = new Date().toISOString();
         if (event.key === STORAGE_KEYS.TRAILS) {
-          setTrailsState(JSON.parse(event.newValue));
+          const parsed = JSON.parse(event.newValue) as Trail[];
+          trailsRef.current = parsed;
+          setTrailsState(parsed);
+          setSyncMeta((prev) => ({ ...prev, lastSyncedAt: nowIso, lastDomain: 'trails' }));
         } else if (event.key === STORAGE_KEYS.TELEMETRY) {
-          setTelemetryState(JSON.parse(event.newValue));
+          const parsed = JSON.parse(event.newValue) as ParkTelemetry;
+          telemetryRef.current = parsed;
+          setTelemetryState(parsed);
+          setSyncMeta((prev) => ({ ...prev, lastSyncedAt: nowIso, lastDomain: 'telemetry' }));
         } else if (event.key === STORAGE_KEYS.PASSES) {
-          setPassesState(JSON.parse(event.newValue));
+          const parsed = JSON.parse(event.newValue) as EcoPass[];
+          passesRef.current = parsed;
+          setPassesState(parsed);
+          setSyncMeta((prev) => ({ ...prev, lastSyncedAt: nowIso, lastDomain: 'passes' }));
         } else if (event.key === STORAGE_KEYS.REPORTS) {
-          setReportsState(JSON.parse(event.newValue));
-        } else if (event.key === STORAGE_KEYS.ACTIVE_VIEW) {
-          setActiveViewState(JSON.parse(event.newValue));
-        } else if (event.key === STORAGE_KEYS.SELECTED_TRAIL) {
-          setSelectedTrailIdState(JSON.parse(event.newValue));
-        } else if (event.key === STORAGE_KEYS.SELECTED_SPECIES) {
-          setSelectedSpeciesIdState(JSON.parse(event.newValue));
-        } else if (event.key === STORAGE_KEYS.ACTIVE_PASS_ID) {
-          setActivePassIdState(JSON.parse(event.newValue));
-        } else if (event.key === STORAGE_KEYS.DRAWER_OPEN) {
-          setColorDrawerOpenState(JSON.parse(event.newValue));
+          const parsed = JSON.parse(event.newValue) as CitizenReport[];
+          reportsRef.current = parsed;
+          setReportsState(parsed);
+          setSyncMeta((prev) => ({ ...prev, lastSyncedAt: nowIso, lastDomain: 'reports' }));
         }
       } catch (err) {
-        console.warn('[EcoParkContext] Error syncing cross-tab event:', err);
+        console.warn('[EcoParkContext] Error syncing cross-tab storage event:', err);
       }
     };
 
-    window.addEventListener('storage', handleStorageEvent);
-    return () => window.removeEventListener('storage', handleStorageEvent);
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', handleStorageEvent);
+    }
+
+    return () => {
+      bus.close();
+      syncBusRef.current = null;
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('storage', handleStorageEvent);
+      }
+    };
   }, []);
 
   // Compute active pass
@@ -696,8 +864,9 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     updateReportStatus,
     upvoteReport,
 
-    // State Management & Reset
+    // State Management, Reset & Sync Telemetry
     resetToSeedData,
+    syncMeta,
   };
 
   return <EcoParkContext.Provider value={value}>{children}</EcoParkContext.Provider>;

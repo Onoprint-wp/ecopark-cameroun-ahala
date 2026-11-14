@@ -336,4 +336,15 @@ export interface EcoParkContextType {
 
   // Reset to initial seed
   resetToSeedData: () => void;
+
+  // Real-time Backoffice <-> Frontend synchronization metadata
+  syncMeta: {
+    tabId: string;
+    transport: 'broadcast_storage' | 'supabase_hybrid';
+    lastSyncedAt: string | null;
+    lastDomain: 'trails' | 'telemetry' | 'passes' | 'reports' | 'reset' | 'init';
+    lastActorRole: EcoParkRole | null;
+    publishedCount: number;
+    receivedCount: number;
+  };
 }

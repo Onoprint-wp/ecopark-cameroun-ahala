@@ -72,6 +72,7 @@ export const RangerDashboard: React.FC = () => {
     cancelPass,
     setActivePassId,
     resetToSeedData,
+    syncMeta,
   } = useEcoPark();
 
   const { user, canManageOps, canCheckIn, logout } = useAuth();
@@ -471,6 +472,25 @@ export const RangerDashboard: React.FC = () => {
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300">
                   <Radio className="w-2.5 h-2.5 animate-pulse text-emerald-500" />
                   SESSION AUTHENTIFIÉE
+                </span>
+                <span
+                  data-testid="backoffice-sync-pill"
+                  className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-sky-100 text-sky-900 dark:bg-sky-950/80 dark:text-sky-200 border border-sky-300 dark:border-sky-800 tabular-nums"
+                  title="Canal de synchronisation bidirectionnel Backoffice <-> Frontend"
+                >
+                  <span>
+                    {syncMeta.transport === 'supabase_hybrid'
+                      ? 'SYNC CLOUD + BUS MULTI-ONGLETS'
+                      : 'BUS TEMPS RÉEL MULTI-ONGLETS'}
+                  </span>
+                  <span>
+                    · Émis {syncMeta.publishedCount} · Reçus {syncMeta.receivedCount}
+                  </span>
+                  {syncMeta.lastSyncedAt && (
+                    <span>
+                      · {new Date(syncMeta.lastSyncedAt).toLocaleTimeString('fr-FR')}
+                    </span>
+                  )}
                 </span>
               </div>
               <h1 className="font-sans text-base font-bold text-[var(--text-primary)] mt-0.5">
