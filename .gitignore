@@ -9,6 +9,7 @@ dist-ssr/
 # Agent / workspace internal scratch
 .agents/
 .vercel/
+.audit-wt/
 
 # Environment variables
 .env
