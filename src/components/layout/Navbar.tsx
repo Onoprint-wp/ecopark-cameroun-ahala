@@ -347,7 +347,7 @@ export const Navbar: React.FC = () => {
           {/* Official Brand Logo & Title */}
           <button
             onClick={(e) => handleNavClick('accueil', e)}
-            className="touch-target-48 flex-1 xl:flex-initial min-w-[168px] max-w-full flex items-center gap-2 sm:gap-2.5 text-left group focus:outline-none focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg py-1 pr-1 cursor-pointer overflow-x-clip"
+            className="touch-target-48 min-w-0 max-w-full flex items-center gap-2 sm:gap-2.5 text-left group focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg py-1 pr-1 cursor-pointer"
             aria-label="ECOPARK CAMEROUN - Retour à l'accueil"
           >
             <img
@@ -355,11 +355,11 @@ export const Navbar: React.FC = () => {
               alt="Logo Officiel ECOPARK CAMEROUN"
               className="w-9 h-9 sm:w-10 sm:h-10 max-w-[44px] max-h-[44px] shrink-0 rounded-full object-cover border-2 border-[var(--brand-primary)] shadow-sm group-hover:scale-105 transition-transform duration-200 bg-white"
             />
-            <div className="flex flex-col min-w-0">
-              <span className="font-sans font-bold text-[0.9375rem] sm:text-lg tracking-tight text-[var(--text-primary)] leading-tight whitespace-normal xl:whitespace-nowrap">
+            <div className="flex flex-col min-w-0 max-w-full">
+              <span className="font-sans font-bold text-[0.9375rem] sm:text-lg tracking-tight text-[var(--text-primary)] leading-tight whitespace-normal xl:whitespace-nowrap break-words">
                 ECOPARK CAMEROUN
               </span>
-              <span className="text-xs text-[var(--text-muted)] font-semibold tracking-wide uppercase mt-0.5 tabular-nums leading-tight whitespace-normal">
+              <span className="text-xs text-[var(--text-muted)] font-semibold tracking-wide uppercase mt-0.5 tabular-nums leading-tight whitespace-normal break-words">
                 {isOperationalCockpit ? 'Poste Exploitation RN3' : 'Yaoundé - Ahala • Dès 500 FCFA'}
               </span>
             </div>

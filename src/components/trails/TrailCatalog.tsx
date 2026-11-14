@@ -249,7 +249,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
               value={selectedBiome}
               onChange={(e) => setSelectedBiome(e.target.value)}
               aria-label="Filtrer par secteur"
-              className="min-h-[44px] min-w-0 max-w-full flex-1 sm:flex-initial px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
+              className="min-h-[44px] min-w-0 w-full sm:w-auto sm:flex-initial px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] cursor-pointer"
             >
               <option value="all">Tous les secteurs</option>
               <option value="canopee">Jardin Zoologique &amp; Canopée</option>
@@ -289,7 +289,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
               value={selectedStatus}
               onChange={(e) => setSelectedStatus(e.target.value)}
               aria-label="Filtrer par statut"
-              className="min-h-[44px] min-w-0 max-w-full flex-1 sm:flex-initial px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
+              className="min-h-[44px] min-w-0 w-full sm:w-auto sm:flex-initial px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] cursor-pointer"
             >
               <option value="all">Tous les états</option>
               <option value="fluide">Fluide / Ouvert</option>

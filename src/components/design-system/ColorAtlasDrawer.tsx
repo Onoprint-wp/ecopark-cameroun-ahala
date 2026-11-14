@@ -3,7 +3,7 @@
 // Feature F29: Slide-over design system drawer, Adobe Color palettes & WCAG tester
 // ============================================================================
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
   X,
   Palette,
@@ -61,15 +61,89 @@ export const ColorAtlasDrawer: React.FC = () => {
   const [fgColor, setFgColor] = useState<string>('#1F2421'); // Deep Bark
   const [bgColor, setBgColor] = useState<string>('#E9F5ED'); // Soft Mist
 
-  // Close on Escape key
+  const drawerPanelRef = useRef<HTMLDivElement | null>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
+
+  // Dialog focus management, Tab trap & capture-phase Escape isolation
   useEffect(() => {
+    if (!colorDrawerOpen) {
+      const targetToRestore = previousFocusRef.current;
+      previousFocusRef.current = null;
+      if (targetToRestore && targetToRestore.isConnected) {
+        targetToRestore.focus();
+      }
+      return;
+    }
+
+    const activeBeforeOpen = document.activeElement;
+    if (
+      activeBeforeOpen instanceof HTMLElement &&
+      !drawerPanelRef.current?.contains(activeBeforeOpen)
+    ) {
+      previousFocusRef.current = activeBeforeOpen;
+    }
+
+    const getFocusable = (): HTMLElement[] => {
+      const panel = drawerPanelRef.current;
+      if (!panel) return [];
+      const selector =
+        'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])';
+      return Array.from(panel.querySelectorAll<HTMLElement>(selector)).filter(
+        (el) => el.getClientRects().length > 0 && !el.hasAttribute('disabled')
+      );
+    };
+
+    const rafId = window.requestAnimationFrame(() => {
+      const panel = drawerPanelRef.current;
+      if (!panel) return;
+      if (!panel.contains(document.activeElement)) {
+        const focusables = getFocusable();
+        (focusables[0] ?? panel).focus();
+      }
+    });
+
     const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && colorDrawerOpen) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        e.stopImmediatePropagation();
         setColorDrawerOpen(false);
+        return;
+      }
+
+      if (e.key === 'Tab') {
+        const panel = drawerPanelRef.current;
+        const focusables = getFocusable();
+        if (!panel || focusables.length === 0) {
+          e.preventDefault();
+          panel?.focus();
+          return;
+        }
+        const first = focusables[0];
+        const last = focusables[focusables.length - 1];
+        const current = document.activeElement;
+
+        if (!(current instanceof HTMLElement) || !panel.contains(current)) {
+          e.preventDefault();
+          (e.shiftKey ? last : first).focus();
+          return;
+        }
+
+        if (e.shiftKey && (current === first || current === panel)) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && current === last) {
+          e.preventDefault();
+          first.focus();
+        }
       }
     };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => {
+      window.cancelAnimationFrame(rafId);
+      window.removeEventListener('keydown', handleKeyDown, true);
+    };
   }, [colorDrawerOpen, setColorDrawerOpen]);
 
   const copyToClipboard = (text: string, label: string) => {
@@ -303,7 +377,11 @@ export const ColorAtlasDrawer: React.FC = () => {
 
       {/* Drawer Container (Responsive max-w-xl to max-w-2xl) */}
       <div className="fixed inset-y-0 right-0 max-w-full flex pl-4 sm:pl-10">
-        <div className="w-screen max-w-2xl bg-[var(--bg-elevated)] border-l border-[var(--border-default)] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300">
+        <div
+          ref={drawerPanelRef}
+          tabIndex={-1}
+          className="w-screen max-w-2xl bg-[var(--bg-elevated)] border-l border-[var(--border-default)] shadow-2xl flex flex-col animate-in slide-in-from-right duration-300"
+        >
           {/* Header */}
           <div className="p-5 sm:p-6 border-b border-[var(--border-default)] flex items-center justify-between gap-4 bg-[var(--bg-surface)]/50">
             <div className="flex items-center gap-3">
@@ -336,6 +414,7 @@ export const ColorAtlasDrawer: React.FC = () => {
               </a>
 
               <button
+                type="button"
                 onClick={() => setColorDrawerOpen(false)}
                 className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors cursor-pointer"
                 aria-label="Fermer l atelier chromatique"

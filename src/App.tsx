@@ -422,15 +422,15 @@ export default function App() {
         {/* VUE 6 : COCKPIT PRO (/exploitation) - PROFIL C STRICT (< 20px)     */}
         {/* ================================================================= */}
         {activeView === 'ranger' && (
-          <div className="eco-view-enter">
+          <div className="eco-view-enter min-h-screen">
             {isAuthLoading ? (
-              <div className="eco-container py-16 min-h-screen">
+              <div key="ranger-loading" className="eco-container py-16 min-h-screen">
                 <div className="max-w-xl mx-auto p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center text-sm text-[var(--text-muted)] font-mono">
                   Vérification des habilitations Cockpit Pro...
                 </div>
               </div>
             ) : !isAuthenticated ? (
-              <div className="space-y-6 pt-6 pb-16 font-sans tabular-nums">
+              <div key="ranger-login" className="space-y-6 pt-6 pb-16 font-sans tabular-nums min-h-screen">
                 <div className="eco-container">
                   <div className="p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-col md:flex-row md:items-center justify-between gap-3">
                     <div>
@@ -453,7 +453,7 @@ export default function App() {
                 </div>
               </div>
             ) : !isStaff ? (
-              <div className="eco-container py-16 font-sans">
+              <div key="ranger-403" className="eco-container py-16 font-sans min-h-screen">
                 <div className="max-w-xl mx-auto p-8 rounded-3xl bg-[var(--bg-surface)] border border-amber-400/60 shadow-xl text-center space-y-5">
                   <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950 text-[var(--status-caution-text)] mx-auto flex items-center justify-center">
                     <ShieldAlert className="w-7 h-7" />
@@ -492,7 +492,7 @@ export default function App() {
                 </div>
               </div>
             ) : (
-              <RangerDashboard />
+              <RangerDashboard key="ranger-dashboard" />
             )}
           </div>
         )}

@@ -858,7 +858,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
               {/* North Pointer Needle */}
               <polygon points="0,-18 5,0 0,-4 -5,0" fill="#52B788" />
               <polygon points="0,18 5,0 0,4 -5,0" fill="#36403A" />
-              <text x="0" y="-8" textAnchor="middle" fill="#FFFFFF" className="font-mono text-[12px] font-bold">
+              <text x="0" y="-8" textAnchor="middle" fill="#FFFFFF" stroke="#141816" strokeWidth="3" paintOrder="stroke" className="font-mono text-[12px] font-bold">
                 N
               </text>
             </g>

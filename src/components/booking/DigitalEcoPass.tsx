@@ -72,12 +72,14 @@ export const DigitalEcoPass: React.FC = () => {
     type InertDivElement = HTMLDivElement & { inert: boolean };
     const setFaceInert = (element: HTMLDivElement | null, isInert: boolean) => {
       if (!element) return;
-      if ('inert' in element) {
+      if ('inert' in element && (element as InertDivElement).inert !== isInert) {
         (element as InertDivElement).inert = isInert;
       }
       if (isInert) {
-        element.setAttribute('inert', '');
-      } else {
+        if (!element.hasAttribute('inert')) {
+          element.setAttribute('inert', '');
+        }
+      } else if (element.hasAttribute('inert')) {
         element.removeAttribute('inert');
       }
     };
@@ -99,7 +101,7 @@ export const DigitalEcoPass: React.FC = () => {
       }
       setFaceInert(versoEl, true);
     }
-  }, [isFlippedBack]);
+  });
 
   useEffect(() => {
     if (!showCancelModal) {

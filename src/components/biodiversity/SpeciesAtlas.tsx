@@ -226,7 +226,7 @@ export const SpeciesAtlas: React.FC = () => {
             <div className="flex flex-wrap items-center gap-2 text-xs font-mono min-w-0">
               <ShieldCheck className="w-4 h-4 text-[var(--brand-primary)] shrink-0" />
               <span className="text-[var(--text-muted)] shrink-0">Statut UICN :</span>
-              <div className="relative min-w-0 max-w-full basis-[210px] grow w-full sm:w-auto sm:flex-initial">
+              <div className="relative min-w-0 max-w-full basis-[210px] grow w-full sm:w-auto sm:min-w-[260px] sm:flex-initial">
                 <select
                   aria-label="Filtrer par statut de conservation UICN"
                   value={selectedSeason}

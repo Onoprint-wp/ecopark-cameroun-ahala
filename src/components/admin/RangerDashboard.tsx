@@ -219,6 +219,17 @@ export const RangerDashboard: React.FC = () => {
       previousFocusRef.current = null;
       if (targetToRestore && targetToRestore.isConnected) {
         targetToRestore.focus();
+      } else if (targetToRestore) {
+        const headingFallback =
+          Array.from(document.querySelectorAll<HTMLElement>('h2, h3')).find((el) =>
+            /sentinelle|observation|modération|terrain/i.test(el.textContent ?? '')
+          ) ?? document.querySelector<HTMLElement>('main h1, h1, main button:not([disabled])');
+        if (headingFallback) {
+          if (!headingFallback.hasAttribute('tabindex') && headingFallback.tagName !== 'BUTTON') {
+            headingFallback.setAttribute('tabindex', '-1');
+          }
+          headingFallback.focus();
+        }
       }
       return;
     }
@@ -1065,8 +1076,8 @@ export const RangerDashboard: React.FC = () => {
                   </div>
 
                   {/* Dynamic Action Buttons */}
-                  <div className="pt-3 border-t border-[var(--border-default)]/60 space-y-2">
-                    <div className="flex items-center justify-between text-xs font-semibold text-[var(--text-muted)] uppercase">
+                  <div className="pt-3 border-t border-[var(--border-default)]/60 space-y-2 min-w-0">
+                    <div className="flex flex-wrap items-center justify-between gap-1 text-xs font-semibold text-[var(--text-muted)] uppercase min-w-0">
                       <span>Changer l état opérationnel :</span>
                       <button
                         type="button"
@@ -1074,7 +1085,7 @@ export const RangerDashboard: React.FC = () => {
                           setSelectedTrailId(trail.id);
                           setActiveView('sentiers');
                         }}
-                        className="min-h-[44px] xl:min-h-[32px] inline-flex items-center px-2 text-[var(--brand-primary)] hover:underline font-mono normal-case cursor-pointer"
+                        className="min-h-[44px] xl:min-h-[32px] inline-flex items-center px-2 text-[var(--brand-primary)] hover:underline font-mono normal-case cursor-pointer shrink-0"
                       >
                         Carte →
                       </button>
@@ -1349,9 +1360,10 @@ export const RangerDashboard: React.FC = () => {
             <div className="w-full sm:w-auto flex flex-wrap items-center gap-2 min-w-0 max-w-full">
               <span className="text-[var(--text-muted)] font-semibold shrink-0">Sentier :</span>
               <select
+                aria-label="Filtrer les signalements par sentier"
                 value={reportTrailFilter}
                 onChange={(e) => setReportTrailFilter(e.target.value)}
-                className="min-h-[44px] min-w-[160px] max-w-full w-full sm:w-auto flex-1 px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] cursor-pointer"
+                className="min-h-[44px] min-w-0 max-w-full w-full sm:w-auto sm:flex-initial px-3 py-2 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] cursor-pointer"
               >
                 <option value="all">Tous les sentiers</option>
                 {trails.map((t) => (
@@ -1804,7 +1816,7 @@ export const RangerDashboard: React.FC = () => {
               </button>
             </div>
 
-            <p className="text-xs text-[var(--text-muted)] leading-relaxed">
+            <p className="text-sm text-[var(--text-muted)] leading-relaxed">
               La fermeture du sentier sera répercutée <strong>instantanément</strong> sur la Carte
               Topographique interactive (tracé rouge hachuré), désactivera la réservation dans le
               catalogue et décrémentera la capacité globale.
@@ -1833,15 +1845,19 @@ export const RangerDashboard: React.FC = () => {
               </div>
 
               <div className="pt-2">
-                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
+                <label
+                  htmlFor="closure-reason-input"
+                  className="block text-xs font-semibold text-[var(--text-primary)] mb-1"
+                >
                   Motif officiel détaillé (affiché aux randonneurs) :
                 </label>
                 <textarea
+                  id="closure-reason-input"
                   rows={3}
                   value={closureReasonInput}
                   onChange={(e) => setClosureReasonInput(e.target.value)}
                   placeholder="Précisez la raison et la durée estimée de la fermeture..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-red-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:ring-1 focus:ring-red-500"
                 />
               </div>
             </div>
@@ -1933,15 +1949,19 @@ export const RangerDashboard: React.FC = () => {
               </div>
 
               <div className="pt-2">
-                <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
+                <label
+                  htmlFor="intervention-note-input"
+                  className="block text-xs font-semibold text-[var(--text-primary)] mb-1"
+                >
                   Note d intervention de l Éco-Garde :
                 </label>
                 <textarea
+                  id="intervention-note-input"
                   rows={3}
                   value={interventionNoteInput}
                   onChange={(e) => setInterventionNoteInput(e.target.value)}
                   placeholder="Décrivez les mesures prises sur place par l'équipe technique..."
-                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-sky-500"
+                  className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:ring-1 focus:ring-sky-500"
                 />
               </div>
             </div>
