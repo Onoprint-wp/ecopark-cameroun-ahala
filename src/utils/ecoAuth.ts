@@ -11,6 +11,7 @@ import type {
   AssignedPole,
   AuthenticatedUser,
   EcoParkRole,
+  EcoPass,
 } from '../types/ecosystem.ts';
 
 export const AUTH_STORAGE_KEYS = {
@@ -139,6 +140,38 @@ const PROVISIONED_STAFF_ACCOUNTS: StoredVaultAccount[] = [
     createdAt: '2026-10-26T08:00:00.000Z',
     updatedAt: '2026-10-26T08:00:00.000Z',
   },
+  {
+    id: 'staff-gui-004',
+    email: 'guichet@ecopark-yaounde.com',
+    fullName: 'Caisse & Accueil Guichet RN3',
+    phone: '+237 672 56 45 98',
+    role: 'agent_guichet',
+    matricule: 'MAT-GUI-04',
+    assignedPole: 'GUICHET_CAISSE',
+    postLabel: 'Billetterie Guichet RN3 & Validation QR',
+    saltHex: '910f33c1a858804713e943e069286ede',
+    hashHex: 'db7fbfb1c111274f0cf808fc02d3fb4c89cfbcbffd0dd7486683c68632e0168d',
+    iterations: PBKDF2_ITERATIONS,
+    isActive: true,
+    createdAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-10-26T08:00:00.000Z',
+  },
+  {
+    id: 'staff-adm-000',
+    email: 'admin@ecopark-yaounde.com',
+    fullName: 'Administration Plateforme RBAC',
+    phone: '+237 672 56 45 98',
+    role: 'administrateur_plateforme',
+    matricule: 'MAT-ADM-00',
+    assignedPole: 'DIRECTION_GENERALE',
+    postLabel: 'Gouvernance RBAC, Sécurité & Infrastructure',
+    saltHex: '881259d5d3115e19c70a3b3c65603300',
+    hashHex: '41d205256862085c1b1bd782c7c51ff160fcc51e046fccb7d2a62a9f454da18e',
+    iterations: PBKDF2_ITERATIONS,
+    isActive: true,
+    createdAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-10-26T08:00:00.000Z',
+  },
 ];
 
 // ----------------------------------------------------------------------------
@@ -175,6 +208,20 @@ export function canManageParkOperations(role?: EcoParkRole | null): boolean {
     role === 'direction' ||
     role === 'administrateur_plateforme'
   );
+}
+
+export function canAuditFinancials(role?: EcoParkRole | null): boolean {
+  if (!role) return false;
+  return (
+    role === 'comptable' ||
+    role === 'direction' ||
+    role === 'administrateur_plateforme'
+  );
+}
+
+export function canManageRbacGovernance(role?: EcoParkRole | null): boolean {
+  if (!role) return false;
+  return role === 'direction' || role === 'administrateur_plateforme';
 }
 
 export function getRoleDisplayLabel(role?: EcoParkRole | null): string {
@@ -1154,6 +1201,133 @@ export async function deleteAndAnonymizeClientAccount(input: {
   saveVaultAccounts(remaining);
   await signOutActiveSession();
   return { ok: true };
+}
+
+export interface StaffDirectoryEntry {
+  id: string;
+  email: string;
+  fullName: string;
+  role: EcoParkRole;
+  matricule?: string;
+  assignedPole?: AssignedPole;
+  postLabel?: string;
+  isActive: boolean;
+}
+
+export interface DeletionComplianceLogEntry {
+  id: string;
+  requester_reference: string;
+  requester_phone_masked: string;
+  reason: string;
+  status: string;
+  created_at: string;
+}
+
+export function listProvisionedStaffDirectory(): StaffDirectoryEntry[] {
+  return loadVaultAccounts()
+    .filter((acc) => isStaffRole(acc.role))
+    .map((acc) => ({
+      id: acc.id,
+      email: acc.email,
+      fullName: acc.fullName,
+      role: acc.role,
+      matricule: acc.matricule,
+      assignedPole: acc.assignedPole,
+      postLabel: acc.postLabel,
+      isActive: acc.isActive,
+    }));
+}
+
+export function getDeletionComplianceLog(): DeletionComplianceLogEntry[] {
+  const raw = readRawStorage(AUTH_STORAGE_KEYS.DELETION_LOG);
+  if (!raw) return [];
+  try {
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? (parsed as DeletionComplianceLogEntry[]) : [];
+  } catch {
+    return [];
+  }
+}
+
+export function verifyAnonymousPassLookup(
+  passes: EcoPass[],
+  referenceCode: string,
+  contactEmailOrPhone: string
+): { ok: boolean; error?: string; pass?: EcoPass } {
+  const refClean = referenceCode.trim().toUpperCase();
+  const contactClean = contactEmailOrPhone.trim().toLowerCase();
+  const contactDigits = contactClean.replace(/[^\d]/g, '');
+
+  if (!refClean || !contactClean) {
+    return {
+      ok: false,
+      error:
+        'Veuillez saisir la référence du billet (ex: ECP-2026-8942) ainsi que le téléphone ou e-mail utilisé lors de la réservation.',
+    };
+  }
+
+  const target = passes.find((p) => p.id.toUpperCase() === refClean);
+  if (!target || target.ownerEmail === 'anonyme@effacement.local') {
+    return {
+      ok: false,
+      error: 'Aucun billet actif ne correspond à cette référence et ces coordonnées.',
+    };
+  }
+
+  const passEmail = target.leadVisitor.email.trim().toLowerCase();
+  const passDigits = target.leadVisitor.phone.replace(/[^\d]/g, '');
+  const emailMatches = contactClean.includes('@') && passEmail === contactClean;
+  const phoneMatches =
+    contactDigits.length >= 8 &&
+    passDigits.length >= 8 &&
+    passDigits.slice(-8) === contactDigits.slice(-8);
+
+  if (!emailMatches && !phoneMatches) {
+    return {
+      ok: false,
+      error: 'Aucun billet actif ne correspond à cette référence et ces coordonnées.',
+    };
+  }
+
+  return { ok: true, pass: target };
+}
+
+export function anonymizeClientPassesList(
+  passes: EcoPass[],
+  userId: string,
+  userEmail: string
+): { updatedPasses: EcoPass[]; anonymizedCount: number } {
+  const normEmail = normalizeEmail(userEmail);
+  let anonymizedCount = 0;
+
+  const updatedPasses = passes.map((p) => {
+    const matchesOwner =
+      (p.ownerUserId && p.ownerUserId === userId) ||
+      (normEmail.length > 0 && p.ownerEmail?.toLowerCase() === normEmail) ||
+      (normEmail.length > 0 && p.leadVisitor.email.trim().toLowerCase() === normEmail);
+
+    if (!matchesOwner) return p;
+
+    anonymizedCount += 1;
+    const rawPhone = p.leadVisitor.phone || '';
+    const maskedPhone =
+      rawPhone.length >= 6
+        ? `${rawPhone.slice(0, 4)}••••${rawPhone.slice(-2)}`
+        : '••••';
+
+    return {
+      ...p,
+      ownerUserId: undefined,
+      ownerEmail: 'anonyme@effacement.local',
+      leadVisitor: {
+        fullName: 'Client Anonymisé (Loi 2010/012)',
+        email: 'anonyme@effacement.local',
+        phone: maskedPhone,
+      },
+    };
+  });
+
+  return { updatedPasses, anonymizedCount };
 }
 
 export function resetAuthVaultForTests(): void {

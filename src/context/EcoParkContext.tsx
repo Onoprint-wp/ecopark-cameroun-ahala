@@ -35,6 +35,7 @@ import {
 import { useTheme } from './ThemeContext';
 import { runEcoViewTransition, emitTrailStatusWave } from '../utils/ecoMotion';
 import { resolveViewFromPath, VIEW_PATH_MAP } from '../utils/ecoRouting';
+import { verifyAnonymousPassLookup, anonymizeClientPassesList } from '../utils/ecoAuth';
 
 // Storage keys under strict eco_park_ahala_v2_* namespace
 export const STORAGE_KEYS = {
@@ -47,6 +48,7 @@ export const STORAGE_KEYS = {
   SELECTED_SPECIES: 'eco_park_ahala_v2_selected_species',
   ACTIVE_PASS_ID: 'eco_park_ahala_v2_active_pass_id',
   DRAWER_OPEN: 'eco_park_ahala_v2_drawer_open',
+  SESSION_UNLOCKED_PASSES: 'eco_park_ahala_v2_session_unlocked_passes',
 };
 
 // Resilient safeLocalStorage helper wrapping all browser storage operations
@@ -139,6 +141,32 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
   const [activePassId, setActivePassIdState] = useState<string | null>(() =>
     safeLocalStorage.getItem<string | null>(STORAGE_KEYS.ACTIVE_PASS_ID, null)
   );
+
+  // Anonymous visitor tab-scoped unlocked pass IDs (just-booked or verified via reference + phone/email)
+  const [sessionUnlockedPassIds, setSessionUnlockedPassIdsState] = useState<string[]>(() => {
+    if (typeof window === 'undefined' || !window.sessionStorage) return [];
+    try {
+      const raw = window.sessionStorage.getItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
+      const parsed = raw ? JSON.parse(raw) : [];
+      return Array.isArray(parsed) ? (parsed as string[]) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const unlockPassForSession = useCallback((passId: string) => {
+    setSessionUnlockedPassIdsState((prev) => {
+      const next = prev.includes(passId) ? prev : [passId, ...prev];
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        try {
+          window.sessionStorage.setItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES, JSON.stringify(next));
+        } catch {
+          // Ignore storage quota errors
+        }
+      }
+      return next;
+    });
+  }, []);
 
   // Citizen Reports state
   const [reports, setReportsState] = useState<CitizenReport[]>(() =>
@@ -308,6 +336,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
       setPassesState(nextPasses);
 
       setActivePassId(newId);
+      unlockPassForSession(newId);
 
       // Reconcile today's park occupancy (only increments if visitDate === today) & add avoided CO2
       setTelemetryState((prev) => {
@@ -326,7 +355,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
       return newPass;
     },
-    [reconcileTodayOccupancy, setActivePassId]
+    [reconcileTodayOccupancy, setActivePassId, unlockPassForSession]
   );
 
   const cancelPass = useCallback(
@@ -439,6 +468,50 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     [setActivePassId]
   );
 
+  const lookupPassAnonymously = useCallback(
+    (
+      referenceCode: string,
+      contactEmailOrPhone: string
+    ): { ok: boolean; error?: string; pass?: EcoPass } => {
+      const res = verifyAnonymousPassLookup(
+        passesRef.current,
+        referenceCode,
+        contactEmailOrPhone
+      );
+      if (res.ok && res.pass) {
+        unlockPassForSession(res.pass.id);
+        setActivePassId(res.pass.id);
+      }
+      return res;
+    },
+    [setActivePassId, unlockPassForSession]
+  );
+
+  const anonymizeUserPasses = useCallback(
+    (userId: string, userEmail: string): number => {
+      const { updatedPasses, anonymizedCount } = anonymizeClientPassesList(
+        passesRef.current,
+        userId,
+        userEmail
+      );
+      if (anonymizedCount > 0) {
+        passesRef.current = updatedPasses;
+        safeLocalStorage.setItem(STORAGE_KEYS.PASSES, updatedPasses);
+        setPassesState(updatedPasses);
+      }
+      setSessionUnlockedPassIdsState([]);
+      if (typeof window !== 'undefined' && window.sessionStorage) {
+        try {
+          window.sessionStorage.removeItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
+        } catch {
+          // Ignore storage errors
+        }
+      }
+      return anonymizedCount;
+    },
+    []
+  );
+
   const submitCitizenReport = useCallback((input: ReportInput): CitizenReport => {
     const reportIndex = Math.floor(100 + Math.random() * 900);
     const newId = `REP-2026-${reportIndex}`;
@@ -518,6 +591,14 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     setSelectedSpeciesIdState(null);
     setActivePassIdState('ECP-2026-8942');
     setColorDrawerOpenState(false);
+    setSessionUnlockedPassIdsState([]);
+    if (typeof window !== 'undefined' && window.sessionStorage) {
+      try {
+        window.sessionStorage.removeItem(STORAGE_KEYS.SESSION_UNLOCKED_PASSES);
+      } catch {
+        // Ignore storage errors
+      }
+    }
   }, []);
 
   // --------------------------------------------------------------------------
@@ -601,10 +682,13 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     activePass,
     activePassId,
     setActivePassId,
+    sessionUnlockedPassIds,
     bookPass,
     cancelPass,
     checkInPass,
     claimPassByReference,
+    lookupPassAnonymously,
+    anonymizeUserPasses,
 
     // Citizen Sentinel
     reports,

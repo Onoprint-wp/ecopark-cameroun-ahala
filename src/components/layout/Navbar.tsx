@@ -52,6 +52,7 @@ export const Navbar: React.FC = () => {
     setColorDrawerOpen,
     telemetry,
     passes,
+    sessionUnlockedPassIds,
   } = useEcoPark();
 
   const { user, isAuthenticated, isStaff, setAuthPortalMode } = useAuth();
@@ -157,15 +158,23 @@ export const Navbar: React.FC = () => {
     100,
     Math.max(0, Math.round((telemetry.currentOccupancy / telemetry.dailyCapacityMax) * 100))
   );
-  const activePassesCount =
-    isAuthenticated && user
-      ? passes.filter(
-          (p) =>
-            p.status !== 'cancelled' &&
-            ((p.ownerUserId && p.ownerUserId === user.id) ||
-              (p.ownerEmail && p.ownerEmail.toLowerCase() === user.email.toLowerCase()))
-        ).length
-      : 0;
+  const activePassesCount = isStaff
+    ? passes.filter((p) => p.status === 'confirmed').length
+    : isAuthenticated && user
+    ? passes.filter(
+        (p) =>
+          p.status !== 'cancelled' &&
+          p.ownerEmail !== 'anonyme@effacement.local' &&
+          ((p.ownerUserId && p.ownerUserId === user.id) ||
+            (p.ownerEmail && p.ownerEmail.toLowerCase() === user.email.toLowerCase()) ||
+            p.leadVisitor.email.trim().toLowerCase() === user.email.trim().toLowerCase())
+      ).length
+    : passes.filter(
+        (p) =>
+          p.status !== 'cancelled' &&
+          p.ownerEmail !== 'anonyme@effacement.local' &&
+          sessionUnlockedPassIds.includes(p.id)
+      ).length;
 
   let occupancyBadgeStyle =
     'bg-emerald-100 text-emerald-800 border-emerald-300 dark:bg-emerald-950/70 dark:text-emerald-300 dark:border-emerald-800';

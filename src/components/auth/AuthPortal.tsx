@@ -60,7 +60,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
     deleteMyAccount,
   } = useAuth();
 
-  const { setActiveView } = useEcoPark();
+  const { setActiveView, anonymizeUserPasses } = useEcoPark();
 
   const [mode, setMode] = useState<AuthPortalInitialMode>(forcedMode || authPortalMode);
   useEffect(() => {
@@ -203,6 +203,8 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
   const handleDeleteAccount = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMsg(null);
+    const targetUserId = user?.id || '';
+    const targetUserEmail = user?.email || '';
     setSubmitting(true);
     const res = await deleteMyAccount(deletePwd);
     setSubmitting(false);
@@ -210,6 +212,10 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
       setErrorMsg(res.error || 'Suppression refusée.');
       return;
     }
+    if (targetUserId || targetUserEmail) {
+      anonymizeUserPasses(targetUserId, targetUserEmail);
+    }
+    setDeletePwd('');
     setShowDeleteConfirm(false);
     setActiveView('accueil');
   };

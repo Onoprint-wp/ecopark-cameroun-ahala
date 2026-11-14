@@ -29,6 +29,10 @@ import {
   resolveShowcaseTabFromPath,
   type ShowcaseTab,
 } from './ecoRouting.ts';
+import {
+  verifyAnonymousPassLookup,
+  anonymizeClientPassesList,
+} from './ecoAuth.ts';
 import type {
   ActiveView,
   Trail,
@@ -456,5 +460,48 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
     const rangerSrc = fs.readFileSync(path.resolve(rootDir, 'src/components/admin/RangerDashboard.tsx'), 'utf8');
     assert.ok(!rangerSrc.includes('type-hero'), 'Profil C Scission: Zero .type-hero inside /exploitation');
     assert.ok(!rangerSrc.includes('ImmersiveSection'), 'Profil C Scission: Zero Hero/promo banner inside /exploitation');
+    assert.ok(!rangerSrc.includes('Barlow_Semi_Condensed'), 'Profil C Scission: Zero display font >= 20px inside /exploitation');
+    assert.ok(!rangerSrc.includes('text-xl'), 'Profil C Scission: Strictly < 20px inside /exploitation');
+    assert.ok(rangerSrc.includes('max={3000}'), 'Cockpit Pro: Daily capacity slider supports 500 to 3000');
+    assert.ok(rangerSrc.includes('syscohada-audit-title'), 'Cockpit Pro: SYSCOHADA financial audit panel exists');
+    assert.ok(rangerSrc.includes('rbac-governance-title'), 'Cockpit Pro: 6-role RBAC governance matrix exists');
+  });
+
+  await t.test('Anonymous Single-Ticket Lookup (/mon-pass) & Loi n° 2010/012 Pass Anonymization', () => {
+    const passes: EcoPass[] = JSON.parse(JSON.stringify(INITIAL_PASSES));
+
+    // 1. visiteur_anonyme retrieves ECP-2026-8942 using phone or email
+    const byPhone = verifyAnonymousPassLookup(passes, 'ecp-2026-8942', '672 56 45 98');
+    assert.strictEqual(byPhone.ok, true, 'Valid reference + last 8 phone digits must unlock pass');
+    assert.strictEqual(byPhone.pass?.id, 'ECP-2026-8942');
+
+    const byEmail = verifyAnonymousPassLookup(passes, 'ECP-2026-8942', 'JP.MBARGA@entreprise-cm.com');
+    assert.strictEqual(byEmail.ok, true, 'Valid reference + case-insensitive email must unlock pass');
+
+    // Wrong phone/email must be rejected (strict isolation)
+    const wrongContact = verifyAnonymousPassLookup(passes, 'ECP-2026-8942', '+237 699 00 00 00');
+    assert.strictEqual(wrongContact.ok, false, 'Mismatched contact must not leak pass');
+
+    // 2. client_connecte exercises Loi n° 2010/012 erasure -> PII scrubbed, FCFA accounting preserved
+    passes[0].ownerUserId = 'cli-jp-01';
+    passes[0].ownerEmail = 'jp.mbarga@entreprise-cm.com';
+    const { updatedPasses, anonymizedCount } = anonymizeClientPassesList(
+      passes,
+      'cli-jp-01',
+      'jp.mbarga@entreprise-cm.com'
+    );
+    assert.strictEqual(anonymizedCount, 1);
+    assert.strictEqual(updatedPasses[0].totalPriceEur, 17000, 'SYSCOHADA FCFA accounting amount must remain intact');
+    assert.strictEqual(updatedPasses[0].leadVisitor.fullName, 'Client Anonymisé (Loi 2010/012)');
+    assert.strictEqual(updatedPasses[0].ownerEmail, 'anonyme@effacement.local');
+    assert.strictEqual(updatedPasses[0].ownerUserId, undefined);
+
+    // Subsequent lookup with old email must fail
+    const afterEraseLookup = verifyAnonymousPassLookup(
+      updatedPasses,
+      'ECP-2026-8942',
+      'jp.mbarga@entreprise-cm.com'
+    );
+    assert.strictEqual(afterEraseLookup.ok, false, 'Anonymized pass cannot be looked up by former PII');
   });
 });

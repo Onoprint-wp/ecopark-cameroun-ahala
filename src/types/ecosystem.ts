@@ -312,15 +312,21 @@ export interface EcoParkContextType {
   activePass: EcoPass | null;
   activePassId: string | null;
   setActivePassId: (id: string | null) => void;
+  sessionUnlockedPassIds: string[];
   bookPass: (input: BookingInput) => EcoPass;
   cancelPass: (passId: string) => void;
   checkInPass: (passId: string) => void;
+  lookupPassAnonymously: (
+    referenceCode: string,
+    contactEmailOrPhone: string
+  ) => { ok: boolean; error?: string; pass?: EcoPass };
   claimPassByReference: (
     referenceCode: string,
     contactEmailOrPhone: string,
     userId: string,
     userEmail: string
   ) => { ok: boolean; error?: string; pass?: EcoPass };
+  anonymizeUserPasses: (userId: string, userEmail: string) => number;
 
   // Citizen Sentinel
   reports: CitizenReport[];

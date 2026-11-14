@@ -40,9 +40,11 @@ export const DigitalEcoPass: React.FC = () => {
     passes,
     activePassId,
     setActivePassId,
+    sessionUnlockedPassIds,
     cancelPass,
     checkInPass,
     claimPassByReference,
+    lookupPassAnonymously,
     highContrastOutdoor,
     setHighContrastOutdoor,
     setActiveView,
@@ -65,23 +67,47 @@ export const DigitalEcoPass: React.FC = () => {
   const [claimContactInput, setClaimContactInput] = useState<string>('');
   const [claimFeedback, setClaimFeedback] = useState<{ ok: boolean; text: string } | null>(null);
 
-  // Strict per-user pass isolation (Clients NEVER see other visitors' passes)
+  // Strict per-user pass isolation (Clients NEVER see other visitors' passes; anonymous visitors only see tab-unlocked passes)
   const scopedPasses = useMemo<EcoPass[]>(() => {
-    if (!user) return [];
+    if (!user) {
+      return passes.filter(
+        (p) =>
+          sessionUnlockedPassIds.includes(p.id) &&
+          p.ownerEmail !== 'anonyme@effacement.local'
+      );
+    }
     if (isStaff) return passes;
     const normEmail = user.email.trim().toLowerCase();
     return passes.filter(
       (p) =>
-        p.ownerUserId === user.id ||
-        p.ownerEmail?.toLowerCase() === normEmail ||
-        p.leadVisitor.email.trim().toLowerCase() === normEmail
+        p.ownerEmail !== 'anonyme@effacement.local' &&
+        (p.ownerUserId === user.id ||
+          p.ownerEmail?.toLowerCase() === normEmail ||
+          p.leadVisitor.email.trim().toLowerCase() === normEmail)
     );
-  }, [passes, user, isStaff]);
+  }, [passes, user, isStaff, sessionUnlockedPassIds]);
 
   const handleClaimSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
     setClaimFeedback(null);
+    if (!user) {
+      const anonRes = lookupPassAnonymously(claimRefInput, claimContactInput);
+      if (!anonRes.ok) {
+        setClaimFeedback({
+          ok: false,
+          text: anonRes.error || 'Aucun billet trouvé avec ces coordonnées.',
+        });
+        return;
+      }
+      setClaimFeedback({
+        ok: true,
+        text: `Pass ${anonRes.pass?.id} déverrouillé pour votre session en cours.`,
+      });
+      setClaimRefInput('');
+      setClaimContactInput('');
+      setShowClaimForm(false);
+      return;
+    }
     const res = claimPassByReference(claimRefInput, claimContactInput, user.id, user.email);
     if (!res.ok) {
       setClaimFeedback({ ok: false, text: res.error || 'Rattachement impossible.' });
@@ -238,7 +264,7 @@ export const DigitalEcoPass: React.FC = () => {
     window.print();
   };
 
-  // Empty State (Scoped to Authenticated Client)
+  // Empty State (Scoped to Authenticated Client or Anonymous Single-Ticket Lookup)
   if (!currentPass || scopedPasses.length === 0) {
     return (
       <div className="max-w-2xl mx-auto space-y-6">
@@ -248,10 +274,14 @@ export const DigitalEcoPass: React.FC = () => {
           </div>
           <div>
             <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--text-primary)]">
-              Aucun Pass QR rattaché à votre Espace Cliente
+              {user
+                ? 'Aucun Pass QR rattaché à votre Espace Cliente'
+                : 'Récupération Unitaire de Pass QR (Visiteur sans compte)'}
             </h2>
             <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1.5 max-w-md mx-auto leading-relaxed">
-              Réservez votre prochain créneau en FCFA (Orange Money, MTN MoMo ou Guichet) ou rattachez ci-dessous un billet déjà émis.
+              {user
+                ? 'Réservez votre prochain créneau en FCFA (Orange Money, MTN MoMo ou Guichet) ou rattachez ci-dessous un billet déjà émis.'
+                : 'Affichez immédiatement un Pass QR acheté sans compte avec sa référence (ECP-2026-XXXXX) et le téléphone ou e-mail de réservation, ou réservez votre visite.'}
             </p>
           </div>
           <button
@@ -267,19 +297,24 @@ export const DigitalEcoPass: React.FC = () => {
           </button>
         </div>
 
-        {/* Claim Existing Pass Form */}
+        {/* Claim / Anonymous Lookup Existing Pass Form */}
         <form
           onSubmit={handleClaimSubmit}
+          aria-label={user ? 'Rattacher un Pass QR existant' : 'Récupération unitaire de Pass QR'}
           className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4"
         >
           <div className="flex items-center gap-2">
             <KeyRound className="w-4 h-4 text-[var(--brand-primary)]" />
             <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
-              Vous avez déjà réservé un billet (ECP-2026-XXXXX) ?
+              {user
+                ? 'Vous avez déjà réservé un billet (ECP-2026-XXXXX) ?'
+                : 'Afficher mon Pass QR unitaire (ECP-2026-XXXXX)'}
             </h3>
           </div>
           <p className="text-xs text-[var(--text-muted)]">
-            Saisissez la référence de votre Pass ainsi que l&apos;adresse email ou le numéro de téléphone utilisé lors de la réservation pour l&apos;ajouter à votre portefeuille personnel.
+            {user
+              ? "Saisissez la référence de votre Pass ainsi que l'adresse email ou le numéro de téléphone utilisé lors de la réservation pour l'ajouter à votre portefeuille personnel."
+              : "Saisissez la référence exacte de votre billet ainsi que le numéro de téléphone ou l'adresse e-mail utilisés lors de l'achat (déverrouillage strictement limité à cet onglet)."}
           </p>
 
           {claimFeedback && (
@@ -298,26 +333,28 @@ export const DigitalEcoPass: React.FC = () => {
             <input
               type="text"
               required
+              aria-label="Référence du Pass QR"
               placeholder="Référence (ex: ECP-2026-8942)"
               value={claimRefInput}
               onChange={(e) => setClaimRefInput(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono text-[var(--text-primary)]"
+              className="px-3.5 py-2.5 min-h-[44px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono text-[var(--text-primary)]"
             />
             <input
               type="text"
               required
+              aria-label="Email ou téléphone du billet"
               placeholder="Email ou téléphone du billet"
               value={claimContactInput}
               onChange={(e) => setClaimContactInput(e.target.value)}
-              className="px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)]"
+              className="px-3.5 py-2.5 min-h-[44px] rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)]"
             />
           </div>
 
           <button
             type="submit"
-            className="px-4 py-2.5 rounded-xl bg-[var(--bg-elevated)] hover:bg-[var(--brand-primary)] hover:text-white border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] transition-colors cursor-pointer"
+            className="px-4 py-2.5 min-h-[44px] rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)] text-white text-xs font-bold transition-colors cursor-pointer"
           >
-            Rattacher ce billet à mon compte
+            {user ? 'Rattacher ce billet à mon compte' : 'Afficher mon Pass QR'}
           </button>
         </form>
       </div>
@@ -339,7 +376,9 @@ export const DigitalEcoPass: React.FC = () => {
             <span className="text-xs font-semibold text-[var(--brand-primary)] uppercase tracking-wider">
               {isStaff
                 ? `Registre Global des Pass (${scopedPasses.length})`
-                : `Mon Portefeuille Éco-Pass (${scopedPasses.length})`}
+                : user
+                ? `Mon Portefeuille Éco-Pass (${scopedPasses.length})`
+                : `Session Visiteur · Pass Déverrouillé (${scopedPasses.length})`}
             </span>
             {!isStaff && (
               <button
@@ -347,7 +386,7 @@ export const DigitalEcoPass: React.FC = () => {
                 onClick={() => setShowClaimForm(!showClaimForm)}
                 className="text-[11px] font-semibold text-[var(--text-muted)] hover:text-[var(--brand-primary)] underline cursor-pointer"
               >
-                + Rattacher un billet
+                {user ? '+ Rattacher un billet' : '+ Chercher un autre billet'}
               </button>
             )}
           </div>
@@ -452,7 +491,11 @@ export const DigitalEcoPass: React.FC = () => {
         >
           <div className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5">
             <KeyRound className="w-4 h-4 text-[var(--brand-primary)]" />
-            <span>Rattacher un Pass existant (ECP-2026-XXXXX)</span>
+            <span>
+              {user
+                ? 'Rattacher un Pass existant (ECP-2026-XXXXX)'
+                : 'Afficher un autre Pass QR unitaire (ECP-2026-XXXXX)'}
+            </span>
           </div>
           {claimFeedback && (
             <div

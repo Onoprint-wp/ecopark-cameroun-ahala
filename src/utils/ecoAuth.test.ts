@@ -23,9 +23,15 @@ import {
   isStaffRole,
   canCheckInPasses,
   canManageParkOperations,
+  canAuditFinancials,
+  canManageRbacGovernance,
+  getRoleDisplayLabel,
+  listProvisionedStaffDirectory,
+  getDeletionComplianceLog,
   resetAuthVaultForTests,
   type SignedSessionClaims,
 } from './ecoAuth.ts';
+import type { EcoParkRole } from '../types/ecosystem.ts';
 
 test('EcoPark Real Cryptographic Authentication & RBAC Engine', async (t) => {
   await t.test('PBKDF2-HMAC-SHA256 derives deterministic hashes and rejects wrong passwords', async () => {
@@ -164,44 +170,74 @@ test('EcoPark Real Cryptographic Authentication & RBAC Engine', async (t) => {
     assert.strictEqual(await restoreAuthenticatedSession(), null);
     const afterDeleteLogin = await authenticateWithPassword('marie@exemple.cm', 'Recovered#2028!');
     assert.strictEqual(afterDeleteLogin.ok, false);
+
+    // Compliance log records anonymized trace without PII
+    const logs = getDeletionComplianceLog();
+    assert.strictEqual(logs.length, 1);
+    assert.strictEqual(logs[0].status, 'PROCESSED_ANONYMIZED');
+    assert.ok(logs[0].requester_reference.length > 0);
+    assert.ok(!JSON.stringify(logs).toLowerCase().includes('marie'));
   });
 
-  await t.test('Provisioned Staff accounts authenticate via PBKDF2-SHA256, enforce RBAC & rate-limit brute force', async () => {
+  await t.test('All 8 EcoParkRole profiles & all 6 Provisioned Staff accounts enforce exact RBAC permissions & brute-force lockout', async () => {
     resetAuthVaultForTests();
 
-    // Direction Générale login
-    const dirLogin = await authenticateWithPassword(
-      'direction@ecopark-yaounde.com',
-      'EcoPark-Dir#2026!'
-    );
-    assert.strictEqual(dirLogin.ok, true);
-    assert.strictEqual(dirLogin.user?.role, 'direction');
-    assert.strictEqual(isStaffRole(dirLogin.user?.role), true);
-    assert.strictEqual(canManageParkOperations(dirLogin.user?.role), true);
-    assert.strictEqual(canCheckInPasses(dirLogin.user?.role), true);
+    // 1. Complete 8-role RBAC permission matrix check
+    const expectedRbacMatrix: Array<{
+      role: EcoParkRole;
+      staff: boolean;
+      checkIn: boolean;
+      ops: boolean;
+      compta: boolean;
+      rbacGov: boolean;
+    }> = [
+      { role: 'visiteur_anonyme', staff: false, checkIn: false, ops: false, compta: false, rbacGov: false },
+      { role: 'client_connecte', staff: false, checkIn: false, ops: false, compta: false, rbacGov: false },
+      { role: 'agent_guichet', staff: true, checkIn: true, ops: false, compta: false, rbacGov: false },
+      { role: 'agent_controle', staff: true, checkIn: true, ops: false, compta: false, rbacGov: false },
+      { role: 'comptable', staff: true, checkIn: false, ops: false, compta: true, rbacGov: false },
+      { role: 'responsable_exploitation', staff: true, checkIn: true, ops: true, compta: false, rbacGov: false },
+      { role: 'direction', staff: true, checkIn: true, ops: true, compta: true, rbacGov: true },
+      { role: 'administrateur_plateforme', staff: true, checkIn: true, ops: true, compta: true, rbacGov: true },
+    ];
 
-    // Agent Contrôle QR login (can check in, cannot close trails / alter daily quota)
-    const ctlLogin = await authenticateWithPassword(
-      'controle@ecopark-yaounde.com',
-      'EcoPark-Qr#2026!'
-    );
-    assert.strictEqual(ctlLogin.ok, true);
-    assert.strictEqual(ctlLogin.user?.role, 'agent_controle');
-    assert.strictEqual(canCheckInPasses(ctlLogin.user?.role), true);
-    assert.strictEqual(canManageParkOperations(ctlLogin.user?.role), false);
+    for (const row of expectedRbacMatrix) {
+      assert.strictEqual(isStaffRole(row.role), row.staff, `${row.role} isStaffRole`);
+      assert.strictEqual(canCheckInPasses(row.role), row.checkIn, `${row.role} canCheckInPasses`);
+      assert.strictEqual(canManageParkOperations(row.role), row.ops, `${row.role} canManageParkOperations`);
+      assert.strictEqual(canAuditFinancials(row.role), row.compta, `${row.role} canAuditFinancials`);
+      assert.strictEqual(canManageRbacGovernance(row.role), row.rbacGov, `${row.role} canManageRbacGovernance`);
+      assert.ok(getRoleDisplayLabel(row.role).length > 0, `${row.role} display label non-empty`);
+    }
 
-    // Comptable SYSCOHADA login (read-only audit: cannot check in or alter ops)
-    const cptLogin = await authenticateWithPassword(
-      'comptabilite@ecopark-yaounde.com',
-      'EcoPark-Cpt#2026!'
-    );
-    assert.strictEqual(cptLogin.ok, true);
-    assert.strictEqual(cptLogin.user?.role, 'comptable');
-    assert.strictEqual(isStaffRole(cptLogin.user?.role), true);
-    assert.strictEqual(canCheckInPasses(cptLogin.user?.role), false);
-    assert.strictEqual(canManageParkOperations(cptLogin.user?.role), false);
+    // 2. Sanitized staff directory exposes all 6 provisioned staff accounts and 0 secrets
+    const directory = listProvisionedStaffDirectory();
+    assert.strictEqual(directory.length, 6, 'All 6 internal staff roles must be provisioned');
+    for (const entry of directory) {
+      const rawEntry = entry as unknown as Record<string, unknown>;
+      assert.strictEqual('saltHex' in rawEntry, false);
+      assert.strictEqual('hashHex' in rawEntry, false);
+    }
 
-    // Brute-force lockout after 5 wrong attempts
+    // 3. Authenticate all 6 provisioned staff accounts via real PBKDF2-HMAC-SHA256
+    const staffCredentials: Array<{ email: string; pwd: string; role: EcoParkRole; matricule: string }> = [
+      { email: 'direction@ecopark-yaounde.com', pwd: 'EcoPark-Dir#2026!', role: 'direction', matricule: 'MAT-DIR-01' },
+      { email: 'exploitation@ecopark-yaounde.com', pwd: 'EcoPark-Exp#2026!', role: 'responsable_exploitation', matricule: 'MAT-EXP-01' },
+      { email: 'controle@ecopark-yaounde.com', pwd: 'EcoPark-Qr#2026!', role: 'agent_controle', matricule: 'MAT-CTL-02' },
+      { email: 'guichet@ecopark-yaounde.com', pwd: 'EcoPark-Gui#2026!', role: 'agent_guichet', matricule: 'MAT-GUI-04' },
+      { email: 'comptabilite@ecopark-yaounde.com', pwd: 'EcoPark-Cpt#2026!', role: 'comptable', matricule: 'MAT-CPT-03' },
+      { email: 'admin@ecopark-yaounde.com', pwd: 'EcoPark-Adm#2026!', role: 'administrateur_plateforme', matricule: 'MAT-ADM-00' },
+    ];
+
+    for (const cred of staffCredentials) {
+      const authRes = await authenticateWithPassword(cred.email, cred.pwd);
+      assert.strictEqual(authRes.ok, true, `Staff login must succeed for ${cred.email}`);
+      assert.strictEqual(authRes.user?.role, cred.role);
+      assert.strictEqual(authRes.user?.matricule, cred.matricule);
+      await signOutActiveSession();
+    }
+
+    // 4. Brute-force lockout after 5 wrong attempts
     for (let i = 1; i <= 5; i++) {
       const bad = await authenticateWithPassword('exploitation@ecopark-yaounde.com', `WrongPwd#${i}`);
       assert.strictEqual(bad.ok, false);

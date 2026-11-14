@@ -35,7 +35,16 @@ import {
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
 import { useAuth } from '../../context/AuthContext';
-import { getRoleDisplayLabel, isDevEnvironment } from '../../utils/ecoAuth';
+import {
+  getRoleDisplayLabel,
+  isDevEnvironment,
+  canAuditFinancials,
+  canManageRbacGovernance,
+  canCheckInPasses,
+  canManageParkOperations,
+  listProvisionedStaffDirectory,
+  getDeletionComplianceLog,
+} from '../../utils/ecoAuth';
 import {
   TrailStatus,
   ReportStatus,
@@ -66,6 +75,57 @@ export const RangerDashboard: React.FC = () => {
   } = useEcoPark();
 
   const { user, canManageOps, canCheckIn, logout } = useAuth();
+  const canAuditCompta = canAuditFinancials(user?.role);
+  const canViewRbacMatrix = canManageRbacGovernance(user?.role);
+
+  const financialSummary = useMemo(() => {
+    const activePasses = passes.filter((p) => p.status !== 'cancelled');
+    const confirmedPasses = passes.filter((p) => p.status === 'confirmed');
+    const checkedInPasses = passes.filter((p) => p.status === 'checked_in');
+    const cancelledPasses = passes.filter((p) => p.status === 'cancelled');
+
+    const netActiveRevenueFcfa = activePasses.reduce(
+      (sum, p) => sum + Math.round(p.totalPriceEur),
+      0
+    );
+    const checkedInRevenueFcfa = checkedInPasses.reduce(
+      (sum, p) => sum + Math.round(p.totalPriceEur),
+      0
+    );
+    const confirmedPendingFcfa = confirmedPasses.reduce(
+      (sum, p) => sum + Math.round(p.totalPriceEur),
+      0
+    );
+    const cancelledFcfa = cancelledPasses.reduce(
+      (sum, p) => sum + Math.round(p.totalPriceEur),
+      0
+    );
+    const grossBeforeDiscountFcfa = activePasses.reduce(
+      (sum, p) => sum + Math.round(p.unitPriceEur * p.guestCount),
+      0
+    );
+    const totalDiscountsFcfa = Math.max(0, grossBeforeDiscountFcfa - netActiveRevenueFcfa);
+    const anonymizedCount = passes.filter(
+      (p) => p.ownerEmail === 'anonyme@effacement.local'
+    ).length;
+
+    return {
+      activeCount: activePasses.length,
+      confirmedCount: confirmedPasses.length,
+      checkedInCount: checkedInPasses.length,
+      cancelledCount: cancelledPasses.length,
+      netActiveRevenueFcfa,
+      checkedInRevenueFcfa,
+      confirmedPendingFcfa,
+      cancelledFcfa,
+      grossBeforeDiscountFcfa,
+      totalDiscountsFcfa,
+      anonymizedCount,
+    };
+  }, [passes]);
+
+  const staffDirectory = useMemo(() => listProvisionedStaffDirectory(), []);
+  const deletionLogs = useMemo(() => getDeletionComplianceLog(), [passes]);
 
   // --------------------------------------------------------------------------
   // State: Reset Confirmation Modal
@@ -516,7 +576,7 @@ export const RangerDashboard: React.FC = () => {
               <input
                 type="range"
                 min={500}
-                max={2500}
+                max={3000}
                 step={50}
                 disabled={!canManageOps}
                 value={telemetry.dailyCapacityMax}
@@ -525,10 +585,10 @@ export const RangerDashboard: React.FC = () => {
                 aria-label="Ajuster le quota journalier de visiteurs"
               />
 
-              <div className="flex justify-between text-xs font-mono text-[var(--text-muted)]">
+              <div className="flex justify-between text-xs font-mono text-[var(--text-muted)] tabular-nums">
                 <span>500 (Sanctuaire quiétude)</span>
-                <span>1500 (Régime nominal)</span>
-                <span>2500 (Plafond haute saison)</span>
+                <span>1750 (Régime nominal)</span>
+                <span>3000 (Plafond haute saison)</span>
               </div>
             </div>
 
@@ -537,7 +597,7 @@ export const RangerDashboard: React.FC = () => {
               <span className="text-xs font-semibold text-[var(--text-primary)] mr-2">
                 Paliers préconfigurés :
               </span>
-              {[500, 1000, 1500, 2000, 2500].map((presetVal) => {
+              {[500, 1000, 1500, 2000, 2500, 3000].map((presetVal) => {
                 const isActive = telemetry.dailyCapacityMax === presetVal;
                 return (
                   <button
@@ -549,7 +609,7 @@ export const RangerDashboard: React.FC = () => {
                       setDailyCapacity(presetVal);
                       showToast(`Quota ajusté à ${presetVal} visiteurs`);
                     }}
-                    className={`min-h-[48px] px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
+                    className={`min-h-[48px] px-3.5 py-2 rounded-xl border text-xs font-mono font-bold tabular-nums transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                       isActive
                         ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-xs'
                         : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:border-[var(--brand-primary)]'
@@ -561,13 +621,13 @@ export const RangerDashboard: React.FC = () => {
               })}
             </div>
 
-            {/* Live Capacity Telemetry Snapshot */}
+            {/* Live Capacity Telemetry Snapshot (< 20px strict Profil C) */}
             <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2">
               <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                 <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
                   Présents sur site
                 </span>
-                <div className="text-xl font-bold font-mono text-[var(--text-primary)] mt-1">
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-[var(--text-primary)] mt-1">
                   {telemetry.currentOccupancy}
                 </div>
                 <span className="text-[11px] text-[var(--text-muted)]">visiteurs enregistrés</span>
@@ -577,7 +637,7 @@ export const RangerDashboard: React.FC = () => {
                 <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
                   Places disponibles
                 </span>
-                <div className="text-xl font-bold font-mono text-emerald-700 dark:text-emerald-400 mt-1">
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-emerald-700 dark:text-emerald-400 mt-1">
                   {Math.max(0, telemetry.dailyCapacityMax - telemetry.currentOccupancy)}
                 </div>
                 <span className="text-[11px] text-[var(--text-muted)]">réservables aujourd hui</span>
@@ -587,7 +647,7 @@ export const RangerDashboard: React.FC = () => {
                 <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
                   Taux de remplissage
                 </span>
-                <div className="text-xl font-bold font-mono text-[var(--brand-primary)] mt-1">
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-[var(--brand-primary)] mt-1">
                   {Math.round((telemetry.currentOccupancy / telemetry.dailyCapacityMax) * 100)}%
                 </div>
                 <span className="text-[11px] text-[var(--text-muted)]">de la jauge écologique</span>
@@ -597,7 +657,7 @@ export const RangerDashboard: React.FC = () => {
                 <span className="text-[10px] font-mono text-[var(--text-muted)] uppercase">
                   Indice Qualité Air
                 </span>
-                <div className="text-xl font-bold font-mono text-emerald-700 dark:text-emerald-400 mt-1">
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-emerald-700 dark:text-emerald-400 mt-1">
                   {telemetry.airQualityIqa} / 100
                 </div>
                 <span className="text-[11px] text-emerald-800 dark:text-emerald-300 font-semibold">
@@ -618,7 +678,7 @@ export const RangerDashboard: React.FC = () => {
               <div>
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-[var(--brand-primary)]" />
-                  <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+                  <h3 className="font-sans text-base font-bold text-[var(--text-primary)]">
                     Histogramme d Affluence Horaire (08h00 - 20h00)
                   </h3>
                 </div>
@@ -727,7 +787,7 @@ export const RangerDashboard: React.FC = () => {
             <div>
               <div className="flex items-center gap-2">
                 <TrendingUp className="w-4 h-4 text-[var(--brand-primary)]" />
-                <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+                <h3 className="font-sans text-base font-bold text-[var(--text-primary)]">
                   Part Modale Éco-Mobilité
                 </h3>
               </div>
@@ -839,7 +899,7 @@ export const RangerDashboard: React.FC = () => {
                         <span className="text-[10px] font-mono uppercase text-[var(--brand-primary)] font-semibold">
                           {trail.biomeLabel}
                         </span>
-                        <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                        <h3 className="font-sans font-bold text-sm text-[var(--text-primary)]">
                           {trail.name}
                         </h3>
                       </div>
@@ -1031,7 +1091,7 @@ export const RangerDashboard: React.FC = () => {
                     </div>
 
                     <div>
-                      <div className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                      <div className="font-sans font-bold text-sm text-[var(--text-primary)]">
                         {pass.leadVisitor.fullName}
                       </div>
                       <div className="text-xs text-[var(--text-muted)] line-clamp-1">
@@ -1227,7 +1287,7 @@ export const RangerDashboard: React.FC = () => {
             {filteredReports.length === 0 ? (
               <div className="p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center space-y-2">
                 <Sparkles className="w-8 h-8 text-[var(--brand-primary)] mx-auto" />
-                <h4 className="font-['Barlow_Semi_Condensed'] font-bold text-base text-[var(--text-primary)]">
+                <h4 className="font-sans font-bold text-sm text-[var(--text-primary)]">
                   Aucun signalement ne correspond à ces critères
                 </h4>
                 <p className="text-xs text-[var(--text-muted)]">
@@ -1291,7 +1351,7 @@ export const RangerDashboard: React.FC = () => {
 
                     {/* Report Content */}
                     <div className="space-y-1.5">
-                      <h4 className="font-['Barlow_Semi_Condensed'] text-base sm:text-lg font-bold text-[var(--text-primary)]">
+                      <h4 className="font-sans text-sm sm:text-base font-bold text-[var(--text-primary)]">
                         {rep.title}
                       </h4>
                       <p className="text-xs text-[var(--text-muted)] leading-relaxed">
@@ -1385,6 +1445,224 @@ export const RangerDashboard: React.FC = () => {
             )}
           </div>
         </section>
+
+        {/* ================================================================= */}
+        {/* SECTION 5: AUDIT ANALYTIQUE & RECETTES FCFA SYSCOHADA              */}
+        {/* ================================================================= */}
+        {canAuditCompta && (
+          <section
+            aria-labelledby="syscohada-audit-title"
+            className="p-6 sm:p-8 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-sm space-y-6 tabular-nums"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--brand-primary)]">
+                  <TrendingUp className="w-4 h-4 text-[var(--brand-primary)]" />
+                  <span>Pôle Finance &amp; Audit Analytique SYSCOHADA</span>
+                </div>
+                <h2
+                  id="syscohada-audit-title"
+                  className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                >
+                   Synthèse Comptable des Recettes FCFA &amp; Traçabilité Loi n° 2010/012
+                </h2>
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                  Montants calculés en entiers stricts FCFA (Loi 3) · Consultation réservée aux profils Comptable SYSCOHADA, Direction et Administrateur
+                </p>
+              </div>
+              <span className="px-3 py-1.5 rounded-xl bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 text-xs font-mono font-bold">
+                SYSCOHADA · FCFA (Int)
+              </span>
+            </div>
+
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                  Recettes Nettes Actives
+                </span>
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-[var(--brand-primary)] mt-1">
+                  {formatEur(financialSummary.netActiveRevenueFcfa)}
+                </div>
+                <span className="text-[11px] text-[var(--text-muted)]">
+                  {financialSummary.activeCount} billet(s) actif(s)
+                </span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                  Validés Portique (Check-In)
+                </span>
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-sky-700 dark:text-sky-400 mt-1">
+                  {formatEur(financialSummary.checkedInRevenueFcfa)}
+                </div>
+                <span className="text-[11px] text-[var(--text-muted)]">
+                  {financialSummary.checkedInCount} entrée(s) constatée(s)
+                </span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                  Confirmés à Encaisser / Scanner
+                </span>
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-emerald-700 dark:text-emerald-400 mt-1">
+                  {formatEur(financialSummary.confirmedPendingFcfa)}
+                </div>
+                <span className="text-[11px] text-[var(--text-muted)]">
+                  {financialSummary.confirmedCount} réservation(s) ouverte(s)
+                </span>
+              </div>
+
+              <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
+                <span className="text-[10px] font-mono uppercase text-[var(--text-muted)]">
+                  Remises Accordées / Annulés
+                </span>
+                <div className="text-[18px] leading-6 font-bold font-mono tabular-nums text-amber-700 dark:text-amber-400 mt-1">
+                  {formatEur(financialSummary.totalDiscountsFcfa)}
+                </div>
+                <span className="text-[11px] text-[var(--text-muted)]">
+                  Annulés : {formatEur(financialSummary.cancelledFcfa)} ({financialSummary.cancelledCount})
+                </span>
+              </div>
+            </div>
+
+            <div className="overflow-x-auto rounded-2xl border border-[var(--border-default)]">
+              <table className="w-full text-left border-collapse text-xs tabular-nums">
+                <thead>
+                  <tr className="bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-[11px] uppercase font-mono text-[var(--text-muted)]">
+                    <th className="p-3 font-semibold">Référence</th>
+                    <th className="p-3 font-semibold">Date Visite</th>
+                    <th className="p-3 font-semibold">Formule</th>
+                    <th className="p-3 font-semibold text-right">Effectif</th>
+                    <th className="p-3 font-semibold text-right">Net TTC (FCFA)</th>
+                    <th className="p-3 font-semibold">Statut</th>
+                    <th className="p-3 font-semibold">Loi 2010/012</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--border-default)]/70">
+                  {passes.map((p) => {
+                    const exp = getExperienceInfo(p.experienceType);
+                    const isAnonymized = p.ownerEmail === 'anonyme@effacement.local';
+                    return (
+                      <tr key={p.id} className="hover:bg-[var(--bg-elevated)]/60">
+                        <td className="p-3 font-mono font-bold text-[var(--brand-primary)]">
+                          {p.id}
+                        </td>
+                        <td className="p-3 font-mono text-[var(--text-primary)]">{p.visitDate}</td>
+                        <td className="p-3 text-[var(--text-primary)]">{exp.title}</td>
+                        <td className="p-3 text-right font-mono text-[var(--text-primary)]">
+                          {p.guestCount}
+                        </td>
+                        <td className="p-3 text-right font-mono font-bold text-[var(--text-primary)]">
+                          {formatEur(Math.round(p.totalPriceEur))}
+                        </td>
+                        <td className="p-3 font-mono">
+                          {p.status === 'checked_in'
+                            ? 'Check-In OK'
+                            : p.status === 'confirmed'
+                            ? 'Confirmé'
+                            : 'Annulé'}
+                        </td>
+                        <td className="p-3 font-mono text-[11px]">
+                          {isAnonymized ? (
+                            <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300">
+                              Anonymisé
+                            </span>
+                          ) : (
+                            <span className="text-[var(--text-muted)]">Nominatif actif</span>
+                          )}
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] flex flex-wrap items-center justify-between gap-2 text-xs font-mono text-[var(--text-muted)]">
+              <span>
+                Registre Loi n° 2010/012 (effacements clients constatés sans PII) :{' '}
+                <strong className="text-[var(--text-primary)]">{deletionLogs.length}</strong>{' '}
+                opération(s) · Billets anonymisés conservés pour intégrité comptable :{' '}
+                <strong className="text-[var(--text-primary)]">
+                  {financialSummary.anonymizedCount}
+                </strong>
+              </span>
+              <span>Brut avant remises : {formatEur(financialSummary.grossBeforeDiscountFcfa)}</span>
+            </div>
+          </section>
+        )}
+
+        {/* ================================================================= */}
+        {/* SECTION 6: MATRICE RBAC & ANNUAIRE DES 6 POSTES PRÉ-PROVISIONNÉS   */}
+        {/* ================================================================= */}
+        {canViewRbacMatrix && (
+          <section
+            aria-labelledby="rbac-governance-title"
+            className="p-6 sm:p-8 rounded-3xl bg-[var(--bg-surface)] border border-[var(--border-default)] shadow-sm space-y-5 tabular-nums"
+          >
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+              <div>
+                <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                  <ShieldCheck className="w-4 h-4 text-amber-600 dark:text-amber-400" />
+                  <span>Gouvernance Sécurité &amp; Contrôle d Accès (RBAC)</span>
+                </div>
+                <h2
+                  id="rbac-governance-title"
+                  className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
+                >
+                  Matrice des Habilitations &amp; Annuaire des {staffDirectory.length} Postes Internes
+                </h2>
+                <p className="text-xs text-[var(--text-muted)] mt-0.5">
+                  Coffre cryptographique PBKDF2-HMAC-SHA256 (120 000 itér.) · Jeton signé HMAC-SHA256 · Bail Staff 12h / Client 7j
+                </p>
+              </div>
+              <span className="px-3 py-1.5 rounded-xl bg-amber-100 text-amber-900 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800 text-xs font-mono font-bold">
+                {staffDirectory.length}/6 Rôles Staff Provisionnés
+              </span>
+            </div>
+
+            <div className="overflow-x-auto rounded-2xl border border-[var(--border-default)]">
+              <table className="w-full text-left border-collapse text-xs tabular-nums">
+                <thead>
+                  <tr className="bg-[var(--bg-elevated)] border-b border-[var(--border-default)] text-[11px] uppercase font-mono text-[var(--text-muted)]">
+                    <th className="p-3 font-semibold">Matricule</th>
+                    <th className="p-3 font-semibold">Poste / Rôle</th>
+                    <th className="p-3 font-semibold">Identifiant Interne</th>
+                    <th className="p-3 font-semibold">Pôle</th>
+                    <th className="p-3 font-semibold text-center">Check-In QR</th>
+                    <th className="p-3 font-semibold text-center">Jauge &amp; Sentiers</th>
+                    <th className="p-3 font-semibold text-center">Audit Compta</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[var(--border-default)]/70">
+                  {staffDirectory.map((acc) => (
+                    <tr key={acc.id} className="hover:bg-[var(--bg-elevated)]/60">
+                      <td className="p-3 font-mono font-bold text-[var(--brand-primary)]">
+                        {acc.matricule}
+                      </td>
+                      <td className="p-3 font-semibold text-[var(--text-primary)]">
+                        {getRoleDisplayLabel(acc.role)}
+                      </td>
+                      <td className="p-3 font-mono text-[var(--text-muted)]">{acc.email}</td>
+                      <td className="p-3 font-mono text-[11px] text-[var(--text-primary)]">
+                        {acc.assignedPole}
+                      </td>
+                      <td className="p-3 text-center font-mono">
+                        {canCheckInPasses(acc.role) ? 'Oui' : 'Non'}
+                      </td>
+                      <td className="p-3 text-center font-mono">
+                        {canManageParkOperations(acc.role) ? 'Complet' : 'Lecture'}
+                      </td>
+                      <td className="p-3 text-center font-mono">
+                        {canAuditFinancials(acc.role) ? 'Oui' : 'Non'}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </section>
+        )}
       </div>
 
       {/* =================================================================== */}
@@ -1399,7 +1677,7 @@ export const RangerDashboard: React.FC = () => {
                   <XCircle className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-lg text-[var(--text-primary)]">
+                  <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
                     Fermeture d Urgence de Sentier
                   </h3>
                   <span className="text-xs text-[var(--text-muted)] font-mono">
@@ -1491,7 +1769,7 @@ export const RangerDashboard: React.FC = () => {
                   <CheckCircle2 className="w-5 h-5" />
                 </div>
                 <div>
-                  <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-lg text-[var(--text-primary)]">
+                  <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
                     Clôturer &amp; Résoudre le Signalement
                   </h3>
                   <span className="text-xs text-[var(--text-muted)] font-mono">
@@ -1580,7 +1858,7 @@ export const RangerDashboard: React.FC = () => {
               <div className="w-10 h-10 rounded-xl bg-amber-100 dark:bg-amber-950 text-amber-600 dark:text-amber-400 flex items-center justify-center shrink-0">
                 <RotateCcw className="w-5 h-5" />
               </div>
-              <h3 className="font-['Barlow_Semi_Condensed'] font-bold text-lg text-[var(--text-primary)]">
+              <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
                 Réinitialisation Démo
               </h3>
             </div>

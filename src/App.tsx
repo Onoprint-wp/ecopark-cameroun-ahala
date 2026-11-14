@@ -383,14 +383,20 @@ export default function App() {
                   Vérification de votre session chiffrée...
                 </div>
               ) : !isAuthenticated ? (
-                <div className="space-y-6">
-                  <div className="max-w-xl mx-auto p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-start gap-3 text-xs text-emerald-950 dark:text-emerald-100">
-                    <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
-                    <div>
-                      <strong>Confidentialité &amp; Cloisonnement des Billets :</strong> Pour protéger vos coordonnées et vos Pass QR nominatifs, connectez-vous ou créez gratuitement votre Espace Cliente ci-dessous. Vous pourrez également rattacher un billet déjà réservé (<code>ECP-2026-XXXXX</code>).
+                <div className="space-y-8">
+                  <section aria-label="Consultation Unitaire Pass QR Visiteur">
+                    <DigitalEcoPass />
+                  </section>
+
+                  <div className="pt-6 border-t border-[var(--border-default)] space-y-5">
+                    <div className="max-w-xl mx-auto p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-start gap-3 text-xs text-emerald-950 dark:text-emerald-100">
+                      <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                      <div>
+                        <strong>Onboarding Espace Cliente (60s · Session 7 jours) :</strong> Créez gratuitement votre compte ou connectez-vous pour centraliser tous vos Pass QR, pré-remplir vos réservations et accéder aux signalements Sentinelle Nature.
+                      </div>
                     </div>
+                    <AuthPortal forcedMode="client_login" targetAfterAuth="pass" embedded />
                   </div>
-                  <AuthPortal forcedMode="client_login" targetAfterAuth="pass" embedded />
                 </div>
               ) : (
                 <>
