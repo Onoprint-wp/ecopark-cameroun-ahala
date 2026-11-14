@@ -29,6 +29,7 @@ import {
   ReportStatus,
   ReportInput,
 } from '../../types/ecosystem';
+import { sanitizeEditorialText } from '../../utils/editorialSanitizer';
 
 export const CitizenSentinel: React.FC = () => {
   const {
@@ -94,13 +95,13 @@ export const CitizenSentinel: React.FC = () => {
     {
       id: 'photo-faune-1',
       title: 'Animation au Sanctuaire du Gorille « ToTo »',
-      meta: 'Jardin Zoologique d Ahala · Soigneur présent',
+      meta: 'Jardin Zoologique d\'Ahala · Soigneur présent',
       accent: '#52B788',
     },
     {
       id: 'photo-obstacle-1',
-      title: 'Palme tombée près de l embarcadère des pirogues',
-      meta: 'Quai du lac d Ahala · Intervention entretien',
+      title: 'Palme tombée près de l\'embarcadère des pirogues',
+      meta: 'Quai du lac d\'Ahala · Intervention entretien',
       accent: '#D48359',
     },
     {
@@ -182,7 +183,7 @@ export const CitizenSentinel: React.FC = () => {
         return (
           <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-amber-100 text-[var(--status-caution-text)] dark:bg-amber-950/80 border border-amber-300 dark:border-amber-800">
             <Clock className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />
-            Reçu · En cours d évaluation
+            Reçu · En cours d'évaluation
           </span>
         );
       case 'rejete':
@@ -246,14 +247,15 @@ export const CitizenSentinel: React.FC = () => {
 
     setFormErrors({});
 
+    const sanitizedDesc = sanitizeEditorialText(description);
     const reportInput: ReportInput = {
       type: reportType,
       trailId: selectedTrailId,
       severity,
-      title: title.trim(),
-      description: `${description.trim()} (${gpsCoordinates})`,
-      landmark: landmark.trim(),
-      reporterName: reporterName.trim() || 'Sentinelle Anonyme',
+      title: sanitizeEditorialText(title),
+      description: `${sanitizedDesc} (${gpsCoordinates})`,
+      landmark: sanitizeEditorialText(landmark),
+      reporterName: sanitizeEditorialText(reporterName) || 'Sentinelle Anonyme',
     };
 
     const newReport = submitCitizenReport(reportInput);
@@ -365,7 +367,7 @@ export const CitizenSentinel: React.FC = () => {
           {/* Category Pill Radio */}
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4">
             <h3 className="type-card-title text-[var(--text-primary)]">
-              1. Type d observation constatée sur le terrain
+              1. Type d'observation constatée sur le terrain
             </h3>
 
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
@@ -502,11 +504,11 @@ export const CitizenSentinel: React.FC = () => {
 
                 <div>
                   <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
-                    Description détaillée de l observation *
+                    Description détaillée de l'observation *
                   </label>
                   <textarea
                     rows={3}
-                    placeholder="Précisez la taille, l état, la couleur, le comportement animal ou l ampleur de l incident pour guider l intervention."
+                    placeholder="Précisez la taille, l'état, la couleur, le comportement animal ou l'ampleur de l'incident pour guider l'intervention."
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className="w-full px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-sm text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
@@ -669,7 +671,7 @@ export const CitizenSentinel: React.FC = () => {
                 <option value="all">Tous les statuts</option>
                 <option value="valide">Vérifiés par Éco-Garde</option>
                 <option value="resolu">Résolus sur le terrain</option>
-                <option value="en_attente">En attente d évaluation</option>
+                <option value="en_attente">En attente d'évaluation</option>
               </select>
             </div>
 
@@ -771,7 +773,7 @@ export const CitizenSentinel: React.FC = () => {
                       <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-sm text-[var(--text-primary)] flex items-start gap-2.5">
                         <CheckCircle2 className="w-4 h-4 text-[var(--status-open-text)] shrink-0 mt-0.5" />
                         <div>
-                          <strong className="font-semibold">Note d intervention de l Éco-Garde :</strong>{' '}
+                          <strong className="font-semibold">Note d'intervention de l'Éco-Garde :</strong>{' '}
                           {report.rangerNote}
                         </div>
                       </div>

@@ -27,7 +27,7 @@ export const PBKDF2_ITERATIONS = 120_000;
 const SESSION_TTL_CLIENT_SEC = 7 * 24 * 3600; // 7 days
 const SESSION_TTL_STAFF_SEC = 12 * 3600;      // 12 hours
 const MAX_FAILED_ATTEMPTS = 5;
-const LOCKOUT_WINDOW_MS = 2 * 60 * 1000;      // 2 minutes lockout after 5 failures
+const LOCKOUT_WINDOW_MS = 15 * 60 * 1000;     // 15 minutes lockout after 5 failures
 
 export interface StoredVaultAccount {
   id: string;
@@ -85,28 +85,28 @@ const PROVISIONED_STAFF_ACCOUNTS: StoredVaultAccount[] = [
     matricule: 'MAT-DIR-01',
     assignedPole: 'DIRECTION_GENERALE',
     postLabel: 'Direction Générale • MPECK MULTI-SERVICES',
-    saltHex: 'e76e342ed22b612538c2154d47cf5fd1',
-    hashHex: '8581799f53d4827eb4616d7065a6276d5e83da2983c806db9ce2a94e7cc7dae2',
+    saltHex: 'ece241c8f72b532b593bef91e872feb3',
+    hashHex: '8b5995134c108019909ce5c6b6e12144e6ae2b0b7e1a1a3ec2d5405323890459',
     iterations: PBKDF2_ITERATIONS,
     isActive: true,
     createdAt: '2026-10-26T08:00:00.000Z',
-    updatedAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-11-14T19:00:00.000Z',
   },
   {
     id: 'staff-exp-001',
     email: 'exploitation@ecopark-yaounde.com',
-    fullName: "Thomas D. • Chef d'Exploitation",
+    fullName: "Chef d'Exploitation • Ahala RN3",
     phone: '+237 694 60 14 49',
     role: 'responsable_exploitation',
     matricule: 'MAT-EXP-01',
     assignedPole: 'CONTROLE_QR',
     postLabel: "Chef d'Exploitation Ahala Barrière",
-    saltHex: '1fb2885499db4afb4afa54dd704ee9fa',
-    hashHex: '8b01c0913e9e62bc927c5d4ec33af78db8726cda0698ed9a0b9a85f82979f08b',
+    saltHex: 'ba29f4de21ba050c8490205c649b7b1f',
+    hashHex: 'ad7a34ac83c206ad9918ec09c52cb3f7038934fe357fae495fc091e9e1378891',
     iterations: PBKDF2_ITERATIONS,
     isActive: true,
     createdAt: '2026-10-26T08:00:00.000Z',
-    updatedAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-11-14T19:00:00.000Z',
   },
   {
     id: 'staff-ctl-002',
@@ -117,12 +117,12 @@ const PROVISIONED_STAFF_ACCOUNTS: StoredVaultAccount[] = [
     matricule: 'MAT-CTL-02',
     assignedPole: 'CONTROLE_QR',
     postLabel: 'Contrôle Pass QR & Sécurité Sentiers',
-    saltHex: '345544c92d9c6ce02390a3d6b1060c5d',
-    hashHex: '8274d86f167bcb34290732adf1d2b3bc201c88593d8cdfd602cf44c891d299d1',
+    saltHex: '850d2f521b9aef7432035c73bfc57305',
+    hashHex: '3a3b62fd1b19a5f5126ab60a58cf5068313b6cc684cae58c069fbd98ffb5bf52',
     iterations: PBKDF2_ITERATIONS,
     isActive: true,
     createdAt: '2026-10-26T08:00:00.000Z',
-    updatedAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-11-14T19:00:00.000Z',
   },
   {
     id: 'staff-cpt-003',
@@ -133,12 +133,12 @@ const PROVISIONED_STAFF_ACCOUNTS: StoredVaultAccount[] = [
     matricule: 'MAT-CPT-03',
     assignedPole: 'FINANCE_COMPTA',
     postLabel: 'Audit & Comptabilité Analytique (6 Pôles)',
-    saltHex: 'ce2e7822be0fbc8c1c2f20734a0c0940',
-    hashHex: '3b3495e07ee141cb7c8af804d1c3b4c076997c670b7fd32da93dd0ad5cfe41ff',
+    saltHex: 'fd07d3926765d483c96fc9b147f4a680',
+    hashHex: '92248aab04070a171832f4cac75834e38f133efa8ba4a70d50bbb83842b1e222',
     iterations: PBKDF2_ITERATIONS,
     isActive: true,
     createdAt: '2026-10-26T08:00:00.000Z',
-    updatedAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-11-14T19:00:00.000Z',
   },
   {
     id: 'staff-gui-004',
@@ -149,30 +149,33 @@ const PROVISIONED_STAFF_ACCOUNTS: StoredVaultAccount[] = [
     matricule: 'MAT-GUI-04',
     assignedPole: 'GUICHET_CAISSE',
     postLabel: 'Billetterie Guichet RN3 & Validation QR',
-    saltHex: '910f33c1a858804713e943e069286ede',
-    hashHex: 'db7fbfb1c111274f0cf808fc02d3fb4c89cfbcbffd0dd7486683c68632e0168d',
+    saltHex: '083c178844417eb8194e937add5c293a',
+    hashHex: 'c93121ef3b00ef05c848e3bd181205eb1a9fc439021d30bb44f7828c40a24388',
     iterations: PBKDF2_ITERATIONS,
     isActive: true,
     createdAt: '2026-10-26T08:00:00.000Z',
-    updatedAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-11-14T19:00:00.000Z',
   },
   {
     id: 'staff-adm-000',
     email: 'admin@ecopark-yaounde.com',
-    fullName: 'Administration Plateforme RBAC',
+    fullName: 'Administration Plateforme',
     phone: '+237 672 56 45 98',
     role: 'administrateur_plateforme',
     matricule: 'MAT-ADM-00',
     assignedPole: 'DIRECTION_GENERALE',
-    postLabel: 'Gouvernance RBAC, Sécurité & Infrastructure',
-    saltHex: '881259d5d3115e19c70a3b3c65603300',
-    hashHex: '41d205256862085c1b1bd782c7c51ff160fcc51e046fccb7d2a62a9f454da18e',
+    postLabel: "Droits d'Accès, Sécurité & Infrastructure",
+    saltHex: '6f0a00a6efa81b60c479f28f8676b08a',
+    hashHex: '955425d800d848a67022d17b066b40ccc39a7d29f79b03c73f11d45b7813a760',
     iterations: PBKDF2_ITERATIONS,
     isActive: true,
     createdAt: '2026-10-26T08:00:00.000Z',
-    updatedAt: '2026-10-26T08:00:00.000Z',
+    updatedAt: '2026-11-14T19:00:00.000Z',
   },
 ];
+
+// Active provisioned directory (production by default; replaceable only from unit tests)
+let activeProvisionedStaffAccounts: StoredVaultAccount[] = PROVISIONED_STAFF_ACCOUNTS;
 
 // ----------------------------------------------------------------------------
 // Role & Permission Governance Helpers (Aligned with Supabase RLS Migrations)
@@ -239,7 +242,7 @@ export function getRoleDisplayLabel(role?: EcoParkRole | null): string {
     case 'comptable':
       return 'Comptable SYSCOHADA';
     case 'client_connecte':
-      return 'Espace Cliente / Visiteur';
+      return 'Espace Client / Visiteur';
     default:
       return 'Visiteur';
   }
@@ -486,15 +489,25 @@ export function loadVaultAccounts(): StoredVaultAccount[] {
     }
   }
 
-  // Merge provisioned staff accounts if not already present (preserving any password updates)
+  // Merge provisioned staff accounts. A locally stored staff record only overrides the
+  // provisioned one if it was updated AFTER the provisioned rotation date (local password
+  // change). Stale records holding revoked hashes are discarded automatically.
   const byEmail = new Map<string, StoredVaultAccount>();
-  for (const staff of PROVISIONED_STAFF_ACCOUNTS) {
-    byEmail.set(normalizeEmail(staff.email), staff);
+  const provisionedUpdatedMs = new Map<string, number>();
+  for (const staff of activeProvisionedStaffAccounts) {
+    const key = normalizeEmail(staff.email);
+    byEmail.set(key, staff);
+    provisionedUpdatedMs.set(key, Date.parse(staff.updatedAt) || 0);
   }
   for (const acc of stored) {
-    if (acc && typeof acc.email === 'string') {
-      byEmail.set(normalizeEmail(acc.email), acc);
+    if (!acc || typeof acc.email !== 'string') continue;
+    const key = normalizeEmail(acc.email);
+    const provisionedMs = provisionedUpdatedMs.get(key);
+    if (provisionedMs !== undefined) {
+      const storedMs = Date.parse(acc.updatedAt) || 0;
+      if (storedMs <= provisionedMs) continue;
     }
+    byEmail.set(key, acc);
   }
   return Array.from(byEmail.values());
 }
@@ -597,7 +610,7 @@ async function resolveSupabaseUserProfile(
   }
 ): Promise<AuthenticatedUser> {
   let role: EcoParkRole = 'client_connecte';
-  let fullName = String(authUser.user_metadata?.full_name || authUser.email?.split('@')[0] || 'Cliente EcoPark');
+  let fullName = String(authUser.user_metadata?.full_name || authUser.email?.split('@')[0] || 'Client EcoPark');
   const phone = String(authUser.user_metadata?.phone || '');
   let matricule: string | undefined;
   let assignedPole: AssignedPole | undefined;
@@ -1332,4 +1345,14 @@ export function anonymizeClientPassesList(
 
 export function resetAuthVaultForTests(): void {
   memoryStore.clear();
+  activeProvisionedStaffAccounts = PROVISIONED_STAFF_ACCOUNTS;
+}
+
+/**
+ * Test-only: substitutes the provisioned staff directory with accounts whose
+ * passwords are known to the test suite (production passwords never live in Git).
+ * Pass `null` to restore the production directory without clearing storage.
+ */
+export function setProvisionedStaffAccountsForTests(accounts: StoredVaultAccount[] | null): void {
+  activeProvisionedStaffAccounts = accounts ?? PROVISIONED_STAFF_ACCOUNTS;
 }

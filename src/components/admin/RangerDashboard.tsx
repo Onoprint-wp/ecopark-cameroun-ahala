@@ -56,6 +56,10 @@ import {
   getExperienceInfo,
   formatEur,
 } from '../../utils/ecoMobility';
+import {
+  sanitizeEditorialText,
+  CLOSURE_REASON_TEMPLATES,
+} from '../../utils/editorialSanitizer';
 
 export const RangerDashboard: React.FC = () => {
   const {
@@ -160,13 +164,7 @@ export const RangerDashboard: React.FC = () => {
   const [activeClosureTrailId, setActiveClosureTrailId] = useState<string | null>(null);
   const [closureReasonInput, setClosureReasonInput] = useState<string>('');
 
-  const CLOSURE_PRESETS = [
-    'Accès réservé aux résidents des Cités Hôtelières Ewondo, Chanthel & Bene',
-    'Privatisation événementielle : Salle Polyvalente Menkii Essomba Anton (500 places)',
-    'Travaux pratiques d alevinage en cours avec les apprenants du CFP MINEFOP',
-    'Repos biologique hebdomadaire du lundi & maintenance préventive des bassins',
-    'Entretien des berges du lac d Ahala et contrôle des gilets de pirogue',
-  ];
+  const CLOSURE_PRESETS = CLOSURE_REASON_TEMPLATES;
 
   const handleOpenClosureDialog = (trailId: string, currentReason?: string) => {
     setActiveClosureTrailId(trailId);
@@ -174,7 +172,8 @@ export const RangerDashboard: React.FC = () => {
   };
 
   const handleConfirmClosure = (trailId: string) => {
-    const reason = closureReasonInput.trim() || 'Fermeture préventive temporaire';
+    const rawReason = closureReasonInput.trim() || 'Fermeture préventive temporaire';
+    const reason = sanitizeEditorialText(rawReason);
     updateTrailStatus(trailId, 'ferme', reason);
     setActiveClosureTrailId(null);
     setClosureReasonInput('');
@@ -185,7 +184,7 @@ export const RangerDashboard: React.FC = () => {
     if (status === 'ferme') {
       handleOpenClosureDialog(trailId);
     } else if (status === 'balise') {
-      updateTrailStatus(trailId, 'balise', 'Prudence requise : Balisage d entretien en cours');
+      updateTrailStatus(trailId, 'balise', 'Prudence requise : Balisage d\'entretien en cours');
       showToast(`Sentier passé en statut Balisé / Prudence`);
     } else {
       updateTrailStatus(trailId, 'fluide');
@@ -309,15 +308,16 @@ export const RangerDashboard: React.FC = () => {
   };
 
   const handleConfirmResolution = (reportId: string) => {
-    const note = interventionNoteInput.trim() || 'Intervention de terrain validée par l équipe technique';
+    const rawNote = interventionNoteInput.trim() || 'Intervention de terrain validée par l\'équipe technique';
+    const note = sanitizeEditorialText(rawNote);
     updateReportStatus(reportId, 'resolu', note);
     setResolvingReportId(null);
     setInterventionNoteInput('');
-    showToast(`Signalement ${reportId} marqué Résolu avec note d intervention`);
+    showToast(`Signalement ${reportId} marqué Résolu avec note d'intervention`);
   };
 
   const handleValidateReport = (reportId: string) => {
-    updateReportStatus(reportId, 'valide', 'Signalement authentifié et validé par l éco-garde de service');
+    updateReportStatus(reportId, 'valide', 'Signalement authentifié et validé par l\'éco-garde de service');
     showToast(`Signalement ${reportId} authentifié`);
   };
 
@@ -635,7 +635,7 @@ export const RangerDashboard: React.FC = () => {
           <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-[var(--status-caution-text)] flex items-center gap-2.5">
             <Lock className="w-4 h-4 text-[var(--status-caution-text)] shrink-0" />
             <span>
-              <strong>Habilitation RBAC ({getRoleDisplayLabel(user?.role)}) :</strong>{' '}
+              <strong>Droits d'accès ({getRoleDisplayLabel(user?.role)}) :</strong>{' '}
               {canCheckIn
                 ? 'Vous êtes habilité(e) au scan et à la validation des entrées QR au Guichet RN3. La modification de la jauge globale et la fermeture de secteurs requièrent un profil Chef d’Exploitation ou Direction.'
                 : 'Mode audit financier et consultation en lecture seule. Les actions d’exploitation terrain et de billetterie sont verrouillées.'}
@@ -752,7 +752,7 @@ export const RangerDashboard: React.FC = () => {
                 <div className="type-cockpit-kpi text-[var(--status-open-text)] mt-1">
                   {Math.max(0, telemetry.dailyCapacityMax - telemetry.currentOccupancy)}
                 </div>
-                <span className="type-cockpit-meta text-[var(--text-muted)]">réservables aujourd hui</span>
+                <span className="type-cockpit-meta text-[var(--text-muted)]">réservables aujourd'hui</span>
               </div>
 
               <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
@@ -791,7 +791,7 @@ export const RangerDashboard: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <Activity className="w-4 h-4 text-[var(--brand-primary)]" />
                   <h3 className="type-cockpit-h3 text-[var(--text-primary)]">
-                    Histogramme d Affluence Horaire (08h00 - 20h00)
+                    Histogramme d'Affluence Horaire (08h00 - 20h00)
                   </h3>
                 </div>
                 <p className="type-cockpit-meta text-[var(--text-muted)]">
@@ -817,7 +817,7 @@ export const RangerDashboard: React.FC = () => {
                 viewBox="0 0 600 200"
                 className="w-full h-full overflow-visible"
                 role="img"
-                aria-label="Graphique d affluence horaire des visiteurs"
+                aria-label="Graphique d'affluence horaire des visiteurs"
               >
                 {/* Horizontal Grid lines */}
                 <line x1="40" y1="30" x2="580" y2="30" stroke="currentColor" strokeOpacity="0.1" strokeDasharray="3 3" />
@@ -889,8 +889,8 @@ export const RangerDashboard: React.FC = () => {
             </div>
 
             <div className="pt-3 border-t border-[var(--border-default)]/60 flex flex-wrap items-center justify-between gap-2 text-xs text-[var(--text-muted)]">
-              <span>Pic d affluence estimé : <strong>11h00 - 12h00</strong> et <strong>14h00 - 15h00</strong></span>
-              <span className="font-mono">Rythme d écoulement nominal</span>
+              <span>Pic d'affluence estimé : <strong>11h00 - 12h00</strong> et <strong>14h00 - 15h00</strong></span>
+              <span className="font-mono">Rythme d'écoulement nominal</span>
             </div>
           </div>
 
@@ -973,13 +973,13 @@ export const RangerDashboard: React.FC = () => {
             <div>
               <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--brand-primary)]">
                 <TreePine className="w-4 h-4 text-[var(--brand-primary)]" />
-                <span>Gestionnaire d Infrastructure</span>
+                <span>Gestionnaire d'Infrastructure</span>
               </div>
               <h2
                 id="trail-status-manager-title"
                 className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
               >
-                Contrôle d État des 6 Sentiers Officiels
+                Contrôle d'État des 6 Sentiers Officiels
               </h2>
             </div>
 
@@ -1078,7 +1078,7 @@ export const RangerDashboard: React.FC = () => {
                   {/* Dynamic Action Buttons */}
                   <div className="pt-3 border-t border-[var(--border-default)]/60 space-y-2 min-w-0">
                     <div className="flex flex-wrap items-center justify-between gap-1 text-xs font-semibold text-[var(--text-muted)] uppercase min-w-0">
-                      <span>Changer l état opérationnel :</span>
+                      <span>Changer l'état opérationnel :</span>
                       <button
                         type="button"
                         onClick={() => {
@@ -1152,7 +1152,7 @@ export const RangerDashboard: React.FC = () => {
                 id="guichet-pass-control-title"
                 className="type-cockpit-h2 text-[var(--text-primary)] mt-1"
               >
-                Contrôle en Direct des Éco-Pass &amp; Validation Check-In
+                Contrôle en Direct des Éco-Pass &amp; Validation de l'Arrivée
               </h2>
               <p className="type-cockpit-meta text-[var(--text-muted)] mt-1">
                 Synchronisé en temps réel avec la Billetterie et l&apos;espace « Mon Pass QR » des visiteurs
@@ -1197,7 +1197,7 @@ export const RangerDashboard: React.FC = () => {
                         {pass.status === 'confirmed'
                           ? 'Confirmé'
                           : pass.status === 'checked_in'
-                          ? 'Check-In OK'
+                          ? 'Arrivée Validée'
                           : 'Annulé'}
                       </span>
                     </div>
@@ -1254,7 +1254,7 @@ export const RangerDashboard: React.FC = () => {
                           className="min-h-[48px] px-3.5 py-2 rounded-xl bg-emerald-800 hover:bg-emerald-900 dark:bg-emerald-300 dark:hover:bg-emerald-200 dark:text-[#081C15] text-white text-xs font-bold cursor-pointer inline-flex items-center gap-1 shadow-xs active:scale-95 transition-all"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" />
-                          <span>Check-In</span>
+                          <span>Arrivée</span>
                         </button>
                       )}
 
@@ -1296,7 +1296,7 @@ export const RangerDashboard: React.FC = () => {
                 File de Modération des Signalements Sentinelle
               </h2>
               <p className="type-cockpit-meta text-[var(--text-muted)] mt-1">
-                Authentifiez les découvertes naturalistes et régulez les alertes d obstacles terrain
+                Authentifiez les découvertes naturalistes et régulez les alertes d'obstacles terrain
               </p>
             </div>
 
@@ -1503,7 +1503,7 @@ export const RangerDashboard: React.FC = () => {
                       <div className="p-3.5 rounded-xl bg-emerald-500/10 border border-emerald-500/20 text-xs text-[var(--text-primary)] flex items-start gap-2.5">
                         <ShieldCheck className="w-4 h-4 text-[var(--status-open-text)] shrink-0 mt-0.5" />
                         <div>
-                          <strong className="font-semibold">Note d intervention de l Éco-Garde :</strong>{' '}
+                          <strong className="font-semibold">Note d'intervention de l'Éco-Garde :</strong>{' '}
                           {rep.rangerNote}
                         </div>
                       </div>
@@ -1603,7 +1603,7 @@ export const RangerDashboard: React.FC = () => {
 
               <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                 <span className="type-cockpit-meta font-mono uppercase text-[var(--text-muted)] block">
-                  Validés Portique (Check-In)
+                  Validés Portique (Arrivée)
                 </span>
                 <div className="type-cockpit-kpi text-sky-800 dark:text-sky-300 mt-1">
                   {formatEur(financialSummary.checkedInRevenueFcfa)}
@@ -1670,7 +1670,7 @@ export const RangerDashboard: React.FC = () => {
                         </td>
                         <td className="p-3 font-mono">
                           {p.status === 'checked_in'
-                            ? 'Check-In OK'
+                            ? 'Arrivée Validée'
                             : p.status === 'confirmed'
                             ? 'Confirmé'
                             : 'Annulé'}
@@ -1717,7 +1717,7 @@ export const RangerDashboard: React.FC = () => {
               <div>
                 <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--status-caution-text)]">
                   <ShieldCheck className="w-4 h-4 text-[var(--status-caution-text)]" />
-                  <span>Gouvernance Sécurité &amp; Contrôle d Accès (RBAC)</span>
+                  <span>Gouvernance Sécurité &amp; Droits d'Accès</span>
                 </div>
                 <h2
                   id="rbac-governance-title"
@@ -1726,11 +1726,11 @@ export const RangerDashboard: React.FC = () => {
                   Matrice des Habilitations &amp; Annuaire des {staffDirectory.length} Postes Internes
                 </h2>
                 <p className="type-cockpit-meta text-[var(--text-muted)] mt-0.5">
-                  Coffre cryptographique PBKDF2-HMAC-SHA256 (120 000 itér.) · Jeton signé HMAC-SHA256 · Bail Staff 12h / Client 7j
+                  Chiffrement sécurisé des mots de passe · Session signée · Durée Équipe 12h / Client 7j
                 </p>
               </div>
               <span className="px-3 py-1.5 rounded-xl bg-amber-100 text-[var(--status-caution-text)] dark:bg-amber-950 border border-amber-300 dark:border-amber-800 text-xs font-mono font-bold self-start sm:self-center">
-                {staffDirectory.length}/6 Rôles Staff Provisionnés
+                {staffDirectory.length}/6 Rôles Équipe Provisionnés
               </span>
             </div>
 
@@ -1742,7 +1742,7 @@ export const RangerDashboard: React.FC = () => {
                     <th className="p-3 font-semibold">Poste / Rôle</th>
                     <th className="p-3 font-semibold">Identifiant Interne</th>
                     <th className="p-3 font-semibold">Pôle</th>
-                    <th className="p-3 font-semibold text-center">Check-In QR</th>
+                    <th className="p-3 font-semibold text-center">Arrivée QR</th>
                     <th className="p-3 font-semibold text-center">Jauge &amp; Sentiers</th>
                     <th className="p-3 font-semibold text-center">Audit Compta</th>
                   </tr>
@@ -1798,7 +1798,7 @@ export const RangerDashboard: React.FC = () => {
                 </div>
                 <div>
                   <h3 id="ranger-modal-closure-title" className="type-cockpit-h3 text-[var(--text-primary)]">
-                    Fermeture d Urgence de Sentier
+                    Fermeture d'Urgence de Sentier
                   </h3>
                   <span className="text-xs text-[var(--text-muted)] font-mono">
                     {trails.find((t) => t.id === activeClosureTrailId)?.name}
@@ -1922,13 +1922,13 @@ export const RangerDashboard: React.FC = () => {
             </div>
 
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-              Enregistrez la note d intervention officielle. Cette information sera directement
-              consultable par la communauté dans l espace Sentinelle Nature.
+              Enregistrez la note d'intervention officielle. Cette information sera directement
+              consultable par la communauté dans l'espace Sentinelle Nature.
             </p>
 
             <div className="space-y-3">
               <label className="block text-xs font-semibold text-[var(--text-primary)]">
-                Modèles d intervention type :
+                Modèles d'intervention type :
               </label>
 
               <div className="space-y-1.5">
@@ -1953,7 +1953,7 @@ export const RangerDashboard: React.FC = () => {
                   htmlFor="intervention-note-input"
                   className="block text-xs font-semibold text-[var(--text-primary)] mb-1"
                 >
-                  Note d intervention de l Éco-Garde :
+                  Note d'intervention de l'Éco-Garde :
                 </label>
                 <textarea
                   id="intervention-note-input"
@@ -2010,7 +2010,7 @@ export const RangerDashboard: React.FC = () => {
             </div>
 
             <p className="text-xs text-[var(--text-muted)] leading-relaxed">
-              Voulez-vous restaurer les données d origine (6 sentiers, quotas nominaux, 3 billets initiaux
+              Voulez-vous restaurer les données d'origine (6 sentiers, quotas nominaux, 3 billets initiaux
               et 5 signalements Sentinelle) ? Cette action réinitialisera le `localStorage`.
             </p>
 

@@ -11,6 +11,11 @@ import { ImmersiveSection } from '../layout/ImmersiveSection';
 import { recordMotionOrigin } from '../../utils/ecoMotion';
 import { getPhotoObjectPosition } from '../../utils/ecoRouting';
 import {
+  getWhatsAppUrl,
+  OFFICIAL_PHONE_NUMBERS,
+  OUTGOING_WHATSAPP_TEMPLATES,
+} from '../../utils/outgoingTemplates';
+import {
   Sparkles,
   Ticket,
   Compass,
@@ -121,7 +126,10 @@ export const HeroCanopy: React.FC = () => {
 
               {/* Visiteur Niveau 5 (Décidé) : Lien discret à chevron -> Réservation directe WhatsApp pré-rempli */}
               <a
-                href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20r%C3%A9server%20une%20visite%20ou%20un%20Pass%20%C3%A0%20Ahala."
+                href={getWhatsAppUrl(
+                  OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                  OUTGOING_WHATSAPP_TEMPLATES.TICKETING_RESERVATION
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="cta-chevron cta-chevron-canopy border border-white/20"
@@ -281,7 +289,7 @@ export const HeroCanopy: React.FC = () => {
                 </div>
                 <div className="mt-1.5">
                   <div className="text-lg font-bold text-sky-300 font-mono tabular-nums">
-                    IQA {telemetry.airQualityIqa}
+                    Qualité de l'air : {telemetry.airQualityIqa}
                   </div>
                   <div className="text-xs text-[#C9D1CC] font-sans mt-0.5">
                     {telemetry.airQualityStatus} · Forêt d&apos;Ahala

@@ -234,7 +234,7 @@ export const BookingWizard: React.FC = () => {
       if (liveCheck.code === 'EMPTY_GUESTS') {
         errors.guests = liveCheck.error || 'Veuillez inclure au moins un visiteur.';
       } else if (liveCheck.code === 'TRAIL_CLOSED') {
-        errors.trail = liveCheck.error || 'Le circuit sélectionné vient d être fermé.';
+        errors.trail = liveCheck.error || 'Le circuit sélectionné vient d\'être fermé.';
       } else if (liveCheck.code === 'QUOTA_EXCEEDED') {
         errors.capacity = liveCheck.error || `Capacité insuffisante (${capacityMetrics.available} places restantes).`;
       } else {
@@ -411,14 +411,14 @@ export const BookingWizard: React.FC = () => {
             <div>
               <div className="font-bold">
                 {selectedTrail?.status === 'ferme'
-                  ? `Mise à jour temps réel : le circuit « ${selectedTrail.name} » vient d être fermé par le poste de garde`
+                  ? `Mise à jour temps réel : le circuit « ${selectedTrail.name} » vient d'être fermé par le poste de garde`
                   : `Mise à jour temps réel : jauge restante insuffisante (${capacityMetrics.available} place(s) disponible(s) pour ${totalGuests} demandée(s))`}
               </div>
               <div className="opacity-95 mt-0.5">
                 {selectedTrail?.status === 'ferme'
                   ? selectedTrail.closureReason ||
                     'Basculez en un clic sur les zones ouvertes du complexe ou choisissez un autre circuit.'
-                  : 'Le plafond écologique vient d être ajusté. Réduisez la taille du groupe à l étape 2 ou choisissez une autre date.'}
+                  : 'Le plafond écologique vient d\'être ajusté. Réduisez la taille du groupe à l\'étape 2 ou choisissez une autre date.'}
               </div>
             </div>
           </div>
@@ -492,7 +492,7 @@ export const BookingWizard: React.FC = () => {
               />
             </div>
             <p className="type-footnote">
-              Le plafond est fixé par le garde-forestier pour protéger les périodes sensibles de reproduction et éviter l érosion des sentiers.
+              Le plafond est fixé par le garde-forestier pour protéger les périodes sensibles de reproduction et éviter l'érosion des sentiers.
             </p>
           </div>
 
@@ -518,7 +518,7 @@ export const BookingWizard: React.FC = () => {
               </div>
 
               <div className="text-xs text-[var(--text-muted)] leading-relaxed">
-                Réservations ouvertes jusqu à 30 jours à l avance. En cas de fermeture météo imprévue, votre pass est automatiquement reporté.
+                Réservations ouvertes jusqu'à 30 jours à l'avance. En cas de fermeture météo imprévue, votre pass est automatiquement reporté.
               </div>
             </div>
 
@@ -560,7 +560,7 @@ export const BookingWizard: React.FC = () => {
                   <div className="opacity-95 mt-0.5">
                     {selectedTrail.status === 'ferme'
                       ? selectedTrail.closureReason ||
-                        'Basculez sur les secteurs ouverts du domaine d Ahala ou sélectionnez un autre circuit.'
+                        'Basculez sur les secteurs ouverts du domaine d\'Ahala ou sélectionnez un autre circuit.'
                       : 'La formule recommandée ci-dessous a été synchronisée avec votre circuit (modifiable librement).'}
                   </div>
                 </div>
@@ -693,7 +693,7 @@ export const BookingWizard: React.FC = () => {
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-[var(--brand-primary)]" />
               <h3 className="type-h3 text-[var(--text-primary)]">
-                Sélectionnez votre créneau d arrivée
+                Sélectionnez votre créneau d'arrivée
               </h3>
             </div>
 
@@ -749,7 +749,7 @@ export const BookingWizard: React.FC = () => {
                 </h4>
               </div>
               <span className="text-xs font-mono text-[var(--brand-primary)] font-bold">
-                {capacityMetrics.available} places restantes aujourd hui
+                {capacityMetrics.available} places restantes aujourd'hui
               </span>
             </div>
 
@@ -923,7 +923,7 @@ export const BookingWizard: React.FC = () => {
 
             {!user && (
               <p className="type-footnote pt-1">
-                💡 Astuce : créez ensuite votre Espace Cliente avec la même adresse email pour retrouver automatiquement tous vos Pass QR en toute confidentialité.
+                💡 Astuce : créez ensuite votre Espace Client avec la même adresse email pour retrouver automatiquement tous vos Pass QR en toute confidentialité.
               </p>
             )}
           </div>
@@ -936,7 +936,7 @@ export const BookingWizard: React.FC = () => {
               className="min-h-[48px] px-5 py-2.5 rounded-xl border border-[var(--border-default)] text-xs sm:text-sm font-bold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-2"
             >
               <ArrowLeft className="w-4 h-4" />
-              <span>Retour à l étape 1</span>
+              <span>Retour à l'étape 1</span>
             </button>
 
             <button
@@ -948,7 +948,7 @@ export const BookingWizard: React.FC = () => {
               }}
               className="min-h-[48px] px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-[var(--on-primary)] font-bold text-sm shadow-xs hover:bg-[var(--brand-primary-hover)] cursor-pointer flex items-center gap-2"
             >
-              <span>Continuer vers l Éco-Mobilité</span>
+              <span>Continuer vers l'Éco-Mobilité</span>
               <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -1078,7 +1078,7 @@ export const BookingWizard: React.FC = () => {
             <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
               <div>
                 <span className="text-xs text-[var(--text-muted)]">
-                  Total net à régler pour l émission de l Éco-Pass :
+                  Total net à régler pour l'émission de l'Éco-Pass :
                 </span>
                 <div className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--brand-primary)]">
                   {formatEur(pricing.netTotalEur)}
@@ -1126,7 +1126,7 @@ export const BookingWizard: React.FC = () => {
                 className="mt-0.5 w-4 h-4 shrink-0 rounded accent-[var(--brand-primary)] cursor-pointer"
               />
               <span className="text-xs sm:text-sm text-[var(--text-primary)] font-medium leading-relaxed">
-                J ai pris connaissance de la Charte Zéro-Trace et je m engage, pour moi-même et les membres de mon groupe, à respecter la tranquillité de la réserve forestière.
+                J'ai pris connaissance de la Charte Zéro-Trace et je m'engage, pour moi-même et les membres de mon groupe, à respecter la tranquillité de la réserve forestière.
               </span>
             </label>
 
@@ -1165,7 +1165,7 @@ export const BookingWizard: React.FC = () => {
               className="min-h-[48px] px-7 py-3.5 rounded-xl bg-emerald-800 hover:bg-emerald-900 text-white dark:bg-emerald-300 dark:hover:bg-emerald-200 dark:text-[#081C15] font-bold text-sm shadow-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer flex items-center gap-2 transition-all active:scale-95"
             >
               <CheckCircle2 className="w-4 h-4" />
-              <span>Confirmer la réservation & Émettre l Éco-Pass</span>
+              <span>Confirmer la réservation & Émettre l'Éco-Pass</span>
             </button>
           </div>
         </form>

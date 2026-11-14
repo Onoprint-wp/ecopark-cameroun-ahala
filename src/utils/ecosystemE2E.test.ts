@@ -27,6 +27,7 @@ import {
   SHOWCASE_TAB_PATH_MAP,
   resolveViewFromPath,
   resolveShowcaseTabFromPath,
+  resolveLegalTabFromPath,
   type ShowcaseTab,
 } from './ecoRouting.ts';
 import {
@@ -63,6 +64,12 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
       assert.ok(sp.scientificName.length > 0, 'Species must have a scientific name');
       assert.ok(['CR', 'EN', 'VU', 'NT', 'LC'].includes(sp.iucnStatus), 'IUCN status must be valid');
       assert.ok(sp.observationSeason.length > 0, 'Species must have seasonal observation seasons');
+      for (const season of sp.observationSeason as string[]) {
+        assert.ok(
+          !['Printemps', 'Été', 'Automne', 'Hiver'].includes(season),
+          `${sp.id} must use equatorial Yaoundé seasons (found European "${season}")`
+        );
+      }
       assert.ok(sp.trailIds.length > 0, 'Species must be linked to at least 1 trail');
     }
 
@@ -284,7 +291,16 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
       rewrites: Array<{ source: string; destination: string }>;
     };
 
-    assert.ok(vercelConfig.rewrites.length >= 56, 'vercel.json must contain all 56 SPA rewrites');
+    assert.ok(vercelConfig.rewrites.length >= 84, 'vercel.json must contain all 84 SPA rewrites');
+    assert.strictEqual(
+      fs.existsSync(path.resolve(process.cwd(), 'public/color-atlas-standalone.html')),
+      false,
+      'Dev prototype color-atlas-standalone.html must not exist in public/'
+    );
+    const internalMockups = fs
+      .readdirSync(path.resolve(process.cwd(), 'public/images/ahala'))
+      .filter((f) => /^(AGT|DIR|DS|PUB|RES)_\d/.test(f));
+    assert.deepStrictEqual(internalMockups, [], 'Internal mockup boards must never ship in public/images/ahala');
 
     // Every single rewrite in vercel.json must resolve to a valid ActiveView
     for (const rw of vercelConfig.rewrites) {
@@ -316,12 +332,18 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
       );
     }
 
-    // Explicit check on /Connexion, /connexion, /mentions-legales, /cgv, /confidentialite
+    // Explicit check on /Connexion, /connexion, /zoo, /carte, /mon-pass, /mentions-legales, /cgv, /confidentialite
     assert.strictEqual(resolveViewFromPath('/Connexion'), 'connexion');
     assert.strictEqual(resolveViewFromPath('/connexion'), 'connexion');
+    assert.strictEqual(resolveViewFromPath('/zoo'), 'biodiversite');
+    assert.strictEqual(resolveViewFromPath('/carte'), 'sentiers');
+    assert.strictEqual(resolveViewFromPath('/mon-pass'), 'pass');
     assert.strictEqual(resolveViewFromPath('/mentions-legales'), 'legal');
     assert.strictEqual(resolveViewFromPath('/cgv'), 'legal');
     assert.strictEqual(resolveViewFromPath('/confidentialite'), 'legal');
+    assert.strictEqual(resolveLegalTabFromPath('/mentions-legales'), 'mentions');
+    assert.strictEqual(resolveLegalTabFromPath('/cgv'), 'cgv');
+    assert.strictEqual(resolveLegalTabFromPath('/confidentialite'), 'confidentialite');
 
     // Bidirectional round-trip for all 5 AhalaShowcase tabs & presence in vercel.json
     const rewriteSources = new Set(vercelConfig.rewrites.map((r) => r.source));

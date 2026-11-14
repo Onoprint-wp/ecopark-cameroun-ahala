@@ -320,7 +320,7 @@ export const TrailCatalog: React.FC<TrailCatalogProps> = ({
             Aucun sentier ne correspond à vos filtres
           </h3>
           <p className="type-footnote">
-            Essayez d élargir vos critères de recherche ou réinitialisez les filtres.
+            Essayez d'élargir vos critères de recherche ou réinitialisez les filtres.
           </p>
           <button
             type="button"

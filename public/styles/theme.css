@@ -1,16 +1,16 @@
 /* ==========================================================================
-   ECO-PARK — Design Tokens & Tailwind CSS v4 Theme
+   ECO-PARK - Design Tokens & Tailwind CSS v4 Theme
    Source : Adobe Color (Explore + Color Wheel + WCAG Contrast + Daltonism)
    ========================================================================== */
 
 /* 1. Primitive Color Scales & Core Adobe Color Swatches */
 :root {
   /* Core 5 Swatches (Adobe Color Custom Theme) */
-  --eco-forest-brand: #1B4332; /* rgb(27, 67, 50)   — Primary Deep Forest */
-  --eco-leaf-brand:   #52B788; /* rgb(82, 183, 136) — Secondary Fresh Leaf */
-  --eco-earth-brand:  #D4A373; /* rgb(212, 163, 115)— Tertiary Warm Earth */
-  --eco-mist-brand:   #E9F5ED; /* rgb(233, 245, 237)— Light Sage Mist Surface */
-  --eco-bark-brand:   #1F2421; /* rgb(31, 36, 33)   — High-Contrast Bark Ink */
+  --eco-forest-brand: #1B4332; /* rgb(27, 67, 50)   - Primary Deep Forest */
+  --eco-leaf-brand:   #52B788; /* rgb(82, 183, 136) - Secondary Fresh Leaf */
+  --eco-earth-brand:  #D4A373; /* rgb(212, 163, 115)- Tertiary Warm Earth */
+  --eco-mist-brand:   #E9F5ED; /* rgb(233, 245, 237)- Light Sage Mist Surface */
+  --eco-bark-brand:   #1F2421; /* rgb(31, 36, 33)   - High-Contrast Bark Ink */
 
   /* Forest Scale (Canopy Primary) */
   --color-forest-50:  #EDF7F2;
@@ -72,33 +72,33 @@
   --color-bark-900: #1F2421;
   --color-bark-950: #121614;
 
-  /* 2. Semantic Tokens — Light Mode (WCAG AA/AAA Verified) */
+  /* 2. Semantic Tokens - Light Mode (WCAG AA/AAA Verified) */
   --bg-canvas:         var(--color-mist-50);    /* #F6FBF8 */
-  --bg-surface:        var(--color-mist-100);   /* #E9F5ED — 14.07:1 with --text-primary */
+  --bg-surface:        var(--color-mist-100);   /* #E9F5ED - 14.07:1 with --text-primary */
   --bg-elevated:       #FFFFFF;
   --text-primary:      var(--color-bark-900);   /* #1F2421 */
   --text-muted:        var(--color-bark-600);   /* #46534B */
-  --brand-primary:     var(--color-forest-800); /* #1B4332 — 11.08:1 with #FFFFFF */
+  --brand-primary:     var(--color-forest-800); /* #1B4332 - 11.08:1 with #FFFFFF */
   --brand-primary-hover: var(--color-forest-700);
   --on-primary:        #FFFFFF;
-  --brand-secondary:   var(--color-leaf-500);   /* #52B788 — 6.37:1 with #1F2421 */
+  --brand-secondary:   var(--color-leaf-500);   /* #52B788 - 6.37:1 with #1F2421 */
   --on-secondary:      var(--color-bark-900);
-  --brand-accent:      var(--color-earth-400);  /* #D4A373 — 6.97:1 with #1F2421 */
+  --brand-accent:      var(--color-earth-400);  /* #D4A373 - 6.97:1 with #1F2421 */
   --on-accent:         var(--color-bark-900);
   --border-subtle:     var(--color-mist-200);
   --border-default:    var(--color-mist-300);
   --focus-ring:        var(--color-leaf-500);
 }
 
-/* 3. Semantic Tokens — Dark Mode (Class `.dark` or `[data-theme="dark"]`) */
+/* 3. Semantic Tokens - Dark Mode (Class `.dark` or `[data-theme="dark"]`) */
 .dark,
 [data-theme="dark"] {
   --bg-canvas:         var(--color-bark-950);   /* #121614 */
-  --bg-surface:        var(--color-bark-900);   /* #1F2421 — 14.07:1 with #E9F5ED */
+  --bg-surface:        var(--color-bark-900);   /* #1F2421 - 14.07:1 with #E9F5ED */
   --bg-elevated:       var(--color-bark-800);   /* #29302C */
   --text-primary:      var(--color-mist-100);   /* #E9F5ED */
   --text-muted:        var(--color-bark-300);   /* #A3B0A8 */
-  --brand-primary:     var(--color-leaf-500);   /* #52B788 — 6.37:1+ with dark ink */
+  --brand-primary:     var(--color-leaf-500);   /* #52B788 - 6.37:1+ with dark ink */
   --brand-primary-hover: var(--color-leaf-400);
   --on-primary:        var(--color-bark-950);
   --brand-secondary:   var(--color-forest-700); /* #2D6A4F */

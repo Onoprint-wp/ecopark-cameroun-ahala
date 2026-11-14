@@ -38,6 +38,7 @@ import { ActiveView, DaltonismMode } from '../../types/ecosystem';
 import { isDevEnvironment } from '../../utils/ecoAuth';
 import { recordMotionOrigin, useAnimatedNumber } from '../../utils/ecoMotion';
 import { dispatchShowcaseNavigation, type ShowcaseTab } from '../../utils/ecoRouting';
+import { getWhatsAppUrl, OFFICIAL_PHONE_NUMBERS } from '../../utils/outgoingTemplates';
 
 export const Navbar: React.FC = () => {
   const {
@@ -309,7 +310,7 @@ export const Navbar: React.FC = () => {
                 <PhoneCall className="w-3 h-3 text-[#74C69D] shrink-0" />
                 <span>WhatsApp :</span>
                 <a
-                  href="https://wa.me/237672564598"
+                  href={getWhatsAppUrl(OFFICIAL_PHONE_NUMBERS.DIRECTION)}
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white hover:underline"
@@ -318,7 +319,7 @@ export const Navbar: React.FC = () => {
                 </a>
                 <span>/</span>
                 <a
-                  href="https://wa.me/237694601449"
+                  href={getWhatsAppUrl(OFFICIAL_PHONE_NUMBERS.HOTEL)}
                   target="_blank"
                   rel="noreferrer"
                   className="hover:text-white hover:underline"

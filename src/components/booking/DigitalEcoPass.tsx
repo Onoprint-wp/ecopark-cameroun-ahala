@@ -221,7 +221,7 @@ export const DigitalEcoPass: React.FC = () => {
     }
     setClaimFeedback({
       ok: true,
-      text: `Pass ${res.pass?.id} rattaché avec succès à votre Espace Cliente.`,
+      text: `Pass ${res.pass?.id} rattaché avec succès à votre Espace Client.`,
     });
     setClaimRefInput('');
     setClaimContactInput('');
@@ -320,7 +320,7 @@ export const DigitalEcoPass: React.FC = () => {
   <g transform="translate(190, 220)">
     ${qrSvg}
   </g>
-  <text x="300" y="470" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#36403A">Présentez ce QR Code aux bornes d entrée du Parc</text>
+  <text x="300" y="470" text-anchor="middle" font-family="'JetBrains Mono', monospace" font-size="11" fill="#36403A">Présentez ce QR Code aux bornes d'entrée du Parc</text>
 
   <!-- Divider Line -->
   <line x1="30" y1="495" x2="570" y2="495" stroke="#8EBAA0" stroke-dasharray="6,6" stroke-width="1.5"/>
@@ -337,7 +337,7 @@ export const DigitalEcoPass: React.FC = () => {
   <text x="30" y="630" class="label">Nombre de Visiteurs</text>
   <text x="30" y="650" class="value">${currentPass.guestCount} pers.</text>
 
-  <text x="320" y="630" class="label">Mode d Accès &amp; Paiement</text>
+  <text x="320" y="630" class="label">Mode d'Accès &amp; Paiement</text>
   <text x="320" y="650" class="value">${svgMobility.shortLabel}${currentPass.discountAppliedPercent > 0 ? ` (-${currentPass.discountAppliedPercent}%)` : ''}</text>
 
   <text x="30" y="715" class="label">Contribution Carbone Évitée</text>
@@ -381,7 +381,7 @@ export const DigitalEcoPass: React.FC = () => {
           <div>
             <h2 className="type-h3 text-[var(--text-primary)]">
               {user
-                ? 'Aucun Pass QR rattaché à votre Espace Cliente'
+                ? 'Aucun Pass QR rattaché à votre Espace Client'
                 : 'Récupération Unitaire de Pass QR (Visiteur sans compte)'}
             </h2>
             <p className="type-body-compact text-[var(--text-muted)] mt-1.5 max-w-md mx-auto">
@@ -744,7 +744,7 @@ export const DigitalEcoPass: React.FC = () => {
                     }`}
                   >
                     {currentPass.status === 'confirmed' && 'Confirmé · Accès Valide'}
-                    {currentPass.status === 'checked_in' && 'Check-In Effectué'}
+                    {currentPass.status === 'checked_in' && 'Arrivée Enregistrée'}
                     {currentPass.status === 'cancelled' && 'Pass Annulé'}
                   </span>
                 </div>
@@ -840,7 +840,7 @@ export const DigitalEcoPass: React.FC = () => {
                   <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                     <div className="text-[var(--text-muted)] flex items-center gap-1.5">
                       <Calendar className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
-                      <span>Date &amp; Créneau d Arrivée</span>
+                      <span>Date &amp; Créneau d'Arrivée</span>
                     </div>
                     <div className="font-bold text-sm text-[var(--text-primary)]">
                       {currentPass.visitDate}
@@ -854,7 +854,7 @@ export const DigitalEcoPass: React.FC = () => {
                   <div className="space-y-1 p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)]">
                     <div className="text-[var(--text-muted)] flex items-center gap-1.5">
                       <Leaf className="w-3.5 h-3.5 text-[var(--status-open-text)]" />
-                      <span>Mode d Acheminement</span>
+                      <span>Mode d'Acheminement</span>
                     </div>
                     <div className="font-bold text-sm text-[var(--text-primary)]">
                       {mobilityInfo.label}
@@ -903,7 +903,7 @@ export const DigitalEcoPass: React.FC = () => {
                     className="min-h-[44px] px-4 py-2.5 rounded-xl bg-amber-800 hover:bg-amber-900 dark:bg-amber-300 dark:hover:bg-amber-200 dark:text-[#121614] text-white font-bold text-xs shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-95 transition-transform"
                   >
                     <CheckCircle2 className="w-4 h-4" />
-                    <span>Valider Check-In Guichet RN3 (Staff)</span>
+                    <span>Valider l'Arrivée au Guichet RN3 (Équipe)</span>
                   </button>
                 ) : (
                   <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono font-semibold text-[var(--status-open-text)]">
@@ -928,7 +928,7 @@ export const DigitalEcoPass: React.FC = () => {
                 <button
                   onClick={handleDownloadSvg}
                   className="min-h-[44px] px-3.5 py-2 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-elevated)] cursor-pointer flex items-center gap-1.5"
-                  title="Télécharger le fichier vectoriel SVG de l Éco-Pass"
+                  title="Télécharger le fichier vectoriel SVG de l'Éco-Pass"
                 >
                   <Download className="w-3.5 h-3.5" />
                   <span>SVG Ticket</span>
@@ -1094,7 +1094,7 @@ export const DigitalEcoPass: React.FC = () => {
 
             <p className="type-body-compact text-[var(--text-muted)]">
               En annulant le pass <strong className="text-[var(--text-primary)] font-mono">{currentPass.id}</strong>,
-              vos {currentPass.guestCount} places seront immédiatement réattribuées à la jauge écologique du parc pour d autres visiteurs.
+              vos {currentPass.guestCount} places seront immédiatement réattribuées à la jauge écologique du parc pour d'autres visiteurs.
             </p>
 
             <div className="pt-2 flex flex-wrap items-center justify-end gap-3">
@@ -1111,7 +1111,7 @@ export const DigitalEcoPass: React.FC = () => {
                 }}
                 className="min-h-[44px] px-4 py-2 rounded-xl bg-red-800 hover:bg-red-900 dark:bg-red-300 dark:hover:bg-red-200 dark:text-[#121614] text-white font-bold text-xs shadow-xs cursor-pointer transition-colors"
               >
-                Confirmer l annulation
+                Confirmer l'annulation
               </button>
             </div>
           </div>

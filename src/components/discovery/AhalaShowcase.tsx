@@ -21,6 +21,13 @@ import {
   getPhotoObjectPosition,
 } from '../../utils/ecoRouting';
 import {
+  getWhatsAppUrl,
+  OFFICIAL_PHONE_NUMBERS,
+  OUTGOING_WHATSAPP_TEMPLATES,
+  buildPassOrderMessage,
+  buildHotelAvailabilityMessage,
+} from '../../utils/outgoingTemplates';
+import {
   BedDouble,
   Utensils,
   Ticket,
@@ -112,14 +119,14 @@ export const AhalaShowcase: React.FC = () => {
       trailKey: 'marais',
       badge: 'Formule #2 · Le Plus Choisi',
       name: 'Pass Journée Complète',
-      tagline: 'Visitez la faune. Traversez l eau. Nagez en bassin semi-olympique.',
+      tagline: 'Visitez la faune. Traversez l\'eau. Nagez en bassin semi-olympique.',
       childPrice: 2500,
       adultPrice: 4500,
       featured: true,
       features: [
         'Entrée Parc & Jardin Zoologique complet',
         'Accès Piscine Semi-Olympique surveillée par maîtres-nageurs',
-        'Balade en Pirogue de 45 min sur le lac d Ahala',
+        'Balade en Pirogue de 45 min sur le lac d\'Ahala',
         '1 QR Code unique coupe-file + Parking gratuit face Tradex',
       ],
     },
@@ -128,7 +135,7 @@ export const AhalaShowcase: React.FC = () => {
       trailKey: 'piste-eco-gardes',
       badge: 'Formule #3 · VIP Gastronomie',
       name: 'Pass Journée Royale',
-      tagline: 'Vivez toutes les activités. Déjeunez au bord du lac. Zéro file d attente.',
+      tagline: 'Vivez toutes les activités. Déjeunez au bord du lac. Zéro file d\'attente.',
       childPrice: 4500,
       adultPrice: 8500,
       featured: false,
@@ -144,19 +151,19 @@ export const AhalaShowcase: React.FC = () => {
   const HOTELS = [
     {
       id: 'bene',
-      name: 'Hôtel Bene • Chambres Standard & Day-Use',
-      badge: '10 Chambres · Grande Véranda d Étage',
+      name: 'Hôtel Bene • Chambres Standard & Séjour en journée',
+      badge: '10 Chambres · Grande Véranda d\'Étage',
       priceFraming: 'Dès 10 000 FCFA',
       priceRange: '10 000 à 15 000 FCFA',
-      unit: '/ nuitée ou Day-Use',
+      unit: '/ nuitée ou séjour en journée',
       photo: '/images/ahala/IMG-20260809-WA0009.jpg',
       description:
-        'Solution économique, propre et sécurisée disposant d une grande véranda conviviale à l étage pouvant accueillir de petites réunions.',
+        'Solution économique, propre et sécurisée disposant d\'une grande véranda conviviale à l\'étage pouvant accueillir de petites réunions.',
       features: [
-        'À partir de 10 000 FCFA (Nuitée ou Repos Day-Use jusqu à 15 000 FCFA)',
-        'Grande véranda d étage aménagée pour échanges et détente',
+        'À partir de 10 000 FCFA (Nuitée ou Repos en journée jusqu\'à 15 000 FCFA)',
+        'Grande véranda d\'étage aménagée pour échanges et détente',
         'Réception Hôtellerie ouverte 24h/24 et 7j/7',
-        'Check-in dès 14h00 · Check-out jusqu à 11h00',
+        'Arrivée dès 14h00 · Départ jusqu\'à 11h00',
       ],
     },
     {
@@ -171,7 +178,7 @@ export const AhalaShowcase: React.FC = () => {
         'Cocon de fraîcheur forestière offrant 3 catégories de confort climatisé adaptées aux familles et voyageurs à 15 min du centre-ville.',
       features: [
         '3 paliers officiels : 15 000 FCFA, 20 000 FCFA et 25 000 FCFA / nuitée',
-        'Salle d eau privative moderne, climatisation & literie grand confort',
+        'Salle d\'eau privative moderne, climatisation & literie grand confort',
         'Environnement calme et verdoyant en lisière forestière',
         'Parking gratuit sous vidéosurveillance 24h/24 face Tradex RN3',
       ],
@@ -185,7 +192,7 @@ export const AhalaShowcase: React.FC = () => {
       unit: '/ nuitée',
       photo: '/images/ahala/chambre.jpeg',
       description:
-        'Loges spacieuses et Mini-Suites VIP nichées sous les arbres d Ahala pour séjours romantiques, cadres en mission et week-ends détente.',
+        'Loges spacieuses et Mini-Suites VIP nichées sous les arbres d\'Ahala pour séjours romantiques, cadres en mission et week-ends détente.',
       features: [
         'Climatisation split silencieuse & Lit King-Size orthopédique',
         'Terrasse privative sur jardin, Eau chaude & TV écran plat Canal+',
@@ -214,10 +221,10 @@ export const AhalaShowcase: React.FC = () => {
 
   const MENU_ITEMS = [
     {
-      name: 'Poisson Frais Braisé d Ahala (Du bassin à la braise)',
+      name: 'Poisson Frais Braisé d\'Ahala (Du bassin à la braise)',
       price: '5 000 FCFA',
       tag: 'Signature EcoPark',
-      desc: 'Tilapia, carpe ou silure pêché dans nos bassins d Ahala, mariné aux épices du terroir et braisé au feu de bois, servi avec plantains mûrs, miondo ou frites.',
+      desc: 'Tilapia, carpe ou silure pêché dans nos bassins d\'Ahala, mariné aux épices du terroir et braisé au feu de bois, servi avec plantains mûrs, miondo ou frites.',
     },
     {
       name: 'Poulet DG Royal aux Légumes du Jardin Bio',
@@ -247,7 +254,7 @@ export const AhalaShowcase: React.FC = () => {
       name: 'Option Pergola Privée sur Pilotis au Bord du Lac',
       price: '+5 000 FCFA',
       tag: 'Cadre Exclusif',
-      desc: 'Privatisation d une pergola panoramique au-dessus de l eau pour vos déjeuners en famille, anniversaires ou dîners en amoureux.',
+      desc: 'Privatisation d\'une pergola panoramique au-dessus de l\'eau pour vos déjeuners en famille, anniversaires ou dîners en amoureux.',
     },
   ];
 
@@ -269,7 +276,7 @@ export const AhalaShowcase: React.FC = () => {
     {
       num: '01',
       title: 'Aquaculture & Pisciculture Continentale',
-      outcome: 'Maîtrise complète de l alevinage, de la gestion des étangs et de la production de tilapias, carpes et silures.',
+      outcome: 'Maîtrise complète de l\'alevinage, de la gestion des étangs et de la production de tilapias, carpes et silures.',
     },
     {
       num: '02',
@@ -279,7 +286,7 @@ export const AhalaShowcase: React.FC = () => {
     {
       num: '03',
       title: 'Élevage & Productions Animales',
-      outcome: 'Conduite d élevage moderne, suivi sanitaire, alimentation durable et gestion technico-économique d exploitation.',
+      outcome: 'Conduite d\'élevage moderne, suivi sanitaire, alimentation durable et gestion technico-économique d\'exploitation.',
     },
     {
       num: '04',
@@ -289,7 +296,7 @@ export const AhalaShowcase: React.FC = () => {
     {
       num: '05',
       title: 'Tourisme Durable, Loisirs & Écoguidage',
-      outcome: 'Accueil des visiteurs, gestion de parc de loisirs, animation zoologique et accompagnement d excursions scolaires et B2B.',
+      outcome: 'Accueil des visiteurs, gestion de parc de loisirs, animation zoologique et accompagnement d\'excursions scolaires et groupes d\'entreprises.',
     },
   ];
 
@@ -301,17 +308,17 @@ export const AhalaShowcase: React.FC = () => {
       badge: 'Mobilité sans stress',
       title: 'Navette Climatisée A/R',
       price: 'Dès 1 000 FCFA enf. · 1 500 FCFA ad.',
-      desc: 'Liaison aller-retour depuis Yaoundé en bus climatisé (5, 18 ou 32 places) jusqu à Ahala Barrière.',
-      waText: 'Bonjour EcoPark Cameroun, je souhaite réserver la Navette Climatisée Aller-Retour (1 500 FCFA Ad. / 1 000 FCFA Enf.).',
+      desc: 'Liaison aller-retour depuis Yaoundé en bus climatisé (5, 18 ou 32 places) jusqu\'à Ahala Barrière.',
+      waText: OUTGOING_WHATSAPP_TEMPLATES.CROSS_SELL_SHUTTLE,
     },
     {
       id: 'pergola',
       icon: Crown,
-      badge: 'Confort VIP sur l eau',
+      badge: 'Confort VIP sur l\'eau',
       title: 'Pergola Privée sur Pilotis',
       price: '+5 000 FCFA / groupe',
       desc: 'Espace privatisé au-dessus du lac au Château des Saveurs pour déjeuner familial ou anniversaire.',
-      waText: 'Bonjour EcoPark Cameroun, je souhaite réserver une Pergola Privée sur Pilotis (+5 000 FCFA) au Château des Saveurs.',
+      waText: OUTGOING_WHATSAPP_TEMPLATES.CROSS_SELL_PERGOLA,
     },
     {
       id: 'nourrissage',
@@ -320,7 +327,7 @@ export const AhalaShowcase: React.FC = () => {
       title: 'Sachet Nourrissage Faune',
       price: '500 FCFA / sachet',
       desc: 'Nourrissez les poissons des bassins piscicoles et les tortues avec nos granulés calibrés.',
-      waText: 'Bonjour EcoPark Cameroun, nous souhaitons ajouter des Sachets de Nourrissage (500 FCFA) à notre visite.',
+      waText: OUTGOING_WHATSAPP_TEMPLATES.CROSS_SELL_FEEDING,
     },
     {
       id: 'garderie',
@@ -328,8 +335,8 @@ export const AhalaShowcase: React.FC = () => {
       badge: 'Sérénité parents',
       title: 'Halte-Garderie Sécurisée',
       price: 'Dès 1 000 FCFA / enf. (groupe) · 1 500 FCFA',
-      desc: 'Espace d éveil encadré pendant que vous profitez de la piscine semi-olympique ou d un séminaire.',
-      waText: 'Bonjour EcoPark Cameroun, je souhaite réserver une place en Halte-Garderie Sécurisée à Ahala.',
+      desc: 'Espace d\'éveil encadré pendant que vous profitez de la piscine semi-olympique ou d\'un séminaire.',
+      waText: OUTGOING_WHATSAPP_TEMPLATES.CROSS_SELL_NURSERY,
     },
   ];
 
@@ -432,9 +439,10 @@ export const AhalaShowcase: React.FC = () => {
                 </button>
 
                 <a
-                  href={`https://wa.me/237672564598?text=${encodeURIComponent(
-                    `Bonjour EcoPark Cameroun, je souhaite commander le ${pass.name} (${pass.childPrice} FCFA enf. / ${pass.adultPrice} FCFA ad.).`
-                  )}`}
+                  href={getWhatsAppUrl(
+                    OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                    buildPassOrderMessage(pass.name, pass.childPrice, pass.adultPrice)
+                  )}
                   target="_blank"
                   rel="noreferrer"
                   className="cta-chevron"
@@ -467,7 +475,7 @@ export const AhalaShowcase: React.FC = () => {
               Explorez les cinq pôles du domaine d&apos;Ahala.
             </h2>
             <p className="type-body text-[var(--text-muted)] max-w-4xl">
-              Quartier <strong>Ahala Barrière (en face de la station Tradex Ahala, RN3)</strong> à 15 minutes du centre-ville de Yaoundé. Consultez nos hébergements 24h/24, notre table gastronomique, nos grilles FCFA, nos offres B2B et le CFP agréé MINEFOP.
+              Quartier <strong>Ahala Barrière (en face de la station Tradex Ahala, RN3)</strong> à 15 minutes du centre-ville de Yaoundé. Consultez nos hébergements 24h/24, notre table gastronomique, nos grilles FCFA, nos offres pour entreprises et groupes et le CFP agréé MINEFOP.
             </p>
           </div>
 
@@ -549,7 +557,7 @@ export const AhalaShowcase: React.FC = () => {
                 Pack Escapade Couple VIP : 22 500 FCFA / pers. (45 000 FCFA pour 2).
               </h3>
               <p className="type-body-compact text-[#E9F5ED]/90">
-                Inclut <strong>1 nuitée en Mini-Suite VIP (Hôtel Ewondo)</strong> + <strong>Dîner gastronomique pour 2 au restaurant « Le Château des Saveurs »</strong> + <strong>Accès illimité au Parc &amp; Jardin Zoologique</strong>. Check-in 14h00 · Check-out 11h00.
+                Inclut <strong>1 nuitée en Mini-Suite VIP (Hôtel Ewondo)</strong> + <strong>Dîner gastronomique pour 2 au restaurant « Le Château des Saveurs »</strong> + <strong>Accès illimité au Parc &amp; Jardin Zoologique</strong>. Arrivée 14h00 · Départ 11h00.
               </p>
             </div>
 
@@ -567,7 +575,10 @@ export const AhalaShowcase: React.FC = () => {
                 <span>Simuler mon séjour &amp; Pass</span>
               </button>
               <a
-                href="https://wa.me/237694601449?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20r%C3%A9server%20le%20Pack%20Escapade%20Couple%20VIP%20(45%20000%20FCFA)%20ou%20une%20chambre%20%C3%A0%20Ahala."
+                href={getWhatsAppUrl(
+                  OFFICIAL_PHONE_NUMBERS.HOTEL,
+                  OUTGOING_WHATSAPP_TEMPLATES.HOTEL_ESCAPE_COUPLE
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="cta-chevron cta-chevron-canopy border border-white/25"
@@ -629,9 +640,10 @@ export const AhalaShowcase: React.FC = () => {
                     {hotel.priceRange}
                   </span>
                   <a
-                    href={`https://wa.me/237694601449?text=${encodeURIComponent(
-                      `Bonjour EcoPark Cameroun, je souhaite vérifier la disponibilité : ${hotel.name} (${hotel.priceRange})`
-                    )}`}
+                    href={getWhatsAppUrl(
+                      OFFICIAL_PHONE_NUMBERS.HOTEL,
+                      buildHotelAvailabilityMessage(hotel.name, hotel.priceRange)
+                    )}
                     target="_blank"
                     rel="noreferrer"
                     className="cta-chevron px-3 shrink-0"
@@ -685,7 +697,10 @@ export const AhalaShowcase: React.FC = () => {
                     <span>Pass Royale avec Repas (8 500 FCFA)</span>
                   </button>
                   <a
-                    href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20r%C3%A9server%20une%20table%20au%20restaurant%20Le%20Ch%C3%A2teau%20des%20Saveurs."
+                    href={getWhatsAppUrl(
+                      OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                      OUTGOING_WHATSAPP_TEMPLATES.RESTAURANT_TABLE
+                    )}
                     target="_blank"
                     rel="noreferrer"
                     className="cta-chevron cta-chevron-canopy"
@@ -756,7 +771,10 @@ export const AhalaShowcase: React.FC = () => {
                   <span>Simuler mon Pass (dès 500 FCFA)</span>
                 </button>
                 <a
-                  href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20un%20renseignement%20sur%20les%20tarifs%20d%27Ahala."
+                  href={getWhatsAppUrl(
+                    OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                    OUTGOING_WHATSAPP_TEMPLATES.PRICING_INQUIRY
+                  )}
                   target="_blank"
                   rel="noreferrer"
                   className="cta-chevron"
@@ -814,7 +832,10 @@ export const AhalaShowcase: React.FC = () => {
             </div>
             <div className="pt-3 flex flex-wrap items-center gap-2">
               <a
-                href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20un%20devis%20Excursion%20Scolaire%20(1%20350%20FCFA%20%2F%20%C3%A9l%C3%A8ve)."
+                href={getWhatsAppUrl(
+                  OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                  OUTGOING_WHATSAPP_TEMPLATES.GROUP_SCHOOL_EXCURSION
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="cta-chevron px-2"
@@ -828,7 +849,7 @@ export const AhalaShowcase: React.FC = () => {
           <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-3 flex flex-col justify-between tabular-nums">
             <div className="space-y-2.5">
               <span className="px-2.5 py-1 rounded-md bg-emerald-500/10 text-[var(--brand-primary)] font-mono text-xs font-bold inline-block">
-                Team Building &amp; Séminaires B2B (Min. 15 pers.)
+                Team Building &amp; Séminaires Entreprises (Min. 15 pers.)
               </span>
               <h3 className="type-h3 text-[var(--text-primary)]">
                 À partir de 15 000 FCFA / participant · Journée Séminaire au Vert.
@@ -839,12 +860,15 @@ export const AhalaShowcase: React.FC = () => {
             </div>
             <div className="pt-3 flex flex-wrap items-center gap-2">
               <a
-                href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20nous%20souhaitons%20organiser%20un%20S%C3%A9minaire%20B2B%20(15%20000%20FCFA%20%2F%20participant)."
+                href={getWhatsAppUrl(
+                  OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                  OUTGOING_WHATSAPP_TEMPLATES.GROUP_CORPORATE_SEMINAR
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="cta-chevron px-2"
               >
-                <span>Demander un devis B2B</span>
+                <span>Demander un devis Entreprises et Groupes</span>
                 <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
               </a>
             </div>
@@ -864,7 +888,10 @@ export const AhalaShowcase: React.FC = () => {
             </div>
             <div className="pt-3 flex flex-wrap items-center gap-2">
               <a
-                href="https://wa.me/237672564598?text=Bonjour%20EcoPark%20Cameroun%2C%20je%20souhaite%20privatiser%20la%20Salle%20Polyvalente%20Menkii%20Essomba%20Anton%20(500%20places)."
+                href={getWhatsAppUrl(
+                  OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                  OUTGOING_WHATSAPP_TEMPLATES.GROUP_HALL_PRIVATIZATION
+                )}
                 target="_blank"
                 rel="noreferrer"
                 className="cta-chevron px-2"
@@ -930,7 +957,10 @@ export const AhalaShowcase: React.FC = () => {
                 </p>
                 <div className="pt-2">
                   <a
-                    href="https://wa.me/237672564598?text=Bonjour%20CFP%20EcoPark%20MINEFOP%2C%20je%20souhaite%20recevoir%20le%20dossier%20d%27inscription%20(50%20000%20FCFA%20%2B%204%20tranches)."
+                    href={getWhatsAppUrl(
+                      OFFICIAL_PHONE_NUMBERS.DIRECTION,
+                      OUTGOING_WHATSAPP_TEMPLATES.CFP_ADMISSION_FILE
+                    )}
                     target="_blank"
                     rel="noreferrer"
                     className="cta-pill cta-pill-canopy"
@@ -1027,7 +1057,7 @@ export const AhalaShowcase: React.FC = () => {
                     <span aria-hidden="true" className="text-base leading-none font-bold">›</span>
                   </button>
                   <a
-                    href={`https://wa.me/237672564598?text=${encodeURIComponent(opt.waText)}`}
+                    href={getWhatsAppUrl(OFFICIAL_PHONE_NUMBERS.DIRECTION, opt.waText)}
                     target="_blank"
                     rel="noreferrer"
                     className="cta-chevron px-2"

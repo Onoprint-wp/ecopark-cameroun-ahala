@@ -148,6 +148,12 @@ export type SpeciesCategory =
 
 export type ConservationStatus = 'LC' | 'NT' | 'VU' | 'EN' | 'CR'; // IUCN Red List
 
+export type EquatorialSeason =
+  | 'Grande saison sèche'
+  | 'Petite saison des pluies'
+  | 'Petite saison sèche'
+  | 'Grande saison des pluies';
+
 export interface Species {
   id: string;                      // e.g. 'sp-1'
   commonName: string;              // e.g. "Chouette de Tengmalm"
@@ -156,7 +162,8 @@ export interface Species {
   categoryLabel: string;
   iucnStatus: ConservationStatus;
   iucnLabel: string;
-  observationSeason: ('Printemps' | 'Été' | 'Automne' | 'Hiver')[];
+  // Régime équatorial bimodal du Centre-Cameroun (Yaoundé-Ahala)
+  observationSeason: EquatorialSeason[];
   bestTime: string;                // e.g. "Crépuscule & Nuit"
   trailIds: string[];              // Associated trails where spotted
   description: string;

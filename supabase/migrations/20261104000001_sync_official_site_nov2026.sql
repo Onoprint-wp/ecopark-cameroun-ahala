@@ -40,7 +40,7 @@ INSERT INTO public.catalog_activities (
   daily_capacity, is_active, status, sort_order, image_src, image_alt
 ) VALUES
   ('a1100006-0000-4000-8000-000000000006', 'balade_foret', 'CAT-BALADE-FORET', 'Balade en forêt (> 200 ha)', 'NATURE_FAUNE',
-   'Parcours pédestre guidé d''environ 40 min au cœur du massif forestier et des collines préservées d''Ahala.',
+   'Parcours pédestre guidé d''environ 40 min dans le massif forestier et les collines préservées d''Ahala.',
    500, 1000, 700, 500, 300, TRUE, 'PUBLISHED', 15,
    'audit-assets/ecopark-real-media/IMG_20260829_172016-1-scaled.jpg', 'Balade en forêt guidée sous la canopée d''Ahala'),
   ('a1100007-0000-4000-8000-000000000007', 'peche_canne', 'CAT-PECHE-CANNE', 'Location Canne à Pêche - Étangs d''Ahala', 'EAU_PLEIN_AIR',

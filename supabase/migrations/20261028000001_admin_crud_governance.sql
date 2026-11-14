@@ -1057,25 +1057,25 @@ INSERT INTO public.agenda_events (code, day_filter, target_weekday, badge, title
   from_price_fcfa, spots_text, description, schedule, bundle_code, dish, meal_slot, pergola, nutrition,
   image_src, status, sort_order)
 VALUES
-  ('EVT_MERCREDI_CFP', 'MER_JEU', 3, 'Mercredi & Jeudi • 10h00 – 16h00',
+  ('EVT_MERCREDI_CFP', 'MER_JEU', 3, 'Mercredi & Jeudi • 10h00 - 16h00',
    'Journée Pédagogique Faune & Portes Ouvertes Campus CFP', 'Mercredi Pédagogique & Portes Ouvertes CFP',
    'Entrée : 500 FCFA (Enfant) / 1 000 FCFA (Adulte) • Orientation CFP Gratuite', 500,
    'Accès libre & Groupes scolaires sur réservation',
    'Idéal pour les familles en semaine, les écoles maternelles/primaires et les futurs apprenants souhaitant visiter les ateliers pratiques du CFP ECOPARK agréé MINEFOP.',
    jsonb_build_array(
-     '10h00 – 11h30 : Visite guidée du Jardin Zoologique (gorille « ToTo », tortues géantes, paons) et des allées botaniques.',
-     '11h30 – 13h00 : Démonstration d''aquaculture sur les étangs d''Ahala & séance d''orientation CFP (5 filières, inscription 50 000 FCFA).',
-     '13h00 – 16h00 : Déjeuner au Château des Saveurs, balade en pirogue et baignade surveillée.'),
+     '10h00 - 11h30 : Visite guidée du Jardin Zoologique (gorille « ToTo », tortues géantes, paons) et des allées botaniques.',
+     '11h30 - 13h00 : Démonstration d''aquaculture sur les étangs d''Ahala & séance d''orientation CFP (5 filières, inscription 50 000 FCFA).',
+     '13h00 - 16h00 : Déjeuner au Château des Saveurs, balade en pirogue et baignade surveillée.'),
    'PASS_DECOUVERTE', 'Poisson Braisé d''Ahala (Étang frais)', 'Service 12h30', FALSE, TRUE,
    'audit-assets/stitch-canopee-vivante/local_cameroon_cfp_students.png', 'PUBLISHED', 10),
-  ('EVT_VENDREDI_AFTERWORK', 'VENDREDI', 5, 'Vendredi • 15h30 – 20h30',
+  ('EVT_VENDREDI_AFTERWORK', 'VENDREDI', 5, 'Vendredi • 15h30 - 20h30',
    'Afterwork « Brise du Lac & Poisson Braisé d''Ahala »', 'Vendredi Afterwork Brise du Lac & Grillades',
    'Plats dès 3 500 FCFA • Pergola Privée Bord du Lac : +5 000 FCFA', 3500,
    'Plus que 4 pergolas disponibles ce vendredi',
    'Évitez les embouteillages du vendredi soir à Yaoundé : rejoignez Ahala Barrière (face station Tradex) pour savourer le poisson frais des étangs braisé à la minute sous une pergola privée.',
    jsonb_build_array(
-     '15h30 – 17h30 : Accueil coupe-file, promenade au bord du lac d''Ahala et installation sous pergola privée.',
-     '17h30 – 20h30 : Service grillades & Poisson Braisé d''Ahala au Château des Saveurs, ambiance musicale douce.',
+     '15h30 - 17h30 : Accueil coupe-file, promenade au bord du lac d''Ahala et installation sous pergola privée.',
+     '17h30 - 20h30 : Service grillades & Poisson Braisé d''Ahala au Château des Saveurs, ambiance musicale douce.',
      'Option Séjour : Possibilité de prolonger en nuitée dans les Cités Bene (10k), Chanthel (15k) ou Ewondo VIP (25k FCFA).'),
    'CUSTOM', 'Poisson Braisé d''Ahala (Étang frais)', 'Service 15h00', TRUE, FALSE,
    'audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png', 'PUBLISHED', 20),
@@ -1085,20 +1085,20 @@ VALUES
    'Tarif enfant strictement garanti à 500 FCFA (entrée)',
    'La sortie préférée des enfants à Yaoundé : nourrissage commenté aux étangs, rencontre avec le gorille « ToTo », balade sécurisée en pirogue avec gilet et piscine semi-olympique.',
    jsonb_build_array(
-     '10h30 – 12h00 : Rencontre avec les soigneurs du Zoo (« ToTo ») & nourrissage des poissons et tortues aux étangs.',
-     '12h30 – 14h30 : Déjeuner familial au Château des Saveurs (Menu Enfant 2 500 FCFA & spécialités camerounaises).',
-     '14h30 – 17h30 : Traversée en pirogue sur le lac, initiation équestre encadrée et piscine surveillée par maître-nageur.'),
+     '10h30 - 12h00 : Rencontre avec les soigneurs du Zoo (« ToTo ») & nourrissage des poissons et tortues aux étangs.',
+     '12h30 - 14h30 : Déjeuner familial au Château des Saveurs (Menu Enfant 2 500 FCFA & spécialités camerounaises).',
+     '14h30 - 17h30 : Traversée en pirogue sur le lac, initiation équestre encadrée et piscine surveillée par maître-nageur.'),
    'PASS_DECOUVERTE', 'Menu Enfant & Grillades Douces', 'Service 12h30', FALSE, TRUE,
    'audit-assets/ecopark-real-media/balade_pirogue3.jpg', 'PUBLISHED', 30),
-  ('EVT_DIMANCHE_ROYAL', 'DIMANCHE', 0, 'Dimanche • 12h00 – 17h30',
+  ('EVT_DIMANCHE_ROYAL', 'DIMANCHE', 0, 'Dimanche • 12h00 - 17h30',
    'Grand Dimanche Royal : Buffet Camerounais & Ambiance Acoustique Live', 'Grand Dimanche Royal • Buffet & Live',
    'Pass Journée Royale Tout-Inclus : 4 500 FCFA (Enfant) • 8 500 FCFA (Adulte)', 4500,
    'Réservation QR fortement conseillée (Service 12h30 / 13h30 garanti)',
    'Le grand rendez-vous dominical d''ECOPARK Ahala : grands classiques du Château des Saveurs (Poulet DG Royal, Ndolé Crevettes, Poisson Braisé), ambiance acoustique au bord du lac et accès illimité Parc + Piscine + Pirogue.',
    jsonb_build_array(
-     '09h30 – 12h00 : Accès coupe-file au Portail d''Ahala (QR Code), visite du Zoo et balade matinale en pirogue.',
-     '12h30 – 15h00 : Grand Service Dominical au Château des Saveurs (zéro attente pour les détenteurs du Pass QR) & animation acoustique.',
-     '15h00 – 18h00 : Détente à la Piscine Semi-Olympique et sous les pergolas ombragées.'),
+     '09h30 - 12h00 : Accès coupe-file au Portail d''Ahala (QR Code), visite du Zoo et balade matinale en pirogue.',
+     '12h30 - 15h00 : Grand Service Dominical au Château des Saveurs (zéro attente pour les détenteurs du Pass QR) & animation acoustique.',
+     '15h00 - 18h00 : Détente à la Piscine Semi-Olympique et sous les pergolas ombragées.'),
    'PASS_ROYALE', 'Poulet DG Royal Plantain Mûr', 'Service 13h30', TRUE, TRUE,
    'audit-assets/ecopark-real-media/IMG-20260713-WA0051_043420.jpg', 'PUBLISHED', 40)
 ON CONFLICT (code) DO NOTHING;
@@ -1118,7 +1118,7 @@ VALUES
    'Ndolé onctueux préparé selon la tradition avec crevettes, bœuf fondant et accompagnements chauds.',
    NULL, TRUE, TRUE, TRUE, 'audit-assets/stitch-canopee-vivante/local_cameroon_gastronomy_pergola.png', 'PUBLISHED', 30),
   ('MNU-MENU-ENFANT', 'MENU_ENFANT', 'Menu Enfant & Grillades Douces',
-   'Portion adaptée aux enfants (3–12 ans) avec grillades tendres, frites de plantain et jus naturel (Bissap / Ananas).',
+   'Portion adaptée aux enfants (3-12 ans) avec grillades tendres, frites de plantain et jus naturel (Bissap / Ananas).',
    2500, FALSE, TRUE, TRUE, 'audit-assets/stitch-canopee-vivante/local_cameroon_family_canopy.png', 'PUBLISHED', 40)
 ON CONFLICT (sku) DO NOTHING;
 
@@ -1134,7 +1134,7 @@ VALUES
      'custom_message', NULL),
    TRUE, 'Bandeau météo & trafic RN3 affiché en haut du site public (ADM-03).'),
   ('opening_hours',
-   jsonb_build_object('label', 'Mar–Dim : 09h00–18h00', 'closed_days', jsonb_build_array('LUNDI')),
+   jsonb_build_object('label', 'Mar-Dim : 09h00-18h00', 'closed_days', jsonb_build_array('LUNDI')),
    TRUE, 'Horaires affichés dans l''en-tête et le pied de page.')
 ON CONFLICT (key) DO NOTHING;
 

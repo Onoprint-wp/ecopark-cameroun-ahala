@@ -49,8 +49,8 @@ export const SHOWCASE_DEEP_PATHS: readonly string[] = [
 export function resolveViewFromPath(pathname: string): ActiveView | null {
   const clean = pathname.replace(/\/+$/, '').toLowerCase();
   if (clean === '' || clean === '/') return 'accueil';
-  if (clean === '/activites' || clean === '/fiche-activite') return 'sentiers';
-  if (clean === '/decouvrir') return 'biodiversite';
+  if (clean === '/activites' || clean === '/fiche-activite' || clean === '/carte') return 'sentiers';
+  if (clean === '/decouvrir' || clean === '/zoo') return 'biodiversite';
   if (
     clean === '/reserver' ||
     clean === '/rdv' ||
@@ -61,6 +61,7 @@ export function resolveViewFromPath(pathname: string): ActiveView | null {
   }
   if (
     clean === '/mon-espace' ||
+    clean === '/mon-pass' ||
     clean === '/mes-reservations' ||
     clean === '/espace-cliente'
   ) {

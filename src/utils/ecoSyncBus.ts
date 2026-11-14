@@ -169,7 +169,7 @@ export function canActorCancelPass(
 ): boolean {
   if (pass.status === 'cancelled') return false;
 
-  // Operations managers (Chef d Exploitation, Direction, Administrateur) can cancel any pass
+  // Operations managers (Chef d'Exploitation, Direction, Administrateur) can cancel any pass
   if (canManageParkOperations(user?.role)) {
     return true;
   }
@@ -285,7 +285,7 @@ export function validateLiveBookingConstraints(params: {
       code: 'QUOTA_EXCEEDED',
       error:
         availablePlaces <= 0
-          ? 'Le quota écologique vient d être atteint pour cette date. Veuillez choisir un autre jour.'
+          ? 'Le quota écologique vient d\'être atteint pour cette date. Veuillez choisir un autre jour.'
           : `Jauge mise à jour en direct : seulement ${availablePlaces} place(s) restante(s) pour ${params.guestCount} visiteur(s) demandé(s).`,
       availablePlaces,
     };

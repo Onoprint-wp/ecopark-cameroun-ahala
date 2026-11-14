@@ -33,7 +33,7 @@ export const ImpactBanner: React.FC = () => {
       accentColor: '#F4A261',
       icon: Sun,
       summary: 'Accès famille du mardi au dimanche. Jardin Zoologique, lac et piscine surveillée.',
-      bluf: "Situé à Yaoundé, Ahala Barrière face à la station Tradex sur la RN3, ECOPARK CAMEROUN ouvre du mardi au dimanche de 09h00 à 18h00. L'entrée coûte 500 FCFA par enfant et 1 000 FCFA par adulte, incluant le Jardin Zoologique du gorille ToTo et l'accès aux 3 Pass Tout-Inclus.",
+      bluf: "Situé à Yaoundé Ahala face à Tradex sur la RN3, ECOPARK CAMEROUN ouvre du mardi au dimanche. Venez observer le gorille ToTo et profiter des sentiers de 09h00 à 18h00 en toute sécurité. L'entrée coûte 500 FCFA par enfant et 1 000 FCFA par adulte avec 3 Pass Tout-Inclus disponibles.",
       breakdown: [
         'Entrée Parc & Jardin Zoologique (Gorille ToTo, chimpanzés, tortues) : 500 FCFA enf. / 1 000 FCFA ad.',
         'Balade en Pirogue sur le lac (45 min, gilet fourni) : 500 FCFA enf. / 1 000 FCFA ad.',
@@ -50,14 +50,14 @@ export const ImpactBanner: React.FC = () => {
       accentColor: '#52B788',
       icon: Leaf,
       summary: 'Réception ouverte 24h/24 et 7j/7. Calme forestier et parking sécurisé.',
-      bluf: "Le pôle hôtelier d'ECOPARK CAMEROUN compte 30 unités climatisées réparties entre l'Hôtel Bene dès 10 000 FCFA, l'Hôtel Chanthel de 15 000 à 25 000 FCFA, l'Hôtel Ewondo VIP et 4 Suites Prestige jusqu'à 45 000 FCFA par nuitée, avec réception ouverte 24h/24 et parking gratuit sécurisé.",
+      bluf: "Le pôle hôtelier propose 30 chambres climatisées réparties entre les hôtels Bene, Chanthel et Ewondo. Les hébergements débutent dès 10 000 FCFA et atteignent 45 000 FCFA pour nos suites prestige. La réception vous accueille 24h/24 avec un parking gratuit et entièrement gardé pour votre séjour.",
       breakdown: [
-        'Hôtel Bene (10 Chambres Standard & Day-Use, grande véranda) : 10 000 à 15 000 FCFA',
+        'Hôtel Bene (10 Chambres Standard & Séjour en journée, grande véranda) : 10 000 à 15 000 FCFA',
         'Hôtel Chanthel (12 Chambres Confort climatisées) : 15 000, 20 000 et 25 000 FCFA / nuitée',
         'Hôtel Ewondo (4 Loges & Mini-Suites VIP) : 25 000 à 30 000 FCFA / nuitée',
         'Suites Privées Prestige VIP (30 000 à 45 000 FCFA) & Pack Couple VIP (45 000 FCFA)',
       ],
-      kpiNote: 'Réception Hôtels 24h/24 (Check-in 14h00 · Check-out 11h00) : +237 694 60 14 49',
+      kpiNote: 'Réception Hôtels 24h/24 (Arrivée 14h00 · Départ 11h00) : +237 694 60 14 49',
     },
     {
       id: 'gastronomie',
@@ -67,14 +67,14 @@ export const ImpactBanner: React.FC = () => {
       accentColor: '#74C69D',
       icon: Wind,
       summary: 'Poissons pêchés dans nos bassins. Légumes bio récoltés sur place.',
-      bluf: "Ouvert 7j/7 de 07h00 à 23h00 sans billet d'entrée parc en soirée, le restaurant Le Château des Saveurs sert poissons frais braisés pêchés sur place dès 5 000 FCFA, Poulet DG Royal à 6 500 FCFA et menus enfants à 2 500 FCFA sous pergolas.",
+      bluf: "Le restaurant Le Château des Saveurs vous accueille 7j/7 de 07h00 à 23h00 au bord de l'eau. Savourez nos poissons frais braisés pêchés sur place dès 5 000 FCFA et notre Poulet DG Royal. L'accès en soirée reste libre sans billet de parc pour vos repas familiaux sous nos pergolas.",
       breakdown: [
-        'Poisson Frais Braisé d Ahala (Tilapia, Carpe ou Silure du bassin) : 5 000 FCFA TTC',
+        'Poisson Frais Braisé d\'Ahala (Tilapia, Carpe ou Silure du bassin) : 5 000 FCFA TTC',
         'Poulet DG Royal aux plantains mûrs : 6 500 FCFA · Ndolé Royal aux Crevettes : 5 500 FCFA',
         'Grillades & Assiette du jour : 3 500 FCFA · Menu Enfant (< 12 ans) : 2 500 FCFA',
         'Pergola Privée sur pilotis (+5 000 FCFA) & Salle climatisée VIP New Look (60 couverts)',
       ],
-      kpiNote: 'Accès libre au restaurant en soirée jusqu à 23h00 sans billet parc',
+      kpiNote: 'Accès libre au restaurant en soirée jusqu\'à 23h00 sans billet parc',
     },
     {
       id: 'formation_b2b',
@@ -84,12 +84,12 @@ export const ImpactBanner: React.FC = () => {
       accentColor: '#B7E4C7',
       icon: ShieldCheck,
       summary: '70 % de pratique réelle sur site. Salle événementielle de 500 places.',
-      bluf: "Agréé par le MINEFOP, le CFP ECOPARK forme en 12 mois avec 70 % de pratique réelle sur 5 filières DQP et CQP, pour 50 000 FCFA d'inscription et 250 000 FCFA payables en 4 tranches, adossé à la salle climatisée Menkii Essomba Anton de 500 places.",
+      bluf: "Agréé par le MINEFOP, le CFP ECOPARK prépare aux diplômes DQP et CQP durant 12 mois d'études. Les cours offrent 70 % de pratique professionnelle sur le terrain pour 250 000 FCFA par an. Le site abrite également la grande salle événementielle Menkii Essomba Anton dotée de 500 places climatisées.",
       breakdown: [
         '5 filières DQP/CQP (12 mois) : Aquaculture, Hôtellerie-Restauration, Élevage, Agroécologie, Écoguidage',
         'Échéancier officiel CFP : Inscription 50 000 FCFA · Scolarité 250 000 FCFA en 4 tranches (100k + 3x50k)',
         'Salle Polyvalente « Menkii Essomba Anton » (500 places assises climatisées, son & lumière)',
-        'Excursion Scolaire (1 350 FCFA/élève), Séminaire B2B (15 000 FCFA/pers.) & Groupe 20+ (-30%)',
+        'Excursion Scolaire (1 350 FCFA/élève), Séminaire Entreprises (15 000 FCFA/pers.) & Groupe 20+ (-30%)',
       ],
       kpiNote: 'MPECK MULTI-SERVICES • Fondateur & Promoteur : Dr Christophe FOE NDI',
     },
@@ -101,7 +101,7 @@ export const ImpactBanner: React.FC = () => {
       className="py-12 sm:py-16 border-y border-[#36403A]"
       containerClassName="space-y-8"
       id="impact-banner"
-      ariaLabel="Preuves factuelles et 4 piliers officiels d ECOPARK CAMEROUN à Yaoundé-Ahala"
+      ariaLabel="Preuves factuelles et 4 piliers officiels d'ECOPARK CAMEROUN à Yaoundé-Ahala"
     >
       {/* Editorial Header (Échelle optique : .type-eyebrow, .type-h2 <= 12 mots + point final, .type-body) */}
       <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 pb-2">

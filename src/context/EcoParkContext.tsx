@@ -43,6 +43,7 @@ import {
   anonymizeClientPassesList,
   isSupabaseCloudConfigured,
 } from '../utils/ecoAuth';
+import { sanitizeEditorialText } from '../utils/editorialSanitizer';
 import {
   createEcoSyncBus,
   generateTabInstanceId,
@@ -152,7 +153,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     setHighContrastOutdoor,
   } = useTheme();
 
-  const { user } = useAuth();
+  const { user, isStaff } = useAuth();
   const userRef = useRef(user);
   userRef.current = user;
 
@@ -307,7 +308,12 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     safeSessionStorage.setItem(STORAGE_KEYS.ACTIVE_VIEW, view);
     if (typeof window !== 'undefined') {
       const targetPath = VIEW_PATH_MAP[view] || '/';
-      if (window.location.pathname !== targetPath) {
+      const currentResolved = resolveViewFromPath(window.location.pathname);
+      if (view === 'accueil') {
+        if (window.location.pathname !== '/') {
+          window.history.pushState({ ecoView: view }, '', '/');
+        }
+      } else if (currentResolved !== view && window.location.pathname !== targetPath) {
         window.history.pushState({ ecoView: view }, '', targetPath);
       }
     }
@@ -391,7 +397,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
           status === 'fluide'
             ? undefined
             : closureReason !== undefined
-            ? closureReason
+            ? sanitizeEditorialText(closureReason)
             : status === 'ferme'
             ? trail.closureReason || 'Fermeture préventive temporaire'
             : trail.closureReason || 'Circulation encadrée par les Éco-Gardes';
@@ -631,6 +637,10 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
       const newReport: CitizenReport = {
         ...input,
+        title: sanitizeEditorialText(input.title),
+        description: sanitizeEditorialText(input.description),
+        landmark: sanitizeEditorialText(input.landmark),
+        reporterName: sanitizeEditorialText(input.reporterName),
         id: newId,
         timestamp: nowIso,
         status: 'en_attente',
@@ -660,7 +670,8 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
           return {
             ...rep,
             status,
-            rangerNote: rangerNote !== undefined ? rangerNote : rep.rangerNote,
+            rangerNote:
+              rangerNote !== undefined ? sanitizeEditorialText(rangerNote) : rep.rangerNote,
             resolvedAt: status === 'resolu' ? new Date().toISOString() : rep.resolvedAt,
           };
         }
@@ -710,7 +721,8 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     setReportsState(INITIAL_REPORTS);
     setSelectedTrailIdState(null);
     setSelectedSpeciesIdState(null);
-    setActivePassIdState('ECP-2026-8942');
+    setActivePassIdState(null);
+    safeSessionStorage.removeItem(STORAGE_KEYS.ACTIVE_PASS_ID);
     setColorDrawerOpenState(false);
 
     sessionUnlockedRef.current = [];
@@ -805,11 +817,27 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     };
   }, []);
 
-  // Compute active pass
+  // Compute active pass strictly scoped to the authenticated user, session-unlocked pass, or staff
   const activePass = useMemo(() => {
-    if (!activePassId) return passes[0] || null;
-    return passes.find((p) => p.id === activePassId) || passes[0] || null;
-  }, [passes, activePassId]);
+    const visiblePasses = isStaff
+      ? passes
+      : user
+      ? passes.filter(
+          (p) =>
+            p.ownerEmail !== 'anonyme@effacement.local' &&
+            ((p.ownerUserId && p.ownerUserId === user.id) ||
+              (p.ownerEmail && p.ownerEmail.toLowerCase() === user.email.toLowerCase()) ||
+              p.leadVisitor.email.trim().toLowerCase() === user.email.trim().toLowerCase())
+        )
+      : passes.filter(
+          (p) =>
+            p.ownerEmail !== 'anonyme@effacement.local' &&
+            sessionUnlockedPassIds.includes(p.id)
+        );
+
+    if (!activePassId) return visiblePasses[0] || null;
+    return visiblePasses.find((p) => p.id === activePassId) || visiblePasses[0] || null;
+  }, [passes, activePassId, isStaff, user, sessionUnlockedPassIds]);
 
   const value: EcoParkContextType = {
     // Navigation & View

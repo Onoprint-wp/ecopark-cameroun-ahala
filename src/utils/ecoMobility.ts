@@ -37,7 +37,7 @@ export const MOBILITY_OPTIONS: MobilityOption[] = [
     label: 'Prévente Orange Money (#150#) / MTN MoMo (*126#)',
     shortLabel: 'Orange Money / MTN MoMo',
     description:
-      'Réservation mobile avec émission immédiate du Pass QR Code (ECP-2026-XXXXX) et file prioritaire sans attente au guichet d Ahala.',
+      'Réservation mobile avec émission immédiate du Pass QR Code (ECP-2026-XXXXX) et file prioritaire sans attente au guichet d\'Ahala.',
     discountPercent: 0,
     co2AvoidedKgPerPerson: 4.2,
     iconName: 'Smartphone',
@@ -55,7 +55,7 @@ export const MOBILITY_OPTIONS: MobilityOption[] = [
     co2AvoidedKgPerPerson: 5.8,
     iconName: 'Bus',
     carbonBadge: 'Navette A/R : 1 500 FCFA Ad. / 1 000 FCFA Enf.',
-    ademeNote: 'Transport collectif sécurisé jusqu à l entrée d Ahala Barrière (en face de la station Tradex, RN3).',
+    ademeNote: 'Transport collectif sécurisé jusqu\'à l\'entrée d\'Ahala Barrière (en face de la station Tradex, RN3).',
   },
   {
     id: 'covoiturage',
@@ -71,7 +71,7 @@ export const MOBILITY_OPTIONS: MobilityOption[] = [
   },
   {
     id: 'voiture_solo',
-    label: 'Paiement Espèces au Guichet d Ahala Barrière',
+    label: 'Paiement Espèces au Guichet d\'Ahala Barrière',
     shortLabel: 'Espèces au Guichet',
     description:
       'Pré-enregistrement de votre Pass QR Code en ligne et règlement en espèces (FCFA) directement à la caisse principale à votre arrivée.',
@@ -115,7 +115,7 @@ export const EXPERIENCES_CATALOG: ExperiencePricingDefinition[] = [
     title: 'Pass Découverte Nature (Zoo + Pirogue + Cheval)',
     badge: 'Formule Tout-Inclus #1',
     description:
-      'Formule combinée idéale en famille réunissant les 3 activités nature incontournables d EcoPark Cameroun avec un seul QR Code.',
+      'Formule combinée idéale en famille réunissant les 3 activités nature emblématiques d\'EcoPark Cameroun avec un seul QR Code.',
     adultPrice: 2500,
     childPrice: 1500,
     pmrPrice: 1500,
@@ -128,7 +128,7 @@ export const EXPERIENCES_CATALOG: ExperiencePricingDefinition[] = [
   {
     id: 'pack_mobilite',
     title: 'Pass Journée Complète (Zoo + Piscine + Pirogue)',
-    badge: 'Formule Tout-Inclus #2 · Best-Seller',
+    badge: 'Formule Tout-Inclus #2 · Le plus choisi',
     description:
       'Accès privilégié combinant la découverte zoologique, la traversée du lac en pirogue et la baignade dans la piscine semi-olympique surveillée.',
     adultPrice: 4500,
@@ -137,7 +137,7 @@ export const EXPERIENCES_CATALOG: ExperiencePricingDefinition[] = [
     features: [
       'Entrée Parc & Jardin Zoologique (Gorille ToTo)',
       'Accès Piscine Semi-Olympique surveillée par maîtres-nageurs',
-      'Balade en Pirogue de 45 min sur le lac d Ahala',
+      'Balade en Pirogue de 45 min sur le lac d\'Ahala',
     ],
   },
   {
@@ -145,7 +145,7 @@ export const EXPERIENCES_CATALOG: ExperiencePricingDefinition[] = [
     title: 'Pass Journée Royale (Zoo + Piscine + Pirogue + Repas)',
     badge: 'Formule VIP Tout-Inclus #3',
     description:
-      'L expérience royale complète à Yaoundé-Ahala incluant toutes les activités phares ainsi qu un repas gastronomique au restaurant « Le Château des Saveurs ».',
+      'L\'expérience royale complète à Yaoundé-Ahala incluant toutes les activités phares ainsi qu\'un repas gastronomique au restaurant « Le Château des Saveurs ».',
     adultPrice: 8500,
     childPrice: 4500,
     pmrPrice: 4500,

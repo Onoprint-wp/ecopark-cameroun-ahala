@@ -32,9 +32,9 @@ export const Footer: React.FC = () => {
 
   const handleLegalClick = (path: string, e: React.MouseEvent<HTMLButtonElement>) => {
     recordMotionOrigin(e);
-    window.history.pushState({}, '', path);
-    window.dispatchEvent(new PopStateEvent('popstate'));
+    window.history.pushState({ ecoView: 'legal' }, '', path);
     setActiveView('legal');
+    window.dispatchEvent(new PopStateEvent('popstate'));
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -90,7 +90,7 @@ export const Footer: React.FC = () => {
             </div>
           </div>
 
-          {/* Column 2: Navigation Publique & Espace Cliente */}
+          {/* Column 2: Navigation Publique & Espace Client */}
           <div className="space-y-3 min-w-0 break-words">
             <h3 className="type-card-title text-white">
               Les Pôles d&apos;EcoPark Ahala
@@ -138,7 +138,7 @@ export const Footer: React.FC = () => {
                   onClick={(e) => handleLinkClick('pass', e)}
                   className="inline-flex items-center min-h-[44px] py-1.5 hover:text-[#74C69D] transition-colors cursor-pointer text-left"
                 >
-                  Mon Espace Cliente &amp; Mes Billets QR
+                  Mon Espace Client &amp; Mes Billets QR
                 </button>
               </li>
               <li>
@@ -150,7 +150,7 @@ export const Footer: React.FC = () => {
                   }}
                   className="inline-flex items-center min-h-[44px] py-1.5 hover:text-[#95D5B2] transition-colors text-[#74C69D] font-medium cursor-pointer text-left"
                 >
-                  Connexion / Créer un Compte Cliente
+                  Connexion / Créer un Compte Client
                 </button>
               </li>
             </ul>

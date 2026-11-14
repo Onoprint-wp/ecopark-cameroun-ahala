@@ -146,7 +146,7 @@ test('Anomalie 2 : Bus BroadcastChannel temps reel et verification des 5 contrat
     // Zero self-echo on sender tab
     assert.equal(backofficeInbox.length, 0);
 
-    // Contrat 2 (Backoffice -> Frontend) : Fermeture biologique d un sentier
+    // Contrat 2 (Backoffice -> Frontend) : Fermeture biologique d'un sentier
     const closedTrails = INITIAL_TRAILS.map((t, idx) =>
       idx === 0 ? { ...t, status: 'ferme' as const, closureReason: 'Nidification Gorille ToTo' } : t
     );
@@ -160,7 +160,7 @@ test('Anomalie 2 : Bus BroadcastChannel temps reel et verification des 5 contrat
     assert.equal(c2.trails?.[0].status, 'ferme');
     assert.equal(c2.trails?.[0].closureReason, 'Nidification Gorille ToTo');
 
-    // Contrat 3 (Frontend -> Backoffice) : Emission d un nouveau Pass QR visiteur
+    // Contrat 3 (Frontend -> Backoffice) : Émission d'un nouveau Pass QR visiteur
     const bookedPass: EcoPass = {
       ...INITIAL_PASSES[0],
       id: 'ECP-2026-99101',

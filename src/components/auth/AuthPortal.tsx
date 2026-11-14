@@ -1,7 +1,7 @@
 // ============================================================================
 // ECOPARK CAMEROUN (YAOUNDÉ, AHALA) - PORTAIL D'AUTHENTIFICATION (/Connexion)
 // (src/components/auth/AuthPortal.tsx)
-// Connexion Cliente, Création de Compte, Accès Cockpit Pro, Mot de Passe Oublié
+// Connexion Client, Création de Compte, Accès Cockpit Pro, Mot de Passe Oublié
 // & Gouvernance de Compte (Changement MDP + Droit à l'effacement Loi 2010/012)
 // ============================================================================
 
@@ -121,7 +121,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
 
     if (mode === 'staff_login' && !isStaffRole(res.user.role)) {
       setErrorMsg(
-        "Ce compte correspond à un Espace Cliente et ne dispose pas des habilitations Cockpit Pro. Redirection vers votre Espace Cliente..."
+        "Ce compte correspond à un Espace Client et ne dispose pas des habilitations Cockpit Pro. Redirection vers votre Espace Client..."
       );
       setTimeout(() => setActiveView('pass'), 1100);
       return;
@@ -142,7 +142,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
     }
     if (!privacyAccepted) {
       setErrorMsg(
-        'Veuillez accepter la Politique de Confidentialité (Loi n° 2010/012) pour créer votre Espace Cliente.'
+        'Veuillez accepter la Politique de Confidentialité (Loi n° 2010/012) pour créer votre Espace Client.'
       );
       return;
     }
@@ -285,7 +285,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                     className="min-h-[48px] px-4 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-sm font-bold inline-flex items-center gap-1.5 cursor-pointer"
                   >
                     <Ticket className="w-4 h-4" />
-                    <span>Accéder à mon Espace Cliente</span>
+                    <span>Accéder à mon Espace Client</span>
                   </button>
                 )}
               </div>
@@ -421,7 +421,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 : 'border-transparent text-[var(--text-muted)] hover:text-[var(--text-primary)]'
             }`}
           >
-            Connexion Cliente
+            Connexion Client
           </button>
           <button
             type="button"
@@ -455,7 +455,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 <>
                   <ShieldAlert className="w-3.5 h-3.5 text-[var(--status-caution-text)]" />
                   <span className="text-[var(--status-caution-text)]">
-                    Accès Réservé au Personnel Habilité (RBAC)
+                    Accès Réservé au Personnel Habilité (Droits d'accès)
                   </span>
                 </>
               ) : (
@@ -475,8 +475,8 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 mode === 'staff_login' ? 'type-cockpit-h2' : 'type-h3'
               } text-[var(--text-primary)]`}
             >
-              {mode === 'client_login' && 'Accéder à votre Espace Cliente & Pass QR'}
-              {mode === 'client_register' && 'Créer votre Espace Cliente ECOPARK'}
+              {mode === 'client_login' && 'Accéder à votre Espace Client & Pass QR'}
+              {mode === 'client_register' && 'Créer votre Espace Client ECOPARK'}
               {mode === 'staff_login' && 'Connexion Cockpit Pro & Supervision Ahala'}
               {mode === 'recover' && 'Réinitialiser votre mot de passe'}
             </h2>
@@ -602,7 +602,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                     ? 'Vérification cryptographique...'
                     : mode === 'staff_login'
                     ? 'Ouvrir le Cockpit Pro'
-                    : 'Se connecter à mon Espace Cliente'}
+                    : 'Se connecter à mon Espace Client'}
                 </span>
                 <ArrowRight className="w-4 h-4" />
               </button>
@@ -799,7 +799,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                 disabled={submitting}
                 className="w-full min-h-[48px] py-3.5 px-5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] font-bold text-sm text-[var(--on-primary)] shadow-sm transition-all flex items-center justify-center gap-2 cursor-pointer disabled:opacity-60"
               >
-                <span>{submitting ? 'Création sécurisée...' : 'Créer mon Espace Cliente'}</span>
+                <span>{submitting ? 'Création sécurisée...' : 'Créer mon Espace Client'}</span>
                 <ArrowRight className="w-4 h-4" />
               </button>
             </form>
@@ -892,11 +892,11 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
               <span>Authentification Sécurisée · ECOPARK CAMEROUN (Yaoundé, Ahala)</span>
             </div>
             <h1 className="type-page-title text-white mt-1">
-              Connexion Espace Cliente &amp; Cockpit Pro
+              Connexion Espace Client &amp; Cockpit Pro
             </h1>
           </div>
           <div className="text-xs text-[#E9F5ED] font-mono bg-[#0B1D15]/75 px-3.5 py-2 rounded-xl border border-[#36403A]">
-            Protection des données · Loi n° 2010/012 &amp; RBAC
+            Protection des données · Loi n° 2010/012 &amp; Droits d'accès
           </div>
         </div>
       </ImmersiveSection>

@@ -162,10 +162,10 @@ export const LegalNoticeView: React.FC = () => {
               </p>
               <ul className="space-y-2.5 type-body list-disc pl-5">
                 <li>
-                  <strong>Finalité stricte :</strong> Vos nom, email et numéro de téléphone ne sont collectés que pour l&apos;émission de vos Pass QR nominatifs, vos réservations hôtelières, vos devis B2B/CFP et la sécurité d&apos;accès au domaine.
+                  <strong>Finalité stricte :</strong> Vos nom, email et numéro de téléphone ne sont collectés que pour l&apos;émission de vos Pass QR nominatifs, vos réservations hôtelières, vos devis Entreprises/CFP et la sécurité d&apos;accès au domaine.
                 </li>
                 <li>
-                  <strong>Chiffrement &amp; Cloisonnement :</strong> Les mots de passe sont dérivés cryptographiquement (PBKDF2-HMAC-SHA256 / Supabase Auth) et chaque Espace Cliente est strictement isolé. Aucun visiteur tiers ne peut consulter vos réservations.
+                  <strong>Chiffrement &amp; Cloisonnement :</strong> Les mots de passe sont protégés par un chiffrement sécurisé des mots de passe (Supabase Auth) et chaque Espace Client est strictement isolé. Aucun visiteur tiers ne peut consulter vos réservations.
                 </li>
                 <li>
                   <strong>Droit d&apos;accès, de rectification et d&apos;effacement :</strong> Vous pouvez modifier votre mot de passe ou supprimer/anonymiser intégralement votre compte directement depuis votre profil (<code>/connexion</code>) ou en écrivant à{' '}

@@ -239,7 +239,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 ? 'bg-[#29302C] text-[#74C69D] font-bold border border-[#74C69D]/50'
                 : 'text-[#C9D1CC] hover:text-white'
             }`}
-            title="Activer/désactiver l hydrographie et biomes"
+            title="Activer/désactiver l'hydrographie et biomes"
           >
             {showHydroBiomes ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 opacity-75" />}
             <span>Biomes & Eau</span>
@@ -267,7 +267,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                 ? 'bg-[#29302C] text-[#74C69D] font-bold border border-[#74C69D]/50'
                 : 'text-[#C9D1CC] hover:text-white'
             }`}
-            title="Activer/désactiver les 10 points d intérêt"
+            title="Activer/désactiver les 10 points d'intérêt"
           >
             {showPois ? <Eye className="w-3.5 h-3.5" /> : <EyeOff className="w-3.5 h-3.5 opacity-75" />}
             <span>POIs</span>
@@ -306,7 +306,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
             type="button"
             onClick={handleResetView}
             className="min-w-[44px] min-h-[44px] xl:min-w-[36px] xl:min-h-[36px] flex items-center justify-center rounded-lg text-[#B7E4C7] hover:text-white hover:bg-[#29302C] transition-colors cursor-pointer ml-1 border-l border-[#36403A]"
-            title="Réinitialiser l affichage"
+            title="Réinitialiser l'affichage"
             aria-label="Réinitialiser"
           >
             <RotateCcw className="w-4 h-4" />
@@ -752,7 +752,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
                     }}
                     tabIndex={0}
                     role="button"
-                    aria-label={`Point d intérêt: ${poi.name}`}
+                    aria-label={`Point d'intérêt: ${poi.name}`}
                     onKeyDown={(e) => {
                       if (e.key === 'Enter' || e.key === ' ') {
                         setActivePoi(isActive ? null : poi);

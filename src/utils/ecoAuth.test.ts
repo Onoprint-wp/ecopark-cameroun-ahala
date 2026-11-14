@@ -29,7 +29,10 @@ import {
   listProvisionedStaffDirectory,
   getDeletionComplianceLog,
   resetAuthVaultForTests,
+  setProvisionedStaffAccountsForTests,
+  loadVaultAccounts,
   type SignedSessionClaims,
+  type StoredVaultAccount,
 } from './ecoAuth.ts';
 import type { EcoParkRole } from '../types/ecosystem.ts';
 
@@ -210,48 +213,156 @@ test('EcoPark Real Cryptographic Authentication & RBAC Engine', async (t) => {
       assert.ok(getRoleDisplayLabel(row.role).length > 0, `${row.role} display label non-empty`);
     }
 
-    // 2. Sanitized staff directory exposes all 6 provisioned staff accounts and 0 secrets
+    // 2. Sanitized staff directory exposes all 6 provisioned staff accounts, 0 secrets & 0 mock "Thomas D."
     const directory = listProvisionedStaffDirectory();
     assert.strictEqual(directory.length, 6, 'All 6 internal staff roles must be provisioned');
     for (const entry of directory) {
       const rawEntry = entry as unknown as Record<string, unknown>;
       assert.strictEqual('saltHex' in rawEntry, false);
       assert.strictEqual('hashHex' in rawEntry, false);
+      assert.ok(!entry.fullName.includes('Thomas D.'), 'No leftover mock staff name');
     }
 
-    // 3. Authenticate all 6 provisioned staff accounts via real PBKDF2-HMAC-SHA256
-    const staffCredentials: Array<{ email: string; pwd: string; role: EcoParkRole; matricule: string }> = [
-      { email: 'direction@ecopark-yaounde.com', pwd: 'EcoPark-Dir#2026!', role: 'direction', matricule: 'MAT-DIR-01' },
-      { email: 'exploitation@ecopark-yaounde.com', pwd: 'EcoPark-Exp#2026!', role: 'responsable_exploitation', matricule: 'MAT-EXP-01' },
-      { email: 'controle@ecopark-yaounde.com', pwd: 'EcoPark-Qr#2026!', role: 'agent_controle', matricule: 'MAT-CTL-02' },
-      { email: 'guichet@ecopark-yaounde.com', pwd: 'EcoPark-Gui#2026!', role: 'agent_guichet', matricule: 'MAT-GUI-04' },
-      { email: 'comptabilite@ecopark-yaounde.com', pwd: 'EcoPark-Cpt#2026!', role: 'comptable', matricule: 'MAT-CPT-03' },
-      { email: 'admin@ecopark-yaounde.com', pwd: 'EcoPark-Adm#2026!', role: 'administrateur_plateforme', matricule: 'MAT-ADM-00' },
+    // 3. Authenticate all 6 staff profiles via real PBKDF2-HMAC-SHA256.
+    //    Production passwords never live in Git: the test injects the same 6 accounts
+    //    (same ids, roles, matricules) re-hashed with test-only passwords.
+    const expectedStaff: Array<{ email: string; role: EcoParkRole; matricule: string }> = [
+      { email: 'direction@ecopark-yaounde.com', role: 'direction', matricule: 'MAT-DIR-01' },
+      { email: 'exploitation@ecopark-yaounde.com', role: 'responsable_exploitation', matricule: 'MAT-EXP-01' },
+      { email: 'controle@ecopark-yaounde.com', role: 'agent_controle', matricule: 'MAT-CTL-02' },
+      { email: 'guichet@ecopark-yaounde.com', role: 'agent_guichet', matricule: 'MAT-GUI-04' },
+      { email: 'comptabilite@ecopark-yaounde.com', role: 'comptable', matricule: 'MAT-CPT-03' },
+      { email: 'admin@ecopark-yaounde.com', role: 'administrateur_plateforme', matricule: 'MAT-ADM-00' },
     ];
+    const testStaff = await buildTestStaffAccounts();
+    setProvisionedStaffAccountsForTests(testStaff.accounts);
 
-    for (const cred of staffCredentials) {
-      const authRes = await authenticateWithPassword(cred.email, cred.pwd);
-      assert.strictEqual(authRes.ok, true, `Staff login must succeed for ${cred.email}`);
-      assert.strictEqual(authRes.user?.role, cred.role);
-      assert.strictEqual(authRes.user?.matricule, cred.matricule);
+    for (const expected of expectedStaff) {
+      const pwd = testStaff.passwords.get(expected.email)!;
+      const authRes = await authenticateWithPassword(expected.email, pwd);
+      assert.strictEqual(authRes.ok, true, `Staff login must succeed for ${expected.email}`);
+      assert.strictEqual(authRes.user?.role, expected.role);
+      assert.strictEqual(authRes.user?.matricule, expected.matricule);
       await signOutActiveSession();
     }
 
     // 4. Brute-force lockout after 5 wrong attempts
+    const exploitationPwd = testStaff.passwords.get('exploitation@ecopark-yaounde.com')!;
     for (let i = 1; i <= 5; i++) {
       const bad = await authenticateWithPassword('exploitation@ecopark-yaounde.com', `WrongPwd#${i}`);
       assert.strictEqual(bad.ok, false);
       if (i === 5) {
-        assert.ok((bad.lockoutRemainingSec || 0) > 0, '5th failure must trigger lockout window');
+        assert.ok((bad.lockoutRemainingSec || 0) >= 890, '5th failure must trigger 15-minute (900s) lockout window');
       }
     }
 
     // Even valid password must be blocked while lockout window is active
-    const blockedValid = await authenticateWithPassword(
-      'exploitation@ecopark-yaounde.com',
-      'EcoPark-Exp#2026!'
-    );
+    const blockedValid = await authenticateWithPassword('exploitation@ecopark-yaounde.com', exploitationPwd);
     assert.strictEqual(blockedValid.ok, false);
     assert.ok((blockedValid.lockoutRemainingSec || 0) > 0);
+
+    resetAuthVaultForTests();
+  });
+
+  await t.test('Rotation des identifiants : les 6 anciens mots de passe initiaux sont révoqués en production', async () => {
+    resetAuthVaultForTests();
+
+    const productionAccounts = loadVaultAccounts().filter((a) => isStaffRole(a.role));
+    assert.strictEqual(productionAccounts.length, 6);
+    const salts = new Set<string>();
+    for (const acc of productionAccounts) {
+      assert.match(acc.saltHex, /^[0-9a-f]{32}$/, `${acc.email} salt must be 128-bit hex`);
+      assert.match(acc.hashHex, /^[0-9a-f]{64}$/, `${acc.email} hash must be 256-bit hex`);
+      assert.strictEqual(acc.iterations, PBKDF2_ITERATIONS);
+      assert.ok(Date.parse(acc.updatedAt) >= Date.parse('2026-11-14T00:00:00.000Z'), `${acc.email} must carry the rotation date`);
+      salts.add(acc.saltHex);
+    }
+    assert.strictEqual(salts.size, 6, 'Each staff account must use a unique salt');
+
+    const revokedLegacyCredentials: Array<[string, string]> = [
+      ['direction@ecopark-yaounde.com', 'EcoPark-Dir#2026!'],
+      ['exploitation@ecopark-yaounde.com', 'EcoPark-Exp#2026!'],
+      ['controle@ecopark-yaounde.com', 'EcoPark-Qr#2026!'],
+      ['guichet@ecopark-yaounde.com', 'EcoPark-Gui#2026!'],
+      ['comptabilite@ecopark-yaounde.com', 'EcoPark-Cpt#2026!'],
+      ['admin@ecopark-yaounde.com', 'EcoPark-Adm#2026!'],
+    ];
+    for (const [email, legacyPwd] of revokedLegacyCredentials) {
+      const res = await authenticateWithPassword(email, legacyPwd);
+      assert.strictEqual(res.ok, false, `Revoked legacy password must be rejected for ${email}`);
+    }
+  });
+
+  await t.test('Coffre local : un enregistrement Staff obsolète ne peut pas masquer une rotation, une modification ultérieure est conservée', async () => {
+    resetAuthVaultForTests();
+
+    // A. Stale record (older than the provisioned rotation) persisted in the local vault
+    const staleStaff = await buildTestStaffAccounts('2020-01-01T00:00:00.000Z');
+    setProvisionedStaffAccountsForTests(staleStaff.accounts);
+    const reg = await registerClientAccount({
+      fullName: 'Awa Ndongo',
+      email: 'awa.ndongo@exemple.cm',
+      phone: '+237 677 11 22 33',
+      password: 'AhalaClient#2026',
+    });
+    assert.strictEqual(reg.ok, true, 'Client registration persists the whole vault (incl. staff records)');
+    await signOutActiveSession();
+
+    setProvisionedStaffAccountsForTests(null); // production rotation (2026-11-14) becomes authoritative
+    const stalePwd = staleStaff.passwords.get('direction@ecopark-yaounde.com')!;
+    const staleLogin = await authenticateWithPassword('direction@ecopark-yaounde.com', stalePwd);
+    assert.strictEqual(staleLogin.ok, false, 'Stale stored staff hash must be superseded by the provisioned rotation');
+    const prodDirection = loadVaultAccounts().find((a) => a.email === 'direction@ecopark-yaounde.com')!;
+    assert.notStrictEqual(prodDirection.hashHex, staleStaff.accounts[0].hashHex);
+    assert.strictEqual(
+      loadVaultAccounts().some((a) => a.email === 'awa.ndongo@exemple.cm'),
+      true,
+      'Client accounts must be preserved'
+    );
+
+    // B. Local password change made AFTER the provisioned date is preserved
+    resetAuthVaultForTests();
+    const oldProvisioned = await buildTestStaffAccounts('2020-01-01T00:00:00.000Z');
+    setProvisionedStaffAccountsForTests(oldProvisioned.accounts);
+    const ctlPwd = oldProvisioned.passwords.get('controle@ecopark-yaounde.com')!;
+    const ctlLogin = await authenticateWithPassword('controle@ecopark-yaounde.com', ctlPwd);
+    assert.strictEqual(ctlLogin.ok, true);
+    const changed = await updateAccountPassword({
+      userId: ctlLogin.user!.id,
+      currentPassword: ctlPwd,
+      newPassword: 'PosteControle#2027!',
+    });
+    assert.strictEqual(changed.ok, true);
+    await signOutActiveSession();
+    const afterChange = await authenticateWithPassword('controle@ecopark-yaounde.com', 'PosteControle#2027!');
+    assert.strictEqual(afterChange.ok, true, 'Local password change made after provisioning must be honoured');
+    const oldPwdLogin = await authenticateWithPassword('controle@ecopark-yaounde.com', ctlPwd);
+    assert.strictEqual(oldPwdLogin.ok, false);
+
+    resetAuthVaultForTests();
   });
 });
+
+async function buildTestStaffAccounts(
+  updatedAt?: string
+): Promise<{ accounts: StoredVaultAccount[]; passwords: Map<string, string> }> {
+  resetAuthVaultForTestsKeepingStorage();
+  const productionStaff = loadVaultAccounts().filter((a) => isStaffRole(a.role));
+  const passwords = new Map<string, string>();
+  const accounts: StoredVaultAccount[] = [];
+  let i = 0;
+  for (const acc of productionStaff) {
+    i += 1;
+    const pwd = `TestOnly-Staff#${i}-${generateRandomSaltHex(4)}`;
+    const saltHex = generateRandomSaltHex(16);
+    const hashHex = await derivePasswordHashHex(pwd, saltHex, PBKDF2_ITERATIONS);
+    passwords.set(acc.email, pwd);
+    accounts.push({ ...acc, saltHex, hashHex, iterations: PBKDF2_ITERATIONS, updatedAt: updatedAt ?? acc.updatedAt });
+  }
+  return { accounts, passwords };
+}
+
+function resetAuthVaultForTestsKeepingStorage(): void {
+  // Ensure metadata is read from the production directory without wiping the vault
+  setProvisionedStaffAccountsForTests(null);
+}

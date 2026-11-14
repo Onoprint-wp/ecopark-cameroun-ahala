@@ -129,7 +129,7 @@ export default function App() {
                       Orientation &amp; Plan du Domaine d&apos;Ahala
                     </span>
                     <h2 className="type-h2 text-[var(--text-primary)] mt-1">
-                      Six circuits balisés au cœur d&apos;Ahala.
+                      Six circuits balisés à Ahala.
                     </h2>
                   </div>
                   <button
@@ -329,7 +329,7 @@ export default function App() {
         )}
 
         {/* ================================================================= */}
-        {/* VUE 5 : ESPACE CLIENTE (/mon-espace) - AUTHENTIFICATION REQUISE    */}
+        {/* VUE 5 : ESPACE CLIENT (/mon-espace) - AUTHENTIFICATION REQUISE     */}
         {/* ================================================================= */}
         {activeView === 'pass' && (
           <div className="eco-view-enter space-y-10 pb-16">
@@ -338,12 +338,12 @@ export default function App() {
                 <div>
                   <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#74C69D]">
                     <QrCode className="w-4 h-4 text-[#52B788]" />
-                    <span>Espace Cliente Sécurisé &amp; Pass QR Code (ECP-2026-XXXXX)</span>
+                    <span>Espace Client Sécurisé &amp; Pass QR Code (ECP-2026-XXXXX)</span>
                   </div>
                   <h1 className="type-page-title text-white mt-1">
                     {isAuthenticated && user
                       ? `Bienvenue, ${user.fullName}`
-                      : 'Mon Espace Cliente & Mes Réservations QR'}
+                      : 'Mon Espace Client & Mes Réservations QR'}
                   </h1>
                 </div>
 
@@ -392,7 +392,7 @@ export default function App() {
                     <div className="max-w-xl mx-auto p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-start gap-3 text-sm text-emerald-950 dark:text-emerald-100">
                       <Lock className="w-4 h-4 text-[var(--status-open-text)] shrink-0 mt-0.5" />
                       <div>
-                        <strong>Onboarding Espace Cliente (60s · Session 7 jours) :</strong> Créez gratuitement votre compte ou connectez-vous pour centraliser tous vos Pass QR, pré-remplir vos réservations et accéder aux signalements Sentinelle Nature.
+                        <strong>Inscription rapide · Espace Client (60s · Session 7 jours) :</strong> Créez gratuitement votre compte ou connectez-vous pour centraliser tous vos Pass QR, pré-remplir vos réservations et accéder aux signalements Sentinelle Nature.
                       </div>
                     </div>
                     <AuthPortal forcedMode="client_login" targetAfterAuth="pass" embedded />
@@ -436,7 +436,7 @@ export default function App() {
                     <div>
                       <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[var(--status-caution-text)]">
                         <ShieldAlert className="w-4 h-4" />
-                        <span>Accès Professionnel Protégé · RBAC ECOPARK CAMEROUN</span>
+                        <span>Accès Professionnel Protégé · Droits d'accès ECOPARK CAMEROUN</span>
                       </div>
                       <h1 className="type-cockpit-h1 text-[var(--text-primary)] mt-0.5">
                         Authentification Cockpit Pro &amp; Exploitation Ahala
@@ -466,7 +466,7 @@ export default function App() {
                       Zone Réservée au Personnel d&apos;Exploitation
                     </h1>
                     <p className="type-body-compact text-[var(--text-muted)]">
-                      Vous êtes actuellement connecté(e) en tant que <strong>{user?.fullName}</strong> (<code>Espace Cliente</code>). Le Cockpit Pro d&apos;Ahala est strictement réservé aux agents habilités de MPECK MULTI-SERVICES.
+                      Vous êtes actuellement connecté(e) en tant que <strong>{user?.fullName}</strong> (<code>Espace Client</code>). Le Cockpit Pro d&apos;Ahala est strictement réservé aux agents habilités de MPECK MULTI-SERVICES.
                     </p>
                   </div>
                   <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
@@ -475,7 +475,7 @@ export default function App() {
                       onClick={() => setActiveView('pass')}
                       className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-primary-hover)] text-[var(--on-primary)] text-sm font-bold cursor-pointer"
                     >
-                      Retourner à mon Espace Cliente
+                      Retourner à mon Espace Client
                     </button>
                     <button
                       type="button"
@@ -486,7 +486,7 @@ export default function App() {
                       }}
                       className="min-h-[48px] px-5 py-2.5 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] text-xs font-semibold text-[var(--text-primary)] hover:border-amber-500 cursor-pointer"
                     >
-                      Changer de compte (Staff)
+                      Changer de compte (Équipe)
                     </button>
                   </div>
                 </div>

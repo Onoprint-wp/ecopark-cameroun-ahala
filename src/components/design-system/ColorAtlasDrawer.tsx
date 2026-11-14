@@ -11,7 +11,6 @@ import {
   SlidersHorizontal,
   Copy,
   Check,
-  ExternalLink,
   ShieldCheck,
   ArrowRightLeft,
   Eye,
@@ -402,22 +401,11 @@ export const ColorAtlasDrawer: React.FC = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <a
-                href="/color-atlas-standalone.html"
-                target="_blank"
-                rel="noreferrer"
-                className="hidden sm:inline-flex items-center gap-1.5 min-h-[44px] px-3 py-2 rounded-lg border border-[var(--border-default)] bg-[var(--bg-elevated)] text-xs font-semibold text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors cursor-pointer"
-                title="Ouvrir le prototype interactif autonome dans un nouvel onglet"
-              >
-                <span>Plein écran</span>
-                <ExternalLink className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
-              </a>
-
               <button
                 type="button"
                 onClick={() => setColorDrawerOpen(false)}
                 className="min-w-[44px] min-h-[44px] flex items-center justify-center rounded-lg text-[var(--text-muted)] hover:text-[var(--text-primary)] hover:bg-[var(--bg-surface)] transition-colors cursor-pointer"
-                aria-label="Fermer l atelier chromatique"
+                aria-label="Fermer l'atelier chromatique"
               >
                 <X className="w-5 h-5" />
               </button>
@@ -484,10 +472,10 @@ export const ColorAtlasDrawer: React.FC = () => {
                 <div className="p-4 rounded-xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-xs text-[var(--text-muted)] space-y-1.5">
                   <div className="font-semibold text-[var(--text-primary)] flex items-center gap-2">
                     <ShieldCheck className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                    <span>Charte d Accessibilité Validée sur Adobe Color</span>
+                    <span>Charte d'Accessibilité Validée sur Adobe Color</span>
                   </div>
                   <p className="type-footnote">
-                    Les 5 piliers constituent l armature graphique d ECO-PARK. Chaque teinte a été choisie
+                    Les 5 piliers constituent l'armature graphique d'ECO-PARK. Chaque teinte a été choisie
                     sur le cercle chromatique pour concilier immersion naturelle et ratios WCAG AAA stricts.
                   </p>
                 </div>
@@ -683,7 +671,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                 <div className="space-y-3">
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <h3 className="font-sans font-bold text-base text-[var(--text-primary)]">
-                      Palettes Thématiques Extraites d Adobe Color Explore
+                      Palettes Thématiques Extraites d'Adobe Color Explore
                     </h3>
                     <span className="text-xs text-[var(--text-muted)] font-mono">
                       5 harmonies certifiées
@@ -849,7 +837,7 @@ export const ColorAtlasDrawer: React.FC = () => {
                     </div>
                     <p className="text-sm leading-relaxed max-w-lg opacity-95 font-sans">
                       La réserve naturelle préserve les corridors biologiques essentiels. Cette surface
-                      illustre le contraste perçu dans l interface en conditions réelles.
+                      illustre le contraste perçu dans l'interface en conditions réelles.
                     </p>
                     <div className="pt-2 flex flex-wrap items-center gap-2">
                       <span

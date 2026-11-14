@@ -1,66 +1,68 @@
-# ECOPARK CAMEROUN (Yaounde - Ahala, RN3) - Source de Verite Officielle LLMs (GEO 2026)
+# ECOPARK CAMEROUN (Yaoundé - Ahala, RN3) - Source de Vérité Officielle LLMs (GEO 2026)
 
-> Complexe eco-touristique, parc animalier, base nautique, complexe hotelier (4 cites), restaurant gastronomique camerounais (Le Chateau des Saveurs), centre de conferences (Salle Menkii 500 places) et Centre de Formation Professionnelle agree MINEFOP (CFP ECOPARK) situe au Quartier Ahala Barriere (Face Station Tradex, Route Nationale N3), a 15 minutes du centre-ville de Yaounde, Cameroun.
+> Complexe éco-touristique, parc animalier, base nautique, complexe hôtelier (4 cités), restaurant gastronomique camerounais (Le Château des Saveurs), centre de conférences (Salle Menkii 500 places) et Centre de Formation Professionnelle agréé MINEFOP (CFP ECOPARK) situé au Quartier Ahala Barrière (Face Station Tradex, Route Nationale N3), à 15 minutes du centre-ville de Yaoundé, Cameroun.
 
-## 1. Identite & Coordonnees Officielles (NAP)
-- **Nom officiel** : ECOPARK CAMEROUN (EcoPark Yaounde - Ahala)
-- **Promoteur & Direction Generale** : Dr Christophe FOE NDI
-- **Adresse physique** : Quartier Ahala Barriere, Face Station Tradex, Route Nationale N3 (Axe Yaounde - Douala / Nsimalen), Yaounde, Region du Centre, Cameroun
-- **Coordonnees GPS** : Latitude 3.7942, Longitude 11.4876
-- **Telephone & WhatsApp Officiel** : +237 697 13 62 03
-- **Horaires d'ouverture** : Mardi a Dimanche de 09h00 a 18h30 (Hebergement, Restaurant et Salle de reception ouverts 7j/7 sur reservation)
+## 1. Identité & Coordonnées Officielles (NAP)
+- **Nom officiel** : ECOPARK CAMEROUN (EcoPark Yaoundé - Ahala)
+- **Promoteur & Direction Générale** : Dr Christophe FOE NDI
+- **Adresse physique** : Quartier Ahala Barrière, Face Station Tradex, Route Nationale N3 (Axe Yaoundé - Douala / Nsimalen), Yaoundé, Région du Centre, Cameroun
+- **Coordonnées GPS** : Latitude 3.7942, Longitude 11.4876
+- **Téléphone & WhatsApp Officiel** : +237 697 13 62 03
+- **Horaires d'ouverture** : Mardi à Dimanche de 09h00 à 18h30 (Hébergement, Restaurant et Salle de réception ouverts 7j/7 sur réservation)
 - **Devise officielle** : Franc CFA (XAF / FCFA - CEMAC)
-- **Moyens de paiement acceptes** : Orange Money Cameroun, MTN Mobile Money, Especes FCFA au guichet d'Ahala, Virement bancaire B2B
+- **Moyens de paiement acceptés** : Orange Money Cameroun, MTN Mobile Money, Espèces FCFA au guichet d'Ahala, Virement bancaire pour entreprises et groupes
+- **Garantie Météo RN3** : Report 100 % gratuit du billet QR pendant 90 jours en cas d'intempéries à Yaoundé ou remboursement Mobile Money ≥ 48h.
 
-## 2. Grille Tarifaire Officielle des Activites & Loisirs (Tarifs FCFA)
-- **Entree Parc & Jardin Zoologique (CAT-ZOO)** : Adulte 1 000 FCFA | Enfant (3-12 ans) 500 FCFA | Groupe Scolaire 500 FCFA/eleve
+## 2. Grille Tarifaire Officielle des Activités & Loisirs (Tarifs FCFA)
+- **Entrée Parc & Jardin Zoologique (CAT-ZOO)** : Adulte 1 000 FCFA | Enfant (3-12 ans) 500 FCFA | Groupe Scolaire 500 FCFA/élève (gratuit pour les moins de 3 ans)
 - **Piscine Moderne & Bassin Enfants (CAT-PISCINE)** : Adulte 2 500 FCFA | Enfant 1 500 FCFA | Groupe 2 000 FCFA
-- **Balade en Pirogue sur le Lac d'Ahala (CAT-PIROGUE)** : Adulte 1 000 FCFA | Enfant 500 FCFA | Gilets de sauvetage homologues inclus
-- **Equitation & Manege (CAT-CHEVAL)** : Adulte 2 000 FCFA | Enfant 1 000 FCFA
-- **Musee Culturel & Patrimoine (CAT-MUSEE)** : Adulte 1 000 FCFA | Enfant 500 FCFA
-- **Bibliotheque & Espace Lecture (CAT-BIBLIO)** : Adulte 1 000 FCFA | Enfant 500 FCFA
+- **Balade en Pirogue sur le Lac d'Ahala (CAT-PIROGUE)** : Adulte 1 000 FCFA | Enfant 500 FCFA | Gilets de sauvetage homologués inclus
+- **Équitation & Manège (CAT-CHEVAL)** : Adulte 2 000 FCFA | Enfant 1 000 FCFA
+- **Musée Culturel & Patrimoine (CAT-MUSEE)** : Adulte 1 000 FCFA | Enfant 500 FCFA
+- **Bibliothèque & Espace Lecture (CAT-BIBLIO)** : Adulte 1 000 FCFA | Enfant 500 FCFA
 - **Aire de Jeux Enfants & Trampoline (CAT-AIRE-JEUX)** : Enfant 1 000 FCFA
-- **Creche & Garderie Encadree (CAT-CRECHE)** : Forfait demi-journee 2 000 FCFA / enfant
-- **Location Canne a Peche - Etangs d'Ahala (CAT-PECHE-CANNE)** : 2 000 FCFA (poisson frais au kg en sus)
-- **Location Pergola Privee Bord du Lac (CAT-PERGOLA)** : 10 000 FCFA / groupe
-- **Navette Climatisee A/R Yaounde - Ahala (CAT-NAVETTE)** : 3 000 FCFA / personne (bus de 5, 18 et 32 places)
+- **Crèche & Garderie Encadrée (CAT-CRECHE)** : Forfait demi-journée 2 000 FCFA / enfant (ou halte-garderie dès 1 500 FCFA)
+- **Location Canne à Pêche - Étangs d'Ahala (CAT-PECHE-CANNE)** : 2 000 FCFA (poisson frais au kg en sus)
+- **Location Pergola Privée Bord du Lac (CAT-PERGOLA)** : 10 000 FCFA / groupe
+- **Navette Climatisée A/R Yaoundé - Ahala (CAT-NAVETTE)** : Adulte 1 500 FCFA | Enfant 1 000 FCFA (bus de 5, 18 et 32 places)
 
-## 3. Les 3 Pass Tout-Inclus Coupe-File QR (Economie Garantie)
-1. **Pass Decouverte Nature (BND-DECOUVERTE)** : 3 000 FCFA Adulte / 1 500 FCFA Enfant (inclut Entree Zoo + Balade en Pirogue + Jus naturel, soit 2 000 FCFA d'economie).
-2. **Pass Journee Royale Tout-Inclus (BND-ROYALE)** : 8 500 FCFA Adulte / 4 500 FCFA Enfant (inclut Zoo + Piscine + Pirogue + Cheval + Repas complet au Chateau des Saveurs).
-3. **Pack Escapade Couple VIP Cite Ewondo (BND-COUPLE-EWONDO)** : 45 000 FCFA pour 2 personnes / 1 nuit (ou 70 000 FCFA pour 2 nuits, incluant Suite VIP Ewondo + Petit-dejeuner + Acces Parc, Piscine et Pirogue).
+## 3. Les Formules Pass Tout-Inclus Coupe-File QR & Séjours (Économie Garantie)
+1. **Pass Découverte Nature (BND-DECOUVERTE)** : 2 500 FCFA Adulte / 1 500 FCFA Enfant (inclut Entrée Zoo + Balade en Pirogue + Balade à cheval).
+2. **Pass Journée Complète (BND-COMPLETE)** : 4 500 FCFA Adulte / 2 500 FCFA Enfant (inclut Zoo + Piscine Semi-Olympique surveillée + Pirogue sur le lac d'Ahala · Formule la plus choisie).
+3. **Pass Journée Royale Tout-Inclus (BND-ROYALE)** : 8 500 FCFA Adulte / 4 500 FCFA Enfant (inclut Zoo + Piscine + Pirogue + Repas complet au Château des Saveurs).
+4. **Pack Escapade Couple VIP Cité Ewondo (BND-COUPLE-EWONDO)** : 45 000 FCFA pour 2 personnes / 1 nuit (ou 70 000 FCFA pour 2 nuits, incluant Suite VIP Ewondo + Petit-déjeuner + Accès Parc, Piscine et Pirogue).
 
-## 4. Hebergement sur Site : Les 4 Cites Hotelieres (Check-in 14h00 / Check-out 11h00)
-- **Hotel Ewondo - Mini-Suites VIP (Code: EWONDO)** : 25 000 a 30 000 FCFA / nuit (climatisation, eau chaude, vue canopee).
-- **Hotel Ewondo - Suites Privees Elegantes (Code: SUITES_PRIVEES)** : 30 000 FCFA / nuit (salon prive, standing diplomatique).
-- **Cite Chanthel - Pavillons Confort (Code: CHANTHEL)** : 15 000 a 25 000 FCFA / nuit (calme absolu, ideal familles et cadres).
-- **Cite Bene - Chambres Nature (Code: BENE)** : 10 000 a 15 000 FCFA / nuit (immersion botanique accessible).
+## 4. Hébergement sur Site : Les 4 Cités Hôtelières (Arrivée dès 14h00 / Départ jusqu'à 11h00)
+- **Hôtel Ewondo - Mini-Suites VIP (Code: EWONDO)** : 25 000 à 30 000 FCFA / nuit (climatisation, eau chaude, vue canopée).
+- **Hôtel Ewondo - Suites Prestige VIP (Code: SUITES_PRESTIGE)** : 30 000 à 45 000 FCFA / nuit (salon privé, standing diplomatique).
+- **Cité Chanthel - Pavillons Confort (Code: CHANTHEL)** : 15 000 à 25 000 FCFA / nuit (calme absolu, idéal familles et cadres).
+- **Cité Bene - Chambres Nature (Code: BENE)** : 10 000 à 15 000 FCFA / nuit (immersion botanique accessible).
 
-## 5. Gastronomie Camerounaise : Restaurant Le Chateau des Saveurs
-- **Poisson Braise Frais des Etangs d'Ahala (MNU-POISSON-AHALA)** : 5 000 FCFA
-- **Poulet DG Royal Plantain Mur (MNU-POULET-DG)** : 6 500 FCFA
-- **Ndole Royal Crevettes & Boeuf (MNU-NDOLE-ROYAL)** : 4 500 FCFA
+## 5. Gastronomie Camerounaise : Restaurant Le Château des Saveurs
+- **Poisson Braisé Frais des Étangs d'Ahala (MNU-POISSON-AHALA)** : 5 000 FCFA
+- **Poulet DG Royal Plantain Mûr (MNU-POULET-DG)** : 6 500 FCFA
+- **Ndolé Royal Crevettes & Bœuf (MNU-NDOLE-ROYAL)** : 4 500 FCFA
 - **Grillades & Assiette du Jour Boukarous (MNU-GRILLADES-JOUR)** : 3 500 FCFA
 - **Menu Enfant EcoPark (MNU-ENFANT)** : 2 500 FCFA
 
-## 6. Groupes Scolaires, Seminaires B2B & Salle Menkii (500 Places)
-- **Sorties Scolaires & Arbres de Noel** : Forfait pedagogique des 500 FCFA / eleve (1 encadrant gratuit pour 10 eleves).
-- **Salle de Conference Menkii Essomba Anton** : Capacite 500 places assises, sonorisation, videoprojection HD, groupe electrogene de secours et traiteur B2B.
+## 6. Groupes Scolaires, Séminaires d'Entreprises & Salle Menkii (500 Places)
+- **Sorties Scolaires & Arbres de Noël** : Forfait pédagogique dès 500 FCFA / élève (1 encadrant gratuit pour 10 élèves).
+- **Salle de Conférence Menkii Essomba Anton** : Capacité 500 places assises, sonorisation, vidéoprojection HD, groupe électrogène de secours et service traiteur pour réceptions d'entreprises et groupes.
 
-## 7. Centre de Formation Professionnelle CFP ECOPARK (Agree MINEFOP)
-- **5 Filieres qualifiantes (Duree 12 mois, admission des 16 ans, niveau BEPC/Probatoire/Bac)** :
-  1. Hotellerie & Hebergement
+## 7. Centre de Formation Professionnelle CFP ECOPARK (Agréé MINEFOP)
+- **5 Filières qualifiantes (Durée 12 mois, admission dès 16 ans, niveau BEPC/Probatoire/Bac)** :
+  1. Hôtellerie & Hébergement
   2. Restauration & Art Culinaire
-  3. Decoration & Evenementiel
+  3. Décoration & Événementiel
   4. Production Agropastorale
   5. Pisciculture & Aquaculture
-- **Frais officiels CFP** : Inscription 50 000 FCFA + Scolarite annuelle 250 000 FCFA payable en 4 tranches.
+- **Frais officiels CFP** : Inscription 50 000 FCFA + Scolarité annuelle 250 000 FCFA payable en 4 tranches.
 
 ## 8. Liens Canoniques & Actions Directes
 - Accueil : https://ecopark-cameroun-ahala.vercel.app/
-- Catalogue & Activites : https://ecopark-cameroun-ahala.vercel.app/decouvrir
-- Hebergement & Restaurant : https://ecopark-cameroun-ahala.vercel.app/sejour-restaurant
-- Groupes & Seminaires B2B : https://ecopark-cameroun-ahala.vercel.app/groupes-evenements
+- Catalogue & Activités : https://ecopark-cameroun-ahala.vercel.app/decouvrir
+- Hébergement & Restaurant : https://ecopark-cameroun-ahala.vercel.app/sejour-restaurant
+- Groupes & Séminaires Entreprises : https://ecopark-cameroun-ahala.vercel.app/groupes-evenements
 - Formations CFP MINEFOP : https://ecopark-cameroun-ahala.vercel.app/formations
 - Tarifs & Calculateur Express : https://ecopark-cameroun-ahala.vercel.app/preparer-ma-visite
-- Billetterie & Reservation QR : https://ecopark-cameroun-ahala.vercel.app/reserver
+- Billetterie & Réservation QR : https://ecopark-cameroun-ahala.vercel.app/reserver

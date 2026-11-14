@@ -143,7 +143,7 @@ export const SpeciesAtlas: React.FC = () => {
         return (
           <span
             className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300 border border-amber-300 dark:border-amber-800"
-            title="Vulnérable (Vulnerable) : risque élevé d extinction à l état sauvage."
+            title="Vulnérable (Vulnerable) : risque élevé d'extinction à l'état sauvage."
           >
             UICN · VU
           </span>
@@ -413,7 +413,7 @@ export const SpeciesAtlas: React.FC = () => {
                   {sp.identificationTips && sp.identificationTips.length > 0 && (
                     <div className="p-3.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] space-y-1.5">
                       <span className="text-xs font-mono font-bold uppercase tracking-wider text-[var(--brand-primary)] block">
-                        Critères d identification sur le terrain :
+                        Critères d'identification sur le terrain :
                       </span>
                       <ul className="text-sm text-[var(--text-primary)] space-y-1 pl-1">
                         {sp.identificationTips.map((tip, idx) => (
@@ -451,7 +451,7 @@ export const SpeciesAtlas: React.FC = () => {
                 >
                   <div className="flex flex-wrap items-center justify-between gap-2">
                     <span className="text-xs font-mono font-semibold text-[var(--text-muted)] uppercase tracking-wider">
-                      Sentiers propices à l observation :
+                      Sentiers propices à l'observation :
                     </span>
                     <button
                       type="button"
