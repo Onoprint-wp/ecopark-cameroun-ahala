@@ -22,6 +22,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
+import { useAuth } from '../../context/AuthContext';
 import {
   CitizenReportType,
   ReportSeverity,
@@ -40,10 +41,12 @@ export const CitizenSentinel: React.FC = () => {
     upvoteReport,
   } = useEcoPark();
 
+  const { user } = useAuth();
+
   // Active view tab: Form (F24) vs Feed (F25)
   const [activeTab, setActiveTab] = useState<'form' | 'feed'>('form');
 
-  // Form states (F24) — synced with global selectedTrailId when navigated from Map / Atlas
+  // Form states (F24) - synced with global selectedTrailId when navigated from Map / Atlas
   const [selectedTrailId, setSelectedTrailId] = useState<string>(
     globalSelectedTrailId || (trails.length > 0 ? trails[0].id : 'canopee')
   );
@@ -58,9 +61,17 @@ export const CitizenSentinel: React.FC = () => {
   const [title, setTitle] = useState<string>('');
   const [description, setDescription] = useState<string>('');
   const [landmark, setLandmark] = useState<string>('');
-  const [reporterName, setReporterName] = useState<string>('Sentinelle #' + Math.floor(100 + Math.random() * 900));
+  const [reporterName, setReporterName] = useState<string>(
+    () => user?.fullName || 'Visiteur Vérifié'
+  );
 
-  // Simulated GPS Coordinates (Yaoundé – Ahala Barrière, RN3)
+  useEffect(() => {
+    if (user?.fullName) {
+      setReporterName(user.fullName);
+    }
+  }, [user?.fullName]);
+
+  // Simulated GPS Coordinates (Yaoundé, Ahala Barrière, RN3)
   const [gpsCoordinates, setGpsCoordinates] = useState<string>('[GPS 3.792° N, 11.488° E - Alt. 725m · Ahala RN3]');
   const [gpsRefreshing, setGpsRefreshing] = useState<boolean>(false);
   const [gpsPulseKey, setGpsPulseKey] = useState<number>(0);
@@ -240,7 +251,7 @@ export const CitizenSentinel: React.FC = () => {
       trailId: selectedTrailId,
       severity,
       title: title.trim(),
-      description: `${description.trim()} — ${gpsCoordinates}`,
+      description: `${description.trim()} (${gpsCoordinates})`,
       landmark: landmark.trim(),
       reporterName: reporterName.trim() || 'Sentinelle Anonyme',
     };

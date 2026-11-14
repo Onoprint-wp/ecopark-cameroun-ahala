@@ -1,6 +1,6 @@
 // ============================================================================
 // CO2 BOTANICAL SPROUT VISUALIZER (src/components/booking/Co2BotanicalSprout.tsx)
-// « De la graine à l'arbre » — Combined Rolling Counter + Living SVG Sapling
+// « De la graine à l'arbre » - Combined Rolling Counter + Living SVG Sapling
 // ============================================================================
 
 import React from 'react';

@@ -1,5 +1,5 @@
 // ============================================================================
-// ECOPARK CAMEROUN (YAOUNDÉ – AHALA) — OFFICIAL PRICING & ACCESS ENGINE
+// ECOPARK CAMEROUN (YAOUNDÉ, AHALA) - OFFICIAL PRICING & ACCESS ENGINE
 // (src/utils/ecoMobility.ts)
 // ============================================================================
 
@@ -27,9 +27,9 @@ export const MOBILITY_OPTIONS: MobilityOption[] = [
       'Remise officielle de -30% dès 20 participants (Entrée Adulte à 700 FCFA au lieu de 1 000 FCFA) pour familles nombreuses, associations et comités.',
     discountPercent: 30,
     co2AvoidedKgPerPerson: 6.5,
-    iconName: 'Bike',
+    iconName: 'Users',
     carbonBadge: '-30% Groupe (dès 20 pers.)',
-    ademeNote: 'Avantage officiel EcoPark Ahala : Entrée Adulte ramenée à 700 FCFA (Enfant : 500 FCFA).',
+    ademeNote: 'Avantage officiel EcoPark Ahala : Entrée Adulte ramenée à 700 FCFA dès 20 participants.',
     highlight: true,
   },
   {
@@ -40,7 +40,7 @@ export const MOBILITY_OPTIONS: MobilityOption[] = [
       'Réservation mobile avec émission immédiate du Pass QR Code (ECP-2026-XXXXX) et file prioritaire sans attente au guichet d Ahala.',
     discountPercent: 0,
     co2AvoidedKgPerPerson: 4.2,
-    iconName: 'Train',
+    iconName: 'Smartphone',
     carbonBadge: 'Coupe-File QR · Garantie Météo 90j',
     ademeNote: 'Garantie Météo RN3 incluse : report 100 % gratuit pendant 90 jours ou remboursement Mobile Money ≥ 48h.',
     highlight: true,
@@ -195,7 +195,10 @@ export function calculateEcoMobilityPricing(
 
   let actualDiscountPercent = mobilityInfo.discountPercent;
   let actualCo2Avoided = mobilityInfo.co2AvoidedKgPerPerson;
-  if (mobilityMode === 'covoiturage' && totalGuests < 3) {
+  if (mobilityMode === 'velo' && totalGuests < 20) {
+    actualDiscountPercent = 0;
+    actualCo2Avoided = 2.0;
+  } else if (mobilityMode === 'covoiturage' && totalGuests < 3) {
     actualDiscountPercent = 0;
     actualCo2Avoided = 1.5;
   }

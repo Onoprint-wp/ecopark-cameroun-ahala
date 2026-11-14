@@ -137,7 +137,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
   );
 
   const [activePassId, setActivePassIdState] = useState<string | null>(() =>
-    safeLocalStorage.getItem<string | null>(STORAGE_KEYS.ACTIVE_PASS_ID, 'ECP-2026-8942')
+    safeLocalStorage.getItem<string | null>(STORAGE_KEYS.ACTIVE_PASS_ID, null)
   );
 
   // Citizen Reports state
@@ -295,6 +295,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
 
       const newPass: EcoPass = {
         ...input,
+        ownerEmail: (input.ownerEmail || input.leadVisitor.email || '').trim().toLowerCase(),
         id: newId,
         createdAt: nowIso,
         status: 'confirmed',
@@ -380,6 +381,63 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
     setPassesState(next);
   }, []);
+
+  const claimPassByReference = useCallback(
+    (
+      referenceCode: string,
+      contactEmailOrPhone: string,
+      userId: string,
+      userEmail: string
+    ): { ok: boolean; error?: string; pass?: EcoPass } => {
+      const refClean = referenceCode.trim().toUpperCase();
+      const contactClean = contactEmailOrPhone.trim().toLowerCase();
+      const contactDigits = contactClean.replace(/[^\d]/g, '');
+
+      if (!refClean || !contactClean) {
+        return {
+          ok: false,
+          error: 'Veuillez saisir le code du Pass (ex: ECP-2026-XXXXX) ainsi que l’email ou téléphone utilisé lors de la réservation.',
+        };
+      }
+
+      const target = passesRef.current.find((p) => p.id.toUpperCase() === refClean);
+      if (!target) {
+        return {
+          ok: false,
+          error: 'Aucun billet trouvé avec cette référence ou coordonnées non concordantes.',
+        };
+      }
+
+      const passEmail = target.leadVisitor.email.trim().toLowerCase();
+      const passDigits = target.leadVisitor.phone.replace(/[^\d]/g, '');
+      const emailMatches = contactClean.includes('@') && passEmail === contactClean;
+      const phoneMatches =
+        contactDigits.length >= 8 &&
+        passDigits.length >= 8 &&
+        passDigits.slice(-8) === contactDigits.slice(-8);
+
+      if (!emailMatches && !phoneMatches) {
+        return {
+          ok: false,
+          error: 'Aucun billet trouvé avec cette référence ou coordonnées non concordantes.',
+        };
+      }
+
+      const claimedPass: EcoPass = {
+        ...target,
+        ownerUserId: userId,
+        ownerEmail: userEmail.trim().toLowerCase(),
+      };
+
+      const next = passesRef.current.map((p) => (p.id === target.id ? claimedPass : p));
+      passesRef.current = next;
+      safeLocalStorage.setItem(STORAGE_KEYS.PASSES, next);
+      setPassesState(next);
+      setActivePassId(claimedPass.id);
+      return { ok: true, pass: claimedPass };
+    },
+    [setActivePassId]
+  );
 
   const submitCitizenReport = useCallback((input: ReportInput): CitizenReport => {
     const reportIndex = Math.floor(100 + Math.random() * 900);
@@ -546,6 +604,7 @@ export const EcoParkProvider: React.FC<EcoParkProviderProps> = ({ children }) =>
     bookPass,
     cancelPass,
     checkInPass,
+    claimPassByReference,
 
     // Citizen Sentinel
     reports,

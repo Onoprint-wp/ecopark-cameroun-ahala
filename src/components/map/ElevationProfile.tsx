@@ -1,6 +1,6 @@
 // ============================================================================
 // ECO-PARK SYNCHRONIZED ELEVATION PROFILE (src/components/map/ElevationProfile.tsx)
-// Feature F17 — SVG Elevation Chart with Bidirectional Map Scrubber & Live Trace
+// Feature F17 - SVG Elevation Chart with Bidirectional Map Scrubber & Live Trace
 // ============================================================================
 
 import React, { useState, useRef, useMemo, useEffect, useCallback } from 'react';

@@ -1,6 +1,6 @@
 // ============================================================================
 // ECO-PARK TRAIL CATALOG & MULTICRITERIA FILTERS (src/components/trails/TrailCatalog.tsx)
-// Feature F18 — Filterable Trail Grid with Mini Sparklines & Live Sync
+// Feature F18 - Filterable Trail Grid with Mini Sparklines & Live Sync
 // ============================================================================
 
 import React, { useState, useMemo } from 'react';

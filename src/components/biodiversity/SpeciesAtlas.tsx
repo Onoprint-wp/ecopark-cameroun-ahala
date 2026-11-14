@@ -1,6 +1,6 @@
 // ============================================================================
 // ECO-PARK ENDEMIC BIODIVERSITY SPECIES ATLAS (src/components/biodiversity/SpeciesAtlas.tsx)
-// Feature F19 — 8 Keystone Species with UICN Badges, Seasonal Guides & Trail Links
+// Feature F19 - 8 Keystone Species with UICN Badges, Seasonal Guides & Trail Links
 // ============================================================================
 
 import React, { useState, useMemo, useEffect, useRef } from 'react';
@@ -81,16 +81,15 @@ export const SpeciesAtlas: React.FC = () => {
         if (selectedGroup === 'insectes' && sp.category !== 'insectes') return false;
       }
 
-      // Season match
+      // Conservation / Equatorial status filter
       if (selectedSeason !== 'all') {
-        const SEASON_MAP: Record<string, string> = {
-          printemps: 'Printemps',
-          ete: 'Été',
-          automne: 'Automne',
-          hiver: 'Hiver',
-        };
-        const targetSeason = SEASON_MAP[selectedSeason] || selectedSeason;
-        if (!sp.observationSeason.includes(targetSeason as any)) {
+        if (selectedSeason === 'menacees' && !['CR', 'EN', 'VU'].includes(sp.iucnStatus)) {
+          return false;
+        }
+        if (selectedSeason === 'protegees' && !['CR', 'EN'].includes(sp.iucnStatus)) {
+          return false;
+        }
+        if (selectedSeason === 'domaine' && !['LC', 'NT'].includes(sp.iucnStatus)) {
           return false;
         }
       }
@@ -175,7 +174,7 @@ export const SpeciesAtlas: React.FC = () => {
           <div className="space-y-3 max-w-4xl">
             <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-xs font-mono text-[#B7E4C7]">
               <Sparkles className="w-3.5 h-3.5 text-[#74C69D]" />
-              <span>Jardin Zoologique, Bassins Piscicoles &amp; Flore Tropicale · Yaoundé – Ahala</span>
+              <span>Jardin Zoologique, Bassins Piscicoles &amp; Flore Tropicale · Yaoundé, Ahala</span>
             </div>
 
             <h1 className="font-['Barlow_Semi_Condensed'] text-3xl sm:text-4xl lg:text-5xl font-bold text-white tracking-tight leading-tight">
@@ -221,20 +220,20 @@ export const SpeciesAtlas: React.FC = () => {
               )}
             </div>
 
-            {/* Season Filter Dropdown */}
+            {/* UICN Conservation Filter Dropdown (replaces European temperate seasons) */}
             <div className="flex items-center gap-2 text-xs font-mono">
-              <Calendar className="w-4 h-4 text-[var(--brand-primary)]" />
-              <span className="text-[var(--text-muted)]">Saison :</span>
+              <ShieldCheck className="w-4 h-4 text-[var(--brand-primary)]" />
+              <span className="text-[var(--text-muted)]">Statut UICN :</span>
               <select
+                aria-label="Filtrer par statut de conservation UICN"
                 value={selectedSeason}
                 onChange={(e) => setSelectedSeason(e.target.value)}
                 className="px-3 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)] cursor-pointer"
               >
-                <option value="all">Toutes saisons</option>
-                <option value="printemps">Printemps</option>
-                <option value="ete">Été</option>
-                <option value="automne">Automne</option>
-                <option value="hiver">Hiver</option>
+                <option value="all">Tous statuts (8)</option>
+                <option value="protegees">Protection maximale (CR / EN)</option>
+                <option value="menacees">Espèces menacées (CR / EN / VU)</option>
+                <option value="domaine">Élevage, Bassins &amp; Flore (LC / NT)</option>
               </select>
             </div>
           </div>
@@ -368,7 +367,7 @@ export const SpeciesAtlas: React.FC = () => {
                   <div className="flex flex-wrap items-center gap-2 pt-1">
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[11px] font-mono text-[var(--text-primary)]">
                       <Calendar className="w-3 h-3 text-[var(--brand-primary)]" />
-                      <span>{sp.observationSeason.join(' · ')}</span>
+                      <span>Mar au Dim · Saisons sèche &amp; pluies</span>
                     </div>
 
                     <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-[var(--bg-elevated)] border border-[var(--border-default)] text-[11px] font-mono text-[var(--text-muted)]">

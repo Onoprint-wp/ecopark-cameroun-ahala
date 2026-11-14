@@ -14,16 +14,17 @@ import {
   ArrowRight,
   ArrowLeft,
   Leaf,
-  Train,
+  Smartphone,
   Bus,
-  Bike,
   Car,
+  Wallet,
   Check,
   Sparkles,
   Footprints,
   Compass,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
+import { useAuth } from '../../context/AuthContext';
 import {
   ExperienceType,
   TimeSlot,
@@ -52,6 +53,8 @@ export const BookingWizard: React.FC = () => {
     setActivePassId,
   } = useEcoPark();
 
+  const { user } = useAuth();
+
   const selectedTrail = useMemo(
     () => (selectedTrailId ? trails.find((t) => t.id === selectedTrailId) || null : null),
     [selectedTrailId, trails]
@@ -71,17 +74,33 @@ export const BookingWizard: React.FC = () => {
     }
   }, [selectedTrailId]);
   const todayStr = useMemo(() => new Date().toISOString().split('T')[0], []);
-  const [visitDate, setVisitDate] = useState<string>(todayStr);
+  const defaultOpenDateStr = useMemo(() => {
+    const d = new Date();
+    // Monday (1) is weekly biological rest day for Park & Leisure -> default to Tuesday
+    if (d.getDay() === 1) {
+      d.setDate(d.getDate() + 1);
+    }
+    return d.toISOString().split('T')[0];
+  }, []);
+  const [visitDate, setVisitDate] = useState<string>(defaultOpenDateStr);
 
-  // Step 2: Timeslot, Guests & Lead Visitor
-  const [timeSlot, setTimeSlot] = useState<TimeSlot>('08h30 - 11h30');
+  // Step 2: Official Park Timeslot (09h00 - 18h00), Guests & Lead Visitor
+  const [timeSlot, setTimeSlot] = useState<TimeSlot>('09h00 - 12h00');
   const [adultCount, setAdultCount] = useState<number>(2);
   const [childCount, setChildCount] = useState<number>(0);
   const [pmrCount, setPmrCount] = useState<number>(0);
 
-  const [leadName, setLeadName] = useState<string>('');
-  const [leadEmail, setLeadEmail] = useState<string>('');
-  const [leadPhone, setLeadPhone] = useState<string>('+237 672 56 45 98');
+  const [leadName, setLeadName] = useState<string>(() => user?.fullName || '');
+  const [leadEmail, setLeadEmail] = useState<string>(() => user?.email || '');
+  const [leadPhone, setLeadPhone] = useState<string>(() => user?.phone || '');
+
+  useEffect(() => {
+    if (user) {
+      setLeadName((prev) => prev || user.fullName);
+      setLeadEmail((prev) => prev || user.email);
+      setLeadPhone((prev) => prev || user.phone || '');
+    }
+  }, [user]);
 
   // Step 3: Eco-Mobility & Charter
   const [mobilityMode, setMobilityMode] = useState<MobilityMode>('train');
@@ -136,54 +155,59 @@ export const BookingWizard: React.FC = () => {
     );
   }, [experienceType, mobilityMode, adultCount, childCount, pmrCount]);
 
-  // Timeslot catalog with contextual labels
+  // Official Park Timeslots (Mar au Dim 09h00 - 18h00)
   const TIMESLOTS: { id: TimeSlot; label: string; period: string; recommendation: string }[] = [
     {
-      id: '08h30 - 11h30',
-      label: '08h30 - 11h30',
-      period: 'Matinée Canopée',
-      recommendation: 'Idéal faune & fraîcheur matinale',
+      id: '09h00 - 12h00',
+      label: '09h00 - 12h00',
+      period: 'Matinée Fraîcheur',
+      recommendation: 'Idéal visite du Gorille « ToTo », chimpanzés & promenade au bord du lac',
     },
     {
-      id: '11h30 - 14h30',
-      label: '11h30 - 14h30',
-      period: 'Zénith Botanique',
-      recommendation: 'Parfait pour pause panoramique & sentiers ombragés',
+      id: '12h00 - 15h00',
+      label: '12h00 - 15h00',
+      period: 'Zénith & Gastronomie',
+      recommendation: 'Parfait pour déjeuner au « Château des Saveurs » & piscine semi-olympique',
     },
     {
-      id: '14h30 - 17h30',
-      label: '14h30 - 17h30',
-      period: 'Après-Midi Panorama',
-      recommendation: 'Lumière rasante sur les crêtes rocheuses',
-    },
-    {
-      id: '17h30 - 20h00',
-      label: '17h30 - 20h00',
-      period: 'Crépuscule Doré',
-      recommendation: 'Sortie des rapaces nocturnes & observation silence',
+      id: '15h00 - 18h00',
+      label: '15h00 - 18h00',
+      period: 'Après-Midi Détente',
+      recommendation: 'Balade en pirogue sur le lac d’Ahala & initiation au manège équestre',
     },
   ];
 
-  // Helper icons for transport
+  // Semantic icons matching Cameroonian payment & access modes
   const renderMobilityIcon = (mode: MobilityMode) => {
     switch (mode) {
       case 'velo':
-        return <Bike className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
+        return <Users className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
       case 'train':
-        return <Train className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
+        return <Smartphone className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
       case 'navette_electrique':
         return <Bus className="w-5 h-5 text-emerald-600 dark:text-emerald-400" />;
       case 'covoiturage':
-        return <Users className="w-5 h-5 text-amber-600 dark:text-amber-400" />;
+        return <Car className="w-5 h-5 text-amber-600 dark:text-amber-400" />;
       case 'voiture_solo':
-        return <Car className="w-5 h-5 text-[var(--text-muted)]" />;
+        return <Wallet className="w-5 h-5 text-[var(--text-muted)]" />;
     }
   };
 
-  // Step 1 Validation
+  // Step 1 Validation (rejects past dates and Monday weekly closure)
   const validateStep1 = () => {
     if (!visitDate) {
       setFormErrors({ date: 'Veuillez sélectionner une date de visite.' });
+      return false;
+    }
+    if (visitDate < todayStr) {
+      setFormErrors({ date: 'La date de visite ne peut pas être antérieure à aujourd’hui.' });
+      return false;
+    }
+    const dayOfWeek = new Date(`${visitDate}T12:00:00`).getDay();
+    if (dayOfWeek === 1) {
+      setFormErrors({
+        date: 'Le Parc & les Loisirs sont fermés le lundi pour repos biologique hebdomadaire (ouverture du mardi au dimanche de 09h00 à 18h00). Veuillez choisir un autre jour.',
+      });
       return false;
     }
     if (capacityMetrics.available <= 0) {
@@ -209,7 +233,11 @@ export const BookingWizard: React.FC = () => {
       errors.leadName = 'Le nom du visiteur référent est obligatoire.';
     }
     if (!leadEmail.trim() || !leadEmail.includes('@') || !leadEmail.includes('.')) {
-      errors.leadEmail = 'Une adresse email valide est requise pour recevoir l Éco-Pass.';
+      errors.leadEmail = 'Une adresse email valide est requise pour recevoir l’Éco-Pass.';
+    }
+    const digitsOnly = leadPhone.replace(/[^\d]/g, '');
+    if (digitsOnly.length < 8) {
+      errors.leadPhone = 'Veuillez saisir votre numéro WhatsApp / Mobile Money (min. 8 chiffres).';
     }
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
@@ -241,6 +269,8 @@ export const BookingWizard: React.FC = () => {
         email: leadEmail.trim(),
         phone: leadPhone.trim(),
       },
+      ownerUserId: user?.id,
+      ownerEmail: (user?.email || leadEmail).trim().toLowerCase(),
       zeroTraceCharterSigned: true,
     };
 
@@ -518,9 +548,9 @@ export const BookingWizard: React.FC = () => {
                       </ul>
                     </div>
 
-                    <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between">
+                    <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between tabular-nums">
                       <span className="text-[11px] text-[var(--text-muted)]">
-                        Enfant (3–12 ans) : {formatEur(exp.childPrice)}
+                        Enfant (3 à 12 ans) : {formatEur(exp.childPrice)}
                       </span>
                       <div
                         className={`w-5 h-5 rounded-full border flex items-center justify-center ${
@@ -571,7 +601,7 @@ export const BookingWizard: React.FC = () => {
               </h3>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
               {TIMESLOTS.map((slot) => {
                 const isSelected = timeSlot === slot.id;
                 return (
@@ -772,17 +802,28 @@ export const BookingWizard: React.FC = () => {
 
               <div>
                 <label className="block text-xs font-semibold text-[var(--text-primary)] mb-1">
-                  Téléphone (WhatsApp / Mobile Money)
+                  Téléphone (WhatsApp / Mobile Money) *
                 </label>
                 <input
                   type="tel"
-                  placeholder="+237 672 56 45 98"
+                  placeholder="Ex : +237 6XX XX XX XX"
                   value={leadPhone}
                   onChange={(e) => setLeadPhone(e.target.value)}
                   className="w-full px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)] focus:outline-none focus:ring-1 focus:ring-[var(--brand-primary)]"
                 />
+                {formErrors.leadPhone && (
+                  <p className="text-[11px] text-red-600 dark:text-red-400 mt-1 font-semibold">
+                    {formErrors.leadPhone}
+                  </p>
+                )}
               </div>
             </div>
+
+            {!user && (
+              <p className="text-[11px] text-[var(--text-muted)] pt-1">
+                💡 Astuce : créez ensuite votre Espace Cliente avec la même adresse email pour retrouver automatiquement tous vos Pass QR en toute confidentialité.
+              </p>
+            )}
           </div>
 
           {/* Step 2 Actions */}
@@ -820,16 +861,25 @@ export const BookingWizard: React.FC = () => {
           {/* Transport Selector (F21 Engine) */}
           <div className="space-y-3">
             <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <Leaf className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-                <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
-                  Mode d acheminement vers le Parc (Bonus Éco-Mobilité)
-                </h3>
+                <div className="flex items-center gap-2">
+                  <Leaf className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+                  <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+                    Mode d&apos;accès, Paiement &amp; Avantage Groupe
+                  </h3>
+                </div>
+                <span className="text-xs text-[var(--brand-primary)] font-semibold">
+                  -30% dès 20 participants
+                </span>
               </div>
-              <span className="text-xs text-[var(--brand-primary)] font-semibold">
-                Jusqu à -30% de réduction immédiate
-              </span>
-            </div>
+
+              {mobilityMode === 'velo' && totalGuests < 20 && (
+                <div className="p-3.5 rounded-xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2">
+                  <AlertTriangle className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+                  <span className="tabular-nums">
+                    La remise officielle Groupe de <strong>-30 %</strong> s&apos;active automatiquement dès <strong>20 participants</strong> (votre groupe comporte actuellement {totalGuests} pers., tarif unitaire normal appliqué).
+                  </span>
+                </div>
+              )}
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {MOBILITY_OPTIONS.map((opt) => {

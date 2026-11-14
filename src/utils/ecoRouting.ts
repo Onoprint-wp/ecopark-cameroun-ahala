@@ -1,5 +1,5 @@
 // ============================================================================
-// ECOPARK CAMEROUN (YAOUNDÉ – AHALA) — SPA & VERCEL ROUTING ENGINE
+// ECOPARK CAMEROUN (YAOUNDE - AHALA) - SPA & VERCEL ROUTING ENGINE
 // (src/utils/ecoRouting.ts)
 // Bidirectional synchronization between Vercel rewrites, Browser History,
 // ActiveView navigation, and AhalaShowcase tabs.
@@ -8,6 +8,7 @@
 import type { ActiveView } from '../types/ecosystem.ts';
 
 export type ShowcaseTab = 'hebergements' | 'saveurs' | 'tarifs' | 'entreprise' | 'formation';
+export type LegalTab = 'mentions' | 'cgv' | 'confidentialite';
 
 export const VIEW_PATH_MAP: Record<ActiveView, string> = {
   accueil: '/',
@@ -16,6 +17,8 @@ export const VIEW_PATH_MAP: Record<ActiveView, string> = {
   billetterie: '/reserver',
   pass: '/mon-espace',
   ranger: '/exploitation',
+  connexion: '/connexion',
+  legal: '/mentions-legales',
   color_atlas: '/',
 };
 
@@ -56,14 +59,37 @@ export function resolveViewFromPath(pathname: string): ActiveView | null {
   ) {
     return 'billetterie';
   }
-  if (clean === '/mon-espace' || clean === '/mes-reservations') return 'pass';
+  if (
+    clean === '/mon-espace' ||
+    clean === '/mes-reservations' ||
+    clean === '/espace-cliente'
+  ) {
+    return 'pass';
+  }
   if (
     clean === '/exploitation' ||
+    clean === '/cockpit-pro' ||
     clean === '/guichet' ||
     clean === '/direction' ||
     clean === '/admin'
   ) {
     return 'ranger';
+  }
+  if (
+    clean === '/connexion' ||
+    clean === '/login' ||
+    clean === '/inscription' ||
+    clean === '/mon-compte'
+  ) {
+    return 'connexion';
+  }
+  if (
+    clean === '/mentions-legales' ||
+    clean === '/cgv' ||
+    clean === '/cgu' ||
+    clean === '/confidentialite'
+  ) {
+    return 'legal';
   }
   if (
     clean === '/hebergements' ||
@@ -102,6 +128,31 @@ export function resolveShowcaseTabFromPath(pathname: string): ShowcaseTab {
   }
   if (clean === '/formation' || clean === '/formations') return 'formation';
   return 'hebergements';
+}
+
+export function resolveLegalTabFromPath(pathname: string): LegalTab {
+  const clean = pathname.replace(/\/+$/, '').toLowerCase();
+  if (clean === '/cgv' || clean === '/cgu') return 'cgv';
+  if (clean === '/confidentialite') return 'confidentialite';
+  return 'mentions';
+}
+
+export interface ShowcaseNavDetail {
+  tab?: ShowcaseTab;
+  anchorId?: string;
+}
+
+export const SHOWCASE_NAV_EVENT = 'ecopark:showcase-nav';
+
+export function dispatchShowcaseNavigation(detail: ShowcaseNavDetail): void {
+  if (typeof window === 'undefined') return;
+  if (detail.tab) {
+    const nextPath = SHOWCASE_TAB_PATH_MAP[detail.tab];
+    if (window.location.pathname !== nextPath) {
+      window.history.pushState({ showcaseTab: detail.tab }, '', nextPath);
+    }
+  }
+  window.dispatchEvent(new CustomEvent<ShowcaseNavDetail>(SHOWCASE_NAV_EVENT, { detail }));
 }
 
 /**

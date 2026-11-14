@@ -1,5 +1,5 @@
 // ============================================================================
-// AUTOMATED UNIT TESTS — ECO-MOTION ENGINE (src/utils/ecoMotion.test.ts)
+// AUTOMATED UNIT TESTS - ECO-MOTION ENGINE (src/utils/ecoMotion.test.ts)
 // ============================================================================
 
 import test from 'node:test';

@@ -30,8 +30,12 @@ import {
   QrCode,
   Ticket,
   Users,
+  LogOut,
+  Lock,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
+import { useAuth } from '../../context/AuthContext';
+import { getRoleDisplayLabel, isDevEnvironment } from '../../utils/ecoAuth';
 import {
   TrailStatus,
   ReportStatus,
@@ -43,7 +47,6 @@ import {
   getExperienceInfo,
   formatEur,
 } from '../../utils/ecoMobility';
-import { ImmersiveSection } from '../layout/ImmersiveSection';
 
 export const RangerDashboard: React.FC = () => {
   const {
@@ -61,6 +64,8 @@ export const RangerDashboard: React.FC = () => {
     setActivePassId,
     resetToSeedData,
   } = useEcoPark();
+
+  const { user, canManageOps, canCheckIn, logout } = useAuth();
 
   // --------------------------------------------------------------------------
   // State: Reset Confirmation Modal
@@ -96,7 +101,7 @@ export const RangerDashboard: React.FC = () => {
 
   const CLOSURE_PRESETS = [
     'Accès réservé aux résidents des Cités Hôtelières Ewondo, Chanthel & Bene',
-    'Privatisation événementielle — Salle Polyvalente Menkii Essomba Anton (500 places)',
+    'Privatisation événementielle : Salle Polyvalente Menkii Essomba Anton (500 places)',
     'Travaux pratiques d alevinage en cours avec les apprenants du CFP MINEFOP',
     'Repos biologique hebdomadaire du lundi & maintenance préventive des bassins',
     'Entretien des berges du lac d Ahala et contrôle des gilets de pirogue',
@@ -119,7 +124,7 @@ export const RangerDashboard: React.FC = () => {
     if (status === 'ferme') {
       handleOpenClosureDialog(trailId);
     } else if (status === 'balise') {
-      updateTrailStatus(trailId, 'balise', 'Prudence requise — Balisage d entretien en cours');
+      updateTrailStatus(trailId, 'balise', 'Prudence requise : Balisage d entretien en cours');
       showToast(`Sentier passé en statut Balisé / Prudence`);
     } else {
       updateTrailStatus(trailId, 'fluide');
@@ -382,70 +387,89 @@ export const RangerDashboard: React.FC = () => {
   };
 
   return (
-    <div className="space-y-10 pb-16">
+    <div className="space-y-8 pt-6 pb-16 font-sans tabular-nums">
       {/* Toast Notification */}
       {toastMessage && (
-        <div className="fixed bottom-6 right-6 z-50 p-4 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-semibold shadow-2xl flex items-center gap-2 border border-emerald-400 animate-in fade-in slide-in-from-bottom duration-200">
+        <div className="fixed bottom-6 right-6 z-50 p-4 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-semibold shadow-2xl flex items-center gap-2 border border-emerald-400">
           <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
           <span>{toastMessage}</span>
         </div>
       )}
 
-      {/* Immersive Section Header */}
-      <ImmersiveSection variant="bark" className="py-10">
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div>
-            <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-300">
-              <ShieldAlert className="w-4 h-4 text-amber-400" />
-              <span>Poste de Commandement Central</span>
-            </div>
-            <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
-              Console de Supervision Éco-Garde
-            </h1>
-          </div>
-          <div className="text-xs text-[#E9F5ED]/80 font-mono bg-[#121614]/80 px-3 py-2 rounded-xl border border-[#36403A]">
-            Contrôle Dynamique des 6 Sentiers &amp; Régulation des Quotas
-          </div>
-        </div>
-      </ImmersiveSection>
-
-      {/* Cockpit Officer & Status Bar */}
-      <div className="eco-container">
-        <div className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white shadow-sm shrink-0">
-              <ShieldAlert className="w-6 h-6" />
+      {/* Cockpit Officer & RBAC Session Bar (Profil C : palier strict < 20px, cibles >= 48px, Sun Mode ready) */}
+      <div className="eco-container space-y-4">
+        <div className="p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-col md:flex-row md:items-center justify-between gap-4 shadow-sm">
+          <div className="flex items-center gap-3.5">
+            <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-amber-600 to-amber-800 flex items-center justify-center text-white shadow-sm shrink-0">
+              <ShieldAlert className="w-5 h-5" />
             </div>
             <div>
-              <div className="flex items-center gap-2">
+              <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
-                  Poste de Commandement Central
+                  {getRoleDisplayLabel(user?.role)}
                 </span>
                 <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-mono font-bold bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300">
                   <Radio className="w-2.5 h-2.5 animate-pulse text-emerald-500" />
-                  VHF CANAL 15 ACTIF
+                  SESSION AUTHENTIFIÉE
                 </span>
               </div>
-              <h1 className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-0.5">
-                Garde Chef : Thomas D. (#GARDE-04)
+              <h1 className="font-sans text-base font-bold text-[var(--text-primary)] mt-0.5">
+                Console Exploitation &amp; Guichet RN3 · {user?.fullName || 'Agent Habilité'}{' '}
+                {user?.matricule ? `(${user.matricule})` : ''}
               </h1>
-              <p className="text-xs text-[var(--text-muted)]">
-                Supervision temps réel des 6 sentiers, des créneaux d affluence et de la sécurité terrain
+              <p className="text-xs text-[var(--text-muted)] font-mono">
+                {user?.email} · Pôle affecté : {(user?.assignedPole || 'global').toUpperCase()}
               </p>
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            {isDevEnvironment() && canManageOps && (
+              <button
+                type="button"
+                onClick={() => setShowResetConfirm(true)}
+                className="min-h-[48px] inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-surface)] text-xs font-semibold text-[var(--text-primary)] transition-all cursor-pointer shadow-xs active:scale-95"
+                title="Réinitialiser les données de développement"
+              >
+                <RotateCcw className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
+                <span>Reset (DEV)</span>
+              </button>
+            )}
+
             <button
-              onClick={() => setShowResetConfirm(true)}
-              className="inline-flex items-center gap-2 px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-surface)] text-xs font-semibold text-[var(--text-primary)] transition-all cursor-pointer shadow-xs active:scale-95"
-              title="Réinitialiser les données aux valeurs de référence initiales"
+              type="button"
+              onClick={() => setActiveView('connexion')}
+              className="min-h-[48px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-[var(--bg-surface)] text-xs font-semibold text-[var(--text-primary)] cursor-pointer"
             >
-              <RotateCcw className="w-3.5 h-3.5 text-amber-600 dark:text-amber-400" />
-              <span>Réinitialiser la Démo</span>
+              <Lock className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
+              <span>Sécurité Compte</span>
+            </button>
+
+            <button
+              type="button"
+              onClick={async () => {
+                await logout();
+                setActiveView('accueil');
+              }}
+              className="min-h-[48px] inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-red-600 hover:bg-red-700 text-white text-xs font-bold cursor-pointer shadow-xs"
+            >
+              <LogOut className="w-3.5 h-3.5" />
+              <span>Déconnexion</span>
             </button>
           </div>
         </div>
+
+        {!canManageOps && (
+          <div className="p-4 rounded-2xl bg-amber-50 dark:bg-amber-950/40 border border-amber-300 dark:border-amber-800 text-xs text-amber-900 dark:text-amber-200 flex items-center gap-2.5">
+            <Lock className="w-4 h-4 text-amber-600 dark:text-amber-400 shrink-0" />
+            <span>
+              <strong>Habilitation RBAC ({getRoleDisplayLabel(user?.role)}) :</strong>{' '}
+              {canCheckIn
+                ? 'Vous êtes habilité(e) au scan et à la validation des entrées QR au Guichet RN3. La modification de la jauge globale et la fermeture de secteurs requièrent un profil Chef d’Exploitation ou Direction.'
+                : 'Mode audit financier et consultation en lecture seule. Les actions d’exploitation terrain et de billetterie sont verrouillées.'}
+            </span>
+          </div>
+        )}
       </div>
 
       {/* Main Cockpit Sections */}
@@ -463,7 +487,7 @@ export const RangerDashboard: React.FC = () => {
                 </div>
                 <h2
                   id="quota-regulator-title"
-                  className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+                  className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
                 >
                   Régulateur de Capacité Journalière
                 </h2>
@@ -473,13 +497,13 @@ export const RangerDashboard: React.FC = () => {
                 </p>
               </div>
 
-              {/* Big Quota Indicator */}
-              <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-right font-mono min-w-[200px] shadow-xs">
+              {/* Operational Quota Indicator (< 20px Profil C) */}
+              <div className="p-4 rounded-2xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-right font-mono min-w-[200px] shadow-xs tabular-nums">
                 <div className="text-[11px] text-[var(--text-muted)] uppercase tracking-wider">
                   Plafond Fixé
                 </div>
-                <div className="text-3xl sm:text-4xl font-['Barlow_Semi_Condensed'] font-bold text-[var(--brand-primary)]">
-                  {telemetry.dailyCapacityMax}
+                <div className="text-[18px] leading-6 font-bold text-[var(--brand-primary)] tabular-nums mt-0.5">
+                  {telemetry.dailyCapacityMax} places
                 </div>
                 <div className="text-xs text-[var(--text-muted)] mt-0.5">
                   visiteurs max / 24h
@@ -494,9 +518,10 @@ export const RangerDashboard: React.FC = () => {
                 min={500}
                 max={2500}
                 step={50}
+                disabled={!canManageOps}
                 value={telemetry.dailyCapacityMax}
-                onChange={(e) => setDailyCapacity(Number(e.target.value))}
-                className="w-full h-3 rounded-lg bg-[var(--bg-canvas)] accent-[var(--brand-primary)] cursor-pointer border border-[var(--border-default)]"
+                onChange={(e) => canManageOps && setDailyCapacity(Number(e.target.value))}
+                className="w-full h-3 rounded-lg bg-[var(--bg-canvas)] accent-[var(--brand-primary)] cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed border border-[var(--border-default)]"
                 aria-label="Ajuster le quota journalier de visiteurs"
               />
 
@@ -517,13 +542,16 @@ export const RangerDashboard: React.FC = () => {
                 return (
                   <button
                     key={presetVal}
+                    type="button"
+                    disabled={!canManageOps}
                     onClick={() => {
+                      if (!canManageOps) return;
                       setDailyCapacity(presetVal);
                       showToast(`Quota ajusté à ${presetVal} visiteurs`);
                     }}
-                    className={`px-3 py-1.5 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer ${
+                    className={`min-h-[48px] px-3.5 py-2 rounded-xl border text-xs font-mono font-bold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                       isActive
-                        ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-xs scale-105'
+                        ? 'bg-[var(--brand-primary)] text-white border-[var(--brand-primary)] shadow-xs'
                         : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:border-[var(--brand-primary)]'
                     }`}
                   >
@@ -777,7 +805,7 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="trail-status-manager-title"
-                className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+                className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
               >
                 Contrôle d État des 6 Sentiers Officiels
               </h2>
@@ -893,8 +921,10 @@ export const RangerDashboard: React.FC = () => {
 
                     <div className="grid grid-cols-3 gap-1.5 text-xs">
                       <button
-                        onClick={() => handleSetTrailStatus(trail.id, 'fluide')}
-                        className={`p-2 rounded-xl border font-bold text-center transition-all cursor-pointer ${
+                        type="button"
+                        disabled={!canManageOps}
+                        onClick={() => canManageOps && handleSetTrailStatus(trail.id, 'fluide')}
+                        className={`min-h-[48px] p-2 rounded-xl border font-bold text-center transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                           trail.status === 'fluide'
                             ? 'bg-emerald-600 text-white border-emerald-600 shadow-xs'
                             : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--bg-canvas)]'
@@ -904,8 +934,10 @@ export const RangerDashboard: React.FC = () => {
                       </button>
 
                       <button
-                        onClick={() => handleSetTrailStatus(trail.id, 'balise')}
-                        className={`p-2 rounded-xl border font-bold text-center transition-all cursor-pointer ${
+                        type="button"
+                        disabled={!canManageOps}
+                        onClick={() => canManageOps && handleSetTrailStatus(trail.id, 'balise')}
+                        className={`min-h-[48px] p-2 rounded-xl border font-bold text-center transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                           trail.status === 'balise'
                             ? 'bg-amber-600 text-white border-amber-600 shadow-xs'
                             : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--bg-canvas)]'
@@ -915,8 +947,10 @@ export const RangerDashboard: React.FC = () => {
                       </button>
 
                       <button
-                        onClick={() => handleSetTrailStatus(trail.id, 'ferme')}
-                        className={`p-2 rounded-xl border font-bold text-center transition-all cursor-pointer ${
+                        type="button"
+                        disabled={!canManageOps}
+                        onClick={() => canManageOps && handleSetTrailStatus(trail.id, 'ferme')}
+                        className={`min-h-[48px] p-2 rounded-xl border font-bold text-center transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed ${
                           trail.status === 'ferme'
                             ? 'bg-red-600 text-white border-red-600 shadow-xs'
                             : 'bg-[var(--bg-elevated)] text-[var(--text-primary)] border-[var(--border-default)] hover:bg-[var(--bg-canvas)]'
@@ -944,7 +978,7 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="guichet-pass-control-title"
-                className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+                className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
               >
                 Contrôle en Direct des Éco-Pass &amp; Validation Check-In
               </h2>
@@ -1031,35 +1065,35 @@ export const RangerDashboard: React.FC = () => {
                         setActivePassId(pass.id);
                         setActiveView('pass');
                       }}
-                      className="px-3 py-1.5 rounded-xl bg-[var(--bg-elevated)] hover:bg-[var(--bg-canvas)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] cursor-pointer inline-flex items-center gap-1.5"
+                      className="min-h-[48px] px-3.5 py-2 rounded-xl bg-[var(--bg-elevated)] hover:bg-[var(--bg-canvas)] border border-[var(--border-default)] text-xs font-semibold text-[var(--text-primary)] cursor-pointer inline-flex items-center gap-1.5"
                     >
                       <QrCode className="w-3.5 h-3.5 text-[var(--brand-primary)]" />
                       <span>Voir QR</span>
                     </button>
 
                     <div className="flex items-center gap-1.5">
-                      {pass.status === 'confirmed' && (
+                      {pass.status === 'confirmed' && canCheckIn && (
                         <button
                           type="button"
                           onClick={() => {
                             checkInPass(pass.id);
                             showToast(`Entrée validée au guichet pour ${pass.id} (${pass.guestCount} pers.)`);
                           }}
-                          className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer inline-flex items-center gap-1 shadow-xs active:scale-95 transition-transform"
+                          className="min-h-[48px] px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-bold cursor-pointer inline-flex items-center gap-1 shadow-xs active:scale-95 transition-transform"
                         >
                           <CheckCircle2 className="w-3.5 h-3.5" />
                           <span>Check-In</span>
                         </button>
                       )}
 
-                      {pass.status !== 'cancelled' && (
+                      {pass.status !== 'cancelled' && canManageOps && (
                         <button
                           type="button"
                           onClick={() => {
                             cancelPass(pass.id);
-                            showToast(`Pass ${pass.id} annulé — quota mis à jour`);
+                            showToast(`Pass ${pass.id} annulé : quota mis à jour`);
                           }}
-                          className="px-2.5 py-1.5 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
+                          className="min-h-[48px] px-3 py-2 rounded-xl text-xs font-semibold text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-950/40 cursor-pointer"
                           title="Annuler ce billet et restituer la jauge"
                         >
                           Annuler
@@ -1085,7 +1119,7 @@ export const RangerDashboard: React.FC = () => {
               </div>
               <h2
                 id="sentinel-moderation-title"
-                className="font-['Barlow_Semi_Condensed'] text-xl sm:text-2xl font-bold text-[var(--text-primary)] mt-1"
+                className="font-sans text-base font-bold text-[var(--text-primary)] mt-1"
               >
                 File de Modération des Signalements Sentinelle
               </h2>
@@ -1311,8 +1345,10 @@ export const RangerDashboard: React.FC = () => {
                       <div className="flex flex-wrap items-center gap-2">
                         {!isValidated && !isResolved && (
                           <button
-                            onClick={() => handleValidateReport(rep.id)}
-                            className="px-3 py-1.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
+                            type="button"
+                            disabled={!canManageOps}
+                            onClick={() => canManageOps && handleValidateReport(rep.id)}
+                            className="min-h-[48px] px-3.5 py-2 rounded-xl bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs active:scale-95 flex items-center gap-1"
                           >
                             <Check className="w-3.5 h-3.5" />
                             <span>Valider</span>
@@ -1321,8 +1357,10 @@ export const RangerDashboard: React.FC = () => {
 
                         {!isResolved && (
                           <button
-                            onClick={() => handleOpenResolutionDialog(rep.id)}
-                            className="px-3 py-1.5 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold transition-all cursor-pointer shadow-xs active:scale-95 flex items-center gap-1"
+                            type="button"
+                            disabled={!canManageOps}
+                            onClick={() => canManageOps && handleOpenResolutionDialog(rep.id)}
+                            className="min-h-[48px] px-3.5 py-2 rounded-xl bg-sky-600 hover:bg-sky-700 text-white text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed shadow-xs active:scale-95 flex items-center gap-1"
                           >
                             <CheckCircle2 className="w-3.5 h-3.5" />
                             <span>Résoudre &amp; Commenter</span>
@@ -1331,8 +1369,10 @@ export const RangerDashboard: React.FC = () => {
 
                         {!isRejected && (
                           <button
-                            onClick={() => handleRejectReport(rep.id)}
-                            className="px-3 py-1.5 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/40 text-[var(--text-muted)] text-xs font-semibold transition-all cursor-pointer"
+                            type="button"
+                            disabled={!canManageOps}
+                            onClick={() => canManageOps && handleRejectReport(rep.id)}
+                            className="min-h-[48px] px-3.5 py-2 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] hover:bg-red-50 hover:text-red-700 dark:hover:bg-red-950/40 text-[var(--text-muted)] text-xs font-semibold transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             <span>Rejeter</span>
                           </button>

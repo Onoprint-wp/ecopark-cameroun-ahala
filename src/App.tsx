@@ -1,5 +1,5 @@
 // ============================================================================
-// ECOPARK CAMEROUN (YAOUNDÉ – AHALA) — APPLICATION SHELL & VIEW ROUTER
+// ECOPARK CAMEROUN (YAOUNDE - AHALA) - APPLICATION SHELL & VIEW ROUTER
 // (src/App.tsx)
 // ============================================================================
 
@@ -18,8 +18,12 @@ import { BookingWizard } from './components/booking/BookingWizard';
 import { DigitalEcoPass } from './components/booking/DigitalEcoPass';
 import { CitizenSentinel } from './components/field/CitizenSentinel';
 import { RangerDashboard } from './components/admin/RangerDashboard';
+import { AuthPortal } from './components/auth/AuthPortal';
+import { LegalNoticeView } from './components/legal/LegalNoticeView';
 import { ColorAtlasDrawer } from './components/design-system/ColorAtlasDrawer';
 import { useEcoPark } from './context/EcoParkContext';
+import { useAuth } from './context/AuthContext';
+import { getRoleDisplayLabel, isDevEnvironment } from './utils/ecoAuth';
 import { recordMotionOrigin, useEcoMotion } from './utils/ecoMotion';
 import { getPhotoObjectPosition } from './utils/ecoRouting';
 import {
@@ -30,6 +34,10 @@ import {
   AlertTriangle,
   XCircle,
   ChevronRight,
+  ShieldAlert,
+  Lock,
+  User,
+  LogOut,
 } from 'lucide-react';
 import { TrailStatus } from './types/ecosystem';
 
@@ -45,6 +53,15 @@ export default function App() {
     species,
     setSelectedSpeciesId,
   } = useEcoPark();
+
+  const {
+    user,
+    isAuthLoading,
+    isAuthenticated,
+    isStaff,
+    logout,
+    setAuthPortalMode,
+  } = useAuth();
 
   // Global kinetic sobriety governance (tab visibility, OLED pause, reduced-motion)
   useEcoMotion(effectiveTheme === 'dark');
@@ -105,14 +122,14 @@ export default function App() {
               <AhalaShowcase />
 
               {/* Quick Circuits & Zones Showcase */}
-              <div className="eco-container space-y-6">
+              <div className="eco-container space-y-6 tabular-nums">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                   <div>
-                    <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
+                    <span className="type-eyebrow uppercase">
                       Orientation &amp; Plan du Domaine d&apos;Ahala
                     </span>
-                    <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
-                      Les 6 Circuits &amp; Secteurs Officiels du Parc
+                    <h2 className="type-h2 text-[var(--text-primary)] mt-1">
+                      Six circuits balisés au cœur d&apos;Ahala.
                     </h2>
                   </div>
                   <button
@@ -120,9 +137,9 @@ export default function App() {
                       recordMotionOrigin(e);
                       setActiveView('sentiers');
                     }}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
+                    className="cta-chevron self-start sm:self-auto"
                   >
-                    <span>Ouvrir la carte interactive complète du domaine</span>
+                    <span>Ouvrir la carte interactive</span>
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -139,26 +156,26 @@ export default function App() {
                       }}
                       className={`${
                         spotlightTrailId === trail.id ? 'vt-trail-spotlight ' : ''
-                      }p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group flex flex-col justify-between`}
+                      }p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer group flex flex-col justify-between tabular-nums`}
                     >
                       <div className="space-y-3">
                         <div className="flex items-center justify-between gap-2">
                           {renderTrailStatusBadge(trail.status)}
-                          <span className="text-xs font-mono font-medium text-[var(--text-muted)]">
+                          <span className="text-xs font-mono font-medium text-[var(--text-muted)] tabular-nums">
                             {trail.lengthKm} km · {Math.floor(trail.durationMin / 60)}h{trail.durationMin % 60 > 0 ? `${trail.durationMin % 60}` : '00'}
                           </span>
                         </div>
 
-                        <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)] group-hover:text-[var(--brand-primary)] transition-colors">
+                        <h3 className="type-h3 !text-xl text-[var(--text-primary)] group-hover:text-[var(--brand-primary)] transition-colors">
                           {trail.name}
                         </h3>
 
-                        <p className="text-xs text-[var(--text-muted)] line-clamp-2 leading-relaxed">
+                        <p className="type-body !text-xs sm:!text-sm text-[var(--text-muted)] line-clamp-2">
                           {trail.description}
                         </p>
                       </div>
 
-                      <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between text-xs text-[var(--text-muted)]">
+                      <div className="pt-4 mt-4 border-t border-[var(--border-default)]/60 flex items-center justify-between text-xs text-[var(--text-muted)] tabular-nums">
                         <span className="truncate pr-2">{trail.biomeLabel}</span>
                         <span className="font-mono text-[var(--text-primary)] font-semibold shrink-0">Alt. {trail.maxElevationM}m</span>
                       </div>
@@ -168,14 +185,14 @@ export default function App() {
               </div>
 
               {/* Quick Zoological & Heritage Showcase */}
-              <div className="eco-container space-y-6 pt-2">
+              <div className="eco-container space-y-6 pt-2 tabular-nums">
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-4">
                   <div>
-                    <span className="text-xs font-semibold tracking-wider text-[var(--brand-primary)] uppercase">
+                    <span className="type-eyebrow uppercase">
                       Jardin Zoologique &amp; Patrimoine Vivant d&apos;Ahala
                     </span>
-                    <h2 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-3xl font-bold text-[var(--text-primary)] mt-1">
-                      Gorille « ToTo », Chimpanzés, Bassins Piscicoles &amp; Flore
+                    <h2 className="type-h2 text-[var(--text-primary)] mt-1">
+                      Gorille « ToTo », chimpanzés, bassins et flore.
                     </h2>
                   </div>
                   <button
@@ -184,9 +201,9 @@ export default function App() {
                       setSelectedSpeciesId(null);
                       setActiveView('biodiversite');
                     }}
-                    className="inline-flex items-center gap-1 text-sm font-semibold text-[var(--brand-primary)] hover:underline cursor-pointer"
+                    className="cta-chevron self-start sm:self-auto"
                   >
-                    <span>Consulter les 8 fiches du Jardin Zoologique &amp; Biodiversité</span>
+                    <span>Consulter les 8 fiches biodiversité</span>
                     <ChevronRight className="w-4 h-4" />
                   </button>
                 </div>
@@ -244,10 +261,10 @@ export default function App() {
                 <div className="space-y-1">
                   <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#B7E4C7]">
                     <Compass className="w-4 h-4 text-[#74C69D]" />
-                    <span>Cartographie Interactive d&apos;ECOPARK CAMEROUN (Yaoundé – Ahala, RN3)</span>
+                    <span>Cartographie Interactive d&apos;ECOPARK CAMEROUN (Yaoundé - Ahala, RN3)</span>
                   </div>
-                  <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
-                    Plan du Parc, 10 Pôles &amp; 6 Circuits Officiels
+                  <h1 className="type-h2 text-white mt-1">
+                    Plan du parc et six circuits officiels.
                   </h1>
                 </div>
                 <div className="text-xs text-[#E9F5ED]/80 font-mono bg-[#1F2421]/80 px-3 py-2 rounded-xl border border-[#36403A]">
@@ -260,7 +277,7 @@ export default function App() {
               {/* Interactive Topographic Map (F16) */}
               <InteractiveTopoMap scrubPoint={scrubPoint} />
 
-              {/* Synchronized Elevation Profile with Scrubber (F17) — Shared Element Target */}
+              {/* Synchronized Elevation Profile with Scrubber (F17) - Shared Element Target */}
               <ElevationProfile onScrub={setScrubPoint} className="vt-trail-spotlight" />
 
               {/* Trail Catalog & Multicriteria Filters (F18) */}
@@ -295,11 +312,11 @@ export default function App() {
                     <Ticket className="w-4 h-4 text-[#74C69D]" />
                     <span>Billetterie Officielle en FCFA · Orange Money (#150#) · MTN MoMo (*126#) · Guichet</span>
                   </div>
-                  <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
-                    Réserver votre Pass QR Code — ECOPARK CAMEROUN (Yaoundé – Ahala)
+                  <h1 className="type-h2 text-white mt-1">
+                    Réservez votre Pass QR à Yaoundé, Ahala.
                   </h1>
                 </div>
-                <div className="text-xs text-[#E9F5ED]/80 font-mono bg-[#0B1D15]/60 px-3 py-2 rounded-xl border border-[#36403A]">
+                <div className="text-xs text-[#E9F5ED]/80 font-mono bg-[#0B1D15]/60 px-3 py-2 rounded-xl border border-[#36403A] tabular-nums">
                   Places disponibles aujourd&apos;hui : {Math.max(0, telemetry.dailyCapacityMax - telemetry.currentOccupancy)} / {telemetry.dailyCapacityMax}
                 </div>
               </div>
@@ -312,7 +329,7 @@ export default function App() {
         )}
 
         {/* ================================================================= */}
-        {/* VUE 5 : MON PASS QR (ECP-2026-XXXXX) & AVIS VISITEURS (F22..F25)  */}
+        {/* VUE 5 : ESPACE CLIENTE (/mon-espace) - AUTHENTIFICATION REQUISE    */}
         {/* ================================================================= */}
         {activeView === 'pass' && (
           <div className="eco-view-enter space-y-10 pb-16">
@@ -321,44 +338,172 @@ export default function App() {
                 <div>
                   <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-[#74C69D]">
                     <QrCode className="w-4 h-4 text-[#52B788]" />
-                    <span>Espace Visiteur &amp; Pass QR Code (ECP-2026-XXXXX)</span>
+                    <span>Espace Cliente Sécurisé &amp; Pass QR Code (ECP-2026-XXXXX)</span>
                   </div>
                   <h1 className="font-['Barlow_Semi_Condensed'] text-2xl sm:text-4xl font-bold text-white mt-1">
-                    Mon Pass QR &amp; Retours d&apos;Expérience à Ahala
+                    {isAuthenticated && user
+                      ? `Bienvenue, ${user.fullName}`
+                      : 'Mon Espace Cliente & Mes Réservations QR'}
                   </h1>
                 </div>
-                <div className="text-xs text-[#E9F5ED]/80 font-mono bg-[#121614]/80 px-3 py-2 rounded-xl border border-[#36403A]">
-                  Garantie Météo RN3 (Report gratuit 90j) · Mode Plein Soleil &amp; OLED
-                </div>
+
+                {isAuthenticated && user ? (
+                  <div className="flex flex-wrap items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => setActiveView('connexion')}
+                      className="px-3.5 py-2 rounded-xl bg-white/10 hover:bg-white/20 border border-white/20 text-xs font-semibold text-white inline-flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <User className="w-3.5 h-3.5 text-[#74C69D]" />
+                      <span>Mon Compte ({getRoleDisplayLabel(user.role)})</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await logout();
+                        setActiveView('accueil');
+                      }}
+                      className="px-3.5 py-2 rounded-xl bg-rose-950/60 hover:bg-rose-900/80 border border-rose-500/40 text-xs font-semibold text-rose-200 inline-flex items-center gap-1.5 cursor-pointer"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Déconnexion</span>
+                    </button>
+                  </div>
+                ) : (
+                  <div className="text-xs text-[#E9F5ED]/80 font-mono bg-[#121614]/80 px-3 py-2 rounded-xl border border-[#36403A]">
+                    Données personnelles protégées (Loi n° 2010/012) · Garantie Météo 90j
+                  </div>
+                )}
               </div>
             </ImmersiveSection>
 
             <div className="eco-container space-y-12">
-              {/* Feature F22 & F23: Interactive Digital Eco-Pass Card */}
-              <section aria-label="Mon Éco-Pass Actif">
-                <DigitalEcoPass />
-              </section>
+              {isAuthLoading ? (
+                <div className="max-w-xl mx-auto p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center text-sm text-[var(--text-muted)] font-mono">
+                  Vérification de votre session chiffrée...
+                </div>
+              ) : !isAuthenticated ? (
+                <div className="space-y-6">
+                  <div className="max-w-xl mx-auto p-4 rounded-2xl bg-emerald-50/80 dark:bg-emerald-950/40 border border-emerald-300 dark:border-emerald-800 flex items-start gap-3 text-xs text-emerald-950 dark:text-emerald-100">
+                    <Lock className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0 mt-0.5" />
+                    <div>
+                      <strong>Confidentialité &amp; Cloisonnement des Billets :</strong> Pour protéger vos coordonnées et vos Pass QR nominatifs, connectez-vous ou créez gratuitement votre Espace Cliente ci-dessous. Vous pourrez également rattacher un billet déjà réservé (<code>ECP-2026-XXXXX</code>).
+                    </div>
+                  </div>
+                  <AuthPortal forcedMode="client_login" targetAfterAuth="pass" embedded />
+                </div>
+              ) : (
+                <>
+                  {/* Feature F22 & F23: Personal Scoped Digital Eco-Pass Card */}
+                  <section aria-label="Mes Éco-Pass Nominatifs">
+                    <DigitalEcoPass />
+                  </section>
 
-              {/* Feature F24 & F25: Citizen Sentinel Field Form & Community Feed */}
-              <section aria-label="Sentinelle Nature &amp; Veille Participative" className="pt-6 border-t border-[var(--border-default)]">
-                <CitizenSentinel />
-              </section>
+                  {/* Feature F24 & F25: Citizen Sentinel Field Form & Community Feed */}
+                  <section
+                    aria-label="Sentinelle Nature &amp; Veille Participative"
+                    className="pt-6 border-t border-[var(--border-default)]"
+                  >
+                    <CitizenSentinel />
+                  </section>
+                </>
+              )}
             </div>
           </div>
         )}
 
         {/* ================================================================= */}
-        {/* VUE 6 : CONSOLE DE SUPERVISION ÉCO-GARDE (F26, F27, F28)          */}
+        {/* VUE 6 : COCKPIT PRO (/exploitation) - PROFIL C STRICT (< 20px)     */}
         {/* ================================================================= */}
         {activeView === 'ranger' && (
           <div className="eco-view-enter">
-            <RangerDashboard />
+            {isAuthLoading ? (
+              <div className="eco-container py-16">
+                <div className="max-w-xl mx-auto p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center text-sm text-[var(--text-muted)] font-mono">
+                  Vérification des habilitations Cockpit Pro...
+                </div>
+              </div>
+            ) : !isAuthenticated ? (
+              <div className="space-y-6 pt-6 pb-16 font-sans tabular-nums">
+                <div className="eco-container">
+                  <div className="p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] flex flex-col md:flex-row md:items-center justify-between gap-3">
+                    <div>
+                      <div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                        <ShieldAlert className="w-4 h-4" />
+                        <span>Accès Professionnel Protégé · RBAC ECOPARK CAMEROUN</span>
+                      </div>
+                      <h1 className="font-sans text-base font-bold text-[var(--text-primary)] mt-0.5">
+                        Authentification Cockpit Pro &amp; Exploitation Ahala
+                      </h1>
+                    </div>
+                    <div className="text-xs text-[var(--text-muted)] font-mono bg-[var(--bg-elevated)] px-3 py-2 rounded-xl border border-[var(--border-default)]">
+                      Direction · Exploitation · Contrôle QR RN3 · Comptabilité
+                    </div>
+                  </div>
+                </div>
+
+                <div className="eco-container">
+                  <AuthPortal forcedMode="staff_login" targetAfterAuth="ranger" embedded />
+                </div>
+              </div>
+            ) : !isStaff ? (
+              <div className="eco-container py-16 font-sans">
+                <div className="max-w-xl mx-auto p-8 rounded-3xl bg-[var(--bg-surface)] border border-amber-400/60 shadow-xl text-center space-y-5">
+                  <div className="w-14 h-14 rounded-2xl bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300 mx-auto flex items-center justify-center">
+                    <ShieldAlert className="w-7 h-7" />
+                  </div>
+                  <div className="space-y-2">
+                    <span className="text-xs font-mono font-bold uppercase tracking-wider text-amber-700 dark:text-amber-400">
+                      Erreur 403 · Habilitation Insuffisante
+                    </span>
+                    <h1 className="font-sans text-base font-bold text-[var(--text-primary)]">
+                      Zone Réservée au Personnel d&apos;Exploitation
+                    </h1>
+                    <p className="text-xs sm:text-sm text-[var(--text-muted)] leading-relaxed">
+                      Vous êtes actuellement connecté(e) en tant que <strong>{user?.fullName}</strong> (<code>Espace Cliente</code>). Le Cockpit Pro d&apos;Ahala est strictement réservé aux agents habilités de MPECK MULTI-SERVICES.
+                    </p>
+                  </div>
+                  <div className="flex flex-wrap items-center justify-center gap-3 pt-2">
+                    <button
+                      type="button"
+                      onClick={() => setActiveView('pass')}
+                      className="min-h-[48px] px-5 py-2.5 rounded-xl bg-[var(--brand-primary)] hover:bg-[var(--brand-secondary)] text-white text-xs font-bold cursor-pointer"
+                    >
+                      Retourner à mon Espace Cliente
+                    </button>
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        await logout();
+                        setAuthPortalMode('staff_login');
+                        setActiveView('connexion');
+                      }}
+                      className="min-h-[48px] px-5 py-2.5 rounded-xl border border-[var(--border-default)] bg-[var(--bg-elevated)] text-xs font-semibold text-[var(--text-primary)] hover:border-amber-500 cursor-pointer"
+                    >
+                      Changer de compte (Staff)
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ) : (
+              <RangerDashboard />
+            )}
           </div>
         )}
+
+        {/* ================================================================= */}
+        {/* VUE 7 : PORTAIL /Connexion (CLIENT, INSCRIPTION, STAFF & PROFIL)  */}
+        {/* ================================================================= */}
+        {activeView === 'connexion' && <AuthPortal />}
+
+        {/* ================================================================= */}
+        {/* VUE 8 : MENTIONS LÉGALES, CGV & POLITIQUE DE CONFIDENTIALITÉ      */}
+        {/* ================================================================= */}
+        {activeView === 'legal' && <LegalNoticeView />}
       </main>
 
-      {/* Slide-over Color Atlas Drawer & WCAG Tester (F29, F30) */}
-      <ColorAtlasDrawer />
+      {/* Slide-over Color Atlas Drawer - Restricted to DEV or explicit /atelier-couleurs route */}
+      {(isDevEnvironment() || activeView === 'color_atlas') && <ColorAtlasDrawer />}
 
       {/* Ecological Footer */}
       <Footer />

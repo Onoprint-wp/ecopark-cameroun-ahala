@@ -1,5 +1,5 @@
 // ============================================================================
-// AUTOMATED UNIT TESTS — QR CODE GENERATOR (src/utils/qrCodeGenerator.test.ts)
+// AUTOMATED UNIT TESTS - QR CODE GENERATOR (src/utils/qrCodeGenerator.test.ts)
 // ISO/IEC 18004 Matrix Verification & SVG Path Integrity
 // ============================================================================
 

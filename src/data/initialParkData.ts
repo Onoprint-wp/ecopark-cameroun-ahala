@@ -1,5 +1,5 @@
 // ============================================================================
-// ECOPARK CAMEROUN (YAOUNDÉ – AHALA) — VALIDATED PRODUCTION DATASET
+// ECOPARK CAMEROUN (YAOUNDÉ, AHALA) - VALIDATED PRODUCTION DATASET
 // (src/data/initialParkData.ts)
 // ============================================================================
 
@@ -13,7 +13,7 @@ import type {
 } from '../types/ecosystem.ts';
 
 // ----------------------------------------------------------------------------
-// 1. PARK TELEMETRY SEED (Yaoundé – Ahala Barrière, RN3)
+// 1. PARK TELEMETRY SEED (Yaoundé, Ahala Barrière, RN3)
 // ----------------------------------------------------------------------------
 export const INITIAL_TELEMETRY: ParkTelemetry = {
   dailyCapacityMax: 1500,
@@ -81,7 +81,7 @@ export const INITIAL_POIS: PointOfInterest[] = [
     coordinates: { x: 450, y: 310 },
     trailIds: ['canopee', 'marais'],
     iconName: 'Trees',
-    services: ['07h00–23h00 7j/7', 'Pergolas privatives', 'Salle VIP New Look'],
+    services: ['07h00-23h00 7j/7', 'Pergolas privatives', 'Salle VIP New Look'],
   },
   {
     id: 'poi-grand-cedre',
@@ -89,7 +89,7 @@ export const INITIAL_POIS: PointOfInterest[] = [
     categoryLabel: 'Hôtellerie 24h/24',
     name: 'Cités Hôtelières : Ewondo VIP, Chanthel & Bene (30 Unités)',
     description:
-      '30 chambres, loges et suites nichées dans la verdure : Hôtel Ewondo Mini-Suites VIP (25 000–30 000 FCFA), Hôtel Chanthel (15 000–25 000 FCFA), Hôtel Bene (10 000–15 000 FCFA) et Suites Prestige VIP (30 000–45 000 FCFA).',
+      '30 chambres, loges et suites nichées dans la verdure : Hôtel Ewondo Mini-Suites VIP (25 000 à 30 000 FCFA), Hôtel Chanthel (15 000 à 25 000 FCFA), Hôtel Bene (10 000 à 15 000 FCFA) et Suites Prestige VIP (30 000 à 45 000 FCFA).',
     altitudeM: 760,
     coordinates: { x: 790, y: 95 },
     trailIds: ['cretes-cedres', 'piste-eco-gardes'],
@@ -139,7 +139,7 @@ export const INITIAL_POIS: PointOfInterest[] = [
     id: 'poi-refuge-canopee',
     category: 'ranger_post',
     categoryLabel: 'Formation MINEFOP',
-    name: 'Campus CFP ECOPARK (Agréé MINEFOP — 5 Filières)',
+    name: 'Campus CFP ECOPARK (Agréé MINEFOP · 5 Filières)',
     description:
       'Centre de Formation Professionnelle agréé par le MINEFOP (DQP/CQP en 12 mois, 70 % de pratique sur site) : Aquaculture, Hôtellerie-Restauration, Élevage, Agroécologie et Écoguidage.',
     altitudeM: 735,
@@ -221,7 +221,7 @@ export const INITIAL_TRAILS: Trail[] = [
     name: 'Allée des Cités Hôtelières (Ewondo, Chanthel, Bene) & Salle 500 Places',
     subtitle: '30 unités d hébergement climatisées (10 000 à 45 000 FCFA) & Salle Menkii Essomba Anton',
     description:
-      'Secteur résidentiel calme et verdoyant regroupant l Hôtel Ewondo (Mini-Suites VIP 25 000–30 000 FCFA), l Hôtel Chanthel (15 000–25 000 FCFA), l Hôtel Bene (10 000–15 000 FCFA), les Suites Prestige VIP (30 000–45 000 FCFA) et la Salle Polyvalente de 500 places.',
+      'Secteur résidentiel calme et verdoyant regroupant l Hôtel Ewondo (Mini-Suites VIP 25 000 à 30 000 FCFA), l Hôtel Chanthel (15 000 à 25 000 FCFA), l Hôtel Bene (10 000 à 15 000 FCFA), les Suites Prestige VIP (30 000 à 45 000 FCFA) et la Salle Polyvalente de 500 places.',
     difficulty: 'difficile',
     lengthKm: 1.9,
     distanceKm: 1.9,
@@ -239,8 +239,8 @@ export const INITIAL_TRAILS: Trail[] = [
     maxCapacity: 180,
     elevationProfile: [
       { distanceKm: 0.0, elevationM: 720, slopePercent: 2, poiLabel: 'Réception Hôtellerie 24h/24', mapCoord: { x: 420, y: 290 } },
-      { distanceKm: 0.4, elevationM: 732, slopePercent: 3, poiLabel: 'Hôtel Bene (10 000–15 000 FCFA)', mapCoord: { x: 550, y: 180 } },
-      { distanceKm: 0.9, elevationM: 745, slopePercent: 4, poiLabel: 'Hôtel Chanthel (15 000–25 000 FCFA)', mapCoord: { x: 680, y: 120 } },
+      { distanceKm: 0.4, elevationM: 732, slopePercent: 3, poiLabel: 'Hôtel Bene (10 000 à 15 000 FCFA)', mapCoord: { x: 550, y: 180 } },
+      { distanceKm: 0.9, elevationM: 745, slopePercent: 4, poiLabel: 'Hôtel Chanthel (15 000 à 25 000 FCFA)', mapCoord: { x: 680, y: 120 } },
       { distanceKm: 1.3, elevationM: 760, slopePercent: 3, poiId: 'poi-grand-cedre', poiLabel: 'Hôtel Ewondo & Suites VIP', mapCoord: { x: 790, y: 95 } },
       { distanceKm: 1.6, elevationM: 755, slopePercent: -2, poiId: 'poi-abri-aigles', poiLabel: 'Salle Menkii Essomba Anton (500 pl.)', mapCoord: { x: 880, y: 140 } },
       { distanceKm: 1.9, elevationM: 730, slopePercent: -5, poiLabel: 'Jardins Privés VIP', mapCoord: { x: 690, y: 280 } },
@@ -319,7 +319,7 @@ export const INITIAL_TRAILS: Trail[] = [
     biomeLabel: 'Étangs Piscicoles & Campus Pratique CFP MINEFOP',
     status: 'balise',
     closureReason:
-      'Travaux pratiques d alevinage en cours sur les bassins piscicoles n°3 et n°4 avec les apprenants du CFP MINEFOP — Circulation encadrée sur les digues.',
+      'Travaux pratiques d alevinage en cours sur les bassins piscicoles n°3 et n°4 avec les apprenants du CFP MINEFOP. Circulation encadrée sur les digues.',
     currentOccupancy: 85,
     maxCapacity: 200,
     elevationProfile: [
@@ -607,7 +607,7 @@ export const INITIAL_SPECIES: Species[] = [
     bestTime: 'Toute la journée (Fraîcheur ombragée)',
     trailIds: ['marais', 'cretes-cedres', 'piste-eco-gardes'],
     description:
-      'La végétation luxuriante d ECOPARK CAMEROUN — palmiers royaux, raphias bordant le lac, bambous géants et arbres fruitiers — crée à seulement 15 minutes du centre-ville de Yaoundé un microclimat naturel de 3 à 4°C plus frais.',
+      'La végétation luxuriante d ECOPARK CAMEROUN (palmiers royaux, raphias bordant le lac, bambous géants et arbres fruitiers) crée à seulement 15 minutes du centre-ville de Yaoundé un microclimat naturel de 3 à 4°C plus frais.',
     habitat: 'Berges du lac, allées piétonnes, jardins des Hôtels Ewondo/Chanthel/Bene et pergolas.',
     dietOrFloraType: 'Essences tropicales locales entretenues sans pesticides chimiques.',
     protectionCharter: 'Interdiction de cueillir les fleurs ou de graver les troncs de bambous.',

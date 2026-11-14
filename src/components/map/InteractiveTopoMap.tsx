@@ -1,6 +1,6 @@
 // ============================================================================
 // ECO-PARK INTERACTIVE TOPOGRAPHIC VECTOR MAP (src/components/map/InteractiveTopoMap.tsx)
-// Feature F16 — 1000x700 Pure SVG Topo Engine with 7 Layers & Real-Time Sync
+// Feature F16 - 1000x700 Pure SVG Topo Engine with 7 Layers & Real-Time Sync
 // ============================================================================
 
 import React, { useState, useId, useRef, useEffect, useMemo } from 'react';
@@ -554,7 +554,7 @@ export const InteractiveTopoMap: React.FC<InteractiveTopoMapProps> = ({
           )}
 
           {/* =============================================================== */}
-          {/* LAYER 5: 6 Trail SVG paths — « Tracé vivant » & Status Waves    */}
+          {/* LAYER 5: 6 Trail SVG paths - « Tracé vivant » & Status Waves    */}
           {/* =============================================================== */}
           {showTrails && (
             <g id="layer-trails">

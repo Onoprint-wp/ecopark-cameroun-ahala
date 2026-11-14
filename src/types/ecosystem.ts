@@ -9,7 +9,40 @@ export type ActiveView =
   | 'billetterie'
   | 'pass'
   | 'ranger'
+  | 'connexion'
+  | 'legal'
   | 'color_atlas';
+
+export type EcoParkRole =
+  | 'visiteur_anonyme'
+  | 'client_connecte'
+  | 'agent_guichet'
+  | 'agent_controle'
+  | 'comptable'
+  | 'responsable_exploitation'
+  | 'direction'
+  | 'administrateur_plateforme';
+
+export type AssignedPole =
+  | 'GUICHET_CAISSE'
+  | 'CONTROLE_QR'
+  | 'HEBERGEMENT'
+  | 'CUISINE_SAVEURS'
+  | 'FINANCE_COMPTA'
+  | 'DIRECTION_GENERALE';
+
+export interface AuthenticatedUser {
+  id: string;
+  email: string;
+  fullName: string;
+  phone: string;
+  role: EcoParkRole;
+  matricule?: string;
+  assignedPole?: AssignedPole;
+  postLabel?: string;
+  provider: 'supabase' | 'webcrypto_pbkdf2';
+  createdAt: string;
+}
 
 export type ThemeMode = 'auto' | 'light' | 'dark';
 export type EffectiveTheme = 'light' | 'dark';
@@ -146,8 +179,11 @@ export type ExperienceType =
 
 export type TimeSlot =
   | '08h30 - 11h30'
+  | '09h00 - 12h00'
   | '11h30 - 14h30'
+  | '12h00 - 15h00'
   | '14h30 - 17h30'
+  | '15h00 - 18h00'
   | '17h30 - 20h00';
 
 export type MobilityMode =
@@ -177,6 +213,8 @@ export interface EcoPass {
     email: string;
     phone: string;
   };
+  ownerUserId?: string;
+  ownerEmail?: string;
   zeroTraceCharterSigned: boolean;
   qrPayload: string;               // Deterministic token encoded in the QR SVG
   status: 'confirmed' | 'checked_in' | 'cancelled';
@@ -277,6 +315,12 @@ export interface EcoParkContextType {
   bookPass: (input: BookingInput) => EcoPass;
   cancelPass: (passId: string) => void;
   checkInPass: (passId: string) => void;
+  claimPassByReference: (
+    referenceCode: string,
+    contactEmailOrPhone: string,
+    userId: string,
+    userEmail: string
+  ) => { ok: boolean; error?: string; pass?: EcoPass };
 
   // Citizen Sentinel
   reports: CitizenReport[];

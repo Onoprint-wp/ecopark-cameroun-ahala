@@ -17,8 +17,11 @@ import {
 import {
   getExperienceInfo,
   resolveExperienceForTrail,
+  calculateEcoMobilityPricing,
   MOBILITY_OPTIONS,
+  EXPERIENCES_CATALOG,
 } from './ecoMobility.ts';
+import { getContrastRatio } from './wcagContrast.ts';
 import {
   VIEW_PATH_MAP,
   SHOWCASE_TAB_PATH_MAP,
@@ -218,6 +221,23 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
     assert.strictEqual(MOBILITY_OPTIONS.length, 5);
     assert.ok(MOBILITY_OPTIONS.some((m) => m.shortLabel.includes('Orange Money')));
 
+    // 2b. Official Group 20+ (-30%) discount threshold enforcement
+    const soloGroupAttempt = calculateEcoMobilityPricing('sentiers', 'velo', 2, 0, 0);
+    assert.strictEqual(
+      soloGroupAttempt.discountPercent,
+      0,
+      'Group -30% discount must NOT apply below 20 guests'
+    );
+    assert.strictEqual(soloGroupAttempt.netTotalEur, 2000);
+
+    const realGroup20 = calculateEcoMobilityPricing('sentiers', 'velo', 20, 0, 0);
+    assert.strictEqual(
+      realGroup20.discountPercent,
+      30,
+      'Group -30% discount applies automatically starting at 20 guests'
+    );
+    assert.strictEqual(realGroup20.netTotalEur, 14000, '20 adults * 1000 FCFA - 30% = 14000 FCFA');
+
     // 3. Reconciled Occupancy (Trail Status Closure must NOT wipe today's net booked passes)
     const todayIso = new Date().toISOString().split('T')[0];
     const reconcile = (trailsList: Trail[], passesList: EcoPass[], cap: number) => {
@@ -272,7 +292,7 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
       );
     }
 
-    // Bidirectional round-trip for primary SPA views
+    // Bidirectional round-trip for primary SPA views (including /connexion & /mentions-legales)
     const primaryViews: ActiveView[] = [
       'accueil',
       'sentiers',
@@ -280,6 +300,8 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
       'billetterie',
       'pass',
       'ranger',
+      'connexion',
+      'legal',
     ];
     for (const view of primaryViews) {
       const targetUrl = VIEW_PATH_MAP[view];
@@ -289,6 +311,13 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
         `ActiveView "${view}" -> "${targetUrl}" must round-trip cleanly`
       );
     }
+
+    // Explicit check on /Connexion, /connexion, /mentions-legales, /cgv, /confidentialite
+    assert.strictEqual(resolveViewFromPath('/Connexion'), 'connexion');
+    assert.strictEqual(resolveViewFromPath('/connexion'), 'connexion');
+    assert.strictEqual(resolveViewFromPath('/mentions-legales'), 'legal');
+    assert.strictEqual(resolveViewFromPath('/cgv'), 'legal');
+    assert.strictEqual(resolveViewFromPath('/confidentialite'), 'legal');
 
     // Bidirectional round-trip for all 5 AhalaShowcase tabs & presence in vercel.json
     const rewriteSources = new Set(vercelConfig.rewrites.map((r) => r.source));
@@ -305,5 +334,127 @@ test('ECO-PARK Ecosystem E2E Integration & Data Flows', async (t) => {
       assert.strictEqual(resolveViewFromPath(tabUrl), 'accueil');
       assert.strictEqual(resolveShowcaseTabFromPath(tabUrl), tab);
     }
+  });
+
+  await t.test('Fiche mémo n°4: Optical Typography, Loi 1/2/3, Guardrails & 7-Step Persuasion', () => {
+    const rootDir = process.cwd();
+
+    // 1. Loi 1 ONOGRAPH: 0 U+2014 (em-dash) and 0 U+2013 (en-dash) across index.html & src/
+    const forbiddenDashRegex = /[\u2013\u2014]/;
+    const indexHtml = fs.readFileSync(path.resolve(rootDir, 'index.html'), 'utf8');
+    assert.ok(!forbiddenDashRegex.test(indexHtml), 'index.html must contain 0 U+2013/U+2014');
+
+    const walkFiles = (dir: string): string[] => {
+      const entries = fs.readdirSync(dir, { withFileTypes: true });
+      const results: string[] = [];
+      for (const entry of entries) {
+        const full = path.join(dir, entry.name);
+        if (entry.isDirectory()) {
+          results.push(...walkFiles(full));
+        } else if (/\.(ts|tsx|css|html)$/.test(entry.name)) {
+          results.push(full);
+        }
+      }
+      return results;
+    };
+
+    for (const filePath of walkFiles(path.resolve(rootDir, 'src'))) {
+      if (filePath.endsWith('ecosystemE2E.test.ts')) continue;
+      const content = fs.readFileSync(filePath, 'utf8');
+      assert.ok(
+        !forbiddenDashRegex.test(content),
+        `Loi 1 violation: ${path.relative(rootDir, filePath)} must contain 0 U+2013 or U+2014`
+      );
+    }
+
+    // 2. Loi 3 ONOGRAPH: Strict Integer (Int) FCFA calculations across all Experience x Mobility combinations
+    for (const exp of EXPERIENCES_CATALOG) {
+      assert.ok(Number.isInteger(exp.adultPrice), `${exp.id} adultPrice must be Int`);
+      assert.ok(Number.isInteger(exp.childPrice), `${exp.id} childPrice must be Int`);
+      assert.ok(Number.isInteger(exp.pmrPrice), `${exp.id} pmrPrice must be Int`);
+      for (const mob of MOBILITY_OPTIONS) {
+        for (const guests of [1, 4, 20, 35]) {
+          const calc = calculateEcoMobilityPricing(exp.id, mob.id, guests, 2, 1);
+          assert.ok(Number.isInteger(calc.grossTotalEur), 'grossTotalEur must be strict Int');
+          assert.ok(Number.isInteger(calc.discountAmountEur), 'discountAmountEur must be strict Int');
+          assert.ok(Number.isInteger(calc.netTotalEur), 'netTotalEur must be strict Int');
+          assert.ok(Number.isInteger(calc.unitPriceEur), 'unitPriceEur must be strict Int');
+        }
+      }
+    }
+
+    // 3. Optical Scale (10 classes), 3-Zone Tracking & Guardrails 1-3 in src/index.css
+    const cssContent = fs.readFileSync(path.resolve(rootDir, 'src/index.css'), 'utf8');
+    const requiredClasses = [
+      '.type-nav',
+      '.type-chapternav',
+      '.type-eyebrow',
+      '.type-hero',
+      '.type-h2',
+      '.type-h3',
+      '.type-tagline',
+      '.type-body',
+      '.cta-pill',
+      '.cta-chevron',
+      '.type-footnote',
+      '.bento-plus-btn',
+      '.touch-target-48',
+    ];
+    for (const cls of requiredClasses) {
+      assert.ok(cssContent.includes(cls), `src/index.css must define optical class ${cls}`);
+    }
+    assert.ok(cssContent.includes('tabular-nums'), 'Loi 2: tabular-nums must be enforced in CSS');
+    assert.ok(
+      cssContent.includes('max(1rem, 16px)'),
+      'Guardrail 1: mobile form controls must enforce >= 16px anti-zoom iOS rule'
+    );
+
+    // Guardrail 3: Verified WCAG contrast for --text-muted on --bg-surface and --bg-card (Light/Sun >= 7:1, Dark >= 7:1)
+    assert.ok(getContrastRatio('#36403A', '#E9F5ED') >= 7.0, 'Light --text-muted on --bg-surface must be >= 7:1');
+    assert.ok(getContrastRatio('#36403A', '#FFFFFF') >= 7.0, 'Light --text-muted on --bg-card must be >= 7:1');
+    assert.ok(getContrastRatio('#C9D1CC', '#1F2421') >= 7.0, 'Dark --text-muted on --bg-surface must be >= 7:1');
+    assert.ok(getContrastRatio('#C9D1CC', '#29302C') >= 7.0, 'Dark --text-muted on --bg-card must be >= 7:1');
+
+    // 4. 7-Step Persuasion Architecture & Permanent DOM Mounting (Profil B & Profil C Scission)
+    const heroSrc = fs.readFileSync(path.resolve(rootDir, 'src/components/discovery/HeroCanopy.tsx'), 'utf8');
+    assert.ok(heroSrc.includes('type-hero'), 'Temps 3: HeroCanopy must apply .type-hero');
+    assert.ok(heroSrc.includes('cta-pill'), 'Temps 5: HeroCanopy must include .cta-pill');
+    assert.ok(heroSrc.includes('cta-chevron'), 'Temps 5: HeroCanopy must include .cta-chevron');
+    const heroH1Block = heroSrc.match(/<h1[^>]*className="[^"]*type-hero[^"]*"[^>]*>([\s\S]*?)<\/h1>/);
+    assert.ok(heroH1Block, 'Temps 3: Hero h1 block must exist');
+    const heroPlainText = heroH1Block[1]
+      .replace(/<[^>]+>/g, ' ')
+      .replace(/\{' '\}/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+    assert.ok(heroPlainText.endsWith('.'), `Temps 3: Hero h1 must close with a period (got "${heroPlainText}")`);
+    const heroWordCount = heroPlainText.split(/\s+/).length;
+    assert.ok(heroWordCount <= 12, `Temps 3: Hero h1 must be <= 12 words (got ${heroWordCount})`);
+
+    const impactSrc = fs.readFileSync(path.resolve(rootDir, 'src/components/discovery/ImpactBanner.tsx'), 'utf8');
+    assert.ok(impactSrc.includes('bento-plus-btn'), 'Temps 6: ImpactBanner must include 48x48 .bento-plus-btn');
+    assert.ok(impactSrc.includes('aria-expanded'), 'Temps 6: Bento + buttons must expose aria-expanded');
+    const blufMatches = [...impactSrc.matchAll(/bluf:\s*"([^"]+)"/g)];
+    assert.strictEqual(blufMatches.length, 4, 'Temps 6: ImpactBanner must define 4 BLUF summaries');
+    for (const m of blufMatches) {
+      const words = m[1].trim().split(/\s+/).length;
+      assert.ok(
+        words >= 40 && words <= 55,
+        `Temps 6 GEO: Each Bento BLUF must be 40-55 words (got ${words} words)`
+      );
+    }
+
+    const showcaseSrc = fs.readFileSync(path.resolve(rootDir, 'src/components/discovery/AhalaShowcase.tsx'), 'utf8');
+    assert.ok(showcaseSrc.includes('id="pass-comparateur"'), 'Temps 4: 3-Pass side-by-side comparator must exist');
+    assert.ok(showcaseSrc.includes('id="cross-sell-options"'), 'Temps 7: Cross-sell strip must exist');
+    assert.ok(showcaseSrc.includes('<table'), 'Profil B: Native <table> comparative grid must exist');
+    assert.ok(
+      !showcaseSrc.includes("activeTab === 'tarifs' &&"),
+      'Profil B: Native <table> panel must remain permanently mounted in DOM (never unmounted)'
+    );
+
+    const rangerSrc = fs.readFileSync(path.resolve(rootDir, 'src/components/admin/RangerDashboard.tsx'), 'utf8');
+    assert.ok(!rangerSrc.includes('type-hero'), 'Profil C Scission: Zero .type-hero inside /exploitation');
+    assert.ok(!rangerSrc.includes('ImmersiveSection'), 'Profil C Scission: Zero Hero/promo banner inside /exploitation');
   });
 });

@@ -3,7 +3,7 @@
 // Feature F22 & F23: Pure SVG QR code pass, Outdoor Mode & Ticket Management
 // ============================================================================
 
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useMemo } from 'react';
 import {
   Calendar,
   Clock,
@@ -23,8 +23,11 @@ import {
   Maximize2,
   RotateCcw,
   Award,
+  KeyRound,
+  QrCode,
 } from 'lucide-react';
 import { useEcoPark } from '../../context/EcoParkContext';
+import { useAuth } from '../../context/AuthContext';
 import { EcoPass } from '../../types/ecosystem';
 import { generateQrSvgString } from '../../utils/qrCodeGenerator';
 import { formatEur, formatCo2, MOBILITY_OPTIONS, getExperienceInfo } from '../../utils/ecoMobility';
@@ -35,15 +38,17 @@ import { isReducedMotionPreferred, recordMotionOrigin } from '../../utils/ecoMot
 export const DigitalEcoPass: React.FC = () => {
   const {
     passes,
-    activePass,
     activePassId,
     setActivePassId,
     cancelPass,
     checkInPass,
+    claimPassByReference,
     highContrastOutdoor,
     setHighContrastOutdoor,
     setActiveView,
   } = useEcoPark();
+
+  const { user, isStaff, canCheckIn } = useAuth();
 
   // Local state for OLED mode vs Full Sunlight mode when outdoor mode is active
   const [outdoorVariant, setOutdoorVariant] = useState<'sunlight' | 'oled'>('sunlight');
@@ -53,6 +58,43 @@ export const DigitalEcoPass: React.FC = () => {
   const [isFlippedBack, setIsFlippedBack] = useState<boolean>(false);
   const [isPointerActive, setIsPointerActive] = useState<boolean>(false);
   const card3dRef = useRef<HTMLDivElement | null>(null);
+
+  // Claim existing pass state
+  const [showClaimForm, setShowClaimForm] = useState<boolean>(false);
+  const [claimRefInput, setClaimRefInput] = useState<string>('');
+  const [claimContactInput, setClaimContactInput] = useState<string>('');
+  const [claimFeedback, setClaimFeedback] = useState<{ ok: boolean; text: string } | null>(null);
+
+  // Strict per-user pass isolation (Clients NEVER see other visitors' passes)
+  const scopedPasses = useMemo<EcoPass[]>(() => {
+    if (!user) return [];
+    if (isStaff) return passes;
+    const normEmail = user.email.trim().toLowerCase();
+    return passes.filter(
+      (p) =>
+        p.ownerUserId === user.id ||
+        p.ownerEmail?.toLowerCase() === normEmail ||
+        p.leadVisitor.email.trim().toLowerCase() === normEmail
+    );
+  }, [passes, user, isStaff]);
+
+  const handleClaimSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!user) return;
+    setClaimFeedback(null);
+    const res = claimPassByReference(claimRefInput, claimContactInput, user.id, user.email);
+    if (!res.ok) {
+      setClaimFeedback({ ok: false, text: res.error || 'Rattachement impossible.' });
+      return;
+    }
+    setClaimFeedback({
+      ok: true,
+      text: `Pass ${res.pass?.id} rattaché avec succès à votre Espace Cliente.`,
+    });
+    setClaimRefInput('');
+    setClaimContactInput('');
+    setShowClaimForm(false);
+  };
 
   const resetCardTiltAndGlare = () => {
     const el = card3dRef.current;
@@ -87,12 +129,11 @@ export const DigitalEcoPass: React.FC = () => {
     if (!isPointerActive) setIsPointerActive(true);
   };
 
-  // Selected pass resolution
+  // Selected pass resolution strictly within scopedPasses
   const currentPass: EcoPass | null =
-    activePass ||
-    (passes.length > 0
-      ? passes.find((p) => p.id === activePassId) || passes[0]
-      : null);
+    scopedPasses.length > 0
+      ? scopedPasses.find((p) => p.id === activePassId) || scopedPasses[0]
+      : null;
 
   // Helper to find mobility details
   const getMobilityInfo = (mode: string) => {
@@ -130,7 +171,7 @@ export const DigitalEcoPass: React.FC = () => {
   <rect x="0" y="90" width="600" height="20" fill="#1B4332"/>
 
   <!-- Header -->
-  <text x="30" y="45" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="bold" fill="#B7E4C7" letter-spacing="2">ECOPARK CAMEROUN · YAOUNDÉ – AHALA BARRIÈRE (RN3)</text>
+  <text x="30" y="45" font-family="'Source Sans 3', sans-serif" font-size="11" font-weight="bold" fill="#B7E4C7" letter-spacing="2">ECOPARK CAMEROUN · YAOUNDÉ, AHALA BARRIÈRE (RN3)</text>
   <text x="30" y="80" class="title" fill="#FFFFFF">${svgExperience.title}</text>
 
   <!-- Pass ID & Status -->
@@ -197,31 +238,88 @@ export const DigitalEcoPass: React.FC = () => {
     window.print();
   };
 
-  // Empty State
-  if (!currentPass || passes.length === 0) {
+  // Empty State (Scoped to Authenticated Client)
+  if (!currentPass || scopedPasses.length === 0) {
     return (
-      <div className="max-w-2xl mx-auto p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center space-y-5">
-        <div className="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 mx-auto flex items-center justify-center">
-          <Ticket className="w-8 h-8" />
+      <div className="max-w-2xl mx-auto space-y-6">
+        <div className="p-8 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] text-center space-y-5">
+          <div className="w-16 h-16 rounded-2xl bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300 mx-auto flex items-center justify-center">
+            <Ticket className="w-8 h-8" />
+          </div>
+          <div>
+            <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--text-primary)]">
+              Aucun Pass QR rattaché à votre Espace Cliente
+            </h2>
+            <p className="text-xs sm:text-sm text-[var(--text-muted)] mt-1.5 max-w-md mx-auto leading-relaxed">
+              Réservez votre prochain créneau en FCFA (Orange Money, MTN MoMo ou Guichet) ou rattachez ci-dessous un billet déjà émis.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={(e) => {
+              recordMotionOrigin(e);
+              setActiveView('billetterie');
+            }}
+            className="px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-white font-bold text-sm shadow-xs hover:bg-[var(--brand-secondary)] cursor-pointer inline-flex items-center gap-2"
+          >
+            <span>Réserver un Pass QR (dès 500 FCFA)</span>
+            <ArrowRight className="w-4 h-4" />
+          </button>
         </div>
-        <div>
-          <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold text-[var(--text-primary)]">
-            Aucun Éco-Pass enregistré
-          </h2>
-          <p className="text-xs text-[var(--text-muted)] mt-1.5 max-w-md mx-auto leading-relaxed">
-            Pour accéder aux sentiers de la réserve et réguler la capacité écologique, réservez votre créneau dès maintenant.
-          </p>
-        </div>
-        <button
-          onClick={(e) => {
-            recordMotionOrigin(e);
-            setActiveView('billetterie');
-          }}
-          className="px-6 py-3 rounded-xl bg-[var(--brand-primary)] text-white font-bold text-sm shadow-xs hover:bg-[var(--brand-secondary)] cursor-pointer inline-flex items-center gap-2"
+
+        {/* Claim Existing Pass Form */}
+        <form
+          onSubmit={handleClaimSubmit}
+          className="p-6 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-4"
         >
-          <span>Accéder à la billetterie régulée</span>
-          <ArrowRight className="w-4 h-4" />
-        </button>
+          <div className="flex items-center gap-2">
+            <KeyRound className="w-4 h-4 text-[var(--brand-primary)]" />
+            <h3 className="font-['Barlow_Semi_Condensed'] text-lg font-bold text-[var(--text-primary)]">
+              Vous avez déjà réservé un billet (ECP-2026-XXXXX) ?
+            </h3>
+          </div>
+          <p className="text-xs text-[var(--text-muted)]">
+            Saisissez la référence de votre Pass ainsi que l&apos;adresse email ou le numéro de téléphone utilisé lors de la réservation pour l&apos;ajouter à votre portefeuille personnel.
+          </p>
+
+          {claimFeedback && (
+            <div
+              className={`p-3 rounded-xl text-xs border ${
+                claimFeedback.ok
+                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-emerald-800 dark:text-emerald-200'
+                  : 'bg-red-50 dark:bg-red-950/60 border-red-300 text-red-800 dark:text-red-200'
+              }`}
+            >
+              {claimFeedback.text}
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            <input
+              type="text"
+              required
+              placeholder="Référence (ex: ECP-2026-8942)"
+              value={claimRefInput}
+              onChange={(e) => setClaimRefInput(e.target.value)}
+              className="px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono text-[var(--text-primary)]"
+            />
+            <input
+              type="text"
+              required
+              placeholder="Email ou téléphone du billet"
+              value={claimContactInput}
+              onChange={(e) => setClaimContactInput(e.target.value)}
+              className="px-3.5 py-2.5 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)]"
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="px-4 py-2.5 rounded-xl bg-[var(--bg-elevated)] hover:bg-[var(--brand-primary)] hover:text-white border border-[var(--border-default)] text-xs font-bold text-[var(--text-primary)] transition-colors cursor-pointer"
+          >
+            Rattacher ce billet à mon compte
+          </button>
+        </form>
       </div>
     );
   }
@@ -237,13 +335,27 @@ export const DigitalEcoPass: React.FC = () => {
       {/* Pass Switcher & Controls */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-4 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)]">
         <div>
-          <span className="text-xs font-semibold text-[var(--brand-primary)] uppercase tracking-wider">
-            Portefeuille Éco-Pass ({passes.length})
-          </span>
-          <div className="flex flex-wrap items-center gap-2 mt-1">
-            {passes.map((pass) => (
+          <div className="flex items-center gap-2">
+            <span className="text-xs font-semibold text-[var(--brand-primary)] uppercase tracking-wider">
+              {isStaff
+                ? `Registre Global des Pass (${scopedPasses.length})`
+                : `Mon Portefeuille Éco-Pass (${scopedPasses.length})`}
+            </span>
+            {!isStaff && (
+              <button
+                type="button"
+                onClick={() => setShowClaimForm(!showClaimForm)}
+                className="text-[11px] font-semibold text-[var(--text-muted)] hover:text-[var(--brand-primary)] underline cursor-pointer"
+              >
+                + Rattacher un billet
+              </button>
+            )}
+          </div>
+          <div className="flex flex-wrap items-center gap-2 mt-1.5">
+            {scopedPasses.map((pass) => (
               <button
                 key={pass.id}
+                type="button"
                 onClick={() => {
                   setActivePassId(pass.id);
                   setIsFlippedBack(false);
@@ -333,6 +445,53 @@ export const DigitalEcoPass: React.FC = () => {
         </div>
       </div>
 
+      {showClaimForm && !isStaff && (
+        <form
+          onSubmit={handleClaimSubmit}
+          className="max-w-2xl mx-auto p-5 rounded-2xl bg-[var(--bg-surface)] border border-[var(--border-default)] space-y-3"
+        >
+          <div className="text-xs font-bold text-[var(--text-primary)] flex items-center gap-1.5">
+            <KeyRound className="w-4 h-4 text-[var(--brand-primary)]" />
+            <span>Rattacher un Pass existant (ECP-2026-XXXXX)</span>
+          </div>
+          {claimFeedback && (
+            <div
+              className={`p-2.5 rounded-xl text-xs border ${
+                claimFeedback.ok
+                  ? 'bg-emerald-50 dark:bg-emerald-950/60 border-emerald-300 text-emerald-800 dark:text-emerald-200'
+                  : 'bg-red-50 dark:bg-red-950/60 border-red-300 text-red-800 dark:text-red-200'
+              }`}
+            >
+              {claimFeedback.text}
+            </div>
+          )}
+          <div className="flex flex-col sm:flex-row gap-2.5">
+            <input
+              type="text"
+              required
+              placeholder="ECP-2026-XXXXX"
+              value={claimRefInput}
+              onChange={(e) => setClaimRefInput(e.target.value)}
+              className="flex-1 px-3 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs font-mono text-[var(--text-primary)]"
+            />
+            <input
+              type="text"
+              required
+              placeholder="Email ou téléphone du billet"
+              value={claimContactInput}
+              onChange={(e) => setClaimContactInput(e.target.value)}
+              className="flex-1 px-3 py-2 rounded-xl bg-[var(--bg-elevated)] border border-[var(--border-default)] text-xs text-[var(--text-primary)]"
+            />
+            <button
+              type="submit"
+              className="px-4 py-2 rounded-xl bg-[var(--brand-primary)] text-white text-xs font-bold cursor-pointer"
+            >
+              Rattacher
+            </button>
+          </div>
+        </form>
+      )}
+
       {/* Main Digital Pass 3D Stage & Card Container */}
       <div className="eco-pass-3d-stage max-w-2xl mx-auto">
         <div
@@ -385,10 +544,10 @@ export const DigitalEcoPass: React.FC = () => {
               >
                 <div>
                   <span className="text-[11px] font-mono font-semibold uppercase tracking-widest text-[#B7E4C7]">
-                    ECOPARK CAMEROUN · YAOUNDÉ – AHALA BARRIÈRE (FACE TRADEX RN3)
+                    ECOPARK CAMEROUN · YAOUNDÉ, AHALA BARRIÈRE (FACE TRADEX RN3)
                   </span>
-                  <h2 className="font-['Barlow_Semi_Condensed'] text-2xl font-bold mt-0.5">
-                    Pass QR Officiel — Complexe Écologique &amp; Loisirs
+                  <h2 className="type-h3 !text-white mt-0.5">
+                    Pass QR Officiel : Complexe Écologique &amp; Loisirs
                   </h2>
                 </div>
 
@@ -551,17 +710,24 @@ export const DigitalEcoPass: React.FC = () => {
               </div>
             </div>
 
-            {/* Pass Actions Bar */}
+            {/* Pass Actions Bar (Check-In strictly reserved to Staff RBAC) */}
             <div className="p-6 bg-[var(--bg-canvas)] border-t border-[var(--border-default)] flex flex-wrap items-center justify-between gap-3 print:hidden">
-              {/* Check-In Action Button */}
               {currentPass.status === 'confirmed' ? (
-                <button
-                  onClick={() => checkInPass(currentPass.id)}
-                  className="px-4 py-2.5 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white font-bold text-xs shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-95 transition-transform"
-                >
-                  <CheckCircle2 className="w-4 h-4" />
-                  <span>Valider l entrée terrain (Check-In)</span>
-                </button>
+                isStaff && canCheckIn ? (
+                  <button
+                    type="button"
+                    onClick={() => checkInPass(currentPass.id)}
+                    className="px-4 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 text-white font-bold text-xs shadow-xs cursor-pointer flex items-center gap-1.5 active:scale-95 transition-transform"
+                  >
+                    <CheckCircle2 className="w-4 h-4" />
+                    <span>Valider Check-In Guichet RN3 (Staff)</span>
+                  </button>
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-xs font-mono font-semibold text-emerald-800 dark:text-emerald-300">
+                    <QrCode className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                    <span>À présenter au contrôle QR d&apos;Ahala Barrière (RN3)</span>
+                  </span>
+                )
               ) : currentPass.status === 'checked_in' ? (
                 <span className="text-xs font-mono font-bold text-emerald-600 dark:text-emerald-400 flex items-center gap-1.5">
                   <CheckCircle2 className="w-4 h-4" />
