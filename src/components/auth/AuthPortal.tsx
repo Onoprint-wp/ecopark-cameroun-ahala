@@ -142,7 +142,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
     }
     if (!privacyAccepted) {
       setErrorMsg(
-        'Veuillez accepter la Politique de Confidentialité (Loi n° 2010/012) pour créer votre Espace Client.'
+        'Veuillez accepter la Politique de Confidentialité (Loi n° 2024/017) pour créer votre Espace Client.'
       );
       return;
     }
@@ -356,7 +356,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                       Droit à l&apos;effacement &amp; Suppression de compte
                     </h4>
                     <p className="type-footnote">
-                      Conformément à la Loi camerounaise n° 2010/012 et au RGPD, vous pouvez anonymiser et supprimer votre compte client à tout moment.
+                      Conformément à la Loi camerounaise n° 2024/017 et au RGPD, vous pouvez anonymiser et supprimer votre compte client à tout moment.
                     </p>
                   </div>
                   <button
@@ -789,7 +789,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
                     onClick={() => setActiveView('legal')}
                     className="min-h-[44px] inline-flex items-center text-left text-xs text-[var(--brand-primary)] font-semibold hover:underline cursor-pointer"
                   >
-                    Lire la Politique de Confidentialité (Loi n° 2010/012)
+                    Lire la Politique de Confidentialité (Loi n° 2024/017)
                   </button>
                 </div>
               </div>
@@ -896,7 +896,7 @@ export const AuthPortal: React.FC<AuthPortalProps> = ({
             </h1>
           </div>
           <div className="text-xs text-[#E9F5ED] font-mono bg-[#0B1D15]/75 px-3.5 py-2 rounded-xl border border-[#36403A]">
-            Protection des données · Loi n° 2010/012 &amp; Droits d'accès
+            Protection des données · Loi n° 2024/017 &amp; Droits d'accès
           </div>
         </div>
       </ImmersiveSection>

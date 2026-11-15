@@ -89,7 +89,7 @@ export const LegalNoticeView: React.FC = () => {
             }`}
           >
             <Lock className="w-4 h-4" />
-            <span>Confidentialité (Loi n° 2010/012)</span>
+            <span>Confidentialité (Loi n° 2024/017)</span>
           </button>
         </div>
 
@@ -155,20 +155,23 @@ export const LegalNoticeView: React.FC = () => {
             <div className="space-y-4">
               <h2 className="type-h3 text-[var(--text-primary)] flex items-center gap-2">
                 <ShieldCheck className="w-5 h-5 text-[var(--brand-primary)]" />
-                <span>3. Protection des Données Personnelles (Loi n° 2010/012 &amp; RGPD)</span>
+                <span>3. Protection des Données Personnelles (Loi n° 2024/017 &amp; Loi n° 2010/012)</span>
               </h2>
               <p className="type-body text-[var(--text-muted)]">
-                Conformément à la Loi camerounaise n° 2010/012 du 21 décembre 2010 relative à la cybersécurité et à la cybercriminalité ainsi qu&apos;aux standards internationaux RGPD :
+                Conformément à la <strong>Loi camerounaise n° 2024/017 du 23 décembre 2024 relative à la protection des données à caractère personnel</strong> (pleinement applicable depuis juin 2026 sous le contrôle de l&apos;Autorité de Protection des Données Personnelles - APDP), à la Loi n° 2010/012 relative à la cybersécurité ainsi qu&apos;aux standards internationaux RGPD :
               </p>
               <ul className="space-y-2.5 type-body list-disc pl-5">
                 <li>
-                  <strong>Finalité stricte :</strong> Vos nom, email et numéro de téléphone ne sont collectés que pour l&apos;émission de vos Pass QR nominatifs, vos réservations hôtelières, vos devis Entreprises/CFP et la sécurité d&apos;accès au domaine.
+                  <strong>Consentement libre, explicite et minimisation :</strong> Aucune case pré-cochée n&apos;est utilisée. Vos nom, adresse électronique et numéro de téléphone ne sont collectés qu&apos;avec votre accord explicite pour l&apos;émission de vos Pass QR nominatifs, vos réservations hôtelières, vos demandes auprès du Concierge Virtuel et vos devis Entreprises ou CFP.
                 </li>
                 <li>
-                  <strong>Chiffrement &amp; Cloisonnement :</strong> Les mots de passe sont protégés par un chiffrement sécurisé des mots de passe (Supabase Auth) et chaque Espace Client est strictement isolé. Aucun visiteur tiers ne peut consulter vos réservations.
+                  <strong>Chiffrement &amp; Cloisonnement local par session :</strong> Les secrets d&apos;authentification sont protégés par un hachage cryptographique salé à haute intensité (120 000 itérations) et chaque session d&apos;Espace Client ou d&apos;assistant conversationnel est strictement isolée sur votre terminal. Aucun visiteur tiers ne peut consulter vos réservations.
                 </li>
                 <li>
-                  <strong>Droit d&apos;accès, de rectification et d&apos;effacement :</strong> Vous pouvez modifier votre mot de passe ou supprimer/anonymiser intégralement votre compte directement depuis votre profil (<code>/connexion</code>) ou en écrivant à{' '}
+                  <strong>Hébergement sécurisé &amp; Transferts encadrés :</strong> La diffusion web chiffrée (HTTPS / TLS strict) est assurée sur l&apos;infrastructure mondiale Vercel Inc. Tout raccordement opérationnel à un registre infonuagique dédié ou à une passerelle officielle de messagerie s&apos;effectue dans le respect des garanties contractuelles de transfert transfrontalier, des durées de conservation limitées et de l&apos;obligation de notification prévues par la Loi n° 2024/017.
+                </li>
+                <li>
+                  <strong>Droits d&apos;accès, de rectification, d&apos;opposition et d&apos;effacement :</strong> Vous pouvez modifier votre mot de passe ou supprimer et anonymiser intégralement votre compte directement depuis votre profil (<code>/connexion</code>) ou en écrivant à{' '}
                   <a href="mailto:info@ecopark-yaounde.com" className="text-[var(--brand-primary)] underline">
                     info@ecopark-yaounde.com
                   </a>.

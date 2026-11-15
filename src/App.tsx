@@ -21,6 +21,7 @@ import { RangerDashboard } from './components/admin/RangerDashboard';
 import { AuthPortal } from './components/auth/AuthPortal';
 import { LegalNoticeView } from './components/legal/LegalNoticeView';
 import { ColorAtlasDrawer } from './components/design-system/ColorAtlasDrawer';
+import { ConciergeAssistant } from './components/concierge/ConciergeAssistant';
 import { useEcoPark } from './context/EcoParkContext';
 import { useAuth } from './context/AuthContext';
 import { getRoleDisplayLabel, isDevEnvironment } from './utils/ecoAuth';
@@ -371,7 +372,7 @@ export default function App() {
                   </div>
                 ) : (
                   <div className="text-xs text-[#E9F5ED]/80 font-mono bg-[#121614]/80 px-3 py-2 rounded-xl border border-[#36403A]">
-                    Données personnelles protégées (Loi n° 2010/012) · Garantie Météo 90j
+                    Données personnelles protégées (Loi n° 2024/017) · Garantie Météo 90j
                   </div>
                 )}
               </div>
@@ -510,6 +511,9 @@ export default function App() {
 
       {/* Slide-over Color Atlas Drawer - Restricted to DEV or explicit /atelier-couleurs route */}
       {(isDevEnvironment() || activeView === 'color_atlas') && <ColorAtlasDrawer />}
+
+      {/* Bilingual 24/7 Virtual Concierge (Autonomous Edge / Session-Isolated) */}
+      <ConciergeAssistant />
 
       {/* Ecological Footer */}
       <Footer />

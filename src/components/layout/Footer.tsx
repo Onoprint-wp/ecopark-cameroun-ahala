@@ -279,7 +279,7 @@ export const Footer: React.FC = () => {
               onClick={(e) => handleLegalClick('/confidentialite', e)}
               className="inline-flex items-center min-h-[44px] px-1 hover:text-white transition-colors cursor-pointer"
             >
-              Confidentialité (Loi 2010/012)
+              Confidentialité (Loi 2024/017)
             </button>
             <span aria-hidden="true">·</span>
             <button

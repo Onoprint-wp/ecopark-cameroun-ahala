@@ -349,11 +349,16 @@ export const Navbar: React.FC = () => {
           <button
             onClick={(e) => handleNavClick('accueil', e)}
             className="touch-target-48 min-w-0 max-w-full flex items-center gap-2 sm:gap-2.5 text-left group focus-visible:ring-2 focus-visible:ring-[var(--brand-primary)] rounded-lg py-1 pr-1 cursor-pointer"
-            aria-label="ECOPARK CAMEROUN - Retour à l'accueil"
+            aria-label={
+              isOperationalCockpit
+                ? "ECOPARK CAMEROUN Poste Exploitation RN3 - Retour à l'accueil"
+                : "ECOPARK CAMEROUN Yaoundé - Ahala • Dès 500 FCFA - Retour à l'accueil"
+            }
           >
             <img
               src="/images/ahala/cropped-LOGO-ECOPARK-Youtube.png"
-              alt="Logo Officiel ECOPARK CAMEROUN"
+              alt=""
+              aria-hidden="true"
               className="w-9 h-9 sm:w-10 sm:h-10 max-w-[44px] max-h-[44px] shrink-0 rounded-full object-cover border-2 border-[var(--brand-primary)] shadow-sm group-hover:scale-105 transition-transform duration-200 bg-white"
             />
             <div className="flex flex-col min-w-0 max-w-full">
